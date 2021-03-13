@@ -1,3 +1,5 @@
+import Layout from "@/components/Layout";
+
 export default function Home() {
-  return <h1>Hello Life Centered Design</h1>;
+  return <Layout>Das ist die Startseite!</Layout>;
 }
