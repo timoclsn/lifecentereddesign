@@ -1,6 +1,8 @@
 import Link from "next/link";
 
-export default function Navigation() {
+import CO2Badge from "@/components/CO2Badge";
+
+export default function Navigation({ co2Consumption }) {
   return (
     <header>
       <span>Navigation: </span>
@@ -9,6 +11,7 @@ export default function Navigation() {
           <h1>Life Centered Design</h1>
         </a>
       </Link>
+      <CO2Badge co2Consumption={co2Consumption} />
     </header>
   );
 }
