@@ -26,6 +26,7 @@ module.exports = {
   rules: {
     "prettier/prettier": ["error", {}, { usePrettierrc: true }], // Use our .prettierrc file as source
     "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off", // Needed for nextjs
     "jsx-a11y/anchor-is-valid": [
       "error",
       {
