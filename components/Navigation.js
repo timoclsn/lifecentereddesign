@@ -7,13 +7,18 @@ export default function Navigation({ co2Consumption }) {
     return (
         <CenteredColumn>
             <header>
-                <span>Navigation: </span>
-                <Link href="/">
-                    <a>
-                        <h1>Life Centered Design</h1>
-                    </a>
-                </Link>
-                <CO2Badge co2Consumption={co2Consumption} />
+                <div className="flex justify-center">
+                    <CO2Badge co2Consumption={co2Consumption} />
+                </div>
+                <ul className="flex py-12 space-x-8">
+                    <li className="font-bold">
+                        <Link href="/">
+                            <a>Life Centered Design.Net</a>
+                        </Link>
+                    </li>
+                    <li>About</li>
+                    <li>Newsletter</li>
+                </ul>
             </header>
         </CenteredColumn>
     );
