@@ -1,3 +1,5 @@
+const { fontFamily } = require('tailwindcss/defaultTheme');
+
 module.exports = {
     purge: [
         './pages/**/*.{js,ts,jsx,tsx}',
@@ -19,7 +21,11 @@ module.exports = {
             forest: '#E4F2E6',
             grey: '#EAEAEA'
         },
-        extend: {}
+        extend: {
+            fontFamily: {
+                sans: ['Noto Sans', ...fontFamily.sans]
+            }
+        }
     },
     variants: {
         extend: {}
