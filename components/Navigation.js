@@ -5,8 +5,8 @@ import CO2Badge from '@/components/CO2Badge';
 
 export default function Navigation({ co2Consumption }) {
     return (
-        <CenteredColumn>
-            <header>
+        <header>
+            <CenteredColumn>
                 <div className="flex justify-center">
                     <CO2Badge co2Consumption={co2Consumption} />
                 </div>
@@ -19,7 +19,7 @@ export default function Navigation({ co2Consumption }) {
                     <li>About</li>
                     <li>Newsletter</li>
                 </ul>
-            </header>
-        </CenteredColumn>
+            </CenteredColumn>
+        </header>
     );
 }
