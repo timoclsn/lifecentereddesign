@@ -1,5 +1,6 @@
 import Head from 'next/head';
 
+import CenteredColumn from '@/components/CenteredColumn';
 import Favicons from '@/components/Favicons';
 import Footer from '@/components/Footer';
 import Navigation from '@/components/Navigation';
@@ -27,7 +28,9 @@ export default function Layout({ co2Consumption, children }) {
             <SEO />
             <Favicons />
             <Navigation co2Consumption={co2Consumption} />
-            <main>{children}</main>
+            <CenteredColumn>
+                <main>{children}</main>
+            </CenteredColumn>
             <Footer />
         </>
     );
