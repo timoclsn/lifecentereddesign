@@ -28,9 +28,9 @@ export default function Layout({ co2Consumption, children }) {
             <SEO />
             <Favicons />
             <Navigation co2Consumption={co2Consumption} />
-            <CenteredColumn>
-                <main>{children}</main>
-            </CenteredColumn>
+            <main className="py-16">
+                <CenteredColumn>{children}</CenteredColumn>
+            </main>
             <Footer />
         </>
     );

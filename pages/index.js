@@ -1,10 +1,11 @@
+import Header from '@/components/Header';
 import Layout from '@/components/Layout';
 import { getCO2Consumtion } from '@/lib/co2';
 
 export default function Home(props) {
     return (
         <Layout co2Consumption={props.co2Consumption}>
-            Das ist die Startseite!
+            <Header />
         </Layout>
     );
 }

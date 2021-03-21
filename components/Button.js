@@ -13,7 +13,7 @@ export default function Button({
 }) {
     const Tag = href ? 'a' : 'button';
     const className = [
-        'flex',
+        'inline-flex',
         'items-center',
         'justify-center',
         'space-x-2',
