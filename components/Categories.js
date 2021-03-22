@@ -1,10 +1,11 @@
+import Button from '@/components/Button';
 import Card from '@/components/Card';
 
-export default function Cards() {
+export default function Categories() {
     return (
         <section>
             <p className="mb-4 font-bold">What we plan to do here:</p>
-            <div className="gap-14 columns-1 sm:columns-2 lg:columns-3">
+            <div className="mb-20 gap-14 columns-1 sm:columns-2 lg:columns-3">
                 <Card
                     headline="Information"
                     text="We plan to provide you with theoretical and practical information around life-centered design through this website."
@@ -46,6 +47,21 @@ export default function Cards() {
                     headline="Events"
                     text="To bring the conversations around life-centered design to life we would love to host events and make them available through this website."
                     bgColor="bg-forest"
+                />
+            </div>
+            <div className="flex flex-col items-center space-y-10">
+                <p className="max-w-md mx-auto text-center text-dark">
+                    We are still evaluating these ideas and the general concept.
+                    If you are interested, please signup for our newsletter and
+                    consider letting us know what ideas you like most.
+                </p>
+                <Button
+                    text="Newsletter signup"
+                    size="l"
+                    href="http://eepurl.com/htoWRr"
+                    target="_blank"
+                    secondary
+                    bgColor="bg-grass"
                 />
             </div>
         </section>
