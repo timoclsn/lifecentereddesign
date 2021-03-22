@@ -1,6 +1,7 @@
 import Categories from '@/components/Categories';
 import Header from '@/components/Header';
 import Layout from '@/components/Layout';
+import NewsletterCard from '@/components/NewsletterCard';
 import { getCO2Consumtion } from '@/lib/co2';
 
 export default function Home(props) {
@@ -67,6 +68,7 @@ export default function Home(props) {
                         </p>
                     </div>
                 </section>
+                <NewsletterCard />
             </div>
         </Layout>
     );

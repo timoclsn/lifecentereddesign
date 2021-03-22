@@ -1,4 +1,4 @@
-export default function Card({ headline, text, list, bgColor }) {
+export default function CategoryCard({ headline, text, list, bgColor }) {
     return (
         <div
             className={`inline-block w-full ${bgColor} rounded-3xl px-6 py-10 mb-14`}>
