@@ -1,3 +1,4 @@
+import Cards from '@/components/Cards';
 import Header from '@/components/Header';
 import Layout from '@/components/Layout';
 import { getCO2Consumtion } from '@/lib/co2';
@@ -5,7 +6,10 @@ import { getCO2Consumtion } from '@/lib/co2';
 export default function Home(props) {
     return (
         <Layout co2Consumption={props.co2Consumption}>
-            <Header />
+            <div className="space-y-28">
+                <Header />
+                <Cards />
+            </div>
         </Layout>
     );
 }
