@@ -69,6 +69,46 @@ export default function Home(props) {
                     </div>
                 </section>
                 <NewsletterCard />
+                <section className="flex flex-col items-center">
+                    <div className="max-w-3xl">
+                        <h2 className="mb-6 text-3xl font-bold">About us</h2>
+                        <p className="mb-4 text-dark">
+                            Hi{' '}
+                            <span role="img" aria-label="Waveing hand">
+                                👋
+                            </span>
+                        </p>
+
+                        <p className="mb-4 text-dark">
+                            This is Katharina. My husband Timo and I are the two
+                            people behind Life Centered Design.Net.
+                        </p>
+
+                        <p className="mb-4 text-dark">
+                            I have developed a passion for the mindset I
+                            associate with life-centered design. I am trying to
+                            weave in parts of this mindset into the things I do
+                            as Head of Strategy & UX at Codeatelier, a lecturer
+                            at Stuttgart Media University and University of
+                            Applied Sciences Esslingen, and as a board member of
+                            the Makers League e. V.
+                        </p>
+
+                        <p className="mb-4 text-dark">
+                            My husband Timo, CEO at Codeatelier shares this
+                            passion – especially when it comes to sustainability
+                            in (web) technologies.
+                        </p>
+
+                        <p className="text-dark">
+                            Because of my deep interest in that topic but also
+                            due to the fact, that it was very hard for me to
+                            find information and best practices on life-centered
+                            design in the past years, I wanted to create Life
+                            Centered Design.Net
+                        </p>
+                    </div>
+                </section>
             </div>
         </Layout>
     );
