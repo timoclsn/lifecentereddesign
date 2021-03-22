@@ -2,6 +2,7 @@ import Categories from '@/components/Categories';
 import Header from '@/components/Header';
 import Layout from '@/components/Layout';
 import NewsletterCard from '@/components/NewsletterCard';
+import ProfileCard from '@/components/ProfileCard';
 import { getCO2Consumtion } from '@/lib/co2';
 
 export default function Home(props) {
@@ -70,7 +71,7 @@ export default function Home(props) {
                 </section>
                 <NewsletterCard />
                 <section className="flex flex-col items-center">
-                    <div className="max-w-3xl">
+                    <div className="max-w-3xl mb-20">
                         <h2 className="mb-6 text-3xl font-bold">About us</h2>
                         <p className="mb-4 text-dark">
                             Hi{' '}
@@ -107,6 +108,27 @@ export default function Home(props) {
                             design in the past years, I wanted to create Life
                             Centered Design.Net
                         </p>
+                    </div>
+                    <div className="flex flex-col max-w-3xl space-y-10 sm:space-y-0 sm:space-x-10 sm:flex-row">
+                        <ProfileCard
+                            name="Katharina Clasen"
+                            image="/profile/katha.png"
+                            description="Head of Strategy & UX @ Codeatelier"
+                            bgColor="bg-sky"
+                            website="https://katharinaclasen.de"
+                            linkedin="https://www.linkedin.com/in/katharina-clasen/"
+                            instagram="https://www.instagram.com/katharinaclasen/"
+                            twitter="https://twitter.com/KatharinaClasen"
+                        />
+                        <ProfileCard
+                            name="Timo Clasen"
+                            image="/profile/timo.png"
+                            description="CEO @ Codeatelier"
+                            bgColor="bg-evening"
+                            website="https://timoclasen.de"
+                            linkedin="https://www.linkedin.com/in/timoclsn"
+                            twitter="https://twitter.com/timoclsn"
+                        />
                     </div>
                 </section>
             </div>
