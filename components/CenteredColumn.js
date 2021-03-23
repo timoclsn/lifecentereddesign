@@ -1,5 +1,3 @@
 export default function CenteredColumn({ children }) {
-    return (
-        <section className="max-w-screen-xl px-6 mx-auto">{children}</section>
-    );
+    return <div className="max-w-screen-xl px-6 mx-auto">{children}</div>;
 }
