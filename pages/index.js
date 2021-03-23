@@ -26,7 +26,6 @@ export default function Home(props) {
                             Human-Computer Interaction“ by Donald A. Norman and
                             Stephen W. Draper.
                         </p>
-
                         <p>
                             The DIN EN ISO 9241-210, where this approach is
                             defined, is now using the term human-centered design
@@ -34,7 +33,6 @@ export default function Home(props) {
                             stakeholders who are affected by a product or
                             service than just their users.
                         </p>
-
                         <p>
                             With that very same attitude, several questions can
                             be posed: Is it enough to focus the design around
@@ -44,7 +42,6 @@ export default function Home(props) {
                             indirect and might be hidden under the surface of
                             short-term user needs?
                         </p>
-
                         <p>
                             In contrast to human-centered design, no ISO
                             standard defines life-centered design as a term and
@@ -60,7 +57,6 @@ export default function Home(props) {
                             enough to drive the conversation around these
                             questions further.
                         </p>
-
                         <p>
                             That is why I want to create Life Centered
                             Design.Net. It is supposed to be a home for
@@ -80,12 +76,10 @@ export default function Home(props) {
                                     👋
                                 </span>
                             </p>
-
                             <p>
                                 This is Katharina. My husband Timo and I are the
                                 two people behind Life Centered Design.Net.
                             </p>
-
                             <p>
                                 I have developed a passion for the mindset I
                                 associate with life-centered design. I am trying
@@ -96,13 +90,11 @@ export default function Home(props) {
                                 Esslingen, and as a board member of the Makers
                                 League e. V.
                             </p>
-
                             <p>
                                 My husband Timo, CEO at Codeatelier shares this
                                 passion – especially when it comes to
                                 sustainability in (web) technologies.
                             </p>
-
                             <p>
                                 Because of my deep interest in that topic but
                                 also due to the fact, that it was very hard for
