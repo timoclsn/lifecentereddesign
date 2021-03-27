@@ -1,11 +1,10 @@
 import Head from 'next/head';
 
-import ContentBlock from '@/components/ContentBlock';
+import CenteredColumn from '@/components/CenteredColumn';
 import Favicons from '@/components/Favicons';
 import Footer from '@/components/Footer';
 import Navigation from '@/components/Navigation';
 import SEO from '@/components/SEO';
-import Stack from '@/components/Stack';
 
 export default function Layout({ co2Consumption, children }) {
     return (
@@ -28,13 +27,11 @@ export default function Layout({ co2Consumption, children }) {
             </Head>
             <SEO />
             <Favicons />
-            <Stack space="large">
-                <Navigation co2Consumption={co2Consumption} />
-                <ContentBlock as="main" paddingX="medium">
-                    {children}
-                </ContentBlock>
-                <Footer />
-            </Stack>
+            <Navigation co2Consumption={co2Consumption} />
+            <main className="py-16">
+                <CenteredColumn>{children}</CenteredColumn>
+            </main>
+            <Footer />
         </>
     );
 }

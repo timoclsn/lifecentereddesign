@@ -1,10 +1,9 @@
-import clsx from 'clsx';
-
 export default function Button({
-    children,
-    fullWith = false,
-    size = 'small',
-    secondary = false,
+    text,
+    Icon,
+    fullWith,
+    size = 's',
+    secondary,
     bgColor = 'bg-oak',
     type = 'button',
     onClick,
@@ -12,8 +11,8 @@ export default function Button({
     href,
     target
 }) {
-    const Element = href ? 'a' : 'button';
-    const className = clsx(
+    const Tag = href ? 'a' : 'button';
+    const className = [
         'inline-flex',
         'items-center',
         'justify-center',
@@ -21,27 +20,25 @@ export default function Button({
         'rounded-full',
         'font-bold',
         'disabled:opacity-50',
-        { 'w-full': fullWith },
-        {
-            'px-6 py-2': size === 'small',
-            'px-8 py-4': size === 'large'
-        },
-        {
-            'bg-black text-white hover:opacity-90': !secondary,
-            [`${bgColor} text-black hover:opacity-80`]: secondary
-        }
-    );
+        ...(size === 's' ? ['px-6 py-2'] : ['px-8 py-4']),
+        ...(!secondary
+            ? ['bg-black text-white hover:opacity-90']
+            : [`${bgColor} text-black hover:opacity-80`]),
+        ...(fullWith ? ['w-full'] : [''])
+    ].join(' ');
 
     return (
-        <Element
+        <Tag
             className={className}
-            type={Element === 'button' ? type : undefined}
+            type={Tag === 'button' ? type : undefined}
+            aria-label={Tag === 'button' ? text : undefined}
             onClick={onClick}
             disabled={disabled}
             href={href}
             target={target}
             rel={target === '_blank' ? 'noopener noreferrer' : undefined}>
-            {children}
-        </Element>
+            {Icon && <Icon size={20} />}
+            {text && <span>{text}</span>}
+        </Tag>
     );
 }

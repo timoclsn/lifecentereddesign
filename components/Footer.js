@@ -1,48 +1,32 @@
 import Link from 'next/link';
 
-import ContentBlock from '@/components/ContentBlock';
-import Stack from '@/components/Stack';
-import Text from '@/components/Text';
+import CenteredColumn from '@/components/CenteredColumn';
 
 export default function Footer() {
     return (
-        <footer className="w-full mt-auto bg-oak">
-            <ContentBlock paddingX="medium" paddingY="medium">
-                <Stack
-                    orientation="horizontal"
-                    size="medium"
-                    align="center"
-                    justify="between">
-                    <Stack as="ul" orientation="horizontal" size="small">
-                        <Text as="li">
-                            <a href="#about">About</a>
-                        </Text>
-                        <Text as="li">
-                            <a href="#newsletter">Newsletter</a>
-                        </Text>
-                        <Text as="li">
-                            <a href="https://katharinaclasen.de">
-                                Katharina Clasen
-                            </a>
-                        </Text>
-                        <Text as="li">
-                            <a href="https://timoclasen.de">Timo Clasen</a>
-                        </Text>
-                    </Stack>
-                    <Stack as="ul" orientation="horizontal" size="small">
-                        <Text as="li" weight="strong">
+        <footer className="mt-auto bg-oak">
+            <CenteredColumn>
+                <div className="flex justify-between py-10">
+                    <ul className="flex space-x-8">
+                        <li>About</li>
+                        <li>Newsletter</li>
+                        <li>Katharina Clasen</li>
+                        <li>Timo Clasen</li>
+                    </ul>
+                    <ul className="flex space-x-8 font-bold">
+                        <li>
                             <Link href="/imprint">
                                 <a>Imprint</a>
                             </Link>
-                        </Text>
-                        <Text as="li" weight="strong">
+                        </li>
+                        <li>
                             <Link href="/privacy">
                                 <a>Privacy</a>
                             </Link>
-                        </Text>
-                    </Stack>
-                </Stack>
-            </ContentBlock>
+                        </li>
+                    </ul>
+                </div>
+            </CenteredColumn>
         </footer>
     );
 }
