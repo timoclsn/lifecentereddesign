@@ -8,10 +8,20 @@ export default function Footer() {
             <CenteredColumn>
                 <div className="flex justify-between py-10">
                     <ul className="flex space-x-8">
-                        <li>About</li>
-                        <li>Newsletter</li>
-                        <li>Katharina Clasen</li>
-                        <li>Timo Clasen</li>
+                        <li>
+                            <a href="#about">About</a>
+                        </li>
+                        <li>
+                            <a href="#newsletter">Newsletter</a>
+                        </li>
+                        <li>
+                            <a href="https://katharinaclasen.de">
+                                Katharina Clasen
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://timoclasen.de">Timo Clasen</a>
+                        </li>
                     </ul>
                     <ul className="flex space-x-8 font-bold">
                         <li>

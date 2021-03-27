@@ -18,14 +18,18 @@ export default function Navigation({ co2Consumption }) {
                                 <a>Life Centered Design.Net</a>
                             </Link>
                         </li>
-                        <li>About</li>
-                        <li>Newsletter</li>
+                        <li>
+                            <a href="#about">About</a>
+                        </li>
+                        <li>
+                            <a href="#newsletter">Newsletter</a>
+                        </li>
                     </ul>
-                    <Button
+                    {/* <Button
                         text="Accessibility settings"
                         secondary
                         bgColor="bg-morning"
-                    />
+                    /> */}
                 </div>
             </CenteredColumn>
         </header>
