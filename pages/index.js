@@ -27,5 +27,3 @@ export async function getStaticProps() {
         props: { co2Consumption }
     };
 }
-
-// Test
