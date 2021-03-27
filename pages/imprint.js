@@ -87,7 +87,9 @@ export default function Imprint(props) {
 }
 
 export async function getStaticProps() {
-    const co2Consumption = await getCO2Consumtion('https://timoclasen.de');
+    const co2Consumption = await getCO2Consumtion(
+        'https://lifecentereddesign.net'
+    );
 
     return {
         props: { co2Consumption }

@@ -7,7 +7,7 @@ export default function Footer() {
         <footer className="mt-auto bg-oak">
             <CenteredColumn>
                 <div className="flex justify-between py-10">
-                    <ul className="flex space-x-8">
+                    <ul className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-8">
                         <li>
                             <a href="#about">About</a>
                         </li>
@@ -23,7 +23,7 @@ export default function Footer() {
                             <a href="https://timoclasen.de">Timo Clasen</a>
                         </li>
                     </ul>
-                    <ul className="flex space-x-8 font-bold">
+                    <ul className="flex flex-col space-y-4 font-bold sm:flex-row sm:space-y-0 sm:space-x-8">
                         <li>
                             <Link href="/imprint">
                                 <a>Imprint</a>

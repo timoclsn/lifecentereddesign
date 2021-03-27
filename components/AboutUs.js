@@ -13,21 +13,42 @@ export default function AboutUs() {
                         </span>
                     </p>
                     <p>
-                        This is Katharina. My husband Timo and I are the two
-                        people behind Life Centered Design.Net.
+                        This is <strong>Katharina</strong>. My husband{' '}
+                        <strong>Timo</strong> and I are the two people behind
+                        Life Centered Design.Net.
                     </p>
                     <p>
                         I have developed a passion for the mindset I associate
                         with life-centered design. I am trying to weave in parts
-                        of this mindset into the things I do as Head of Strategy
-                        & UX at Codeatelier, a lecturer at Stuttgart Media
-                        University and University of Applied Sciences Esslingen,
-                        and as a board member of the Makers League e. V.
+                        of this mindset into the things I do as{' '}
+                        <strong>Head of Strategy & UX</strong> at{' '}
+                        <a href="https://codeatelier.com" className="underline">
+                            Codeatelier
+                        </a>
+                        , a <strong>lecturer</strong> at{' '}
+                        <a
+                            href="https://www.hdm-stuttgart.de"
+                            className="underline">
+                            Stuttgart Media University
+                        </a>{' '}
+                        and{' '}
+                        <a
+                            href="https://www.hs-esslingen.de"
+                            className="underline">
+                            University of Applied Sciences Esslingen
+                        </a>
+                        , and as a <strong>board member</strong> of the{' '}
+                        <a href="https://makersleague.de" className="underline">
+                            Makers League e. V.
+                        </a>
                     </p>
                     <p>
-                        My husband Timo, CEO at Codeatelier shares this passion
-                        – especially when it comes to sustainability in (web)
-                        technologies.
+                        My husband Timo, <strong>CEO</strong> at{' '}
+                        <a href="https://codeatelier.com" className="underline">
+                            Codeatelier
+                        </a>{' '}
+                        shares this passion – especially when it comes to
+                        sustainability in (web) technologies.
                     </p>
                     <p>
                         Because of my deep interest in that topic but also due
@@ -41,8 +62,12 @@ export default function AboutUs() {
             <div className="flex flex-col space-y-10 sm:space-y-0 sm:space-x-10 sm:flex-row">
                 <ProfileCard
                     name="Katharina Clasen"
-                    image="/profile/katha.png"
-                    description="Head of Strategy & UX @ Codeatelier"
+                    image="/profile/katharina-clasen.png"
+                    job={{
+                        role: 'Head of Strategy & UX',
+                        name: 'Codeatelier',
+                        url: 'https://codeatelier.com'
+                    }}
                     bgColor="bg-sky"
                     website="https://katharinaclasen.de"
                     linkedin="https://www.linkedin.com/in/katharina-clasen/"
@@ -51,8 +76,12 @@ export default function AboutUs() {
                 />
                 <ProfileCard
                     name="Timo Clasen"
-                    image="/profile/timo.png"
-                    description="CEO @ Codeatelier"
+                    image="/profile/timo-clasen.png"
+                    job={{
+                        role: 'CEO',
+                        name: 'Codeatelier',
+                        url: 'https://codeatelier.com'
+                    }}
                     bgColor="bg-evening"
                     website="https://timoclasen.de"
                     linkedin="https://www.linkedin.com/in/timoclsn"

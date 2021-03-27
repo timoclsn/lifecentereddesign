@@ -3,7 +3,7 @@ import Button from '@/components/Button';
 export default function Header() {
     return (
         <section className="max-w-xl">
-            <h1 className="mb-6 text-5xl font-bold">
+            <h1 className="mb-6 text-3xl font-bold sm:text-5xl">
                 Here you will soon find a hub for life-centered design
             </h1>
             <p className="mb-10 text-dark">

@@ -27,11 +27,13 @@ export default function Layout({ co2Consumption, children }) {
             </Head>
             <SEO />
             <Favicons />
-            <Navigation co2Consumption={co2Consumption} />
-            <main className="py-16">
-                <CenteredColumn>{children}</CenteredColumn>
-            </main>
-            <Footer />
+            <div className="space-y-20 sm:space-y-28">
+                <Navigation co2Consumption={co2Consumption} />
+                <CenteredColumn>
+                    <main className="space-y-20 sm:space-y-28">{children}</main>
+                </CenteredColumn>
+                <Footer />
+            </div>
         </>
     );
 }

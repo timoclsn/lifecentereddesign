@@ -9,7 +9,7 @@ import {
 export default function ProfileCard({
     name,
     image,
-    description,
+    job,
     website,
     linkedin,
     instagram,
@@ -19,9 +19,8 @@ export default function ProfileCard({
     return (
         <div
             className={`${bgColor} rounded-3xl px-6 py-10 flex space-x-2 flex-1`}>
-            <div className="flex-none">
+            <div className="image-border">
                 <Image
-                    className="rounded-full"
                     src={image}
                     alt="Picture of the author"
                     width={120}
@@ -30,16 +29,23 @@ export default function ProfileCard({
             </div>
             <div className="flex-1">
                 <h3 className="mb-4 font-bold">{name}</h3>
-                <p className="mb-6 text-dark">{description}</p>
-                <ul className="flex space-x-6">
+                <p className="mb-6 text-dark">
+                    {job.role} @{' '}
+                    <a href={job.url} className="underline">
+                        {job.name}
+                    </a>
+                </p>
+                <ul className="flex space-x-4">
                     {website && (
                         <li>
                             <a
                                 href={website}
                                 target="_blank"
                                 rel="noopener noreferrer">
-                                <span className="sr-only">Website</span>
-                                <IoIosGlobe size={20} />
+                                <span className="sr-only">
+                                    Website von {name}
+                                </span>
+                                <IoIosGlobe size={24} />
                             </a>
                         </li>
                     )}
@@ -49,8 +55,10 @@ export default function ProfileCard({
                                 href={linkedin}
                                 target="_blank"
                                 rel="noopener noreferrer">
-                                <span className="sr-only">LinkedIn</span>
-                                <IoLogoLinkedin size={20} />
+                                <span className="sr-only">
+                                    LinkedIn von {name}
+                                </span>
+                                <IoLogoLinkedin size={24} />
                             </a>
                         </li>
                     )}
@@ -60,8 +68,10 @@ export default function ProfileCard({
                                 href={instagram}
                                 target="_blank"
                                 rel="noopener noreferrer">
-                                <span className="sr-only">Instagram</span>
-                                <IoLogoInstagram size={20} />
+                                <span className="sr-only">
+                                    Instagram von {name}
+                                </span>
+                                <IoLogoInstagram size={24} />
                             </a>
                         </li>
                     )}
@@ -71,8 +81,10 @@ export default function ProfileCard({
                                 href={twitter}
                                 target="_blank"
                                 rel="noopener noreferrer">
-                                <span className="sr-only">Twitter</span>
-                                <IoLogoTwitter size={20} />
+                                <span className="sr-only">
+                                    Twitter von {name}
+                                </span>
+                                <IoLogoTwitter size={24} />
                             </a>
                         </li>
                     )}

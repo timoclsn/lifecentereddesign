@@ -4,7 +4,7 @@ import CategoryCard from '@/components/CategoryCard';
 export default function Categories() {
     return (
         <section>
-            <p className="mb-4 font-bold">What we plan to do here:</p>
+            <h2 className="mb-4 font-bold">What we plan to do here:</h2>
             <div className="mb-20 gap-14 columns-1 sm:columns-2 lg:columns-3">
                 <CategoryCard
                     headline="Information"

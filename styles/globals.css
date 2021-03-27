@@ -30,6 +30,12 @@
     min-height: 100vh;
 }
 
+@layer components {
+    .image-border div {
+        @apply border-4 border-white rounded-full;
+    }
+}
+
 @layer utilities {
     .columns-1 {
         columns: 1;

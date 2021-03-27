@@ -8,8 +8,11 @@ export default function NewsletterCard() {
                 <p className="mb-10 text-dark">
                     If you want to get notified as soon as the Life Centered
                     Design Network goes live or get any other updates, news, and
-                    information right into your inbox – please signup for our
-                    newsletter.
+                    information right into your inbox – please{' '}
+                    <a href="http://eepurl.com/htoWRr" className="underline">
+                        signup for our newsletter
+                    </a>
+                    .
                 </p>
                 <Button
                     text="Newsletter signup"
