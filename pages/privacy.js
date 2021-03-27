@@ -207,10 +207,6 @@ export default function Privacy(props) {
                         </p>
                         <ul className="list-disc list-inside">
                             <li>
-                                Vercel Analytics to evaluate the website
-                                performance (like loading times)
-                            </li>
-                            <li>
                                 Splitbee Analytics to track page visits (e.g.:
                                 How many visitors were there? What devices were
                                 used? Where did the visitors come from? Which
