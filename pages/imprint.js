@@ -3,7 +3,7 @@ import { getCO2Consumtion } from '@/lib/co2';
 
 export default function Imprint(props) {
     return (
-        <Layout co2Consumption={props.co2Consumption}>
+        <Layout co2Consumption={props.co2Consumption} title="Imprint">
             <section className="max-w-xl space-y-20">
                 <h1 className="mb-6 text-5xl font-bold">Imprint</h1>
                 <div className="space-y-4">
