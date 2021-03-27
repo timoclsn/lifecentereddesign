@@ -24,12 +24,6 @@
         U+2215, U+FEFF, U+FFFD;
 }
 
-#__next {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
 @layer components {
     .image-border div {
         @apply border-4 border-white rounded-full;
