@@ -20,7 +20,7 @@ export default function Layout({
         ? description
         : 'A hub for life-centered design: information, news, resources, and conversations to move beyond human-centered and user experience design';
     slug = slug ? `/${slug}` : '';
-    const pagePreviewImage = previewImage ? previewImage : 'previewimage.png';
+    const pagePreviewImage = previewImage ? previewImage : 'og-image.png';
     return (
         <>
             <Head>
