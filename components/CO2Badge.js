@@ -13,11 +13,7 @@ export default function CO2Badge({ co2Consumption }) {
             </Popover.Trigger>
             <Popover.Content
                 className="max-w-xs px-6 py-10 space-y-6 sm:max-w-md bg-grass rounded-3xl"
-                sideOffset={40}
-                disableOutsidePointerEvents>
-                <Popover.Close>
-                    <FiX size={24} />
-                </Popover.Close>
+                sideOffset={40}>
                 <div className="space-y-6">
                     <h2 className="text-3xl font-bold">
                         Website carbon footprint:
