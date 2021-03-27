@@ -191,13 +191,22 @@ export default function Privacy(props) {
                             As a newsletter provider, we use the marketing
                             platform „Mailchimp“ – Rocket Science Group, LLC,
                             675 Ponce De Leon Ave NE #5000, Atlanta, GA 30308,
-                            USA (https://mailchimp.com). You can find their
-                            privacy policy here:
-                            https://mailchimp.com/legal/privacy/. If you provide
-                            data (e.g. your email address) to subscribe to our
-                            newsletter, it will be stored on Mailchimp servers
-                            in the USA. MailChimp is certified under the EU-US
-                            Privacy Shield.
+                            USA (
+                            <a
+                                href="https://mailchimp.com"
+                                className="underline">
+                                https://mailchimp.com
+                            </a>
+                            ). You can find their privacy policy here:
+                            <a
+                                href="https://mailchimp.com/legal/privacy/"
+                                className="underline">
+                                https://mailchimp.com/legal/privacy/
+                            </a>
+                            . If you provide data (e.g. your email address) to
+                            subscribe to our newsletter, it will be stored on
+                            Mailchimp servers in the USA. MailChimp is certified
+                            under the EU-US Privacy Shield.
                         </p>
                         <h3 className="font-bold">Analytics</h3>
                         <p>
@@ -247,9 +256,14 @@ export default function Privacy(props) {
                             protection officer of the German state in which our
                             company is headquartered. A list of data protection
                             officers and their contact details can be found at
-                            the following link:
-                            https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-
-                            node.html.
+                            the following{' '}
+                            <a
+                                href="https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-
+                            node.html"
+                                className="underline">
+                                link
+                            </a>
+                            .
                         </p>
                         <h3 className="font-bold">Right to data portability</h3>
                         <p>
