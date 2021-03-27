@@ -18,10 +18,14 @@ export default function Navigation({ co2Consumption }) {
                             </Link>
                         </li>
                         <li>
-                            <a href="#about">About</a>
+                            <Link href="/#about">
+                                <a>About</a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="#newsletter">Newsletter</a>
+                            <Link href="/#newsletter">
+                                <a>Newsletter</a>
+                            </Link>
                         </li>
                     </ul>
                 </div>

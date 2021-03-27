@@ -9,10 +9,14 @@ export default function Footer() {
                 <div className="flex justify-between py-10">
                     <ul className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-8">
                         <li>
-                            <a href="#about">About</a>
+                            <Link href="/#about">
+                                <a>About</a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="#newsletter">Newsletter</a>
+                            <Link href="/#newsletter">
+                                <a>Newsletter</a>
+                            </Link>
                         </li>
                         <li>
                             <a href="https://katharinaclasen.de">
