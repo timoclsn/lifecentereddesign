@@ -17,7 +17,7 @@ export default function SEO({ title, description, slug, previewImage }) {
                 content="Life Centered Design.Net"
                 key="og:site_name"
             />
-            <meta property="og:locale" content="de" key="og:locale" />
+            <meta property="og:locale" content="en" key="og:locale" />
             <meta
                 property="og:url"
                 content={`https://lifecentereddesign.net${slug}`}
