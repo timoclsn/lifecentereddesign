@@ -8,7 +8,7 @@ export default function Navigation({ co2Consumption }) {
         <header>
             <CenteredColumn>
                 <div className="flex justify-center">
-                    {/* <CO2Badge co2Consumption={co2Consumption} /> */}
+                    <CO2Badge co2Consumption={co2Consumption} />
                 </div>
                 <div className="flex items-center justify-between pt-12">
                     <ul className="flex space-x-8">
