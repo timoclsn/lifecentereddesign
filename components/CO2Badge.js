@@ -13,7 +13,8 @@ export default function CO2Badge({ co2Consumption }) {
             </Popover.Trigger>
             <Popover.Content
                 className="max-w-xs px-6 py-10 space-y-6 sm:max-w-md bg-grass rounded-3xl"
-                sideOffset={40}>
+                sideOffset={40}
+                portalled={false}>
                 <Popover.Close>
                     <FiX size={24} />
                 </Popover.Close>
