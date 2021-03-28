@@ -12,7 +12,7 @@ export default function CO2Badge({ co2Consumption }) {
                 </span>
             </Popover.Trigger>
             <Popover.Content
-                className="max-w-xs px-6 py-10 space-y-6 sm:max-w-md bg-grass rounded-3xl"
+                className="max-w-xs p-10 space-y-6 sm:max-w-xl bg-grass rounded-3xl"
                 sideOffset={40}>
                 <Popover.Close>
                     <FiX size={24} />
@@ -33,15 +33,21 @@ export default function CO2Badge({ co2Consumption }) {
                             What we considered to make this page as clean as
                             possible:
                         </p>
-                        <ul className="list-disc list-inside">
+                        <ul className="space-y-2 list-disc list-outside">
                             <li>
-                                Reduce information to text where possible – only
-                                use images when they bring a real value
+                                Reduce information to text – only use images
+                                when they bring a real value
                             </li>
-                            <li>Static page</li>
+                            <li>Use static page generation</li>
+                            <li>Serve from edge CDN</li>
+                            <li>
+                                Self host optimized font file in modern file
+                                format
+                            </li>
+                            <li>Fucus on page speed</li>
                         </ul>
                     </div>
-                    <div className="flex space-x-4 text-dark">
+                    <div className="flex space-x-4 font-bold text-dark">
                         <FiArrowRight size={24} />
                         <a
                             href="https://www.websitecarbon.com"
