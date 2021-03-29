@@ -27,7 +27,7 @@ export default function CO2Badge({ co2Consumption }) {
                             <strong>{co2Consumption.c} g of CO2</strong> are
                             produced. This site is{' '}
                             <strong>cleaner than {co2Consumption.p} %</strong>{' '}
-                            of web pages tested on the <a href="https://www.websitecarbon.com" className="underline" target="_blank"> Website Carbon Calculator</a>.
+                            of web pages tested on the <a href="https://www.websitecarbon.com" className="underline" target="_blank" rel="noopener noreferrer"> Website Carbon Calculator</a>.
                         </p>
                         <p>
                             What we considered to make this page as clean as
@@ -50,7 +50,8 @@ export default function CO2Badge({ co2Consumption }) {
                         <a
                             href="https://www.websitecarbon.com"
                             className="underline"
-                            target="_blank">
+                            target="_blank"
+                            rel="noopener noreferrer">
                             Website Carbon Calculator
                         </a>
                     </div>
