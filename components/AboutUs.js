@@ -22,29 +22,29 @@ export default function AboutUs() {
                         with life-centered design. I am trying to weave in parts
                         of this mindset into the things I do as{' '}
                         <strong>Head of Strategy & UX</strong> at{' '}
-                        <a href="https://codeatelier.com" className="underline">
+                        <a href="https://codeatelier.com" className="underline" target="_blank" rel="noopener noreferrer">
                             Codeatelier
                         </a>
                         , a <strong>lecturer</strong> at{' '}
                         <a
                             href="https://www.hdm-stuttgart.de"
-                            className="underline">
+                            className="underline" target="_blank" rel="noopener noreferrer">
                             Stuttgart Media University
                         </a>{' '}
                         and{' '}
                         <a
                             href="https://www.hs-esslingen.de"
-                            className="underline">
+                            className="underline" target="_blank" rel="noopener noreferrer">
                             University of Applied Sciences Esslingen
                         </a>
                         , and as a <strong>board member</strong> of the{' '}
-                        <a href="https://makersleague.de" className="underline">
+                        <a href="https://makersleague.de" className="underline" target="_blank" rel="noopener noreferrer">
                             Makers League e. V.
                         </a>
                     </p>
                     <p>
                         My husband Timo, <strong>CEO</strong> at{' '}
-                        <a href="https://codeatelier.com" className="underline">
+                        <a href="https://codeatelier.com" className="underline" target="_blank" rel="noopener noreferrer">
                             Codeatelier
                         </a>{' '}
                         shares this passion – especially when it comes to
