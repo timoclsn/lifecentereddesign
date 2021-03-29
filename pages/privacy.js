@@ -101,8 +101,8 @@ export default function Privacy(props) {
                             We offer to subscribe to updates and information
                             through our newsletter. We will only send you these
                             updates and information through our newsletter with
-                            your consent (Art. 6 (1) (a) DSGVO) or based on
-                            legal permission. In case that the content of the
+                            your <strong>consent</strong> (Art. 6 (1) (a) DSGVO) or based on
+                            <strong>legal permission</strong>. In case that the content of the
                             newsletter is described further with the signup
                             form, this description is the basis of the consent
                             given when signing up through that form.
@@ -110,7 +110,7 @@ export default function Privacy(props) {
 
                         <p>
                             The subscription to our newsletter is handled
-                            through double opt-in. That means that you will get
+                            through <strong>double opt-in</strong>. That means that you will get
                             a confirmation email, that will ask you to actively
                             confirm your subscription. This procedure is
                             necessary so that no one can subscribe with an email
@@ -118,7 +118,7 @@ export default function Privacy(props) {
                         </p>
 
                         <p>
-                            The signups are being logged to be able to prove
+                            The signups are being <strong>logged</strong> to be able to prove
                             that the subscription process followed legal
                             requirements. For that purpose, the IP address, as
                             well as the date and time of the registration, are
@@ -128,8 +128,8 @@ export default function Privacy(props) {
                         </p>
 
                         <p>
-                            We can store the registered email addresses after
-                            unsubscribing for up to three years before deleting
+                            We can <strong>store</strong> the registered email addresses after
+                            unsubscribing <strong>for up to three years before deleting</strong>
                             them on the grounds of our legitimate interest to be
                             able to prove consent given at an earlier time. The
                             processing of these data is limited to the purpose
@@ -139,7 +139,7 @@ export default function Privacy(props) {
                         </p>
 
                         <p>
-                            Legal grounds: We send out our newsletter based on
+                            <strong>Legal grounds</strong>: We send out our newsletter based on
                             the grounds of consent (Art. 6 (1) (a) DSGVO) given
                             by the subscriber. The logging of the subscription
                             happens on the grounds of our legitimate interest to
@@ -151,13 +151,13 @@ export default function Privacy(props) {
                         </p>
 
                         <p>
-                            The content of our newsletter is information,
+                            The <strong>content</strong> of our newsletter is information,
                             updates, and news about us.
                         </p>
 
                         <p>
                             The newsletters contain a so-called “web-beacon”,
-                            which is a tracking pixel, a miniature graphic
+                            which is a <strong>tracking</strong> pixel, a miniature graphic
                             embedded in the email. Through this tracking pixel,
                             several data can be collected: Technical information
                             like information about the browser and system as
@@ -180,7 +180,7 @@ export default function Privacy(props) {
                         </p>
 
                         <p>
-                            You can opt-out of receiving our newsletter at any
+                            You can <strong>opt-out</strong> of receiving our newsletter at any
                             time and thereby revoke your consent to receive
                             further newsletters. For that purpose, you can use
                             the unsubscribe link we provide you with at the end
@@ -189,7 +189,7 @@ export default function Privacy(props) {
 
                         <p>
                             As a newsletter provider, we use the marketing
-                            platform „Mailchimp“ – Rocket Science Group, LLC,
+                            platform „<strong>Mailchimp</strong>“ – Rocket Science Group, LLC,
                             675 Ponce De Leon Ave NE #5000, Atlanta, GA 30308,
                             USA (
                             <a
