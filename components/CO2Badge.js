@@ -34,24 +34,23 @@ export default function CO2Badge({ co2Consumption }) {
                             possible:
                         </p>
                         <ul className="space-y-2 list-disc list-outside">
-                            <li>
-                                Reduce information to text – only use images
-                                when they bring a real value
-                            </li>
+                            <li>Reduce information to text</li>
+                            <li>Only use images where they bring a real value</li>
                             <li>Use static page generation</li>
                             <li>Serve from edge CDN</li>
                             <li>
-                                Self host optimized font file in modern file
-                                format
+                                Self-host optimized font file in modern file
+                                format 
                             </li>
-                            <li>Fucus on page speed</li>
+                            <li>Focus on page speed</li>
                         </ul>
                     </div>
                     <div className="flex space-x-4 font-bold text-dark">
                         <FiArrowRight size={24} />
                         <a
                             href="https://www.websitecarbon.com"
-                            className="underline">
+                            className="underline"
+                            target="_blank">
                             Website Carbon Calculator
                         </a>
                     </div>
