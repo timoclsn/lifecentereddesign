@@ -22,7 +22,7 @@ export default function ProfileCard({
             <div className="image-border">
                 <Image
                     src={image}
-                    alt="Picture of the author"
+                    alt={`Portrait image of ${name}`}
                     width={120}
                     height={120}
                 />
@@ -43,7 +43,7 @@ export default function ProfileCard({
                                 target="_blank"
                                 rel="noopener noreferrer">
                                 <span className="sr-only">
-                                    Website von {name}
+                                    Website of {name}
                                 </span>
                                 <IoIosGlobe size={24} />
                             </a>
@@ -56,7 +56,7 @@ export default function ProfileCard({
                                 target="_blank"
                                 rel="noopener noreferrer">
                                 <span className="sr-only">
-                                    LinkedIn von {name}
+                                    LinkedIn of {name}
                                 </span>
                                 <IoLogoLinkedin size={24} />
                             </a>
@@ -69,7 +69,7 @@ export default function ProfileCard({
                                 target="_blank"
                                 rel="noopener noreferrer">
                                 <span className="sr-only">
-                                    Instagram von {name}
+                                    Instagram of {name}
                                 </span>
                                 <IoLogoInstagram size={24} />
                             </a>
@@ -82,7 +82,7 @@ export default function ProfileCard({
                                 target="_blank"
                                 rel="noopener noreferrer">
                                 <span className="sr-only">
-                                    Twitter von {name}
+                                    Twitter of {name}
                                 </span>
                                 <IoLogoTwitter size={24} />
                             </a>
