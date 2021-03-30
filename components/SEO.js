@@ -29,7 +29,11 @@ export default function SEO({ title, description, slug, previewImage }) {
                 content={description}
                 key="og:description"
             />
-            <meta property="og:image" content={previewImage} key="og:image" />
+            <meta
+                property="og:image"
+                content={`https://lifecentereddesign.net/${previewImage}`}
+                key="og:image"
+            />
             <meta
                 property="og:image:alt"
                 content="A hub for life-centered design"
