@@ -1,10 +1,7 @@
 module.exports = {
-    webpack: (config, { dev, isServer }) => {
-        // Replace React with Preact only in client production build
-        if (!dev && !isServer) {
-            if (isServer) {
-                require('./scripts/generate-sitemap');
-            }
+    webpack: (config, { isServer }) => {
+        if (isServer) {
+            require('./scripts/generate-sitemap');
         }
 
         return config;
