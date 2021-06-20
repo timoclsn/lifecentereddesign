@@ -38,7 +38,7 @@ export default function Imprint(props) {
                         <p>
                             The contents of our pages have been created with the
                             utmost care. However, we cannot guarantee the
-                            contents' accuracy, completeness or topicality.
+                            contents&apos; accuracy, completeness or topicality.
                             According to statutory provisions, we are
                             furthermore responsible for our own content on these
                             web pages. In this matter, please note that we are

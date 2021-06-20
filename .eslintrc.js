@@ -18,23 +18,11 @@ module.exports = {
         node: true // Enables Node.js global variables and Node.js scoping.
     },
     extends: [
-        'eslint:recommended',
-        'plugin:react/recommended',
-        'plugin:jsx-a11y/recommended',
+        'next',
         'plugin:prettier/recommended' // Make this the last element so prettier config overrides other formatting rules
     ],
     rules: {
         'prettier/prettier': ['error', {}, { usePrettierrc: true }], // Use our .prettierrc file as source
-        'react/react-in-jsx-scope': 'off',
-        'react/prop-types': 'off', // Needed for nextjs
-        'jsx-a11y/anchor-is-valid': [
-            'error',
-            {
-                components: ['Link'],
-                specialLink: ['hrefLeft', 'hrefRight'],
-                aspects: ['invalidHref', 'preferButton']
-            }
-        ],
         'simple-import-sort/imports': 'error',
         'simple-import-sort/exports': 'error'
     },

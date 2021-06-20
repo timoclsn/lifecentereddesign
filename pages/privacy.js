@@ -59,11 +59,12 @@ export default function Privacy(props) {
                             and for the protection of the transmission of
                             confidential content, such as the inquiries you send
                             to us as the site operator. You can recognize an
-                            encrypted connection in your browser's address line
-                            when it changes from "http://" to "https://" and the
-                            lock icon is displayed in your browser's address
-                            bar. If SSL encryption is activated, the data you
-                            transfer to us cannot be read by third parties.
+                            encrypted connection in your browser&apos;s address
+                            line when it changes from &quot;http://&quot; to
+                            &quot;https://&quot; and the lock icon is displayed
+                            in your browser&apos;s address bar. If SSL
+                            encryption is activated, the data you transfer to us
+                            cannot be read by third parties.
                         </p>
                     </div>
                 </div>
@@ -75,7 +76,8 @@ export default function Privacy(props) {
                         <p>
                             The website provider automatically collects and
                             stores information that your browser automatically
-                            transmits to us in "server log files". These are:
+                            transmits to us in &quot;server log files&quot;.
+                            These are:
                         </p>
                         <p>These are:</p>
                         <ul className="list-disc list-inside">
@@ -101,35 +103,39 @@ export default function Privacy(props) {
                             We offer to subscribe to updates and information
                             through our newsletter. We will only send you these
                             updates and information through our newsletter with
-                            your <strong>consent</strong> (Art. 6 (1) (a) DSGVO) or based on
-                            <strong>legal permission</strong>. In case that the content of the
-                            newsletter is described further with the signup
-                            form, this description is the basis of the consent
-                            given when signing up through that form.
+                            your <strong>consent</strong> (Art. 6 (1) (a) DSGVO)
+                            or based on
+                            <strong>legal permission</strong>. In case that the
+                            content of the newsletter is described further with
+                            the signup form, this description is the basis of
+                            the consent given when signing up through that form.
                         </p>
 
                         <p>
                             The subscription to our newsletter is handled
-                            through <strong>double opt-in</strong>. That means that you will get
-                            a confirmation email, that will ask you to actively
-                            confirm your subscription. This procedure is
-                            necessary so that no one can subscribe with an email
-                            address that doesn’t belong to them.
+                            through <strong>double opt-in</strong>. That means
+                            that you will get a confirmation email, that will
+                            ask you to actively confirm your subscription. This
+                            procedure is necessary so that no one can subscribe
+                            with an email address that doesn’t belong to them.
                         </p>
 
                         <p>
-                            The signups are being <strong>logged</strong> to be able to prove
-                            that the subscription process followed legal
-                            requirements. For that purpose, the IP address, as
-                            well as the date and time of the registration, are
-                            being stored. On top of that, the changes you make
-                            to your data that are stored with the newsletter
-                            provider are also being logged.
+                            The signups are being <strong>logged</strong> to be
+                            able to prove that the subscription process followed
+                            legal requirements. For that purpose, the IP
+                            address, as well as the date and time of the
+                            registration, are being stored. On top of that, the
+                            changes you make to your data that are stored with
+                            the newsletter provider are also being logged.
                         </p>
 
                         <p>
-                            We can <strong>store</strong> the registered email addresses after
-                            unsubscribing <strong>for up to three years before deleting</strong>
+                            We can <strong>store</strong> the registered email
+                            addresses after unsubscribing{' '}
+                            <strong>
+                                for up to three years before deleting
+                            </strong>
                             them on the grounds of our legitimate interest to be
                             able to prove consent given at an earlier time. The
                             processing of these data is limited to the purpose
@@ -139,59 +145,60 @@ export default function Privacy(props) {
                         </p>
 
                         <p>
-                            <strong>Legal grounds</strong>: We send out our newsletter based on
-                            the grounds of consent (Art. 6 (1) (a) DSGVO) given
-                            by the subscriber. The logging of the subscription
-                            happens on the grounds of our legitimate interest to
-                            be able to prove that the subscription process
-                            followed legal requirements. The commissioning of a
-                            newsletter provider is based on the grounds of our
-                            legitimate interest in an efficient and safe
-                            newsletter system.
+                            <strong>Legal grounds</strong>: We send out our
+                            newsletter based on the grounds of consent (Art. 6
+                            (1) (a) DSGVO) given by the subscriber. The logging
+                            of the subscription happens on the grounds of our
+                            legitimate interest to be able to prove that the
+                            subscription process followed legal requirements.
+                            The commissioning of a newsletter provider is based
+                            on the grounds of our legitimate interest in an
+                            efficient and safe newsletter system.
                         </p>
 
                         <p>
-                            The <strong>content</strong> of our newsletter is information,
-                            updates, and news about us.
+                            The <strong>content</strong> of our newsletter is
+                            information, updates, and news about us.
                         </p>
 
                         <p>
                             The newsletters contain a so-called “web-beacon”,
-                            which is a <strong>tracking</strong> pixel, a miniature graphic
-                            embedded in the email. Through this tracking pixel,
-                            several data can be collected: Technical information
-                            like information about the browser and system as
-                            well as your IP-address. It also tracks if, when,
-                            and where the newsletter was opened and which links
-                            were clicked. This information is being linked to
-                            your subscriber profile and is stored until their
-                            deletion. Such personal data collected in the
-                            tracking pixels contained in the newsletters are
-                            stored and analyzed to optimize the shipping of the
-                            newsletter, as well as to adapt the content of
-                            future newsletters and our services to the interests
-                            of the target audience. The tracking and storage of
-                            the information collected through the tracking
-                            pixels are based on the grounds of the consent given
-                            by the subscriber. It is not possible to only revoke
-                            your consent to the tracking. In this case, you need
-                            to opt-out of receiving the newsletter entirely so
-                            that the stored profile information will be deleted.
+                            which is a <strong>tracking</strong> pixel, a
+                            miniature graphic embedded in the email. Through
+                            this tracking pixel, several data can be collected:
+                            Technical information like information about the
+                            browser and system as well as your IP-address. It
+                            also tracks if, when, and where the newsletter was
+                            opened and which links were clicked. This
+                            information is being linked to your subscriber
+                            profile and is stored until their deletion. Such
+                            personal data collected in the tracking pixels
+                            contained in the newsletters are stored and analyzed
+                            to optimize the shipping of the newsletter, as well
+                            as to adapt the content of future newsletters and
+                            our services to the interests of the target
+                            audience. The tracking and storage of the
+                            information collected through the tracking pixels
+                            are based on the grounds of the consent given by the
+                            subscriber. It is not possible to only revoke your
+                            consent to the tracking. In this case, you need to
+                            opt-out of receiving the newsletter entirely so that
+                            the stored profile information will be deleted.
                         </p>
 
                         <p>
-                            You can <strong>opt-out</strong> of receiving our newsletter at any
-                            time and thereby revoke your consent to receive
-                            further newsletters. For that purpose, you can use
-                            the unsubscribe link we provide you with at the end
-                            of every newsletter.
+                            You can <strong>opt-out</strong> of receiving our
+                            newsletter at any time and thereby revoke your
+                            consent to receive further newsletters. For that
+                            purpose, you can use the unsubscribe link we provide
+                            you with at the end of every newsletter.
                         </p>
 
                         <p>
                             As a newsletter provider, we use the marketing
-                            platform „<strong>Mailchimp</strong>“ – Rocket Science Group, LLC,
-                            675 Ponce De Leon Ave NE #5000, Atlanta, GA 30308,
-                            USA (
+                            platform „<strong>Mailchimp</strong>“ – Rocket
+                            Science Group, LLC, 675 Ponce De Leon Ave NE #5000,
+                            Atlanta, GA 30308, USA (
                             <a
                                 href="https://mailchimp.com"
                                 className="underline">
