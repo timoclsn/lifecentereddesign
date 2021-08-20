@@ -1,14 +1,4 @@
 module.exports = {
-    future: {
-        strictPostcssConfiguration: true
-    },
-    webpack: (config, { isServer }) => {
-        if (isServer) {
-            require('./scripts/generate-sitemap');
-        }
-
-        return config;
-    },
     async rewrites() {
         return [
             {
