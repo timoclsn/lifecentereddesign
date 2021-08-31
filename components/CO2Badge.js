@@ -8,7 +8,7 @@ export default function CO2Badge({ co2Consumption }) {
             <Popover.Trigger className="flex items-center px-4 py-2 space-x-2 font-bold bg-grass">
                 <RiLeafLine size={22} />
                 <span>
-                    {co2Consumption.c} g of CO<sub>2</sub>
+                    {co2Consumption.co2} g of CO<sub>2</sub>
                 </span>
             </Popover.Trigger>
             <Popover.Content
@@ -24,9 +24,11 @@ export default function CO2Badge({ co2Consumption }) {
                     <div className="space-y-4 text-dark">
                         <p>
                             Everytime someone opens this website only{' '}
-                            <strong>{co2Consumption.c} g of CO2</strong> are
+                            <strong>{co2Consumption.co2} g of CO2</strong> are
                             produced. This site is{' '}
-                            <strong>cleaner than {co2Consumption.p} %</strong>{' '}
+                            <strong>
+                                cleaner than {co2Consumption.cleanerThan} %
+                            </strong>{' '}
                             of web pages tested on the{' '}
                             <a
                                 href="https://www.websitecarbon.com"
