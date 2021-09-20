@@ -11,23 +11,23 @@
         "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
     },
     "dependencies": {
-        "@radix-ui/react-popover": "^0.0.20",
+        "@radix-ui/react-popover": "^0.1.0",
         "next": "^11.1.2",
         "react": "17.0.2",
         "react-dom": "17.0.2",
         "react-icons": "^4.2.0"
     },
     "devDependencies": {
-        "autoprefixer": "^10.3.3",
+        "autoprefixer": "^10.3.4",
         "eslint": "^7.32.0",
         "eslint-config-next": "^11.1.2",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^4.0.0",
-        "eslint-plugin-react": "^7.25.1",
+        "eslint-plugin-react": "^7.25.3",
         "eslint-plugin-simple-import-sort": "^7.0.0",
         "globby": "^12.0.2",
         "postcss": "^8.3.6",
-        "prettier": "^2.3.2",
-        "tailwindcss": "^2.2.9"
+        "prettier": "^2.4.1",
+        "tailwindcss": "^2.2.15"
     }
 }
