@@ -9,23 +9,23 @@ import { NewsletterCard } from '../components/NewsletterCard';
 import { getCO2Consumtion } from '../lib/co2';
 
 export default function Home(props) {
-    return (
-        <Layout co2Consumption={props.co2Consumption}>
-            <Header />
-            <Categories />
-            <About />
-            <NewsletterCard />
-            <AboutUs />
-        </Layout>
-    );
+  return (
+    <Layout co2Consumption={props.co2Consumption}>
+      <Header />
+      <Categories />
+      <About />
+      <NewsletterCard />
+      <AboutUs />
+    </Layout>
+  );
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-    const co2Consumption = await getCO2Consumtion(
-        'https://lifecentereddesign.net'
-    );
+  const co2Consumption = await getCO2Consumtion(
+    'https://lifecentereddesign.net'
+  );
 
-    return {
-        props: { co2Consumption }
-    };
+  return {
+    props: { co2Consumption },
+  };
 };

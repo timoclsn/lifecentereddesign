@@ -3,28 +3,26 @@ import { fetcher } from './fetcher';
 const env = process.env.NODE_ENV;
 
 const demoResult = {
-    co2: 0.11,
-    cleanerThan: 90
+  co2: 0.11,
+  cleanerThan: 90,
 } as const;
 
 export type CO2 = typeof demoResult;
 
 export async function getCO2Consumtion(url) {
-    if (env === 'development') {
-        return demoResult;
-    }
+  if (env === 'development') {
+    return demoResult;
+  }
 
-    const result = await fetcher(
-        `https://api.websitecarbon.com/site?url=${url}`
-    );
+  const result = await fetcher(`https://api.websitecarbon.com/site?url=${url}`);
 
-    if (result.error) {
-        console.log(`Website Carbon Error: ${result.error}`);
-        return demoResult;
-    }
+  if (result.error) {
+    console.log(`Website Carbon Error: ${result.error}`);
+    return demoResult;
+  }
 
-    return {
-        co2: Math.round(result.statistics.co2.grid.grams * 100) / 100,
-        cleanerThan: Math.round(result.cleanerThan * 100)
-    };
+  return {
+    co2: Math.round(result.statistics.co2.grid.grams * 100) / 100,
+    cleanerThan: Math.round(result.cleanerThan * 100),
+  };
 }
