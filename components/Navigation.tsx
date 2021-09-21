@@ -1,9 +1,14 @@
 import Link from 'next/link';
 
-import CenteredColumn from '@/components/CenteredColumn';
-import CO2Badge from '@/components/CO2Badge';
+import type { CO2 } from '../lib/co2';
+import { CenteredColumn } from './CenteredColumn';
+import { CO2Badge } from './CO2Badge';
 
-export default function Navigation({ co2Consumption }) {
+interface Props {
+    co2Consumption: CO2;
+}
+
+export function Navigation({ co2Consumption }: Props) {
     return (
         <header>
             <CenteredColumn>

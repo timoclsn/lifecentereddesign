@@ -2,7 +2,13 @@ import * as Popover from '@radix-ui/react-popover';
 import { FiArrowRight, FiX } from 'react-icons/fi';
 import { RiLeafLine } from 'react-icons/ri';
 
-export default function CO2Badge({ co2Consumption }) {
+import type { CO2 } from '../lib/co2';
+
+interface Props {
+    co2Consumption: CO2;
+}
+
+export function CO2Badge({ co2Consumption }: Props) {
     return (
         <Popover.Root>
             <Popover.Trigger className="flex items-center px-4 py-2 space-x-2 font-bold bg-grass">

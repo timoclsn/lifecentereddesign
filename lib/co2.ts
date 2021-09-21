@@ -1,11 +1,13 @@
-import fetcher from '@/lib/fetcher.js';
+import { fetcher } from './fetcher';
 
 const env = process.env.NODE_ENV;
 
 const demoResult = {
     co2: 0.11,
     cleanerThan: 90
-};
+} as const;
+
+export type CO2 = typeof demoResult;
 
 export async function getCO2Consumtion(url) {
     if (env === 'development') {

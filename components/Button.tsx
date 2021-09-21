@@ -1,4 +1,28 @@
-export default function Button({
+import type { ElementType } from 'react';
+
+interface Props {
+    text?: string;
+    Icon?: ElementType;
+    fullWith?: boolean;
+    size?: 's' | 'l';
+    secondary?: boolean;
+    bgColor?:
+        | 'bg-oak'
+        | 'bg-grass'
+        | 'bg-sky'
+        | 'bg-evening'
+        | 'bg-sand'
+        | 'bg-morning'
+        | 'bg-forest'
+        | 'bg-stone';
+    type?: 'button' | 'submit' | 'reset';
+    onClick?: () => void;
+    disabled?: boolean;
+    href?: string;
+    target?: '_blank';
+}
+
+export function Button({
     text,
     Icon,
     fullWith,
@@ -10,7 +34,7 @@ export default function Button({
     disabled,
     href,
     target
-}) {
+}: Props) {
     const Tag = href ? 'a' : 'button';
     const className = [
         'inline-flex',

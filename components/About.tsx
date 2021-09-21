@@ -1,4 +1,4 @@
-export default function About() {
+export function About() {
     return (
         <section id="about" className="max-w-3xl mx-auto">
             <h2 className="mb-6 text-3xl font-bold">

@@ -1,6 +1,6 @@
-import Button from '@/components/Button';
+import { Button } from './Button';
 
-export default function NewsletterCard() {
+export function NewsletterCard() {
     return (
         <section id="newsletter" className="flex flex-col items-center">
             <div className="max-w-3xl px-6 py-10 rounded-3xl bg-grass">

@@ -1,7 +1,7 @@
-import Button from '@/components/Button';
-import CategoryCard from '@/components/CategoryCard';
+import { Button } from './Button';
+import { CategoryCard } from './CategoryCard';
 
-export default function Categories() {
+export function Categories() {
     return (
         <section>
             <h2 className="mb-4 font-bold">What we plan to do here:</h2>

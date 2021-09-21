@@ -1,6 +1,6 @@
-import ProfileCard from '@/components/ProfileCard';
+import { ProfileCard } from './ProfileCard';
 
-export default function AboutUs() {
+export function AboutUs() {
     return (
         <section id="about-us" className="max-w-3xl mx-auto space-y-20">
             <div>

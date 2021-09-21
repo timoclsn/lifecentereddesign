@@ -1,5 +1,7 @@
-import Layout from '@/components/Layout';
-import { getCO2Consumtion } from '@/lib/co2';
+import type { GetStaticProps } from 'next';
+
+import { Layout } from '../components/Layout';
+import { getCO2Consumtion } from '../lib/co2';
 
 export default function Error(props) {
     return (
@@ -12,7 +14,7 @@ export default function Error(props) {
     );
 }
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
     const co2Consumption = await getCO2Consumtion(
         'https://lifecentereddesign.net'
     );
@@ -20,4 +22,4 @@ export async function getStaticProps() {
     return {
         props: { co2Consumption }
     };
-}
+};

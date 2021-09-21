@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
-import CenteredColumn from '@/components/CenteredColumn';
+import { CenteredColumn } from './CenteredColumn';
 
-export default function Footer() {
+export function Footer() {
     return (
         <footer className="mt-auto bg-oak">
             <CenteredColumn>

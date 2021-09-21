@@ -1,4 +1,19 @@
-export default function CategoryCard({ headline, text, list, bgColor }) {
+interface Props {
+    headline: string;
+    text: string;
+    list?: Array<string>;
+    bgColor:
+        | 'bg-oak'
+        | 'bg-grass'
+        | 'bg-sky'
+        | 'bg-evening'
+        | 'bg-sand'
+        | 'bg-morning'
+        | 'bg-forest'
+        | 'bg-stone';
+}
+
+export function CategoryCard({ headline, text, list, bgColor }: Props) {
     return (
         <div
             className={`inline-block w-full ${bgColor} rounded-3xl px-6 py-10 mb-6 sm:mb-14`}>

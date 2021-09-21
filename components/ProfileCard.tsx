@@ -6,7 +6,26 @@ import {
     IoLogoTwitter
 } from 'react-icons/io';
 
-export default function ProfileCard({
+interface Props {
+    name: string;
+    image: string;
+    job: { role: string; url: string; name: string };
+    website?: string;
+    linkedin?: string;
+    instagram?: string;
+    twitter?: string;
+    bgColor?:
+        | 'bg-oak'
+        | 'bg-grass'
+        | 'bg-sky'
+        | 'bg-evening'
+        | 'bg-sand'
+        | 'bg-morning'
+        | 'bg-forest'
+        | 'bg-stone';
+}
+
+export function ProfileCard({
     name,
     image,
     job,
@@ -15,7 +34,7 @@ export default function ProfileCard({
     instagram,
     twitter,
     bgColor
-}) {
+}: Props) {
     return (
         <div
             className={`${bgColor} rounded-3xl px-6 py-10 flex space-x-2 flex-1`}>

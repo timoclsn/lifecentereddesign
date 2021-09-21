@@ -1,6 +1,6 @@
-import Button from '@/components/Button';
+import { Button } from './Button';
 
-export default function Header() {
+export function Header() {
     return (
         <section className="max-w-xl">
             <h1 className="mb-6 text-3xl font-bold sm:text-5xl">
