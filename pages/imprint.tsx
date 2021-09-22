@@ -1,7 +1,6 @@
 import { GetStaticProps } from 'next';
 
 import { Layout } from '../components/Layout';
-import type { CO2 } from '../lib/co2';
 import { getCO2Consumtion } from '../lib/co2';
 
 export default function Imprint(props) {
