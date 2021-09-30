@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import type { ReactNode } from 'react';
 
 import type { CO2 } from '../lib/co2';
@@ -34,23 +33,6 @@ export function Layout({
   const pagePreviewImage = previewImage ? previewImage : 'og-image.png';
   return (
     <>
-      <Head>
-        <link
-          rel="preload"
-          href="/fonts/noto-sans-regular.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/fonts/noto-sans-bold.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <script async data-no-cookie data-api="/_hive" src="/bee.js" />
-      </Head>
       <SEO
         title={pageTitle}
         description={pageDescription}
