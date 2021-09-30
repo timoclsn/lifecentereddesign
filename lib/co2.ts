@@ -16,7 +16,7 @@ export async function getCO2Consumtion(url) {
 
   const result = await fetcher(`https://api.websitecarbon.com/site?url=${url}`);
 
-  if (result.error) {
+  if (result.error || Object.keys(result).length === 0) {
     console.log(`Website Carbon Error: ${result.error}`);
     return demoResult;
   }
