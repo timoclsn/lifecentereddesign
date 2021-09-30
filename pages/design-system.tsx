@@ -8,10 +8,10 @@ import { Label } from '../components/Label';
 
 export default function DesignSystem() {
   return (
-    <Container insetX="lg" insetY="lg">
+    <Container as="section" insetX="lg" insetY="lg">
       <Stack>
         <Heading>Design System</Heading>
-        <Text>This is the test page for the new deisgn system.</Text>
+        <Text as="p">This is the test page for the new deisgn system.</Text>
         <Stack
           direction={{
             xs: 'vertical',
@@ -21,7 +21,7 @@ export default function DesignSystem() {
           <Card>
             <Stack>
               <Heading size="md">Card</Heading>
-              <Text>This is a Card</Text>
+              <Text as="p">This is a Card</Text>
               <Inline>
                 <Label>Label 1</Label>
                 <Label>Label 2</Label>
@@ -33,7 +33,7 @@ export default function DesignSystem() {
           <Card>
             <Stack>
               <Heading size="md">Card</Heading>
-              <Text>This is a Card</Text>
+              <Text as="p">This is a Card</Text>
               <Inline>
                 <Label>Label 1</Label>
                 <Label>Label 2</Label>
