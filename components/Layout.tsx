@@ -1,3 +1,4 @@
+import React from 'react';
 import type { ReactNode } from 'react';
 
 import type { CO2 } from '../lib/co2';
@@ -43,7 +44,7 @@ export function Layout({
       <Favicons />
       <Stack space="128px">
         <Navigation co2Consumption={co2Consumption} />
-        <Container>
+        <Container inset="16px">
           <Stack as="main" space="128px">
             {children}
           </Stack>

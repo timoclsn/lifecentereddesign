@@ -5,23 +5,22 @@ import { Inline } from '../components/Inline';
 import { Stack } from '../components/Stack';
 import { Text } from '../components/Text';
 import { Label } from '../components/Label';
-import { Button } from '../components/Button';
 
 export default function DesignSystem() {
   return (
-    <Container as="section" insetX="lg" insetY="lg">
+    <Container as="section" inset="24px">
       <Stack>
         <Heading>Design System</Heading>
         <Text as="p">This is the test page for the new deisgn system.</Text>
         <Stack
           direction={{
-            xs: 'vertical',
-            sm: 'horizontal',
+            default: 'vertical',
+            '640px': 'horizontal',
           }}
         >
           <Card>
             <Stack>
-              <Heading size="md">Card</Heading>
+              <Heading size="16px">Card</Heading>
               <Text as="p">This is a Card</Text>
               <Inline>
                 <Label>Label 1</Label>
@@ -33,19 +32,13 @@ export default function DesignSystem() {
           </Card>
           <Card>
             <Stack>
-              <Heading size="md">Card</Heading>
+              <Heading size="16px">Card</Heading>
               <Text as="p">This is a Card</Text>
               <Inline>
                 <Label>Label 1</Label>
                 <Label>Label 2</Label>
                 <Label>Label 3</Label>
                 <Label>Label 4</Label>
-              </Inline>
-              <Inline>
-                <Button>Test</Button>
-                <Button>Test</Button>
-                <Button>Test</Button>
-                <Button>Test</Button>
               </Inline>
             </Stack>
           </Card>

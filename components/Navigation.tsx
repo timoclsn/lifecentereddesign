@@ -1,3 +1,4 @@
+import React from 'react';
 import Link from 'next/link';
 
 import type { CO2 } from '../lib/co2';
@@ -14,7 +15,7 @@ interface Props {
 export function Navigation({ co2Consumption }: Props) {
   return (
     <Box as="header" width="full">
-      <Container as="nav">
+      <Container as="nav" inset="16px">
         <Stack space="48px">
           <Box width="full" display="flex" justifyContent="center">
             <CO2Badge co2Consumption={co2Consumption} />

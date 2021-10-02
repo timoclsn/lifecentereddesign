@@ -1,44 +1,74 @@
+import React from 'react';
 import Link from 'next/link';
 
-import { CenteredColumn } from './CenteredColumn';
+import { Box } from './Box';
+import { Container } from './Container';
+import { Stack } from './Stack';
+import { Text } from './Text';
 
 export function Footer() {
   return (
-    <footer className="mt-auto bg-oak">
-      <CenteredColumn>
-        <div className="flex justify-between py-10">
-          <ul className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-8">
-            <li className="hover:underline">
+    <Box as="footer" width="full" background="oak-normal" paddingY="48px">
+      <Container inset="16px">
+        <Stack direction="horizontal" justify="between">
+          <Stack
+            as="ul"
+            direction={{ default: 'vertical', '640px': 'horizontal' }}
+            space="32px"
+          >
+            <li>
               <Link href="/#about">
-                <a>About</a>
+                <a>
+                  <Text decoration={{ hover: 'underline' }}>About</Text>
+                </a>
               </Link>
             </li>
-            <li className="hover:underline">
+            <li>
               <Link href="/#newsletter">
-                <a>Newsletter</a>
+                <a>
+                  <Text decoration={{ hover: 'underline' }}>Newsletter</Text>
+                </a>
               </Link>
             </li>
-            <li className="hover:underline">
-              <a href="https://katharinaclasen.de">Katharina Clasen</a>
+            <li>
+              <a href="https://katharinaclasen.de">
+                <Text decoration={{ hover: 'underline' }}>
+                  Katharina Clasen
+                </Text>
+              </a>
             </li>
-            <li className="hover:underline">
-              <a href="https://timoclasen.de">Timo Clasen</a>
+            <li>
+              <a href="https://timoclasen.de">
+                <Text decoration={{ hover: 'underline' }}>Timo Clasen</Text>
+              </a>
             </li>
-          </ul>
-          <ul className="flex flex-col space-y-4 font-bold sm:flex-row sm:space-y-0 sm:space-x-8">
-            <li className="hover:underline">
+          </Stack>
+          <Stack
+            as="ul"
+            direction={{ default: 'vertical', '640px': 'horizontal' }}
+            space="32px"
+          >
+            <li>
               <Link href="/imprint">
-                <a>Imprint</a>
+                <a>
+                  <Text weight="bold" decoration={{ hover: 'underline' }}>
+                    Imprint
+                  </Text>
+                </a>
               </Link>
             </li>
-            <li className="hover:underline">
+            <li>
               <Link href="/privacy">
-                <a>Privacy</a>
+                <a>
+                  <Text weight="bold" decoration={{ hover: 'underline' }}>
+                    Privacy
+                  </Text>
+                </a>
               </Link>
             </li>
-          </ul>
-        </div>
-      </CenteredColumn>
-    </footer>
+          </Stack>
+        </Stack>
+      </Container>
+    </Box>
   );
 }
