@@ -1,15 +1,11 @@
 import { GetStaticProps } from 'next';
 
-import { Layout } from '../components/Layout';
+import { Page } from '../components/Page';
 import { getCO2Consumtion } from '../lib/co2';
 
 export default function Privacy(props) {
   return (
-    <Layout
-      co2Consumption={props.co2Consumption}
-      title="Privacy"
-      slug="privacy"
-    >
+    <Page co2Consumption={props.co2Consumption} title="Privacy" slug="privacy">
       <section className="max-w-xl space-y-20">
         <h1 className="mb-6 text-5xl font-bold">Privacy</h1>
         <div className="space-y-4">
@@ -265,7 +261,7 @@ export default function Privacy(props) {
           </div>
         </div>
       </section>
-    </Layout>
+    </Page>
   );
 }
 

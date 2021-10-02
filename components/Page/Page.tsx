@@ -18,7 +18,7 @@ interface Props {
   previewImage?: string;
 }
 
-export function Layout({
+export function Page({
   children,
   co2Consumption,
   title,

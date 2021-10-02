@@ -1,17 +1,13 @@
 import type { GetStaticProps } from 'next';
 
-import { Layout } from '../components/Layout';
+import { Page } from '../components/Page';
 import { getCO2Consumtion } from '../lib/co2';
 
 export default function Error(props) {
   return (
-    <Layout
-      co2Consumption={props.co2Consumption}
-      title="404 | Fehler"
-      slug="404"
-    >
+    <Page co2Consumption={props.co2Consumption} title="404 | Fehler" slug="404">
       <p>404 – Something went wrong.</p>
-    </Layout>
+    </Page>
   );
 }
 
