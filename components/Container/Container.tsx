@@ -6,27 +6,25 @@ import { Box } from '../Box';
 
 interface Props {
   children: ReactNode;
-  as?: 'div' | 'main' | 'aside' | 'header' | 'footer' | 'section';
-  size?: BoxProps['maxWidth'];
-  insetX?: BoxProps['paddingX'];
-  insetY?: BoxProps['paddingY'];
+  as?: 'div' | 'main' | 'aside' | 'header' | 'footer' | 'section' | 'nav';
+  width?: BoxProps['maxWidth'];
+  inset?: BoxProps['paddingX'];
   className?: string;
 }
 
 export function Container({
   children,
   as = 'div',
-  size = 'xl',
-  insetX,
-  insetY,
+  width = 'xl',
+  inset,
   ...props
 }: Props) {
   return (
     <Box
       as={as}
-      maxWidth={size}
-      paddingX={insetX}
-      paddingY={insetY}
+      width="full"
+      maxWidth={width}
+      paddingX={inset}
       marginX="auto"
       {...props}
     >

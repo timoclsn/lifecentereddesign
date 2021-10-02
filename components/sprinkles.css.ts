@@ -64,6 +64,17 @@ const colorProperties = defineProperties({
   },
 });
 
+const pseudoProperties = defineProperties({
+  conditions: {
+    default: {},
+    hover: { selector: '&:hover' },
+  },
+  defaultCondition: 'default',
+  properties: {
+    textDecoration: ['none', 'underline'],
+  },
+});
+
 const unconditionalProperties = defineProperties({
   properties: {
     flexWrap: ['wrap', 'nowrap'],
@@ -79,7 +90,6 @@ const unconditionalProperties = defineProperties({
     cursor: ['pointer'],
     fontFamily: vars.fonts,
     fontWeight: vars.fontWeights,
-    textDecoration: ['none', 'underline'],
   },
 });
 
@@ -88,5 +98,6 @@ export type Sprinkles = Parameters<typeof sprinkles>[0];
 export const sprinkles = createSprinkles(
   responsiveProperties,
   colorProperties,
+  pseudoProperties,
   unconditionalProperties
 );

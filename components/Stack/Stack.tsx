@@ -27,13 +27,12 @@ const justifyToJustifyContent = {
 
 export interface StackProps {
   children: ReactNode;
-  as?: 'div' | 'ul' | 'ol';
+  as?: 'div' | 'ul' | 'ol' | 'main';
   direction?: ResponsiveValue<keyof typeof directionToFlexDirection>;
   space?: BoxProps['gap'];
   align?: ResponsiveValue<keyof typeof alignToAlignItems>;
   justify?: ResponsiveValue<keyof typeof justifyToJustifyContent>;
   wrap?: boolean;
-  fullWith?: boolean;
 }
 
 export function Stack({
@@ -44,7 +43,6 @@ export function Stack({
   align = 'start',
   justify = 'start',
   wrap = false,
-  fullWith = false,
 }: StackProps) {
   return (
     <Box
@@ -64,7 +62,6 @@ export function Stack({
         (value) => justifyToJustifyContent[value]
       )}
       flexWrap={wrap ? 'wrap' : undefined}
-      width={fullWith ? 'full' : undefined}
     >
       {children}
     </Box>

@@ -5,6 +5,7 @@ import { Inline } from '../components/Inline';
 import { Stack } from '../components/Stack';
 import { Text } from '../components/Text';
 import { Label } from '../components/Label';
+import { Button } from '../components/Button';
 
 export default function DesignSystem() {
   return (
@@ -39,6 +40,12 @@ export default function DesignSystem() {
                 <Label>Label 2</Label>
                 <Label>Label 3</Label>
                 <Label>Label 4</Label>
+              </Inline>
+              <Inline>
+                <Button>Test</Button>
+                <Button>Test</Button>
+                <Button>Test</Button>
+                <Button>Test</Button>
               </Inline>
             </Stack>
           </Card>

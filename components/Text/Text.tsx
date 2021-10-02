@@ -11,6 +11,7 @@ export interface TextProps {
   size?: BoxProps['fontSize'];
   lineHeight?: BoxProps['lineHeight'];
   weight?: BoxProps['fontWeight'];
+  decoration?: BoxProps['textDecoration'];
   className?: string;
 }
 
@@ -21,6 +22,7 @@ export function Text({
   size = 'md',
   lineHeight,
   weight = 'normal',
+  decoration,
   ...props
 }: TextProps) {
   return (
@@ -31,6 +33,7 @@ export function Text({
       lineHeight={lineHeight}
       fontWeight={weight}
       color={color}
+      textDecoration={decoration}
       {...props}
     >
       {children}

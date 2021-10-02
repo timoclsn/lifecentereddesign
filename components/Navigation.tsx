@@ -1,8 +1,11 @@
 import Link from 'next/link';
 
 import type { CO2 } from '../lib/co2';
-import { CenteredColumn } from './CenteredColumn';
+import { Container } from './Container';
 import { CO2Badge } from './CO2Badge';
+import { Box } from './Box';
+import { Stack } from './Stack';
+import { Text } from './Text';
 
 interface Props {
   co2Consumption: CO2;
@@ -10,31 +13,43 @@ interface Props {
 
 export function Navigation({ co2Consumption }: Props) {
   return (
-    <header>
-      <CenteredColumn>
-        <div className="flex justify-center">
-          <CO2Badge co2Consumption={co2Consumption} />
-        </div>
-        <div className="flex items-center justify-between pt-12">
-          <ul className="flex space-x-8">
-            <li className="font-bold hover:underline">
+    <Box as="header" width="full">
+      <Container as="nav">
+        <Stack space="2xl">
+          <Box width="full" display="flex" justifyContent="center">
+            <CO2Badge co2Consumption={co2Consumption} />
+          </Box>
+          <Stack as="ul" direction="horizontal" space="xl">
+            <li>
               <Link href="/">
-                <a>Life Centered Design.Net</a>
+                <a>
+                  <Text
+                    as="h1"
+                    weight="bold"
+                    decoration={{ hover: 'underline' }}
+                  >
+                    Life Centered Design.Net
+                  </Text>
+                </a>
               </Link>
             </li>
-            <li className="hover:underline">
+            <li>
               <Link href="/#about">
-                <a>About</a>
+                <a>
+                  <Text decoration={{ hover: 'underline' }}>About</Text>
+                </a>
               </Link>
             </li>
-            <li className="hover:underline">
+            <li>
               <Link href="/#newsletter">
-                <a>Newsletter</a>
+                <a>
+                  <Text decoration={{ hover: 'underline' }}>Newsletter</Text>
+                </a>
               </Link>
             </li>
-          </ul>
-        </div>
-      </CenteredColumn>
-    </header>
+          </Stack>
+        </Stack>
+      </Container>
+    </Box>
   );
 }

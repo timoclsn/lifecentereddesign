@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react';
 
 import type { CO2 } from '../lib/co2';
-import { CenteredColumn } from './CenteredColumn';
+import { Container } from './Container';
 import { Favicons } from './Favicons';
 import { Footer } from './Footer';
 import { Navigation } from './Navigation';
 import { SEO } from './SEO';
+import { Stack } from './Stack';
 
 interface Props {
   children: ReactNode;
@@ -40,13 +41,15 @@ export function Layout({
         previewImage={pagePreviewImage}
       />
       <Favicons />
-      <div className="space-y-20 sm:space-y-28">
+      <Stack space="5xl">
         <Navigation co2Consumption={co2Consumption} />
-        <CenteredColumn>
-          <main className="space-y-20 sm:space-y-28">{children}</main>
-        </CenteredColumn>
+        <Container>
+          <Stack as="main" space="5xl">
+            {children}
+          </Stack>
+        </Container>
         <Footer />
-      </div>
+      </Stack>
     </>
   );
 }

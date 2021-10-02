@@ -11,6 +11,7 @@ interface Props {
   size?: TextProps['size'];
   lineHeight?: TextProps['lineHeight'];
   weight?: TextProps['weight'];
+  decoration?: TextProps['decoration'];
   className?: string;
 }
 
@@ -21,15 +22,17 @@ export function Heading({
   size = '5xl',
   lineHeight,
   weight = 'bold',
+  decoration,
   ...props
 }: Props) {
   return (
     <Text
       as={Element}
+      color={color}
       size={size}
       lineHeight={lineHeight}
       weight={weight}
-      color={color}
+      decoration={decoration}
       {...props}
     >
       {children}
