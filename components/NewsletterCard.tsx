@@ -15,11 +15,13 @@ export function NewsletterCard() {
           .
         </p>
         <Button
-          text="Newsletter signup"
-          size="l"
+          as="a"
+          variant="secondary"
           href="http://eepurl.com/htoWRr"
           target="_blank"
-        />
+        >
+          Newsletter signup
+        </Button>
       </div>
     </section>
   );
