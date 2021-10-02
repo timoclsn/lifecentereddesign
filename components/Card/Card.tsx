@@ -22,9 +22,9 @@ export function Card({
   return (
     <Box
       as={as}
-      borderRadius="lg"
-      paddingX="lg"
-      paddingY="2xl"
+      borderRadius="24px"
+      paddingX="24px"
+      paddingY="48px"
       color="black-normal"
       background={color}
       width={fullWidth ? 'full' : undefined}

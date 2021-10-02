@@ -39,7 +39,7 @@ export function Stack({
   children,
   as = 'div',
   direction = 'vertical',
-  space = 'md',
+  space = '16px',
   align = 'start',
   justify = 'start',
   wrap = false,

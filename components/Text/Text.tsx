@@ -9,7 +9,6 @@ export interface TextProps {
   as?: ElementType;
   color?: BoxProps['color'];
   size?: BoxProps['fontSize'];
-  lineHeight?: BoxProps['lineHeight'];
   weight?: BoxProps['fontWeight'];
   decoration?: BoxProps['textDecoration'];
   className?: string;
@@ -19,8 +18,7 @@ export function Text({
   children,
   as: Element = 'span',
   color = 'black-normal',
-  size = 'md',
-  lineHeight,
+  size = '16px',
   weight = 'normal',
   decoration,
   ...props
@@ -30,7 +28,6 @@ export function Text({
       as={Element}
       fontFamily="sans"
       fontSize={size}
-      lineHeight={lineHeight}
       fontWeight={weight}
       color={color}
       textDecoration={decoration}

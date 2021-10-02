@@ -18,10 +18,10 @@ export const button = recipe({
       justifyContent: 'center',
       cursor: 'pointer',
       textDecoration: 'none',
-      gap: 'sm',
+      gap: '8px',
       flexShrink: 0,
       fontWeight: 'bold',
-      fontSize: 'md',
+      fontSize: '16px',
     }),
     {
       ':focus': {
@@ -35,16 +35,16 @@ export const button = recipe({
       lg: [
         {
           vars: {
-            [paddingX]: vars.space.xl,
-            [paddingY]: vars.space.md,
+            [paddingX]: vars.space['32px'],
+            [paddingY]: vars.space['16px'],
           },
         },
       ],
       sm: [
         {
           vars: {
-            [paddingX]: vars.space.lg,
-            [paddingY]: vars.space.sm,
+            [paddingX]: vars.space['24px'],
+            [paddingY]: vars.space['8px'],
           },
         },
       ],

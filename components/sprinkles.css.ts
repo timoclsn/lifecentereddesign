@@ -11,13 +11,13 @@ import { vars } from './theme.css';
 
 const responsiveProperties = defineProperties({
   conditions: {
-    xs: {},
-    sm: { '@media': 'screen and (min-width: 640px)' },
-    md: { '@media': 'screen and (min-width: 768px)' },
-    lg: { '@media': 'screen and (min-width: 1024px)' },
-    xl: { '@media': 'screen and (min-width: 1280px)' },
+    none: {},
+    '640px': { '@media': 'screen and (min-width: 640px)' },
+    '768px': { '@media': 'screen and (min-width: 768px)' },
+    '1024px': { '@media': 'screen and (min-width: 1024px)' },
+    '1280px': { '@media': 'screen and (min-width: 1280px)' },
   },
-  defaultCondition: 'xs',
+  defaultCondition: 'none',
   properties: {
     position: ['absolute', 'relative', 'fixed'],
     display: ['none', 'block', 'inline', 'flex', 'inline-flex'],
@@ -39,7 +39,6 @@ const responsiveProperties = defineProperties({
     fontSize: mapValues(vars.fontSizes, (fontSize) =>
       createStyleObject(fontSize)
     ),
-    lineHeight: vars.lineHeights,
   },
   shorthands: {
     padding: ['paddingTop', 'paddingBottom', 'paddingLeft', 'paddingRight'],
@@ -85,7 +84,7 @@ const unconditionalProperties = defineProperties({
     flexShrink: [0],
     zIndex: [-1, 0, 1],
     width: vars.sizes,
-    height: vars.sizes,
+    height: ['100vh'],
     borderRadius: vars.radii,
     cursor: ['pointer'],
     fontFamily: vars.fonts,

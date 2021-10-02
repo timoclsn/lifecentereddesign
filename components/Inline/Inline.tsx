@@ -16,7 +16,7 @@ interface Props {
 export function Inline({
   children,
   as = 'div',
-  space = 'sm',
+  space = '8px',
   wrap = true,
   ...props
 }: Props) {

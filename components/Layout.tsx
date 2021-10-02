@@ -41,10 +41,10 @@ export function Layout({
         previewImage={pagePreviewImage}
       />
       <Favicons />
-      <Stack space="5xl">
+      <Stack space="128px">
         <Navigation co2Consumption={co2Consumption} />
         <Container>
-          <Stack as="main" space="5xl">
+          <Stack as="main" space="128px">
             {children}
           </Stack>
         </Container>

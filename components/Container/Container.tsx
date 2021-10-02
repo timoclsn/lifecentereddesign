@@ -15,7 +15,7 @@ interface Props {
 export function Container({
   children,
   as = 'div',
-  width = 'xl',
+  width = '1280px',
   inset,
   ...props
 }: Props) {

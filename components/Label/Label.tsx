@@ -11,9 +11,9 @@ interface Props {
 export function Label({ children, ...props }: Props) {
   return (
     <Box
-      fontSize="md"
-      paddingX="md"
-      paddingY="sm"
+      fontSize="16px"
+      paddingX="16px"
+      paddingY="8px"
       color="black-normal"
       background="soft"
       borderRadius="full"

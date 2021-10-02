@@ -2,101 +2,69 @@ import { createGlobalTheme } from '@vanilla-extract/css';
 import { precomputeValues } from '@capsizecss/core';
 import fontMetrics from '@capsizecss/metrics/notoSans';
 
+const grid = 8;
+const px = (value: string | number) => `${value}px`;
+
 export const vars = createGlobalTheme(':root', {
   fonts: {
     sans: '"Noto Sans", -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
   },
   fontSizes: {
-    xs: precomputeValues({
-      fontSize: 12,
-      leading: 16,
+    '16px': precomputeValues({
+      fontSize: 2 * grid,
+      leading: 3 * grid,
       fontMetrics,
     }),
-    sm: precomputeValues({
-      fontSize: 14,
-      leading: 18,
+    '32px': precomputeValues({
+      fontSize: 3 * grid,
+      leading: 5 * grid,
       fontMetrics,
     }),
-    md: precomputeValues({
-      fontSize: 16,
-      leading: 24,
+    '48px': precomputeValues({
+      fontSize: 6 * grid,
+      leading: 6 * grid,
       fontMetrics,
     }),
-    lg: precomputeValues({
-      fontSize: 18,
-      leading: 28,
-      fontMetrics,
-    }),
-    xl: precomputeValues({
-      fontSize: 20,
-      leading: 28,
-      fontMetrics,
-    }),
-    '2xl': precomputeValues({
-      fontSize: 24,
-      leading: 32,
-      fontMetrics,
-    }),
-    '3xl': precomputeValues({
-      fontSize: 30,
-      leading: 36,
-      fontMetrics,
-    }),
-    '4xl': precomputeValues({
-      fontSize: 36,
-      leading: 40,
-      fontMetrics,
-    }),
-    '5xl': precomputeValues({
-      fontSize: 48,
-      leading: 48,
-      fontMetrics,
-    }),
-    '6xl': precomputeValues({
-      fontSize: 60,
-      leading: 60,
-      fontMetrics,
-    }),
-  },
-  lineHeights: {
-    xs: '1',
-    sm: '1.25',
-    md: '1.5',
-    lg: '1.75',
-    xl: '2',
   },
   fontWeights: {
     normal: '400',
     bold: '700',
   },
+  grid: px(grid),
   space: {
     none: '0',
-    xs: '0.25rem',
-    sm: '0.5rem',
-    md: '1rem',
-    lg: '1.5rem',
-    xl: '2rem',
-    '2xl': '3rem',
-    '3xl': '4rem',
-    '4xl': '5rem',
-    '5xl': '6rem',
-    '6xl': '7rem',
-    '7xl': '8rem',
+    '2px': px(0.25 * grid),
+    '4px': px(0.5 * grid),
+    '8px': px(1 * grid),
+    '16px': px(2 * grid),
+    '24px': px(3 * grid),
+    '32px': px(4 * grid),
+    '48px': px(6 * grid),
+    '64px': px(8 * grid),
+    '80px': px(10 * grid),
+    '96px': px(12 * grid),
+    '128px': px(16 * grid),
   },
   sizes: {
+    '1/4': '25%',
+    '1/3': '33.3%',
+    '1/2': '50%',
+    '2/3': '66.66%',
+    '3/4': '75%',
     full: '100%',
   },
   radii: {
-    sm: '0.5rem',
-    md: '1rem',
-    lg: '1.5rem',
+    none: '0',
+    '8px': px(1 * grid),
+    '16px': px(2 * grid),
+    '24px': px(3 * grid),
     full: '9999px',
   },
   contentWidth: {
-    sm: '640px',
-    md: '768px',
-    lg: '1024px',
-    xl: '1280px',
+    '640px': px(640),
+    '768px': px(768),
+    '1024px': px(1024),
+    '1280px': px(1280),
   },
   colors: {
     white: 'hsla(0, 0%, 100%, 1)',

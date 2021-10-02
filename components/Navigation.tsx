@@ -15,11 +15,11 @@ export function Navigation({ co2Consumption }: Props) {
   return (
     <Box as="header" width="full">
       <Container as="nav">
-        <Stack space="2xl">
+        <Stack space="48px">
           <Box width="full" display="flex" justifyContent="center">
             <CO2Badge co2Consumption={co2Consumption} />
           </Box>
-          <Stack as="ul" direction="horizontal" space="xl">
+          <Stack as="ul" direction="horizontal" space="32px">
             <li>
               <Link href="/">
                 <a>
