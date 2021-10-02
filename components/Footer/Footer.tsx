@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { Box } from './Box';
-import { Container } from './Container';
-import { Stack } from './Stack';
-import { Text } from './Text';
+import { Box } from '../Box';
+import { Container } from '../Container';
+import { Stack } from '../Stack';
+import { Text } from '../Text';
 
 export function Footer() {
   return (

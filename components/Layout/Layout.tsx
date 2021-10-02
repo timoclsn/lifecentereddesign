@@ -1,13 +1,13 @@
 import React from 'react';
 import type { ReactNode } from 'react';
 
-import type { CO2 } from '../lib/co2';
-import { Container } from './Container';
-import { Favicons } from './Favicons';
-import { Footer } from './Footer';
-import { Navigation } from './Navigation';
-import { SEO } from './SEO';
-import { Stack } from './Stack';
+import type { CO2 } from '../../lib/co2';
+import { Container } from '../Container';
+import { Favicons } from '../Favicons';
+import { Footer } from '../Footer';
+import { Navigation } from '../Navigation';
+import { SEO } from '../SEO';
+import { Stack } from '../Stack';
 
 interface Props {
   children: ReactNode;

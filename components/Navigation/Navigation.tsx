@@ -1,12 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 
-import type { CO2 } from '../lib/co2';
-import { Container } from './Container';
-import { CO2Badge } from './CO2Badge';
-import { Box } from './Box';
-import { Stack } from './Stack';
-import { Text } from './Text';
+import type { CO2 } from '../../lib/co2';
+import { Container } from '../Container';
+import { CO2Badge } from '../CO2Badge';
+import { Box } from '../Box';
+import { Stack } from '../Stack';
+import { Text } from '../Text';
 
 interface Props {
   co2Consumption: CO2;
