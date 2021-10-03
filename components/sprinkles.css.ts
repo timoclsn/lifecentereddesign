@@ -81,7 +81,7 @@ const unconditionalProperties = defineProperties({
     bottom: [0],
     left: [0],
     right: [0],
-    flexShrink: [0],
+    flex: [0, 1],
     zIndex: [-1, 0, 1],
     width: vars.sizes,
     height: ['100vh'],
@@ -89,6 +89,19 @@ const unconditionalProperties = defineProperties({
     cursor: ['pointer'],
     fontFamily: vars.fonts,
     fontWeight: vars.fontWeights,
+    srOnly: {
+      true: {
+        position: 'absolute',
+        width: '1px',
+        height: '1px',
+        padding: 0,
+        margin: '-1px',
+        overflow: 'hidden',
+        clip: 'rect(0, 0, 0, 0)',
+        whiteSpace: 'nowrap',
+        borderWidth: 0,
+      },
+    },
   },
 });
 

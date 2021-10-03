@@ -33,6 +33,7 @@ export interface StackProps {
   align?: ResponsiveValue<keyof typeof alignToAlignItems>;
   justify?: ResponsiveValue<keyof typeof justifyToJustifyContent>;
   wrap?: boolean;
+  fullWidth?: boolean;
 }
 
 export function Stack({
@@ -43,6 +44,7 @@ export function Stack({
   align = 'start',
   justify = 'start',
   wrap = false,
+  fullWidth,
 }: StackProps) {
   return (
     <Box
@@ -62,6 +64,7 @@ export function Stack({
         (value) => justifyToJustifyContent[value]
       )}
       flexWrap={wrap ? 'wrap' : undefined}
+      width={fullWidth ? 'full' : undefined}
     >
       {children}
     </Box>

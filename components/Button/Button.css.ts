@@ -19,7 +19,7 @@ export const button = recipe({
       cursor: 'pointer',
       textDecoration: 'none',
       gap: '8px',
-      flexShrink: 0,
+      flex: 1,
       fontWeight: 'bold',
       fontSize: '16px',
     }),

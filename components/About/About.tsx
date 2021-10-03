@@ -13,7 +13,7 @@ export function About() {
           About Life Centered Design.Net
         </Heading>
         <Stack space="32px">
-          <Text>
+          <Text as="p">
             <strong>User-centered design (UCD)</strong> is an approach for
             designing interactive systems that places the users and their needs
             in the center of the design process. It has been around for ages
@@ -21,20 +21,20 @@ export function About() {
             „User-Centered System Design: New Perspectives on Human-Computer
             Interaction“ by Donald A. Norman and Stephen W. Draper.
           </Text>
-          <Text>
+          <Text as="p">
             The DIN EN ISO 9241-210, where this approach is defined, is now
             using the term <strong>human-centered design (HCD)</strong> to
             acknowledge, that there are several more stakeholders who are
             affected by a product or service than just their users.
           </Text>
-          <Text>
+          <Text as="p">
             With that very same attitude, several questions can be posed: Is it
             enough to focus the design around human stakeholders? Are we the
             only ones affected by our products? What about long-term effects –
             are we considering them as well? Or effects that are more indirect
             and might be hidden under the surface of short-term user needs?
           </Text>
-          <Text>
+          <Text as="p">
             In contrast to human-centered design, no ISO standard defines{' '}
             <strong>life-centered design</strong> as a term and practice. The
             notion of “life-centered design” is still in the formation and I
@@ -46,7 +46,7 @@ export function About() {
             least for me) a term that fits well enough to drive the conversation
             around these questions further.
           </Text>
-          <Text>
+          <Text as="p">
             That is why I want to create Life Centered Design.Net. It is
             supposed to be a home for information, resources, and conversations
             to evolve beyond human-centered and user experience design.

@@ -15,18 +15,18 @@ export function AboutUs() {
             About us
           </Heading>
           <Stack space="32px">
-            <Text>
+            <Text as="p">
               Hi{' '}
               <span role="img" aria-label="Waveing hand">
                 👋
               </span>
             </Text>
-            <Text>
+            <Text as="p">
               This is <strong>Katharina</strong>. My husband{' '}
               <strong>Timo</strong> and I are the two people behind Life
               Centered Design.Net.
             </Text>
-            <Text>
+            <Text as="p">
               I have developed a passion for the mindset I associate with
               life-centered design. I am trying to weave in parts of this
               mindset into the things I do as{' '}
@@ -67,7 +67,7 @@ export function AboutUs() {
                 Makers League e. V.
               </a>
             </Text>
-            <Text>
+            <Text as="p">
               My husband Timo, <strong>CEO</strong> at{' '}
               <a
                 href="https://codeatelier.com"
@@ -80,7 +80,7 @@ export function AboutUs() {
               shares this passion – especially when it comes to sustainability
               in (web) technologies.
             </Text>
-            <Text>
+            <Text as="p">
               Because of my deep interest in that topic but also due to the
               fact, that it was very hard for me to find information and best
               practices on life-centered design in the past years, I wanted to
@@ -92,7 +92,8 @@ export function AboutUs() {
               default: 'vertical',
               '640px': 'horizontal',
             }}
-            space="48px"
+            space="32px"
+            fullWidth
           >
             <ProfileCard
               name="Katharina Clasen"
@@ -102,7 +103,7 @@ export function AboutUs() {
                 name: 'Codeatelier',
                 url: 'https://codeatelier.com',
               }}
-              bgColor="bg-sky"
+              color="sky-normal"
               website="https://katharinaclasen.de"
               linkedin="https://www.linkedin.com/in/katharina-clasen/"
               instagram="https://www.instagram.com/katharinaclasen/"
@@ -116,7 +117,7 @@ export function AboutUs() {
                 name: 'Codeatelier',
                 url: 'https://codeatelier.com',
               }}
-              bgColor="bg-evening"
+              color="evening-normal"
               website="https://timoclasen.de"
               linkedin="https://www.linkedin.com/in/timoclsn"
               twitter="https://twitter.com/timoclsn"
