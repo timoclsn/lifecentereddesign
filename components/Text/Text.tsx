@@ -17,7 +17,7 @@ export interface TextProps {
 export function Text({
   children,
   as: Element = 'span',
-  color = 'black-normal',
+  color = 'dark',
   size = '16px',
   weight = 'normal',
   decoration,

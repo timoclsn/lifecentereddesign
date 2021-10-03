@@ -16,7 +16,7 @@ export const vars = createGlobalTheme(':root', {
       fontMetrics,
     }),
     '32px': precomputeValues({
-      fontSize: 3 * grid,
+      fontSize: 4 * grid,
       leading: 5 * grid,
       fontMetrics,
     }),
