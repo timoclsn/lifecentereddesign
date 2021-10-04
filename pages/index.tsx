@@ -2,7 +2,6 @@ import { GetStaticProps } from 'next';
 
 import { About } from '../components/About';
 import { AboutUs } from '../components/AboutUs';
-import { Categories } from '../components/Categories';
 import { Header } from '../components/Header';
 import { Page } from '../components/Page';
 import { NewsletterCard } from '../components/NewsletterCard';
@@ -12,7 +11,6 @@ export default function Home(props) {
   return (
     <Page co2Consumption={props.co2Consumption}>
       <Header />
-      <Categories />
       <About />
       <NewsletterCard />
       <AboutUs />

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Box } from '../Box';
 import { Button } from '../Button';
 import { Heading } from '../Heading';
