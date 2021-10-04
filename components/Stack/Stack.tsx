@@ -34,6 +34,7 @@ export interface StackProps {
   justify?: ResponsiveValue<keyof typeof justifyToJustifyContent>;
   wrap?: boolean;
   fullWidth?: boolean;
+  className?: string;
 }
 
 export function Stack({
@@ -45,6 +46,7 @@ export function Stack({
   justify = 'start',
   wrap = false,
   fullWidth,
+  ...props
 }: StackProps) {
   return (
     <Box
@@ -65,6 +67,7 @@ export function Stack({
       )}
       flexWrap={wrap ? 'wrap' : undefined}
       width={fullWidth ? 'full' : undefined}
+      {...props}
     >
       {children}
     </Box>

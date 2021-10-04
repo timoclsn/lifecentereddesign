@@ -61,6 +61,7 @@ export const vars = createGlobalTheme(':root', {
     full: '9999px',
   },
   contentWidth: {
+    '320px': px(320),
     '640px': px(640),
     '768px': px(768),
     '1024px': px(1024),
