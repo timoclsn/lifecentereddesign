@@ -1,5 +1,3 @@
-import '../styles/globals.css';
-
 import { IdProvider } from '@radix-ui/react-id';
 
 function MyApp({ Component, pageProps }) {

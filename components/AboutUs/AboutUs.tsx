@@ -5,6 +5,8 @@ import { Heading } from '../Heading';
 import { Text } from '../Text';
 import { Stack } from '../Stack';
 import { ProfileCard } from '../ProfileCard';
+import { Box } from '../Box';
+import { sprinkles } from '../sprinkles.css';
 
 export function AboutUs() {
   return (
@@ -31,52 +33,62 @@ export function AboutUs() {
               life-centered design. I am trying to weave in parts of this
               mindset into the things I do as{' '}
               <strong>Head of Strategy & UX</strong> at{' '}
-              <a
+              <Box
+                as="a"
+                cursor="pointer"
                 href="https://codeatelier.com"
                 className="underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Codeatelier
-              </a>
+              </Box>
               , a <strong>lecturer</strong> at{' '}
-              <a
+              <Box
+                as="a"
+                cursor="pointer"
                 href="https://www.hdm-stuttgart.de"
                 className="underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Stuttgart Media University
-              </a>{' '}
+              </Box>{' '}
               and{' '}
-              <a
+              <Box
+                as="a"
+                cursor="pointer"
                 href="https://www.hs-esslingen.de"
                 className="underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 University of Applied Sciences Esslingen
-              </a>
+              </Box>
               , and as a <strong>board member</strong> of the{' '}
-              <a
+              <Box
+                as="a"
+                cursor="pointer"
                 href="https://makersleague.de"
                 className="underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Makers League e. V.
-              </a>
+              </Box>
             </Text>
             <Text as="p">
               My husband Timo, <strong>CEO</strong> at{' '}
-              <a
+              <Box
+                as="a"
+                cursor="pointer"
                 href="https://codeatelier.com"
                 className="underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Codeatelier
-              </a>{' '}
+              </Box>{' '}
               shares this passion – especially when it comes to sustainability
               in (web) technologies.
             </Text>
@@ -93,7 +105,7 @@ export function AboutUs() {
               '640px': 'horizontal',
             }}
             space="32px"
-            fullWidth
+            className={sprinkles({ width: 'full' })}
           >
             <ProfileCard
               name="Katharina Clasen"

@@ -11,7 +11,7 @@ import { Heading } from '../Heading';
 import { Text } from '../Text';
 import { Button } from '../Button';
 import { Stack } from '../Stack';
-import { list } from './CO2Badge.css';
+import { List } from '../List';
 
 interface Props {
   co2Consumption: CO2;
@@ -31,9 +31,9 @@ export function CO2Badge({ co2Consumption }: Props) {
         background="grass-normal"
       >
         <RiLeafLine size={22} />
-        <span>
+        <Text weight="bold">
           {co2Consumption.co2} g of CO<sub>2</sub>
-        </span>
+        </Text>
       </Box>
       <Popover.Content sideOffset={40}>
         <Card
@@ -43,9 +43,9 @@ export function CO2Badge({ co2Consumption }: Props) {
           })}
         >
           <Stack space="32px">
-            <Popover.Close>
+            <Box as={Popover.Close} background="transparent">
               <FiX size={24} />
-            </Popover.Close>
+            </Box>
             <Heading as="h2" size="32px">
               Website carbon footprint:
             </Heading>
@@ -56,7 +56,8 @@ export function CO2Badge({ co2Consumption }: Props) {
                 This site is{' '}
                 <strong>cleaner than {co2Consumption.cleanerThan} %</strong> of
                 web pages tested on the{' '}
-                <a
+                <Box
+                  as="a"
                   href="https://www.websitecarbon.com"
                   className="underline"
                   target="_blank"
@@ -64,20 +65,20 @@ export function CO2Badge({ co2Consumption }: Props) {
                 >
                   {' '}
                   Website Carbon Calculator
-                </a>
+                </Box>
                 .
               </Text>
               <Text>
                 What we considered to make this page as clean as possible:
               </Text>
-              <Stack as="ul" className={list} space="8px">
+              <List>
                 <li>Reduce information to text</li>
                 <li>Only use images where they bring a real value</li>
                 <li>Use static page generation</li>
                 <li>Serve from edge CDN</li>
                 <li>Self-host optimized font file in modern file format</li>
                 <li>Focus on page speed</li>
-              </Stack>
+              </List>
               <Button
                 as="a"
                 variant="link"

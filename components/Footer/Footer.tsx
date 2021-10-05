@@ -17,30 +17,54 @@ export function Footer() {
             space="32px"
           >
             <li>
-              <Link href="/#about">
-                <a>
-                  <Text decoration={{ hover: 'underline' }}>About</Text>
-                </a>
+              <Link href="/#about" passHref>
+                <Box
+                  as="a"
+                  textDecoration={{
+                    default: 'none',
+                    hover: 'underline',
+                  }}
+                >
+                  <Text>About</Text>
+                </Box>
               </Link>
             </li>
             <li>
-              <Link href="/#newsletter">
-                <a>
-                  <Text decoration={{ hover: 'underline' }}>Newsletter</Text>
-                </a>
+              <Link href="/#newsletter" passHref>
+                <Box
+                  as="a"
+                  textDecoration={{
+                    default: 'none',
+                    hover: 'underline',
+                  }}
+                >
+                  <Text>Newsletter</Text>
+                </Box>
               </Link>
             </li>
             <li>
-              <a href="https://katharinaclasen.de">
-                <Text decoration={{ hover: 'underline' }}>
-                  Katharina Clasen
-                </Text>
-              </a>
+              <Box
+                as="a"
+                textDecoration={{
+                  default: 'none',
+                  hover: 'underline',
+                }}
+                href="https://katharinaclasen.de"
+              >
+                <Text>Katharina Clasen</Text>
+              </Box>
             </li>
             <li>
-              <a href="https://timoclasen.de">
-                <Text decoration={{ hover: 'underline' }}>Timo Clasen</Text>
-              </a>
+              <Box
+                as="a"
+                textDecoration={{
+                  default: 'none',
+                  hover: 'underline',
+                }}
+                href="https://timoclasen.de"
+              >
+                <Text>Timo Clasen</Text>
+              </Box>
             </li>
           </Stack>
           <Stack
@@ -49,21 +73,29 @@ export function Footer() {
             space="32px"
           >
             <li>
-              <Link href="/imprint">
-                <a>
-                  <Text weight="bold" decoration={{ hover: 'underline' }}>
-                    Imprint
-                  </Text>
-                </a>
+              <Link href="/imprint" passHref>
+                <Box
+                  as="a"
+                  textDecoration={{
+                    default: 'none',
+                    hover: 'underline',
+                  }}
+                >
+                  <Text weight="bold">Imprint</Text>
+                </Box>
               </Link>
             </li>
             <li>
-              <Link href="/privacy">
-                <a>
-                  <Text weight="bold" decoration={{ hover: 'underline' }}>
-                    Privacy
-                  </Text>
-                </a>
+              <Link href="/privacy" passHref>
+                <Box
+                  as="a"
+                  textDecoration={{
+                    default: 'none',
+                    hover: 'underline',
+                  }}
+                >
+                  <Text weight="bold">Privacy</Text>
+                </Box>
               </Link>
             </li>
           </Stack>

@@ -7,6 +7,7 @@ import { Text } from '../components/Text';
 import { Page } from '../components/Page';
 import { Stack } from '../components/Stack';
 import { getCO2Consumtion } from '../lib/co2';
+import { Box } from '../components/Box';
 
 export default function Imprint(props) {
   return (
@@ -82,9 +83,9 @@ export default function Imprint(props) {
               </Text>
               <Text>
                 Quelle:{' '}
-                <a href="https://translate-24h.de">
+                <Box as="a" cursor="pointer" href="https://translate-24h.de">
                   translate-24h.de - Das Übersetzungsbüro im Internet
-                </a>
+                </Box>
               </Text>
             </Stack>
           </Stack>

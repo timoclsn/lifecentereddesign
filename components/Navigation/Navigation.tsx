@@ -22,8 +22,8 @@ export function Navigation({ co2Consumption }: Props) {
           </Box>
           <Stack as="ul" direction="horizontal" space="32px">
             <li>
-              <Link href="/">
-                <a>
+              <Link href="/" passHref>
+                <Box as="a" textDecoration="none" cursor="pointer">
                   <Text
                     as="h1"
                     weight="bold"
@@ -31,21 +31,28 @@ export function Navigation({ co2Consumption }: Props) {
                   >
                     Life Centered Design.Net
                   </Text>
-                </a>
+                </Box>
               </Link>
             </li>
             <li>
-              <Link href="/#about">
-                <a>
+              <Link href="/#about" passHref>
+                <Box as="a" textDecoration="none" cursor="pointer">
                   <Text decoration={{ hover: 'underline' }}>About</Text>
-                </a>
+                </Box>
               </Link>
             </li>
             <li>
-              <Link href="/#newsletter">
-                <a>
-                  <Text decoration={{ hover: 'underline' }}>Newsletter</Text>
-                </a>
+              <Link href="/#newsletter" passHref>
+                <Box
+                  as="a"
+                  textDecoration={{
+                    default: 'none',
+                    hover: 'underline',
+                  }}
+                  cursor="pointer"
+                >
+                  <Text>Newsletter</Text>
+                </Box>
               </Link>
             </li>
           </Stack>

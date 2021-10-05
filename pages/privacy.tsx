@@ -7,6 +7,8 @@ import { Text } from '../components/Text';
 import { Page } from '../components/Page';
 import { Stack } from '../components/Stack';
 import { getCO2Consumtion } from '../lib/co2';
+import { Box } from '../components/Box';
+import { List } from '../components/List';
 
 export default function Privacy(props) {
   return (
@@ -94,14 +96,14 @@ export default function Privacy(props) {
                 &quot;server log files&quot;. These are:
               </Text>
               <Text>These are:</Text>
-              <ul>
+              <List>
                 <li>Browser type and browser version</li>
                 <li>Operating system used</li>
                 <li>Referrer URL</li>
                 <li>Host name of the accessing computer</li>
                 <li>Time of the server request</li>
                 <li>IP address</li>
-              </ul>
+              </List>
               <Text>
                 These data will not be combined with data from other sources.
               </Text>
@@ -192,11 +194,17 @@ export default function Privacy(props) {
                 As a newsletter provider, we use the marketing platform „
                 <strong>Mailchimp</strong>“ – Rocket Science Group, LLC, 675
                 Ponce De Leon Ave NE #5000, Atlanta, GA 30308, USA (
-                <a href="https://mailchimp.com">https://mailchimp.com</a>
+                <Box as="a" cursor="pointer" href="https://mailchimp.com">
+                  https://mailchimp.com
+                </Box>
                 ). You can find their privacy policy here:
-                <a href="https://mailchimp.com/legal/privacy/">
+                <Box
+                  as="a"
+                  cursor="pointer"
+                  href="https://mailchimp.com/legal/privacy/"
+                >
                   https://mailchimp.com/legal/privacy/
-                </a>
+                </Box>
                 . If you provide data (e.g. your email address) to subscribe to
                 our newsletter, it will be stored on Mailchimp servers in the
                 USA. MailChimp is certified under the EU-US Privacy Shield.
@@ -208,7 +216,7 @@ export default function Privacy(props) {
                 To best protect your privacy we set up our analytics tools to
                 only store anonymized data. The tools we use are:
               </Text>
-              <ul>
+              <List>
                 <li>
                   Splitbee Analytics to track page visits (e.g.: How many
                   visitors were there? What devices were used? Where did the
@@ -216,7 +224,7 @@ export default function Privacy(props) {
                   to see what data is visualized there you can have a look at
                   our public analytics dashboard.
                 </li>
-              </ul>
+              </List>
             </Stack>
           </Stack>
 
@@ -246,9 +254,13 @@ export default function Privacy(props) {
                 protection officer of the German state in which our company is
                 headquartered. A list of data protection officers and their
                 contact details can be found at the following{' '}
-                <a href="https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-node.html">
+                <Box
+                  as="a"
+                  cursor="pointer"
+                  href="https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-node.html"
+                >
                   link
-                </a>
+                </Box>
                 .
               </Text>
               <Heading as="h3" size="16px">

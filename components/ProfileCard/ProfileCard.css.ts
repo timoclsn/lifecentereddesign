@@ -5,7 +5,8 @@ import { vars } from '../theme.css';
 export const imageBorder = style({});
 
 globalStyle(`${imageBorder} div`, {
-  borderRadius: vars.radii.full,
-  borderColor: vars.colors.white,
+  borderStyle: 'solid',
   borderWidth: '4px',
+  borderColor: vars.colors.white,
+  borderRadius: vars.radii.full,
 });

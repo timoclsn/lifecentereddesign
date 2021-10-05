@@ -22,6 +22,7 @@ export const button = recipe({
       flex: 1,
       fontWeight: 'bold',
       fontSize: '16px',
+      fontFamily: 'sans',
     }),
     {
       ':focus': {

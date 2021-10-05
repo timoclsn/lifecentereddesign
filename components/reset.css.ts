@@ -1,4 +1,9 @@
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
+
+globalStyle('html, body', {
+  margin: 0,
+  padding: 0,
+});
 
 export const base = style({
   margin: 0,
@@ -29,6 +34,10 @@ const body = style({
 
 const list = style({
   listStyle: 'none',
+});
+
+const a = style({
+  color: 'inherit',
 });
 
 const quote = style({
@@ -82,4 +91,5 @@ export const element = {
   table,
   mark,
   select,
+  a,
 };

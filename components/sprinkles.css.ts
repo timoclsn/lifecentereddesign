@@ -59,7 +59,10 @@ export const mapResponsiveValue = createMapValueFn(responsiveProperties);
 const colorProperties = defineProperties({
   properties: {
     color: vars.colors,
-    background: vars.colors,
+    background: {
+      ...vars.colors,
+      transparent: 'transparent',
+    },
   },
 });
 
@@ -89,19 +92,6 @@ const unconditionalProperties = defineProperties({
     cursor: ['pointer'],
     fontFamily: vars.fonts,
     fontWeight: vars.fontWeights,
-    srOnly: {
-      true: {
-        position: 'absolute',
-        width: '1px',
-        height: '1px',
-        padding: 0,
-        margin: '-1px',
-        overflow: 'hidden',
-        clip: 'rect(0, 0, 0, 0)',
-        whiteSpace: 'nowrap',
-        borderWidth: 0,
-      },
-    },
   },
 });
 
