@@ -92,6 +92,7 @@ const unconditionalProperties = defineProperties({
     cursor: ['pointer'],
     fontFamily: vars.fonts,
     fontWeight: vars.fontWeights,
+    overflow: ['visible', 'hidden'],
   },
 });
 
