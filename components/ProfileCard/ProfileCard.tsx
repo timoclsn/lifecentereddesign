@@ -42,14 +42,14 @@ export function ProfileCard({
   return (
     <Card color={color} className={sprinkles({ flex: 1, width: 'full' })}>
       <Stack direction="horizontal" space="8px">
-        <div className={imageBorder}>
+        <Box overflow="hidden" borderRadius="full" className={imageBorder}>
           <Image
             src={image}
             alt={`Portrait image of ${name}`}
             width={120}
             height={120}
           />
-        </div>
+        </Box>
         <Stack space="32px" className={sprinkles({ flex: 1 })}>
           <Stack space="24px">
             <Heading as="h3" size="16px">
