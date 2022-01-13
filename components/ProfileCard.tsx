@@ -37,7 +37,15 @@ export function ProfileCard({
 }: Props) {
   return (
     <div className={`${bgColor} rounded-3xl px-6 py-10 flex space-x-2 flex-1`}>
-      <div className="image-border">
+      <div
+        style={{
+          overflow: 'hidden',
+          borderRadius: '9999px',
+          border: '4px solid #fff',
+          lineHeight: '0',
+          alignSelf: 'start',
+        }}
+      >
         <Image
           src={image}
           alt={`Portrait image of ${name}`}
