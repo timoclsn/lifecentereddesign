@@ -36,7 +36,7 @@ export function ProfileCard({
   bgColor,
 }: Props) {
   return (
-    <div className={`${bgColor} rounded-3xl px-6 py-10 flex space-x-2 flex-1`}>
+    <div className={`${bgColor} flex flex-1 space-x-2 rounded-3xl px-6 py-10`}>
       <div
         style={{
           overflow: 'hidden',

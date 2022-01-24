@@ -16,12 +16,12 @@ interface Props {
 export function CategoryCard({ headline, text, list, bgColor }: Props) {
   return (
     <div
-      className={`inline-block w-full ${bgColor} rounded-3xl px-6 py-10 mb-6 sm:mb-14`}
+      className={`inline-block w-full ${bgColor} mb-6 rounded-3xl px-6 py-10 sm:mb-14`}
     >
       <h3 className="mb-4 font-bold">{headline}</h3>
       <p className="text-dark">{text}</p>
       {list && (
-        <ul className="mt-4 leading-8 list-disc list-inside text-dark">
+        <ul className="mt-4 list-inside list-disc leading-8 text-dark">
           {list.map((item) => (
             <li key={item}>{item}</li>
           ))}

@@ -11,14 +11,14 @@ interface Props {
 export function CO2Badge({ co2Consumption }: Props) {
   return (
     <Popover.Root>
-      <Popover.Trigger className="flex items-center px-4 py-2 space-x-2 font-bold bg-grass">
+      <Popover.Trigger className="flex items-center space-x-2 bg-grass px-4 py-2 font-bold">
         <RiLeafLine size={22} />
         <span>
           {co2Consumption.co2} g of CO<sub>2</sub>
         </span>
       </Popover.Trigger>
       <Popover.Content
-        className="max-w-xs p-10 space-y-6 sm:max-w-xl bg-grass rounded-3xl"
+        className="max-w-xs space-y-6 rounded-3xl bg-grass p-10 sm:max-w-xl"
         sideOffset={40}
       >
         <Popover.Close>
@@ -45,7 +45,7 @@ export function CO2Badge({ co2Consumption }: Props) {
               .
             </p>
             <p>What we considered to make this page as clean as possible:</p>
-            <ul className="space-y-2 list-disc list-outside">
+            <ul className="list-outside list-disc space-y-2">
               <li>Reduce information to text</li>
               <li>Only use images where they bring a real value</li>
               <li>Use static page generation</li>

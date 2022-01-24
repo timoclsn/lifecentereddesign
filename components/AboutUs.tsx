@@ -2,7 +2,7 @@ import { ProfileCard } from './ProfileCard';
 
 export function AboutUs() {
   return (
-    <section id="about-us" className="max-w-3xl mx-auto space-y-20">
+    <section id="about-us" className="mx-auto max-w-3xl space-y-20">
       <div>
         <h2 className="mb-6 text-3xl font-bold">About us</h2>
         <div className="space-y-4 text-dark">
@@ -77,7 +77,7 @@ export function AboutUs() {
           </p>
         </div>
       </div>
-      <div className="flex flex-col space-y-10 sm:space-y-0 sm:space-x-10 sm:flex-row">
+      <div className="flex flex-col space-y-10 sm:flex-row sm:space-y-0 sm:space-x-10">
         <ProfileCard
           name="Katharina Clasen"
           image="/profile/katharina-clasen.png"

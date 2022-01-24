@@ -1,6 +1,6 @@
 export function About() {
   return (
-    <section id="about" className="max-w-3xl mx-auto">
+    <section id="about" className="mx-auto max-w-3xl">
       <h2 className="mb-6 text-3xl font-bold">
         About Life Centered Design.Net
       </h2>

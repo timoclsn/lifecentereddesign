@@ -5,7 +5,7 @@ export function Categories() {
   return (
     <section>
       <h2 className="mb-4 font-bold">What we plan to do here:</h2>
-      <div className="mb-20 gap-14 columns-1 sm:columns-2 lg:columns-3">
+      <div className="mb-20 columns-1 gap-14 sm:columns-2 lg:columns-3">
         <CategoryCard
           headline="Information"
           text="We plan to provide you with theoretical and practical information around life-centered design through this website."
@@ -50,7 +50,7 @@ export function Categories() {
         />
       </div>
       <div className="flex flex-col items-center space-y-10">
-        <p className="max-w-md mx-auto text-center text-dark">
+        <p className="mx-auto max-w-md text-center text-dark">
           We are still evaluating these ideas and the general concept. If you
           are interested, please signup for our newsletter and consider letting
           us know what ideas you like most.

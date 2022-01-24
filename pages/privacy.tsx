@@ -78,7 +78,7 @@ export default function Privacy(props) {
               log files&quot;. These are:
             </p>
             <p>These are:</p>
-            <ul className="list-disc list-inside">
+            <ul className="list-inside list-disc">
               <li>Browser type and browser version</li>
               <li>Operating system used</li>
               <li>Referrer URL</li>
@@ -198,7 +198,7 @@ export default function Privacy(props) {
               To best protect your privacy we set up our analytics tools to only
               store anonymized data. The tools we use are:
             </p>
-            <ul className="list-disc list-inside">
+            <ul className="list-inside list-disc">
               <li>
                 Splitbee Analytics to track page visits (e.g.: How many visitors
                 were there? What devices were used? Where did the visitors come
