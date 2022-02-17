@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Script from 'next/script';
 import type { ReactNode } from 'react';
 
 import type { CO2 } from '../lib/co2';
@@ -49,8 +50,8 @@ export function Layout({
           type="font/woff2"
           crossOrigin="anonymous"
         />
-        <script async data-no-cookie data-api="/_hive" src="/bee.js" />
       </Head>
+      <Script data-no-cookie data-api="/_hive" src="/bee.js" />
       <SEO
         title={pageTitle}
         description={pageDescription}
