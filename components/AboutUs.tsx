@@ -57,14 +57,14 @@ export function AboutUs() {
             </a>
           </p>
           <p>
-            My husband Timo, <strong>CEO</strong> at{' '}
+            My husband Timo, <strong>Frontend Engineer</strong> at{' '}
             <a
-              href="https://codeatelier.com"
+              href="https://www.steuerbot.com"
               className="underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Codeatelier
+              Steuerbot
             </a>{' '}
             shares this passion – especially when it comes to sustainability in
             (web) technologies.
@@ -96,9 +96,9 @@ export function AboutUs() {
           name="Timo Clasen"
           image="/profile/timo-clasen.png"
           job={{
-            role: 'CEO',
-            name: 'Codeatelier',
-            url: 'https://codeatelier.com',
+            role: 'Frontend Engineer',
+            name: 'Steuerbot',
+            url: 'https://www.steuerbot.com',
           }}
           bgColor="bg-evening"
           website="https://timoclasen.de"
