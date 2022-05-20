@@ -6,7 +6,7 @@ Airtable.configure({
 
 const base = Airtable.base(process.env.AIRTABLE_BASE_ID);
 
-export const getAllRecordsFromTable = async (name: string) => {
+const getAllRecordsFromTable = async (name: string) => {
   const allRecords = [];
 
   await base(name)
@@ -24,4 +24,21 @@ export const getAllRecordsFromTable = async (name: string) => {
   }));
 
   return allRecordsMinified;
+};
+
+export const getBooks = async () => {
+  const books = await getAllRecordsFromTable('Books');
+  const authors = await getAllRecordsFromTable('Thoughtleaders');
+  const categories = await getAllRecordsFromTable('Categories');
+
+  return books.map((book) => ({
+    ...book,
+    Authors: book.Authors.map(
+      (authorId) => authors.find((author) => author.id === authorId).Name
+    ),
+    Category: book.Category.map(
+      (categoryId) =>
+        categories.find((category) => category.id === categoryId).Name
+    ),
+  }));
 };
