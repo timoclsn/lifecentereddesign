@@ -26,19 +26,39 @@ const getAllRecordsFromTable = async (name: string) => {
   return allRecordsMinified;
 };
 
-export const getBooks = async () => {
-  const books = await getAllRecordsFromTable('Books');
-  const authors = await getAllRecordsFromTable('Thoughtleaders');
-  const categories = await getAllRecordsFromTable('Categories');
+let dataStore: any = {};
+const getData = async () => {
+  if (!Object.keys(dataStore).length) {
+    dataStore = {
+      books: await getAllRecordsFromTable('Books'),
+      articles: await getAllRecordsFromTable('Articles'),
+      thoughtleaders: await getAllRecordsFromTable('Thoughtleaders'),
+      categories: await getAllRecordsFromTable('Categories'),
+      topics: await getAllRecordsFromTable('Topics'),
+      podcastEpisodes: await getAllRecordsFromTable('Podcast Episodes'),
+      podcasts: await getAllRecordsFromTable('Podcasts'),
+      directories: await getAllRecordsFromTable('Directories'),
+      organizations: await getAllRecordsFromTable('Organizations'),
+      videos: await getAllRecordsFromTable('Videos'),
+      tools: await getAllRecordsFromTable('Tools'),
+      communitiesAssociationsOrganizations: await getAllRecordsFromTable(
+        'Communities, Associations, Organizations'
+      ),
+      courses: await getAllRecordsFromTable('Courses'),
+    };
+  }
 
-  return books.map((book) => ({
+  return dataStore;
+};
+
+const findReference = (ids: string[], data: any) =>
+  ids.map((id) => data.find((date) => date.id === id).Name);
+
+export const getBooks = async () => {
+  const data = await getData();
+  return data.books.map((book) => ({
     ...book,
-    Authors: book.Authors.map(
-      (authorId) => authors.find((author) => author.id === authorId).Name
-    ),
-    Category: book.Category.map(
-      (categoryId) =>
-        categories.find((category) => category.id === categoryId).Name
-    ),
+    Authors: book.Authors && findReference(book.Authors, data.thoughtleaders),
+    Category: book.Category && findReference(book.Category, data.categories),
   }));
 };
