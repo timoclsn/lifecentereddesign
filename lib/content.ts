@@ -62,3 +62,15 @@ export const getBooks = async () => {
     Category: book.Category && findReference(book.Category, data.categories),
   }));
 };
+
+export const getArticles = async () => {
+  const data = await getData();
+  return data.articles.map((article) => ({
+    ...article,
+    'Author(s)':
+      article['Author(s)'] &&
+      findReference(article['Author(s)'], data.thoughtleaders),
+    Category:
+      article.Category && findReference(article.Category, data.categories),
+  }));
+};
