@@ -70,8 +70,8 @@ const findReference = (ids: string[], data: any) =>
 interface Book {
   id: string;
   Title: string;
-  Authors: string[];
-  Category: string[];
+  Authors?: string[];
+  Category?: string[];
   'Link Title': string;
   Link: string;
   'Publishing Date': string;
@@ -81,49 +81,53 @@ interface Book {
   Image: string[];
   Rating: number;
   'Personal Note': string;
-  Topics: string[];
-}
-
-interface Article {
-  id: string;
-  Title: string;
-  'Author(s)': string[];
-  Category: string[];
-  'Link Title': string;
-  Link: string;
-  Date: string;
-  Duration: number;
-  Topics: string[];
-  Image: string[];
-  Description: string;
-  Rating: number;
-  'Personal Note': string;
+  Topics?: string[];
 }
 
 export const getBooks = async (): Promise<Book[]> => {
   const data = await getData();
   return data.books.map((book) => ({
     ...book,
-    Authors: book.Authors
-      ? findReference(book.Authors, data.thoughtleaders)
-      : [],
-    Category: book.Category
-      ? findReference(book.Category, data.categories)
-      : [],
-    Topics: book.Topics ? findReference(book.Topics, data.topics) : [],
+    ...(book.Author && {
+      Authors: findReference(book.Authors, data.thoughtleaders),
+    }),
+    ...(book.Category && {
+      Categorys: findReference(book.Category, data.categories),
+    }),
+    ...(book.Topics && {
+      Topics: findReference(book.Topics, data.topics),
+    }),
   }));
 };
+
+interface Article {
+  id: string;
+  Title: string;
+  'Author(s)'?: string[];
+  Category?: string[];
+  'Link Title': string;
+  Link: string;
+  Date: string;
+  Duration: number;
+  Topics?: string[];
+  Image: string[];
+  Description: string;
+  Rating: number;
+  'Personal Note': string;
+}
 
 export const getArticles = async (): Promise<Article[]> => {
   const data = await getData();
   return data.articles.map((article) => ({
     ...article,
-    'Author(s)': article['Author(s)']
-      ? findReference(article['Author(s)'], data.thoughtleaders)
-      : [],
-    Category: article.Category
-      ? findReference(article.Category, data.categories)
-      : [],
-    Topics: article.Topics ? findReference(article.Topics, data.topics) : [],
+    ...(article['Author(s)'] && {
+      'Author(s)': findReference(article['Author(s)'], data.thoughtleaders),
+    }),
+    ...(article.Category && {
+      Category: findReference(article.Category, data.categories),
+    }),
+    ...(article.Topics && {
+      Topics: findReference(article.Topics, data.topics),
+    }),
   }));
 };
