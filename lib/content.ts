@@ -6,7 +6,9 @@ Airtable.configure({
 
 const base = Airtable.base(process.env.AIRTABLE_BASE_ID);
 
-const getAllRecordsFromTable = async (name: string) => {
+const getAllRecordsFromTable = async <TRecord>(
+  name: string
+): Promise<TRecord[]> => {
   const allRecords = [];
 
   await base(name)
@@ -26,12 +28,24 @@ const getAllRecordsFromTable = async (name: string) => {
   return allRecordsMinified;
 };
 
-let dataStore: any = {};
+interface BookRaw {
+  id: string;
+  Authors: string[];
+  Category: string[];
+}
+
+interface ArticleRaw {
+  id: string;
+  'Author(s)': string[];
+  Category: string[];
+}
+
+let dataStore;
 const getData = async () => {
-  if (!Object.keys(dataStore).length) {
+  if (!dataStore) {
     dataStore = {
-      books: await getAllRecordsFromTable('Books'),
-      articles: await getAllRecordsFromTable('Articles'),
+      books: await getAllRecordsFromTable<BookRaw>('Books'),
+      articles: await getAllRecordsFromTable<ArticleRaw>('Articles'),
       thoughtleaders: await getAllRecordsFromTable('Thoughtleaders'),
       categories: await getAllRecordsFromTable('Categories'),
       topics: await getAllRecordsFromTable('Topics'),
@@ -47,30 +61,69 @@ const getData = async () => {
       courses: await getAllRecordsFromTable('Courses'),
     };
   }
-
   return dataStore;
 };
 
 const findReference = (ids: string[], data: any) =>
   ids.map((id) => data.find((date) => date.id === id).Name);
 
-export const getBooks = async () => {
+interface Book {
+  id: string;
+  Title: string;
+  Authors: string[];
+  Category: string[];
+  'Link Title': string;
+  Link: string;
+  'Publishing Date': string;
+  Publisher: string;
+  ISBN: string;
+  Description: string;
+  Image: string[];
+  Rating: number;
+  'Personal Note': string;
+  Topics: string[];
+}
+
+interface Article {
+  id: string;
+  Title: string;
+  'Author(s)': string[];
+  Category: string[];
+  'Link Title': string;
+  Link: string;
+  Date: string;
+  Duration: number;
+  Topics: string[];
+  Image: string[];
+  Description: string;
+  Rating: number;
+  'Personal Note': string;
+}
+
+export const getBooks = async (): Promise<Book[]> => {
   const data = await getData();
   return data.books.map((book) => ({
     ...book,
-    Authors: book.Authors && findReference(book.Authors, data.thoughtleaders),
-    Category: book.Category && findReference(book.Category, data.categories),
+    Authors: book.Authors
+      ? findReference(book.Authors, data.thoughtleaders)
+      : [],
+    Category: book.Category
+      ? findReference(book.Category, data.categories)
+      : [],
+    Topics: book.Topics ? findReference(book.Topics, data.topics) : [],
   }));
 };
 
-export const getArticles = async () => {
+export const getArticles = async (): Promise<Article[]> => {
   const data = await getData();
   return data.articles.map((article) => ({
     ...article,
-    'Author(s)':
-      article['Author(s)'] &&
-      findReference(article['Author(s)'], data.thoughtleaders),
-    Category:
-      article.Category && findReference(article.Category, data.categories),
+    'Author(s)': article['Author(s)']
+      ? findReference(article['Author(s)'], data.thoughtleaders)
+      : [],
+    Category: article.Category
+      ? findReference(article.Category, data.categories)
+      : [],
+    Topics: article.Topics ? findReference(article.Topics, data.topics) : [],
   }));
 };
