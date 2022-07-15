@@ -79,7 +79,7 @@ export const getBooks = async (): Promise<Book[]> => {
       Authors: findReference(book.Authors, data.thoughtleaders),
     }),
     ...(book.Category && {
-      Categorys: findReference(book.Category, data.categories),
+      Category: findReference(book.Category, data.categories),
     }),
     ...(book.Topics && {
       Topics: findReference(book.Topics, data.topics),
