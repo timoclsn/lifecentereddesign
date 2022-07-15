@@ -22,6 +22,7 @@ const getAllRecordsFromTable = async <TRecord>(
 
   const allRecordsMinified = allRecords.map((record) => ({
     id: record.id,
+    createdTime: record._rawJson.createdTime,
     ...record.fields,
   }));
 
@@ -68,12 +69,15 @@ type ContenType =
   | 'communitiesOrOrganization'
   | 'course';
 
+type Category = Array<{ Name: string }>;
+
 export interface Book {
   type: ContenType;
   id: string;
+  createdTime: string;
   Title: string;
   Authors?: Array<{ Name: string }>;
-  Category?: Array<{ Name: string }>;
+  Category?: Category;
   'Link Title': string;
   Link: string;
   'Publishing Date': string;
@@ -106,9 +110,10 @@ export const getBooks = async (): Promise<Book[]> => {
 interface Article {
   type: ContenType;
   id: string;
+  createdTime: string;
   Title: string;
   'Author(s)'?: string[];
-  Category?: string[];
+  Category?: Category;
   'Link Title': string;
   Link: string;
   Date: string;
@@ -137,12 +142,13 @@ export const getArticles = async (): Promise<Article[]> => {
   }));
 };
 
-interface Thoughtleaders {
+export interface Thoughtleader {
   type: ContenType;
   id: string;
+  createdTime: string;
   Name: string;
   'Job/Description': string;
-  Category?: string[];
+  Category?: Category;
   'Link Title': string;
   Link: string;
   Books: string[];
@@ -152,7 +158,7 @@ interface Thoughtleaders {
   Podcasts: string[];
 }
 
-export const getThoughtleaders = async (): Promise<Thoughtleaders[]> => {
+export const getThoughtleaders = async (): Promise<Thoughtleader[]> => {
   const data = await getData();
   return data.thoughtleaders.map((thoughtleader) => ({
     type: 'thoughtleader',
@@ -184,6 +190,7 @@ export const getThoughtleaders = async (): Promise<Thoughtleaders[]> => {
 interface PodcastEpisodes {
   type: ContenType;
   id: string;
+  createdTime: string;
   Title: string;
   Podcast: string;
   Category: string[];
@@ -225,6 +232,7 @@ export const getPodcastEpisodes = async (): Promise<PodcastEpisodes[]> => {
 interface Podcasts {
   type: ContenType;
   id: string;
+  createdTime: string;
   Name: string;
   'Host(s)': string[];
   'Link Title': string;
@@ -262,6 +270,7 @@ export const getPodcasts = async (): Promise<Podcasts[]> => {
 interface Directories {
   type: ContenType;
   id: string;
+  createdTime: string;
   Name: string;
   Description: string;
   'Link Title': string;
@@ -283,6 +292,7 @@ export const getDirectories = async (): Promise<Directories[]> => {
 interface Videos {
   type: ContenType;
   id: string;
+  createdTime: string;
   Title: string;
   Toughtleader: string[];
   Category: string[];
@@ -313,6 +323,7 @@ export const getVideos = async (): Promise<Videos[]> => {
 interface Tools {
   type: ContenType;
   id: string;
+  createdTime: string;
   Name: string;
   Description: string;
   'Link Title': string;
@@ -334,6 +345,7 @@ export const getTools = async (): Promise<Tools[]> => {
 interface CommunitiesAndOrganizations {
   type: ContenType;
   id: string;
+  createdTime: string;
   Name: string;
   Description: string;
   'Link Title': string;
@@ -360,6 +372,7 @@ export const getCommunitiesAndOrganizations = async (): Promise<
 interface Courses {
   type: ContenType;
   id: string;
+  createdTime: string;
   Name: string;
   Description: string;
   'Link Title': string;

@@ -56,7 +56,7 @@ interface Props {
     text: string;
     url?: string;
   }>;
-  category: string;
+  category?: string;
   tags?: Array<{
     icon: any;
     text: string;
@@ -104,8 +104,8 @@ export const Card = ({
           })}
         </ul>
       )}
-      <div className="flex justify-between">
-        <Tag variant="light">{category}</Tag>
+      <div className={`flex ${category ? 'justify-between' : 'justify-end'}`}>
+        {category && <Tag variant="light">{category}</Tag>}
         {tags?.length > 0 && (
           <ul className="flex gap-8">
             {tags.map((tag, idx) => (
