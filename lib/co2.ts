@@ -5,7 +5,7 @@ const env = process.env.NODE_ENV;
 const demoResult = {
   co2: 0.11,
   cleanerThan: 90,
-} as const;
+};
 
 export type CO2 = typeof demoResult;
 

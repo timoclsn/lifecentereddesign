@@ -1,5 +1,6 @@
 const { fontFamily } = require('tailwindcss/defaultTheme');
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
@@ -19,10 +20,15 @@ module.exports = {
       oak: '#EFE9E2',
       forest: '#E4F2E6',
       stone: '#EAEAEA',
+      'tag-light': 'rgba(255, 255, 255, 0.56)',
+      'tag-dark': 'rgba(50, 45, 38, 0.16)',
     },
     extend: {
       fontFamily: {
         sans: ['Noto Sans', ...fontFamily.sans],
+      },
+      borderRadius: {
+        '4xl': '2rem',
       },
     },
   },

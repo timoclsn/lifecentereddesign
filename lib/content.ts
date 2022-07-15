@@ -54,11 +54,26 @@ const getData = async () => {
 const findReference = (ids: string[], data: any) =>
   ids.map((id) => data.find((date) => date.id === id));
 
-interface Book {
+type ContenType =
+  | 'book'
+  | 'article'
+  | 'thoughtleader'
+  | 'category'
+  | 'topic'
+  | 'podcastEpisode'
+  | 'podcast'
+  | 'directory'
+  | 'video'
+  | 'tool'
+  | 'communitiesOrOrganization'
+  | 'course';
+
+export interface Book {
+  type: ContenType;
   id: string;
   Title: string;
-  Authors?: string[];
-  Category?: string[];
+  Authors?: Array<{ Name: string }>;
+  Category?: Array<{ Name: string }>;
   'Link Title': string;
   Link: string;
   'Publishing Date': string;
@@ -74,8 +89,9 @@ interface Book {
 export const getBooks = async (): Promise<Book[]> => {
   const data = await getData();
   return data.books.map((book) => ({
+    type: 'book',
     ...book,
-    ...(book.Author && {
+    ...(book.Authors && {
       Authors: findReference(book.Authors, data.thoughtleaders),
     }),
     ...(book.Category && {
@@ -88,6 +104,7 @@ export const getBooks = async (): Promise<Book[]> => {
 };
 
 interface Article {
+  type: ContenType;
   id: string;
   Title: string;
   'Author(s)'?: string[];
@@ -106,6 +123,7 @@ interface Article {
 export const getArticles = async (): Promise<Article[]> => {
   const data = await getData();
   return data.articles.map((article) => ({
+    type: 'article',
     ...article,
     ...(article['Author(s)'] && {
       'Author(s)': findReference(article['Author(s)'], data.thoughtleaders),
@@ -120,6 +138,7 @@ export const getArticles = async (): Promise<Article[]> => {
 };
 
 interface Thoughtleaders {
+  type: ContenType;
   id: string;
   Name: string;
   'Job/Description': string;
@@ -135,33 +154,35 @@ interface Thoughtleaders {
 
 export const getThoughtleaders = async (): Promise<Thoughtleaders[]> => {
   const data = await getData();
-  return data.thoughtleaders.map((article) => ({
-    ...article,
-    ...(article.Category && {
-      Category: findReference(article.Category, data.categories),
+  return data.thoughtleaders.map((thoughtleader) => ({
+    type: 'thoughtleader',
+    ...thoughtleader,
+    ...(thoughtleader.Category && {
+      Category: findReference(thoughtleader.Category, data.categories),
     }),
-    ...(article.Books && {
-      Books: findReference(article.Books, data.books),
+    ...(thoughtleader.Books && {
+      Books: findReference(thoughtleader.Books, data.books),
     }),
-    ...(article['Article(s)'] && {
-      'Article(s)': findReference(article['Article(s)'], data.articles),
+    ...(thoughtleader['Article(s)'] && {
+      'Article(s)': findReference(thoughtleader['Article(s)'], data.articles),
     }),
-    ...(article['Podcast Episode(s)'] && {
+    ...(thoughtleader['Podcast Episode(s)'] && {
       'Podcast Episode(s)': findReference(
-        article['Podcast Episode(s)'],
+        thoughtleader['Podcast Episode(s)'],
         data.podcastEpisodes
       ),
     }),
-    ...(article['Video(s)'] && {
-      'Video(s)': findReference(article['Video(s)'], data.videos),
+    ...(thoughtleader['Video(s)'] && {
+      'Video(s)': findReference(thoughtleader['Video(s)'], data.videos),
     }),
-    ...(article.Podcasts && {
-      Podcasts: findReference(article.Podcasts, data.podcasts),
+    ...(thoughtleader.Podcasts && {
+      Podcasts: findReference(thoughtleader.Podcasts, data.podcasts),
     }),
   }));
 };
 
 interface PodcastEpisodes {
+  type: ContenType;
   id: string;
   Title: string;
   Podcast: string;
@@ -181,6 +202,7 @@ interface PodcastEpisodes {
 export const getPodcastEpisodes = async (): Promise<PodcastEpisodes[]> => {
   const data = await getData();
   return data.podcastEpisodes.map((podcastEpisode) => ({
+    type: 'podcastEpisode',
     ...podcastEpisode,
     ...(podcastEpisode.Category && {
       Category: findReference(podcastEpisode.Category, data.categories),
@@ -201,6 +223,7 @@ export const getPodcastEpisodes = async (): Promise<PodcastEpisodes[]> => {
 };
 
 interface Podcasts {
+  type: ContenType;
   id: string;
   Name: string;
   'Host(s)': string[];
@@ -216,6 +239,7 @@ interface Podcasts {
 export const getPodcasts = async (): Promise<Podcasts[]> => {
   const data = await getData();
   return data.podcasts.map((podcast) => ({
+    type: 'podcast',
     ...podcast,
     ...(podcast.Category && {
       Category: findReference(podcast.Category, data.categories),
@@ -236,6 +260,7 @@ export const getPodcasts = async (): Promise<Podcasts[]> => {
 };
 
 interface Directories {
+  type: ContenType;
   id: string;
   Name: string;
   Description: string;
@@ -247,6 +272,7 @@ interface Directories {
 export const getDirectories = async (): Promise<Directories[]> => {
   const data = await getData();
   return data.directories.map((directory) => ({
+    type: 'directory',
     ...directory,
     ...(directory.Category && {
       Category: findReference(directory.Category, data.categories),
@@ -255,6 +281,7 @@ export const getDirectories = async (): Promise<Directories[]> => {
 };
 
 interface Videos {
+  type: ContenType;
   id: string;
   Title: string;
   Toughtleader: string[];
@@ -272,6 +299,7 @@ interface Videos {
 export const getVideos = async (): Promise<Videos[]> => {
   const data = await getData();
   return data.videos.map((video) => ({
+    type: 'video',
     ...video,
     ...(video.Category && {
       Category: findReference(video.Category, data.categories),
@@ -283,6 +311,7 @@ export const getVideos = async (): Promise<Videos[]> => {
 };
 
 interface Tools {
+  type: ContenType;
   id: string;
   Name: string;
   Description: string;
@@ -294,6 +323,7 @@ interface Tools {
 export const getTools = async (): Promise<Tools[]> => {
   const data = await getData();
   return data.tools.map((tool) => ({
+    type: 'tool',
     ...tool,
     ...(tool.Category && {
       Category: findReference(tool.Category, data.categories),
@@ -302,6 +332,7 @@ export const getTools = async (): Promise<Tools[]> => {
 };
 
 interface CommunitiesAndOrganizations {
+  type: ContenType;
   id: string;
   Name: string;
   Description: string;
@@ -315,6 +346,7 @@ export const getCommunitiesAndOrganizations = async (): Promise<
 > => {
   const data = await getData();
   return data.communitiesAndOrganizations.map((communityOrOrganization) => ({
+    type: 'communityOrOrganization',
     ...communityOrOrganization,
     ...(communityOrOrganization.Category && {
       Category: findReference(
@@ -326,6 +358,7 @@ export const getCommunitiesAndOrganizations = async (): Promise<
 };
 
 interface Courses {
+  type: ContenType;
   id: string;
   Name: string;
   Description: string;
@@ -337,6 +370,7 @@ interface Courses {
 export const getCourses = async (): Promise<Courses[]> => {
   const data = await getData();
   return data.courses.map((course) => ({
+    type: 'course',
     ...course,
     ...(course.Category && {
       Category: findReference(course.Category, data.categories),
