@@ -93,7 +93,7 @@ export const Card = ({
                 <Element
                   className={`flex items-center gap-1${
                     metaInfo.url ? ' underline' : ''
-                  }`}
+                  }${Element === 'a' ? ' hover:opacity-80' : ''}`}
                   {...(metaInfo.url && {
                     href: metaInfo.url,
                     target: '_blank',
@@ -118,7 +118,12 @@ export const Card = ({
           <ul className="flex gap-8">
             {tags.map((tag, idx) => (
               <li key={idx}>
-                <a href={tag.url} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={tag.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:opacity-80"
+                >
                   <Tag variant="dark">
                     <div className="flex items-center gap-1">
                       <tag.icon size="18" />
