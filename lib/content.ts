@@ -107,12 +107,12 @@ export const getBooks = async (): Promise<Book[]> => {
   }));
 };
 
-interface Article {
+export interface Article {
   type: ContenType;
   id: string;
   createdTime: string;
   Title: string;
-  'Author(s)'?: string[];
+  'Author(s)'?: Array<{ Name: string }>;
   Category?: Category;
   'Link Title': string;
   Link: string;

@@ -1,4 +1,5 @@
 import { InferGetStaticPropsType } from 'next';
+import { ArticleCard } from '../components/ArticleCard';
 import { BookCard } from '../components/BookCard';
 
 import { Header } from '../components/Header';
@@ -6,6 +7,7 @@ import { Layout } from '../components/Layout';
 import { ThoughtleaderCard } from '../components/ThoughtleaderCard';
 import { getCO2Consumtion } from '../lib/co2';
 import {
+  Article,
   Book,
   getArticles,
   getBooks,
@@ -36,6 +38,8 @@ export default function Home({
             );
           } else if (ressource.type === 'book') {
             component = <BookCard book={ressource as Book} />;
+          } else if (ressource.type === 'article') {
+            component = <ArticleCard article={ressource as Article} />;
           }
           return (
             <li key={ressource.id} className="w-[calc(50%-2.5rem)]">
@@ -56,7 +60,7 @@ export const getStaticProps = async () => {
   const ressources = [
     ...(await getBooks()),
     ...(await getThoughtleaders()),
-    // ...(await getArticles()),
+    ...(await getArticles()),
     // ...(await getCourses()),
     // ...(await getPodcastEpisodes()),
     // ...(await getPodcasts()),
