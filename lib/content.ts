@@ -320,7 +320,7 @@ export const getVideos = async (): Promise<Video[]> => {
   }));
 };
 
-interface Tools {
+export interface Tool {
   type: ContenType;
   id: string;
   createdTime: string;
@@ -331,7 +331,7 @@ interface Tools {
   Category?: Category;
 }
 
-export const getTools = async (): Promise<Tools[]> => {
+export const getTools = async (): Promise<Tool[]> => {
   const data = await getData();
   return data.tools.map((tool) => ({
     type: 'tool',
