@@ -1,6 +1,7 @@
 import { InferGetStaticPropsType } from 'next';
 import { ArticleCard } from '../components/ArticleCard';
 import { BookCard } from '../components/BookCard';
+import { CommunityOrOranizationCard } from '../components/CommunityOrOranizationCard';
 import { CourseCard } from '../components/CourseCard';
 import { DirectoryCard } from '../components/DirectoryCard';
 
@@ -15,6 +16,7 @@ import { getCO2Consumtion } from '../lib/co2';
 import {
   Article,
   Book,
+  CommunityOrOrganization,
   Course,
   Directory,
   getArticles,
@@ -68,6 +70,14 @@ export default function Home({
             component = <ToolCard tool={ressource as Tool} />;
           } else if (ressource.type === 'directory') {
             component = <DirectoryCard directory={ressource as Directory} />;
+          } else if (ressource.type === 'communityOrOrganization') {
+            component = (
+              <CommunityOrOranizationCard
+                communityOrOrganization={ressource as CommunityOrOrganization}
+              />
+            );
+          } else {
+            throw new Error(`Unknown ressource type: ${ressource.type}`);
           }
           return (
             <li key={ressource.id} className="w-[calc(50%-2.5rem)]">
@@ -95,7 +105,7 @@ export const getStaticProps = async () => {
     ...(await getVideos()),
     ...(await getTools()),
     ...(await getDirectories()),
-    // ...(await getCommunitiesAndOrganizations()),
+    ...(await getCommunitiesAndOrganizations()),
   ].sort(
     (a, b) =>
       new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime()

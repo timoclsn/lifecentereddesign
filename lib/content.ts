@@ -66,7 +66,7 @@ type ContenType =
   | 'directory'
   | 'video'
   | 'tool'
-  | 'communitiesOrOrganization'
+  | 'communityOrOrganization'
   | 'course';
 
 type Category = Array<{ Name: string }>;
@@ -342,7 +342,7 @@ export const getTools = async (): Promise<Tool[]> => {
   }));
 };
 
-interface CommunitiesAndOrganizations {
+export interface CommunityOrOrganization {
   type: ContenType;
   id: string;
   createdTime: string;
@@ -354,7 +354,7 @@ interface CommunitiesAndOrganizations {
 }
 
 export const getCommunitiesAndOrganizations = async (): Promise<
-  CommunitiesAndOrganizations[]
+  CommunityOrOrganization[]
 > => {
   const data = await getData();
   return data.communitiesAndOrganizations.map((communityOrOrganization) => ({
