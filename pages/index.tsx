@@ -2,6 +2,7 @@ import { InferGetStaticPropsType } from 'next';
 import { ArticleCard } from '../components/ArticleCard';
 import { BookCard } from '../components/BookCard';
 import { CourseCard } from '../components/CourseCard';
+import { DirectoryCard } from '../components/DirectoryCard';
 
 import { Header } from '../components/Header';
 import { Layout } from '../components/Layout';
@@ -15,6 +16,7 @@ import {
   Article,
   Book,
   Course,
+  Directory,
   getArticles,
   getBooks,
   getCommunitiesAndOrganizations,
@@ -64,6 +66,8 @@ export default function Home({
             component = <VideoCard video={ressource as Video} />;
           } else if (ressource.type === 'tool') {
             component = <ToolCard tool={ressource as Tool} />;
+          } else if (ressource.type === 'directory') {
+            component = <DirectoryCard directory={ressource as Directory} />;
           }
           return (
             <li key={ressource.id} className="w-[calc(50%-2.5rem)]">
@@ -90,7 +94,7 @@ export const getStaticProps = async () => {
     ...(await getPodcasts()),
     ...(await getVideos()),
     ...(await getTools()),
-    // ...(await getDirectories()),
+    ...(await getDirectories()),
     // ...(await getCommunitiesAndOrganizations()),
   ].sort(
     (a, b) =>

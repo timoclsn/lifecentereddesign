@@ -267,7 +267,7 @@ export const getPodcasts = async (): Promise<Podcast[]> => {
   }));
 };
 
-interface Directories {
+export interface Directory {
   type: ContenType;
   id: string;
   createdTime: string;
@@ -278,7 +278,7 @@ interface Directories {
   Category?: Category;
 }
 
-export const getDirectories = async (): Promise<Directories[]> => {
+export const getDirectories = async (): Promise<Directory[]> => {
   const data = await getData();
   return data.directories.map((directory) => ({
     type: 'directory',
