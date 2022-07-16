@@ -229,7 +229,7 @@ export const getPodcastEpisodes = async (): Promise<PodcastEpisode[]> => {
   }));
 };
 
-interface Podcasts {
+export interface Podcast {
   type: ContenType;
   id: string;
   createdTime: string;
@@ -244,7 +244,7 @@ interface Podcasts {
   'Podcast Episodes 2': string[];
 }
 
-export const getPodcasts = async (): Promise<Podcasts[]> => {
+export const getPodcasts = async (): Promise<Podcast[]> => {
   const data = await getData();
   return data.podcasts.map((podcast) => ({
     type: 'podcast',
