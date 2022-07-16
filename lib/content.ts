@@ -390,3 +390,16 @@ export const getCourses = async (): Promise<Course[]> => {
     }),
   }));
 };
+
+export type Ressources = Array<
+  | Book
+  | Article
+  | Thoughtleader
+  | PodcastEpisode
+  | Podcast
+  | Directory
+  | Video
+  | Tool
+  | CommunityOrOrganization
+  | Course
+>;
