@@ -28,7 +28,7 @@ interface Props {
 
 export const Ressources = ({ ressources }: Props) => {
   return (
-    <ul className="flex flex-wrap gap-10">
+    <ul className="flex flex-col flex-wrap gap-10 md:flex-row">
       {ressources.map((ressource) => {
         let component;
         if (ressource.type === 'thoughtleader') {
@@ -63,7 +63,7 @@ export const Ressources = ({ ressources }: Props) => {
           throw new Error(`Unknown ressource type: ${ressource.type}`);
         }
         return (
-          <li key={ressource.id} className="w-[calc(50%-2.5rem)]">
+          <li key={ressource.id} className="md:w-[calc(50%-2.5rem)]">
             {component}
           </li>
         );

@@ -85,7 +85,7 @@ export const Card = ({
       )}
       <h2 className="mb-5 text-3xl font-bold">{title}</h2>
       {metaInfos && (
-        <ul className="mb-20 flex gap-8 opacity-80">
+        <ul className="mb-20 flex flex-wrap gap-x-8 gap-y-3 opacity-80">
           {metaInfos.map((metaInfo, idx) => {
             const Element = metaInfo.url ? 'a' : 'span';
             return (
@@ -108,7 +108,11 @@ export const Card = ({
           })}
         </ul>
       )}
-      <div className={`flex ${category ? 'justify-between' : 'justify-end'}`}>
+      <div
+        className={`flex flex-wrap gap-3 ${
+          category ? 'justify-between' : 'justify-end'
+        }`}
+      >
         {category && <Tag variant="light">{category}</Tag>}
         {tags?.length > 0 && (
           <ul className="flex gap-8">
