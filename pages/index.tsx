@@ -5,6 +5,7 @@ import { CourseCard } from '../components/CourseCard';
 
 import { Header } from '../components/Header';
 import { Layout } from '../components/Layout';
+import { PodcastEpisodeCard } from '../components/PodcastEpisodeCard';
 import { ThoughtleaderCard } from '../components/ThoughtleaderCard';
 import { getCO2Consumtion } from '../lib/co2';
 import {
@@ -21,6 +22,7 @@ import {
   getThoughtleaders,
   getTools,
   getVideos,
+  PodcastEpisode,
   Thoughtleader,
 } from '../lib/content';
 
@@ -44,6 +46,12 @@ export default function Home({
             component = <ArticleCard article={ressource as Article} />;
           } else if (ressource.type === 'course') {
             component = <CourseCard course={ressource as Course} />;
+          } else if (ressource.type === 'podcastEpisode') {
+            component = (
+              <PodcastEpisodeCard
+                podcastEpisode={ressource as PodcastEpisode}
+              />
+            );
           }
           return (
             <li key={ressource.id} className="w-[calc(50%-2.5rem)]">
@@ -66,7 +74,7 @@ export const getStaticProps = async () => {
     ...(await getThoughtleaders()),
     ...(await getArticles()),
     ...(await getCourses()),
-    // ...(await getPodcastEpisodes()),
+    ...(await getPodcastEpisodes()),
     // ...(await getPodcasts()),
     // ...(await getVideos()),
     // ...(await getTools()),

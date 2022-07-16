@@ -187,7 +187,7 @@ export const getThoughtleaders = async (): Promise<Thoughtleader[]> => {
   }));
 };
 
-interface PodcastEpisodes {
+export interface PodcastEpisode {
   type: ContenType;
   id: string;
   createdTime: string;
@@ -195,9 +195,9 @@ interface PodcastEpisodes {
   Podcast: string;
   Category?: Category;
   Date: string;
-  Duration: string;
+  Duration: number;
   'Podcast = relevant': string[];
-  Guest: string[];
+  Guest?: Array<{ Name: string }>;
   Link: string;
   Topics?: string[];
   Image: string[];
@@ -206,7 +206,7 @@ interface PodcastEpisodes {
   'Personal Note': string;
 }
 
-export const getPodcastEpisodes = async (): Promise<PodcastEpisodes[]> => {
+export const getPodcastEpisodes = async (): Promise<PodcastEpisode[]> => {
   const data = await getData();
   return data.podcastEpisodes.map((podcastEpisode) => ({
     type: 'podcastEpisode',
