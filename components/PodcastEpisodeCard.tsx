@@ -13,7 +13,6 @@ interface Props {
 }
 
 export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
-  console.log(podcastEpisode.Guest);
   return (
     <Card
       variant="podcastEpisode"

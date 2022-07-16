@@ -8,6 +8,7 @@ import { Layout } from '../components/Layout';
 import { PodcastCard } from '../components/PodcastCard';
 import { PodcastEpisodeCard } from '../components/PodcastEpisodeCard';
 import { ThoughtleaderCard } from '../components/ThoughtleaderCard';
+import { VideoCard } from '../components/VideoCard';
 import { getCO2Consumtion } from '../lib/co2';
 import {
   Article,
@@ -26,6 +27,7 @@ import {
   Podcast,
   PodcastEpisode,
   Thoughtleader,
+  Video,
 } from '../lib/content';
 
 export default function Home({
@@ -56,6 +58,8 @@ export default function Home({
             );
           } else if (ressource.type === 'podcast') {
             component = <PodcastCard podcast={ressource as Podcast} />;
+          } else if (ressource.type === 'video') {
+            component = <VideoCard video={ressource as Video} />;
           }
           return (
             <li key={ressource.id} className="w-[calc(50%-2.5rem)]">
@@ -80,7 +84,7 @@ export const getStaticProps = async () => {
     ...(await getCourses()),
     ...(await getPodcastEpisodes()),
     ...(await getPodcasts()),
-    // ...(await getVideos()),
+    ...(await getVideos()),
     // ...(await getTools()),
     // ...(await getDirectories()),
     // ...(await getCommunitiesAndOrganizations()),

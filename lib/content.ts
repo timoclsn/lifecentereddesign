@@ -289,12 +289,12 @@ export const getDirectories = async (): Promise<Directories[]> => {
   }));
 };
 
-interface Videos {
+export interface Video {
   type: ContenType;
   id: string;
   createdTime: string;
   Title: string;
-  Toughtleader: string[];
+  Thoughtleader?: Array<{ Name: string }>;
   Category?: Category;
   'Link Title': string;
   Link: string;
@@ -306,7 +306,7 @@ interface Videos {
   'Personal Note': string;
 }
 
-export const getVideos = async (): Promise<Videos[]> => {
+export const getVideos = async (): Promise<Video[]> => {
   const data = await getData();
   return data.videos.map((video) => ({
     type: 'video',
