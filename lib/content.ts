@@ -193,7 +193,7 @@ interface PodcastEpisodes {
   createdTime: string;
   Title: string;
   Podcast: string;
-  Category: string[];
+  Category?: Category;
   Date: string;
   Duration: string;
   'Podcast = relevant': string[];
@@ -237,7 +237,7 @@ interface Podcasts {
   'Host(s)': string[];
   'Link Title': string;
   Link: string;
-  Category: string[];
+  Category?: Category;
   'Host(s) = Thoughtleader(s)': string[];
   'Podcast Episodes': string[];
   Description: string;
@@ -275,7 +275,7 @@ interface Directories {
   Description: string;
   'Link Title': string;
   Link: string;
-  Category: string[];
+  Category?: Category;
 }
 
 export const getDirectories = async (): Promise<Directories[]> => {
@@ -295,7 +295,7 @@ interface Videos {
   createdTime: string;
   Title: string;
   Toughtleader: string[];
-  Category: string[];
+  Category?: Category;
   'Link Title': string;
   Link: string;
   Date: string;
@@ -328,7 +328,7 @@ interface Tools {
   Description: string;
   'Link Title': string;
   Link: string;
-  Category: string[];
+  Category?: Category;
 }
 
 export const getTools = async (): Promise<Tools[]> => {
@@ -350,7 +350,7 @@ interface CommunitiesAndOrganizations {
   Description: string;
   'Link Title': string;
   Link: string;
-  Category: string[];
+  Category?: Category;
 }
 
 export const getCommunitiesAndOrganizations = async (): Promise<
@@ -369,7 +369,7 @@ export const getCommunitiesAndOrganizations = async (): Promise<
   }));
 };
 
-interface Courses {
+export interface Course {
   type: ContenType;
   id: string;
   createdTime: string;
@@ -377,10 +377,10 @@ interface Courses {
   Description: string;
   'Link Title': string;
   Link: string;
-  Category: string[];
+  Category?: Category;
 }
 
-export const getCourses = async (): Promise<Courses[]> => {
+export const getCourses = async (): Promise<Course[]> => {
   const data = await getData();
   return data.courses.map((course) => ({
     type: 'course',

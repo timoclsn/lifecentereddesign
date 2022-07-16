@@ -45,6 +45,10 @@ const variants = {
     background: 'bg-morning',
     type: 'Community or Organization',
   },
+  course: {
+    background: 'bg-evening',
+    type: 'Course',
+  },
 } as const;
 
 interface Props {
