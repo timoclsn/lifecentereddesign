@@ -63,7 +63,7 @@ export const Ressources = ({ ressources }: Props) => {
           throw new Error(`Unknown ressource type: ${ressource.type}`);
         }
         return (
-          <li key={ressource.id} className="md:w-[calc(50%-2.5rem)]">
+          <li key={ressource.id} className="md:w-[calc(50%-1.25rem)]">
             {component}
           </li>
         );
