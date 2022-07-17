@@ -1,5 +1,10 @@
-import { UilArrowCircleDown } from '@iconscout/react-unicons';
-import { ReactNode, useState } from 'react';
+import {
+  UilArrowCircleDown,
+  UilAngleDown,
+  UilCheck,
+} from '@iconscout/react-unicons';
+import { useState } from 'react';
+import * as Select from '@radix-ui/react-select';
 import {
   Thoughtleader,
   Book,
@@ -27,20 +32,39 @@ import { ThoughtleaderCard } from './ThoughtleaderCard';
 import { ToolCard } from './ToolCard';
 import { VideoCard } from './VideoCard';
 
+type Filter = ContenType | null;
+type Sort = 'date' | 'title';
+
 interface Props {
   resources: TResources;
 }
 
-type Filter = ContenType | null;
-
 export const Resources = ({ resources }: Props) => {
   const [filteredType, setFilteredType] = useState<Filter>(null);
   const [itemsCount, setItemsCount] = useState(12);
+  const [sort, setSort] = useState<Sort>('title');
+
+  const sortedResources = resources.sort((a, b) => {
+    if (sort === 'date') {
+      return (
+        new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime()
+      );
+    } else if (sort === 'title') {
+      if ('Title' in a && 'Title' in b) {
+        return a.Title.localeCompare(b.Title);
+      }
+      if ('Name' in a && 'Name' in b) {
+        return a.Name.localeCompare(b.Name);
+      }
+      return 0;
+    }
+    return 0;
+  });
 
   const filteredResources =
     filteredType === null
-      ? resources
-      : resources.filter((resource) => resource.type === filteredType);
+      ? sortedResources
+      : sortedResources.filter((resource) => resource.type === filteredType);
   const resourcesToDisplay = filteredResources.slice(0, itemsCount);
   const showShowMoreBtn = filteredResources.length > itemsCount;
 
@@ -130,62 +154,110 @@ export const Resources = ({ resources }: Props) => {
           CommunitiesAndOrganization
         </FilterButton>
       </div>
-      <ul className="px- text- flex flex-col flex-wrap gap-10 md:flex-row">
-        {resourcesToDisplay.map((ressource) => {
-          let component;
+      <div className="flex flex-col gap-6">
+        <div className="relative self-end">
+          <span className="absolute right-24 whitespace-nowrap">
+            Sorted by:
+          </span>
+          <Select.Root
+            defaultValue="date"
+            value={sort}
+            onValueChange={(value: Sort) => setSort(value)}
+          >
+            <Select.Trigger className="flex items-center gap-1 font-bold outline-none">
+              <Select.Value aria-label={sort} />
+              <Select.Icon>
+                <UilAngleDown />
+              </Select.Icon>
+            </Select.Trigger>
 
-          switch (ressource.type) {
-            case 'thoughtleader':
-              component = (
-                <ThoughtleaderCard thoughtleader={ressource as Thoughtleader} />
-              );
-              break;
-            case 'book':
-              component = <BookCard book={ressource as Book} />;
-              break;
-            case 'article':
-              component = <ArticleCard article={ressource as Article} />;
-              break;
-            case 'course':
-              component = <CourseCard course={ressource as Course} />;
-              break;
-            case 'podcast':
-              component = <PodcastCard podcast={ressource as Podcast} />;
-              break;
-            case 'podcastEpisode':
-              component = (
-                <PodcastEpisodeCard
-                  podcastEpisode={ressource as PodcastEpisode}
-                />
-              );
-              break;
-            case 'video':
-              component = <VideoCard video={ressource as Video} />;
-              break;
-            case 'tool':
-              component = <ToolCard tool={ressource as Tool} />;
-              break;
-            case 'directory':
-              component = <DirectoryCard directory={ressource as Directory} />;
-              break;
-            case 'communityOrOrganization':
-              component = (
-                <CommunityOrOranizationCard
-                  communityOrOrganization={ressource as CommunityOrOrganization}
-                />
-              );
-              break;
-            default:
-              throw new Error(`Unknown ressource type: ${ressource.type}`);
-          }
+            <Select.Content className="rounded-2xl bg-black px-4 py-6 text-white">
+              <Select.Viewport className="flex flex-col gap-1">
+                <Select.Item
+                  value="date"
+                  className="rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-white hover:text-black"
+                >
+                  <Select.ItemIndicator className="absolute left-1 w-[25px]">
+                    <UilCheck />
+                  </Select.ItemIndicator>
+                  <Select.ItemText>Added</Select.ItemText>
+                </Select.Item>
+                <Select.Item
+                  value="title"
+                  className="rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-white hover:text-black"
+                >
+                  <Select.ItemIndicator className="absolute left-1 w-[25px]">
+                    <UilCheck />
+                  </Select.ItemIndicator>
+                  <Select.ItemText>Title</Select.ItemText>
+                </Select.Item>
+              </Select.Viewport>
+            </Select.Content>
+          </Select.Root>
+        </div>
+        <ul className="flex flex-col flex-wrap gap-10 md:flex-row">
+          {resourcesToDisplay.map((ressource) => {
+            let component;
 
-          return (
-            <li key={ressource.id} className="md:w-[calc(50%-1.25rem)]">
-              {component}
-            </li>
-          );
-        })}
-      </ul>
+            switch (ressource.type) {
+              case 'thoughtleader':
+                component = (
+                  <ThoughtleaderCard
+                    thoughtleader={ressource as Thoughtleader}
+                  />
+                );
+                break;
+              case 'book':
+                component = <BookCard book={ressource as Book} />;
+                break;
+              case 'article':
+                component = <ArticleCard article={ressource as Article} />;
+                break;
+              case 'course':
+                component = <CourseCard course={ressource as Course} />;
+                break;
+              case 'podcast':
+                component = <PodcastCard podcast={ressource as Podcast} />;
+                break;
+              case 'podcastEpisode':
+                component = (
+                  <PodcastEpisodeCard
+                    podcastEpisode={ressource as PodcastEpisode}
+                  />
+                );
+                break;
+              case 'video':
+                component = <VideoCard video={ressource as Video} />;
+                break;
+              case 'tool':
+                component = <ToolCard tool={ressource as Tool} />;
+                break;
+              case 'directory':
+                component = (
+                  <DirectoryCard directory={ressource as Directory} />
+                );
+                break;
+              case 'communityOrOrganization':
+                component = (
+                  <CommunityOrOranizationCard
+                    communityOrOrganization={
+                      ressource as CommunityOrOrganization
+                    }
+                  />
+                );
+                break;
+              default:
+                throw new Error(`Unknown ressource type: ${ressource.type}`);
+            }
+
+            return (
+              <li key={ressource.id} className="md:w-[calc(50%-1.25rem)]">
+                {component}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
       {showShowMoreBtn && (
         <div className="flex justify-center">
           <Button
