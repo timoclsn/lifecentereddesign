@@ -2,7 +2,7 @@ import { InferGetStaticPropsType } from 'next';
 
 import { Header } from '../components/Header';
 import { Layout } from '../components/Layout';
-import { Ressources } from '../components/Ressources';
+import { Resources } from '../components/Resources';
 import { getCO2Consumtion } from '../lib/co2';
 import {
   getArticles,
@@ -19,12 +19,12 @@ import {
 
 export default function Home({
   co2Consumption,
-  ressources,
+  resources,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <Layout co2Consumption={co2Consumption}>
       <Header />
-      <Ressources ressources={ressources} />
+      <Resources resources={resources} />
     </Layout>
   );
 }
@@ -34,7 +34,7 @@ export const getStaticProps = async () => {
     'https://lifecentereddesign.net'
   );
 
-  const ressources = [
+  const resources = [
     ...(await getBooks()),
     ...(await getThoughtleaders()),
     ...(await getArticles()),
@@ -53,7 +53,7 @@ export const getStaticProps = async () => {
   return {
     props: {
       co2Consumption,
-      ressources,
+      resources,
     },
   };
 };

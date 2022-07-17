@@ -55,7 +55,7 @@ const getData = async () => {
 const findReference = (ids: string[], data: any) =>
   ids.map((id) => data.find((date) => date.id === id));
 
-type ContenType =
+export type ContenType =
   | 'book'
   | 'article'
   | 'thoughtleader'
@@ -391,7 +391,7 @@ export const getCourses = async (): Promise<Course[]> => {
   }));
 };
 
-export type Ressources = Array<
+export type Resources = Array<
   | Book
   | Article
   | Thoughtleader
