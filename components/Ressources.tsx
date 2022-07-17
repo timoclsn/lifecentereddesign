@@ -31,37 +31,52 @@ export const Ressources = ({ ressources }: Props) => {
     <ul className="flex flex-col flex-wrap gap-10 md:flex-row">
       {ressources.map((ressource) => {
         let component;
-        if (ressource.type === 'thoughtleader') {
-          component = (
-            <ThoughtleaderCard thoughtleader={ressource as Thoughtleader} />
-          );
-        } else if (ressource.type === 'book') {
-          component = <BookCard book={ressource as Book} />;
-        } else if (ressource.type === 'article') {
-          component = <ArticleCard article={ressource as Article} />;
-        } else if (ressource.type === 'course') {
-          component = <CourseCard course={ressource as Course} />;
-        } else if (ressource.type === 'podcastEpisode') {
-          component = (
-            <PodcastEpisodeCard podcastEpisode={ressource as PodcastEpisode} />
-          );
-        } else if (ressource.type === 'podcast') {
-          component = <PodcastCard podcast={ressource as Podcast} />;
-        } else if (ressource.type === 'video') {
-          component = <VideoCard video={ressource as Video} />;
-        } else if (ressource.type === 'tool') {
-          component = <ToolCard tool={ressource as Tool} />;
-        } else if (ressource.type === 'directory') {
-          component = <DirectoryCard directory={ressource as Directory} />;
-        } else if (ressource.type === 'communityOrOrganization') {
-          component = (
-            <CommunityOrOranizationCard
-              communityOrOrganization={ressource as CommunityOrOrganization}
-            />
-          );
-        } else {
-          throw new Error(`Unknown ressource type: ${ressource.type}`);
+
+        switch (ressource.type) {
+          case 'thoughtleader':
+            component = (
+              <ThoughtleaderCard thoughtleader={ressource as Thoughtleader} />
+            );
+            break;
+          case 'book':
+            component = <BookCard book={ressource as Book} />;
+            break;
+          case 'article':
+            component = <ArticleCard article={ressource as Article} />;
+            break;
+          case 'course':
+            component = <CourseCard course={ressource as Course} />;
+            break;
+          case 'podcast':
+            component = <PodcastCard podcast={ressource as Podcast} />;
+            break;
+          case 'podcastEpisode':
+            component = (
+              <PodcastEpisodeCard
+                podcastEpisode={ressource as PodcastEpisode}
+              />
+            );
+            break;
+          case 'video':
+            component = <VideoCard video={ressource as Video} />;
+            break;
+          case 'tool':
+            component = <ToolCard tool={ressource as Tool} />;
+            break;
+          case 'directory':
+            component = <DirectoryCard directory={ressource as Directory} />;
+            break;
+          case 'communityOrOrganization':
+            component = (
+              <CommunityOrOranizationCard
+                communityOrOrganization={ressource as CommunityOrOrganization}
+              />
+            );
+            break;
+          default:
+            throw new Error(`Unknown ressource type: ${ressource.type}`);
         }
+
         return (
           <li key={ressource.id} className="md:w-[calc(50%-1.25rem)]">
             {component}
