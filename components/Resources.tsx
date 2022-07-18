@@ -50,13 +50,9 @@ export const Resources = ({ resources }: Props) => {
         new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime()
       );
     } else if (sort === 'title') {
-      if ('Title' in a && 'Title' in b) {
-        return a.Title.localeCompare(b.Title);
-      }
-      if ('Name' in a && 'Name' in b) {
-        return a.Name.localeCompare(b.Name);
-      }
-      return 0;
+      const itemA = 'Title' in a ? a.Title : a.Name;
+      const itemB = 'Title' in b ? b.Title : b.Name;
+      return itemA.localeCompare(itemB);
     }
     return 0;
   });
