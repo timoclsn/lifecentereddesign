@@ -77,7 +77,7 @@ export const Card = ({
   tags,
 }: Props) => {
   return (
-    <div className={`rounded-4xl p-8 ${variants[variant].background}`}>
+    <div className={`rounded-4xl p-8 ${variants[variant].background} h-full`}>
       {showType && (
         <div className="mb-4">
           <Tag variant="dark">{variants[variant].type}</Tag>
