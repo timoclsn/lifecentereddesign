@@ -1,5 +1,6 @@
 import { UilLinkAlt } from '@iconscout/react-unicons';
 import { Tool } from '../lib/content';
+import { getHostname } from '../lib/utils';
 import { Card } from './Card';
 
 interface Props {
@@ -15,7 +16,7 @@ export const ToolCard = ({ tool }: Props) => {
       tags={[
         {
           icon: UilLinkAlt,
-          text: tool['Link Title'],
+          text: getHostname(tool.Link),
           url: tool.Link,
         },
       ]}

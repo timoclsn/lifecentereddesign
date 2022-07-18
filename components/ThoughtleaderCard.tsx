@@ -1,5 +1,6 @@
 import { UilBriefcaseAlt, UilLinkAlt } from '@iconscout/react-unicons';
 import { Thoughtleader } from '../lib/content';
+import { getHostname } from '../lib/utils';
 import { Card } from './Card';
 
 interface Props {
@@ -29,7 +30,7 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
           ? [
               {
                 icon: UilLinkAlt,
-                text: thoughtleader['Link Title'],
+                text: getHostname(thoughtleader.Link),
                 url: thoughtleader.Link,
               },
             ]

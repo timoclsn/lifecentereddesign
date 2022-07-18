@@ -1,5 +1,6 @@
 import { UilLinkAlt } from '@iconscout/react-unicons';
 import { Directory } from '../lib/content';
+import { getHostname } from '../lib/utils';
 import { Card } from './Card';
 
 interface Props {
@@ -15,7 +16,7 @@ export const DirectoryCard = ({ directory }: Props) => {
       tags={[
         {
           icon: UilLinkAlt,
-          text: directory['Link Title'],
+          text: getHostname(directory.Link),
           url: directory.Link,
         },
       ]}

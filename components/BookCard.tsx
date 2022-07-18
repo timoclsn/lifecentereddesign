@@ -6,6 +6,7 @@ import {
   UilQrcodeScan,
 } from '@iconscout/react-unicons';
 import { Book } from '../lib/content';
+import { getHostname } from '../lib/utils';
 import { Card } from './Card';
 
 interface Props {
@@ -57,7 +58,7 @@ export const BookCard = ({ book }: Props) => {
       tags={[
         {
           icon: UilLinkAlt,
-          text: book['Link Title'],
+          text: getHostname(book.Link),
           url: book.Link,
         },
       ]}

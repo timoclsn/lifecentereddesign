@@ -6,6 +6,7 @@ import {
   UilClockThree,
 } from '@iconscout/react-unicons';
 import { PodcastEpisode } from '../lib/content';
+import { getHostname } from '../lib/utils';
 import { Card } from './Card';
 
 interface Props {
@@ -58,7 +59,7 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
       tags={[
         {
           icon: UilLinkAlt,
-          text: podcastEpisode['Link Title'],
+          text: getHostname(podcastEpisode.Link),
           url: podcastEpisode.Link,
         },
       ]}

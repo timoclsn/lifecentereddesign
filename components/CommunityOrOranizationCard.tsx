@@ -1,5 +1,6 @@
 import { UilLinkAlt } from '@iconscout/react-unicons';
 import { CommunityOrOrganization } from '../lib/content';
+import { getHostname } from '../lib/utils';
 import { Card } from './Card';
 
 interface Props {
@@ -17,7 +18,7 @@ export const CommunityOrOranizationCard = ({
       tags={[
         {
           icon: UilLinkAlt,
-          text: communityOrOrganization['Link Title'],
+          text: getHostname(communityOrOrganization.Link),
           url: communityOrOrganization.Link,
         },
       ]}

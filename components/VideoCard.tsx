@@ -5,6 +5,7 @@ import {
   UilClockThree,
 } from '@iconscout/react-unicons';
 import { Video } from '../lib/content';
+import { getHostname } from '../lib/utils';
 import { Card } from './Card';
 
 interface Props {
@@ -48,7 +49,7 @@ export const VideoCard = ({ video }: Props) => {
       tags={[
         {
           icon: UilLinkAlt,
-          text: video['Link Title'],
+          text: getHostname(video.Link),
           url: video.Link,
         },
       ]}
