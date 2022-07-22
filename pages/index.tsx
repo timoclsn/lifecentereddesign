@@ -2,6 +2,7 @@ import { InferGetStaticPropsType } from 'next';
 
 import { Header } from '../components/Header';
 import { Layout } from '../components/Layout';
+import { NewResources } from '../components/NewResources';
 import { Resources } from '../components/Resources';
 import { getCO2Consumtion } from '../lib/co2';
 import {
@@ -24,6 +25,7 @@ export default function Home({
   return (
     <Layout co2Consumption={co2Consumption}>
       <Header />
+      <NewResources resources={resources} />
       <Resources resources={resources} />
     </Layout>
   );
