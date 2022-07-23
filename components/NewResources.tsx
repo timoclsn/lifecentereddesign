@@ -38,7 +38,7 @@ export const NewResources = ({ resources }: Props) => {
 
   return (
     <section className="relative rounded-5xl bg-black p-20">
-      <div className="absolute top-0 left-0 z-10 h-full w-full overflow-hidden opacity-100">
+      <div className="absolute top-0 left-0 z-10 h-full w-full overflow-hidden opacity-30">
         <div className="absolute right-[18px] top-[18px]">
           <Image
             src="/confetti-top.svg"

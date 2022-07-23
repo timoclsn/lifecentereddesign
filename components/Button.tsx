@@ -37,8 +37,6 @@ export function Button({
   target,
 }: Props) {
   const Tag = href ? 'a' : 'button';
-  const secondaryTextColor =
-    bgColor === 'bg-white' ? 'text-black' : 'text-white';
   const className = [
     'inline-flex',
     'items-center',
@@ -50,7 +48,7 @@ export function Button({
     ...(size === 's' ? ['px-6 py-2'] : ['px-8 py-4']),
     ...(!secondary
       ? ['bg-black text-white hover:opacity-90']
-      : [`${bgColor} ${secondaryTextColor} hover:opacity-80`]),
+      : [`${bgColor} text-black hover:opacity-80`]),
     ...(fullWith ? ['w-full'] : ['']),
   ].join(' ');
 

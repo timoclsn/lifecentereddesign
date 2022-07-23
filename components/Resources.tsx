@@ -176,7 +176,7 @@ export const Resources = ({ resources }: Props) => {
                   <Select.ItemIndicator className="absolute left-1 w-[25px]">
                     <UilCheck />
                   </Select.ItemIndicator>
-                  <Select.ItemText>Added</Select.ItemText>
+                  <Select.ItemText>Date</Select.ItemText>
                 </Select.Item>
                 <Select.Item
                   value="title"

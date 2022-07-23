@@ -11,7 +11,13 @@ export function Header() {
         design more responsible, sustainable, ethical and all in all more
         meaningful products and services.
       </p>
-      <Button text="About this directory" size="l" href="/" />
+      <Button
+        secondary
+        bgColor="bg-grass"
+        text="About this directory"
+        size="l"
+        href="/"
+      />
     </section>
   );
 }
