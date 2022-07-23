@@ -9,14 +9,18 @@ export function Footer() {
         <div className="flex justify-between py-10">
           <ul className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-8">
             <li className="hover:underline">
-              <Link href="/#about">
+              <Link href="/about">
                 <a>About</a>
               </Link>
             </li>
             <li className="hover:underline">
-              <Link href="/#newsletter">
-                <a>Newsletter</a>
-              </Link>
+              <a
+                href="http://eepurl.com/htoWRr"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Newsletter
+              </a>
             </li>
             <li className="hover:underline">
               <a href="https://katharinaclasen.de">Katharina Clasen</a>

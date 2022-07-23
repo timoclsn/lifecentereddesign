@@ -16,7 +16,8 @@ interface Props {
 export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
   return (
     <Card
-      variant="podcastEpisode"
+      variant="sand"
+      type="Podcast Episode"
       title={podcastEpisode.Title}
       metaInfos={[
         ...(podcastEpisode.Podcast

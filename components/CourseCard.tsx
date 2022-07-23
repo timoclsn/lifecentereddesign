@@ -10,7 +10,8 @@ interface Props {
 export const CourseCard = ({ course }: Props) => {
   return (
     <Card
-      variant="course"
+      variant="evening"
+      type="Course"
       title={course.Name}
       category={course.Category[0].Name}
       tags={[

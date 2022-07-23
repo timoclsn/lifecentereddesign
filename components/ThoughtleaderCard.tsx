@@ -10,7 +10,8 @@ interface Props {
 export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
   return (
     <Card
-      variant="thoughtleader"
+      variant="evening"
+      type="Thoughtleader"
       title={thoughtleader.Name}
       metaInfos={[
         ...(thoughtleader['Job/Description']

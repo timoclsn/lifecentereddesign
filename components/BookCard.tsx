@@ -16,7 +16,8 @@ interface Props {
 export const BookCard = ({ book }: Props) => {
   return (
     <Card
-      variant="book"
+      variant="oak"
+      type="Book"
       title={book.Title}
       metaInfos={[
         ...(book.Authors

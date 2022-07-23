@@ -10,7 +10,8 @@ interface Props {
 export const PodcastCard = ({ podcast }: Props) => {
   return (
     <Card
-      variant="podcast"
+      variant="sky"
+      type="Podcast"
       title={podcast.Name}
       metaInfos={[
         ...(podcast['Host(s)']

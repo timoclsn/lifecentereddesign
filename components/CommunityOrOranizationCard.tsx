@@ -12,7 +12,8 @@ export const CommunityOrOranizationCard = ({
 }: Props) => {
   return (
     <Card
-      variant="communityOrOrganization"
+      variant="morning"
+      type="Community or Organization"
       title={communityOrOrganization.Name}
       category={communityOrOrganization.Category[0].Name}
       tags={[

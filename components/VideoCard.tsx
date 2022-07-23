@@ -15,7 +15,8 @@ interface Props {
 export const VideoCard = ({ video }: Props) => {
   return (
     <Card
-      variant="video"
+      variant="grass"
+      type="Video"
       title={video.Title}
       metaInfos={[
         ...(video.Thoughtleader

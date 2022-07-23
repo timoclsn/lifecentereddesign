@@ -14,12 +14,9 @@ export function NewsletterCard() {
           </a>
           .
         </p>
-        <Button
-          text="Newsletter signup"
-          size="l"
-          href="http://eepurl.com/htoWRr"
-          target="_blank"
-        />
+        <Button size="l" href="http://eepurl.com/htoWRr" target="_blank">
+          Newsletter signup
+        </Button>
       </div>
     </section>
   );

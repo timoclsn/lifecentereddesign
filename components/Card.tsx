@@ -1,58 +1,19 @@
 import { Tag } from './Tag';
 
 const variants = {
-  book: {
-    background: 'bg-oak',
-    type: 'Book',
-  },
-  article: {
-    background: 'bg-forest',
-    type: 'Article',
-  },
-  thoughtleader: {
-    background: 'bg-evening',
-    type: 'Thoughtleader',
-  },
-  category: {
-    background: 'bg-forest',
-    type: 'Category',
-  },
-  topic: {
-    background: 'bg-grass',
-    type: 'Topic',
-  },
-  podcastEpisode: {
-    background: 'bg-sand',
-    type: 'Podcast Episode',
-  },
-  podcast: {
-    background: 'bg-sky',
-    type: 'Podcast',
-  },
-  directory: {
-    background: 'bg-oak',
-    type: 'Directory',
-  },
-  video: {
-    background: 'bg-grass',
-    type: 'Video',
-  },
-  tool: {
-    background: 'bg-stone',
-    type: 'Tool',
-  },
-  communityOrOrganization: {
-    background: 'bg-morning',
-    type: 'Community or Organization',
-  },
-  course: {
-    background: 'bg-evening',
-    type: 'Course',
-  },
+  oak: 'bg-oak',
+  forest: 'bg-forest',
+  evening: 'bg-evening',
+  grass: 'bg-grass',
+  sand: 'bg-sand',
+  sky: 'bg-sky',
+  stone: 'bg-stone',
+  morning: 'bg-morning',
 } as const;
 
 interface Props {
   variant: keyof typeof variants;
+  type: string;
   title: string;
   showType?: boolean;
   metaInfos?: Array<{
@@ -71,18 +32,17 @@ interface Props {
 export const Card = ({
   showType,
   variant,
+  type,
   title,
   metaInfos,
   category,
   tags,
 }: Props) => {
   return (
-    <div
-      className={`rounded-4xl p-8 ${variants[variant].background} h-full w-full`}
-    >
+    <div className={`rounded-4xl p-8 ${variants[variant]} h-full w-full`}>
       {showType && (
         <div className="mb-4">
-          <Tag variant="dark">{variants[variant].type}</Tag>
+          <Tag variant="dark">{type}</Tag>
         </div>
       )}
       <h2 className="mb-5 text-3xl font-bold">{title}</h2>

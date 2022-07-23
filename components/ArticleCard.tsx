@@ -15,7 +15,8 @@ interface Props {
 export const ArticleCard = ({ article }: Props) => {
   return (
     <Card
-      variant="article"
+      variant="forest"
+      type="Article"
       title={article.Title}
       metaInfos={[
         ...(article['Author(s)']

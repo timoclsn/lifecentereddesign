@@ -10,7 +10,8 @@ interface Props {
 export const DirectoryCard = ({ directory }: Props) => {
   return (
     <Card
-      variant="directory"
+      variant="oak"
+      type="Directory"
       title={directory.Name}
       category={directory.Category[0].Name}
       tags={[

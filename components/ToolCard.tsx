@@ -10,7 +10,8 @@ interface Props {
 export const ToolCard = ({ tool }: Props) => {
   return (
     <Card
-      variant="tool"
+      variant="stone"
+      type="Tool"
       title={tool.Name}
       category={tool.Category[0].Name}
       tags={[

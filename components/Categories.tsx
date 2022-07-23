@@ -56,13 +56,13 @@ export function Categories() {
           us know what ideas you like most.
         </p>
         <Button
-          text="Newsletter signup"
+          variant="grass"
           size="l"
           href="http://eepurl.com/htoWRr"
           target="_blank"
-          secondary
-          bgColor="bg-grass"
-        />
+        >
+          Newsletter signup
+        </Button>
       </div>
     </section>
   );

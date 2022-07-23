@@ -13,25 +13,21 @@ const sizes = {
 } as const;
 
 const variants = {
-  all: 'bg-black text-white',
-  book: 'bg-oak text-dark',
-  article: 'bg-forest text-dark',
-  thoughtleader: 'bg-evening text-dark',
-  category: 'bg-forest text-dark',
-  topic: 'bg-grass text-dark',
-  podcastEpisode: 'bg-sand text-dark',
-  podcast: 'bg-sky text-dark',
-  directory: 'bg-oak text-dark',
-  video: 'bg-grass text-dark',
-  tool: 'bg-stone text-dark',
-  communityOrOrganization: 'bg-morning text-dark',
-  course: 'bg-evening text-dark',
+  black: 'bg-black text-white',
+  oak: 'bg-oak text-dark',
+  forest: 'bg-forest text-dark',
+  evening: 'bg-evening text-dark',
+  grass: 'bg-grass text-dark',
+  sand: 'bg-sand text-dark',
+  sky: 'bg-sky text-dark',
+  stone: 'bg-stone text-dark',
+  morning: 'bg-morning text-dark',
 } as const;
 
 export const FilterButton = ({
   children,
   size = 'l',
-  variant = 'all',
+  variant = 'black',
   onClick,
 }: Props) => {
   return (

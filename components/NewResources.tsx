@@ -16,7 +16,7 @@ export const NewResources = ({ resources }: Props) => {
     .slice(0, 10);
 
   return (
-    <section className="relative rounded-5xl bg-black p-20">
+    <section id="new-resources" className="relative rounded-5xl bg-black p-20">
       <div className="absolute top-0 left-0 z-10 h-full w-full overflow-hidden opacity-30">
         <div className="absolute right-[18px] top-[18px]">
           <Image
@@ -66,13 +66,13 @@ export const NewResources = ({ resources }: Props) => {
         <div className="flex flex-col gap-6 sm:flex-row">
           <div className="flex-none">
             <Button
-              text="Newsletter Signup"
+              variant="white"
               size="l"
               href="http://eepurl.com/htoWRr"
               target="_blank"
-              bgColor="bg-white"
-              secondary
-            />
+            >
+              Newsletter Signup
+            </Button>
           </div>
           <p className="text-white">
             Sign up for our Newsletter in case you want to get new resources and
