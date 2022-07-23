@@ -1,28 +1,7 @@
 import Image from 'next/image';
-import {
-  Article,
-  Book,
-  CommunityOrOrganization,
-  Course,
-  Directory,
-  Podcast,
-  PodcastEpisode,
-  Resources,
-  Thoughtleader,
-  Tool,
-  Video,
-} from '../lib/content';
-import { ArticleCard } from './ArticleCard';
-import { BookCard } from './BookCard';
+import { Resources } from '../lib/content';
 import { Button } from './Button';
-import { CommunityOrOranizationCard } from './CommunityOrOranizationCard';
-import { CourseCard } from './CourseCard';
-import { DirectoryCard } from './DirectoryCard';
-import { PodcastCard } from './PodcastCard';
-import { PodcastEpisodeCard } from './PodcastEpisodeCard';
-import { ThoughtleaderCard } from './ThoughtleaderCard';
-import { ToolCard } from './ToolCard';
-import { VideoCard } from './VideoCard';
+import { getCardComponent } from './utils';
 
 interface Props {
   resources: Resources;
@@ -76,59 +55,7 @@ export const NewResources = ({ resources }: Props) => {
         <h2 className="mb-10 text-3xl font-bold text-white">New Resources</h2>
         <ul className="-mx-20 mb-14 flex gap-6 overflow-x-scroll px-20">
           {newResources.map((ressource) => {
-            let component;
-
-            switch (ressource.type) {
-              case 'thoughtleader':
-                component = (
-                  <ThoughtleaderCard
-                    thoughtleader={ressource as Thoughtleader}
-                  />
-                );
-                break;
-              case 'book':
-                component = <BookCard book={ressource as Book} />;
-                break;
-              case 'article':
-                component = <ArticleCard article={ressource as Article} />;
-                break;
-              case 'course':
-                component = <CourseCard course={ressource as Course} />;
-                break;
-              case 'podcast':
-                component = <PodcastCard podcast={ressource as Podcast} />;
-                break;
-              case 'podcastEpisode':
-                component = (
-                  <PodcastEpisodeCard
-                    podcastEpisode={ressource as PodcastEpisode}
-                  />
-                );
-                break;
-              case 'video':
-                component = <VideoCard video={ressource as Video} />;
-                break;
-              case 'tool':
-                component = <ToolCard tool={ressource as Tool} />;
-                break;
-              case 'directory':
-                component = (
-                  <DirectoryCard directory={ressource as Directory} />
-                );
-                break;
-              case 'communityOrOrganization':
-                component = (
-                  <CommunityOrOranizationCard
-                    communityOrOrganization={
-                      ressource as CommunityOrOrganization
-                    }
-                  />
-                );
-                break;
-              default:
-                throw new Error(`Unknown ressource type: ${ressource.type}`);
-            }
-
+            const component = getCardComponent(ressource);
             return (
               <li key={ressource.id} className="w-[600px] flex-none">
                 {component}
