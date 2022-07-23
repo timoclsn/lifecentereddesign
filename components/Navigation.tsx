@@ -16,8 +16,8 @@ export function Navigation({ co2Consumption }: Props) {
           <CO2Badge co2Consumption={co2Consumption} />
         </div>
         <div className="flex items-center justify-between pt-12">
-          <ul className="flex w-full gap-10">
-            <li className="flex-1 font-bold hover:underline">
+          <ul className="flex w-full items-baseline gap-10">
+            <li className="flex-1 text-3xl font-bold hover:underline">
               <Link href="/">
                 <a>Life Centered Design.Net</a>
               </Link>
