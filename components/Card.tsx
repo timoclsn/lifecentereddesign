@@ -39,37 +39,48 @@ export const Card = ({
   tags,
 }: Props) => {
   return (
-    <div className={`rounded-4xl p-8 ${variants[variant]} h-full w-full`}>
-      {showType && (
-        <div className="mb-4">
-          <Tag variant="dark">{type}</Tag>
-        </div>
-      )}
-      <h2 className="mb-5 text-3xl font-bold">{title}</h2>
-      {metaInfos && (
-        <ul className="mb-20 flex flex-wrap gap-x-8 gap-y-3 opacity-80">
-          {metaInfos.map((metaInfo, idx) => {
-            const Element = metaInfo.url ? 'a' : 'span';
-            return (
-              <li key={idx}>
-                <Element
-                  className={`flex items-center gap-1${
-                    metaInfo.url ? ' underline' : ''
-                  }${Element === 'a' ? ' hover:opacity-80' : ''}`}
-                  {...(metaInfo.url && {
-                    href: metaInfo.url,
-                    target: '_blank',
-                    rel: 'noopener noreferrer',
-                  })}
-                >
-                  <metaInfo.icon size="18" />
-                  <span>{metaInfo.text}</span>
-                </Element>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+    <div
+      className={`rounded-4xl p-8 ${variants[variant]} flex h-full w-full flex-col gap-24`}
+    >
+      <div className="flex flex-1 flex-col gap-5">
+        {/* Type */}
+        {showType && (
+          <div>
+            <Tag variant="dark">{type}</Tag>
+          </div>
+        )}
+
+        {/* Title */}
+        <h2 className="text-3xl font-bold">{title}</h2>
+
+        {/* Meta infos */}
+        {metaInfos && (
+          <ul className="-mt-1 flex flex-wrap gap-x-8 gap-y-3 opacity-80">
+            {metaInfos.map((metaInfo, idx) => {
+              const Element = metaInfo.url ? 'a' : 'span';
+              return (
+                <li key={idx}>
+                  <Element
+                    className={`flex items-center gap-1${
+                      metaInfo.url ? ' underline' : ''
+                    }${Element === 'a' ? ' hover:opacity-80' : ''}`}
+                    {...(metaInfo.url && {
+                      href: metaInfo.url,
+                      target: '_blank',
+                      rel: 'noopener noreferrer',
+                    })}
+                  >
+                    <metaInfo.icon size="18" />
+                    <span>{metaInfo.text}</span>
+                  </Element>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
+
+      {/* Category */}
       <div
         className={`flex flex-wrap gap-3 ${
           category ? 'justify-between' : 'justify-end'
