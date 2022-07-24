@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Script from 'next/script';
 import type { ReactNode } from 'react';
+import { Suspense } from 'react';
 
 import type { CO2 } from '../lib/co2';
 import { CenteredColumn } from './CenteredColumn';
@@ -59,13 +60,15 @@ export function Layout({
         previewImage={pagePreviewImage}
       />
       <Favicons />
-      <div className="space-y-20 sm:space-y-40">
-        <Navigation co2Consumption={co2Consumption} />
-        <CenteredColumn>
-          <main className="space-y-10 sm:space-y-20">{children}</main>
-        </CenteredColumn>
-        <Footer />
-      </div>
+      <Suspense fallback={null}>
+        <div className="space-y-20 sm:space-y-40">
+          <Navigation co2Consumption={co2Consumption} />
+          <CenteredColumn>
+            <main className="space-y-10 sm:space-y-20">{children}</main>
+          </CenteredColumn>
+          <Footer />
+        </div>
+      </Suspense>
     </>
   );
 }
