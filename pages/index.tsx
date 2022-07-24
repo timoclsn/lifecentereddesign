@@ -47,7 +47,11 @@ export const getStaticProps = async () => {
     ...(await getTools()),
     ...(await getDirectories()),
     ...(await getCommunitiesAndOrganizations()),
-  ];
+  ].sort((a, b) => {
+    const itemA = 'Title' in a ? a.Title : a.Name;
+    const itemB = 'Title' in b ? b.Title : b.Name;
+    return itemA.localeCompare(itemB);
+  });
 
   return {
     props: {
