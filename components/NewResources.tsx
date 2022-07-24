@@ -16,7 +16,10 @@ export const NewResources = ({ resources }: Props) => {
     .slice(0, 10);
 
   return (
-    <section id="new-resources" className="relative rounded-5xl bg-black p-20">
+    <section
+      id="new-resources"
+      className="relative rounded-5xl bg-black p-10 sm:p-20"
+    >
       <div className="absolute top-0 left-0 z-10 h-full w-full overflow-hidden opacity-30">
         <div className="absolute right-[18px] top-[18px]">
           <Image
@@ -53,11 +56,14 @@ export const NewResources = ({ resources }: Props) => {
       </div>
       <div className="relative z-20">
         <h2 className="mb-10 text-2xl font-bold text-white">New Resources</h2>
-        <ul className="-mx-20 mb-14 flex gap-6 overflow-x-scroll px-20">
+        <ul className="-mx-10 mb-14 flex gap-6 overflow-x-scroll px-10">
           {newResources.map((ressource) => {
             const component = getCardComponent(ressource);
             return (
-              <li key={ressource.id} className="w-[600px] flex-none">
+              <li
+                key={ressource.id}
+                className="w-[400px] flex-none sm:w-[600px]"
+              >
                 {component}
               </li>
             );

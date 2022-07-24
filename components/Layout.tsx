@@ -59,10 +59,10 @@ export function Layout({
         previewImage={pagePreviewImage}
       />
       <Favicons />
-      <div className="space-y-40">
+      <div className="space-y-20 sm:space-y-40">
         <Navigation co2Consumption={co2Consumption} />
         <CenteredColumn>
-          <main className="space-y-20">{children}</main>
+          <main className="space-y-10 sm:space-y-20">{children}</main>
         </CenteredColumn>
         <Footer />
       </div>

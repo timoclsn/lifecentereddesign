@@ -40,7 +40,7 @@ export const Card = ({
 }: Props) => {
   return (
     <div
-      className={`rounded-4xl p-8 ${variants[variant]} flex h-full w-full flex-col gap-24`}
+      className={`rounded-4xl p-8 ${variants[variant]} flex h-full w-full flex-col gap-12 sm:gap-24`}
     >
       <div className="flex flex-1 flex-col gap-5">
         {/* Type */}

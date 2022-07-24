@@ -50,7 +50,7 @@ export const Resources = ({ resources }: Props) => {
 
   return (
     <section id="resources" className="flex flex-col gap-20">
-      <div className="flex items-center gap-6 overflow-x-scroll">
+      <div className="flex items-center gap-3 overflow-x-scroll sm:gap-6">
         <FilterButton
           selected={filteredType === null}
           onClick={() => filterResources(null)}
