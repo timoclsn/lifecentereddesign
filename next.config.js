@@ -1,5 +1,15 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const config = {
+  reactStrictMode: true,
   swcMinify: true,
+  experimental: {
+    legacyBrowsers: false,
+    browsersListForSwc: true,
+    scrollRestoration: true,
+    images: {
+      allowFutureImage: true,
+    },
+  },
   async rewrites() {
     return [
       {
@@ -13,3 +23,5 @@ module.exports = {
     ];
   },
 };
+
+module.exports = config;
