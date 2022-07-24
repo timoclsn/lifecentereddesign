@@ -52,7 +52,7 @@ export const NewResources = ({ resources }: Props) => {
         </div>
       </div>
       <div className="relative z-20">
-        <h2 className="mb-10 text-3xl font-bold text-white">New Resources</h2>
+        <h2 className="mb-10 text-2xl font-bold text-white">New Resources</h2>
         <ul className="-mx-20 mb-14 flex gap-6 overflow-x-scroll px-20">
           {newResources.map((ressource) => {
             const component = getCardComponent(ressource);

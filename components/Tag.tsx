@@ -12,7 +12,9 @@ interface Props {
 
 export const Tag = ({ children, variant = 'light' }: Props) => {
   return (
-    <div className={`inline-block px-3 py-1 font-bold ${variants[variant]}`}>
+    <div
+      className={`inline-block px-3 py-1 text-sm font-bold ${variants[variant]}`}
+    >
       {children}
     </div>
   );

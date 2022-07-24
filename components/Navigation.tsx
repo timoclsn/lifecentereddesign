@@ -17,17 +17,17 @@ export function Navigation({ co2Consumption }: Props) {
         </div>
         <div className="flex items-center justify-between pt-12">
           <ul className="flex w-full items-baseline gap-10">
-            <li className="flex-1 text-3xl font-bold hover:underline">
+            <li className="flex-1 text-2xl font-bold hover:underline">
               <Link href="/">
                 <a>Life Centered Design.Net</a>
               </Link>
             </li>
-            <li className="font-bold hover:underline">
+            <li className="text-sm font-bold hover:underline">
               <Link href="/#new-resources">
                 <a>Resources</a>
               </Link>
             </li>
-            <li className="font-bold hover:underline">
+            <li className="text-sm font-bold hover:underline">
               <Link href="/about">
                 <a>About</a>
               </Link>

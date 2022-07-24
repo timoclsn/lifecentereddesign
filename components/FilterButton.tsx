@@ -2,15 +2,10 @@ import { ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
-  size?: keyof typeof sizes;
   variant?: keyof typeof variants;
+  selected?: boolean;
   onClick: () => void;
 }
-
-const sizes = {
-  s: 'px-6 py-4',
-  l: 'px-8 py-6 text-xl',
-} as const;
 
 const variants = {
   black: 'bg-black text-white',
@@ -26,13 +21,15 @@ const variants = {
 
 export const FilterButton = ({
   children,
-  size = 'l',
   variant = 'black',
+  selected,
   onClick,
 }: Props) => {
   return (
     <button
-      className={`flex-none rounded-2xl font-bold ${sizes[size]} ${variants[variant]} hover:opacity-80`}
+      className={`flex-none rounded-2xl py-3 px-5 text-sm font-bold ${
+        selected ? variants[variant] : 'hover:opacity-80'
+      }`}
       onClick={onClick}
     >
       {children}

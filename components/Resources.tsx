@@ -50,79 +50,79 @@ export const Resources = ({ resources }: Props) => {
 
   return (
     <section id="resources" className="flex flex-col gap-20">
-      <div className="flex items-center gap-10 overflow-x-scroll">
+      <div className="flex items-center gap-6 overflow-x-scroll">
         <FilterButton
-          size={filteredType === null ? 'l' : 's'}
+          selected={filteredType === null}
           onClick={() => filterResources(null)}
         >
           All resources
         </FilterButton>
         <FilterButton
           variant="evening"
-          size={filteredType === 'thoughtleader' ? 'l' : 's'}
+          selected={filteredType === 'thoughtleader'}
           onClick={() => filterResources('thoughtleader')}
         >
           Thoughtleaders
         </FilterButton>
         <FilterButton
           variant="oak"
-          size={filteredType === 'book' ? 'l' : 's'}
+          selected={filteredType === 'book'}
           onClick={() => filterResources('book')}
         >
           Books
         </FilterButton>
         <FilterButton
           variant="forest"
-          size={filteredType === 'article' ? 'l' : 's'}
+          selected={filteredType === 'article'}
           onClick={() => filterResources('article')}
         >
           Articles
         </FilterButton>
         <FilterButton
           variant="evening"
-          size={filteredType === 'course' ? 'l' : 's'}
+          selected={filteredType === 'course'}
           onClick={() => filterResources('course')}
         >
           Courses
         </FilterButton>
         <FilterButton
           variant="sky"
-          size={filteredType === 'podcast' ? 'l' : 's'}
+          selected={filteredType === 'podcast'}
           onClick={() => filterResources('podcast')}
         >
           Podcasts
         </FilterButton>
         <FilterButton
           variant="sand"
-          size={filteredType === 'podcastEpisode' ? 'l' : 's'}
+          selected={filteredType === 'podcastEpisode'}
           onClick={() => filterResources('podcastEpisode')}
         >
           PodcastEpisodes
         </FilterButton>
         <FilterButton
           variant="grass"
-          size={filteredType === 'video' ? 'l' : 's'}
+          selected={filteredType === 'video'}
           onClick={() => filterResources('video')}
         >
           Videos
         </FilterButton>
         <FilterButton
           variant="stone"
-          size={filteredType === 'tool' ? 'l' : 's'}
+          selected={filteredType === 'tool'}
           onClick={() => filterResources('tool')}
         >
           Tools
         </FilterButton>
         <FilterButton
           variant="oak"
-          size={filteredType === 'directory' ? 'l' : 's'}
+          selected={filteredType === 'directory'}
           onClick={() => filterResources('directory')}
         >
           Directories
         </FilterButton>
         <FilterButton
           variant="morning"
-          size={filteredType === 'communityOrOrganization' ? 'l' : 's'}
+          selected={filteredType === 'communityOrOrganization'}
           onClick={() => filterResources('communityOrOrganization')}
         >
           CommunitiesAndOrganization
