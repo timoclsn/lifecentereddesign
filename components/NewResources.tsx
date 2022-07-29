@@ -52,13 +52,13 @@ export const NewResources = ({ resources }: Props) => {
       </div>
       <div className="relative z-20">
         <h2 className="mb-10 text-2xl font-bold text-white">New Resources</h2>
-        <ul className="-mx-10 mb-14 flex gap-6 overflow-x-scroll px-10 sm:-mx-20 sm:px-20">
+        <ul className="-mx-10 mb-14 flex snap-x gap-6 overflow-x-scroll px-10 sm:-mx-20 sm:px-20">
           {newResources.map((resource) => {
             const component = getCardComponent(resource);
             return (
               <li
                 key={resource.id}
-                className="w-[400px] flex-none sm:w-[600px]"
+                className="w-[400px] flex-none snap-center sm:w-[600px]"
               >
                 {component}
               </li>
