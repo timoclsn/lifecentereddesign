@@ -49,8 +49,8 @@ export const Resources = ({ resources }: Props) => {
   const filterResources = (type: Filter) => setFilteredType(type);
 
   return (
-    <section id="resources" className="flex flex-col gap-20">
-      <div className="flex items-center gap-3 overflow-x-scroll sm:gap-6">
+    <section id="resources" className="flex flex-col gap-10">
+      <div className="flex items-center gap-1 overflow-x-scroll sm:gap-6">
         <FilterButton
           selected={filteredType === null}
           onClick={() => filterResources(null)}

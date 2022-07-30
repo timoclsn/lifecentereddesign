@@ -40,7 +40,7 @@ export const Card = ({
 }: Props) => {
   return (
     <div
-      className={`rounded-4xl p-8 ${variants[variant]} flex h-full w-full flex-col gap-12 sm:gap-24`}
+      className={`rounded-4xl p-8 ${variants[variant]} flex h-full w-full flex-col gap-8 sm:gap-24`}
     >
       <div className="flex flex-1 flex-col gap-5">
         {/* Type */}
@@ -51,11 +51,16 @@ export const Card = ({
         )}
 
         {/* Title */}
-        <h2 className="text-2xl font-bold">{title}</h2>
+        <h2
+          title={title}
+          className="text-xl font-bold line-clamp-2 sm:text-2xl sm:line-clamp-none"
+        >
+          {title}
+        </h2>
 
         {/* Meta infos */}
         {metaInfos && (
-          <ul className="-mt-1 flex flex-wrap gap-x-8 gap-y-3 opacity-80">
+          <ul className="-mt-1 flex flex-wrap gap-x-2 gap-y-1 opacity-80 sm:gap-y-3 sm:gap-x-8">
             {metaInfos.map((metaInfo, idx) => {
               const Element = metaInfo.url ? 'a' : 'span';
               return (

@@ -18,7 +18,7 @@ export const NewResources = ({ resources }: Props) => {
   return (
     <section
       id="new-resources"
-      className="relative rounded-5xl bg-black p-10 sm:p-20"
+      className="relative -mx-6 rounded-none bg-black py-10 px-6 sm:mx-0 sm:rounded-5xl sm:p-20"
     >
       <div className="absolute top-0 left-0 z-10 h-full w-full overflow-hidden opacity-30">
         <Image
@@ -52,13 +52,13 @@ export const NewResources = ({ resources }: Props) => {
       </div>
       <div className="relative z-20">
         <h2 className="mb-10 text-2xl font-bold text-white">New Resources</h2>
-        <ul className="-mx-10 mb-14 flex snap-x gap-6 overflow-x-scroll px-10 sm:-mx-20 sm:px-20">
+        <ul className="-mx-6 mb-14 flex snap-x gap-6 overflow-x-scroll px-6 sm:-mx-20 sm:px-20">
           {newResources.map((resource) => {
             const component = getCardComponent(resource);
             return (
               <li
                 key={resource.id}
-                className="w-[400px] flex-none snap-center sm:w-[600px]"
+                className="w-[330px] flex-none snap-center sm:w-[600px]"
               >
                 {component}
               </li>
