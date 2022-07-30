@@ -1,4 +1,5 @@
 import { InferGetStaticPropsType } from 'next';
+import { AboutUs } from '../components/AboutUs';
 
 import { Header } from '../components/Header';
 import { Layout } from '../components/Layout';
@@ -27,6 +28,7 @@ export default function Home({
       <Header />
       <NewResources resources={resources} />
       <Resources resources={resources} />
+      <AboutUs />
     </Layout>
   );
 }
