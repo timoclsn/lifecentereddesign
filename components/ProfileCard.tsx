@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from 'next/future/image';
 import {
   IoIosGlobe,
   IoLogoInstagram,
@@ -36,23 +36,16 @@ export function ProfileCard({
   bgColor,
 }: Props) {
   return (
-    <div className={`${bgColor} flex flex-1 space-x-2 rounded-3xl px-6 py-10`}>
-      <div
-        style={{
-          overflow: 'hidden',
-          borderRadius: '9999px',
-          border: '4px solid #fff',
-          lineHeight: '0',
-          alignSelf: 'start',
-        }}
-      >
-        <Image
-          src={image}
-          alt={`Portrait image of ${name}`}
-          width={120}
-          height={120}
-        />
-      </div>
+    <div
+      className={`${bgColor} flex flex-1 items-start space-x-2 rounded-3xl px-6 py-10`}
+    >
+      <Image
+        src={image}
+        alt={`Portrait image of ${name}`}
+        width={120}
+        height={120}
+        className="rounded-full border-4 border-solid border-white leading-none"
+      />
       <div className="flex-1">
         <h3 className="mb-4 font-bold">{name}</h3>
         <p className="mb-6 text-dark">
