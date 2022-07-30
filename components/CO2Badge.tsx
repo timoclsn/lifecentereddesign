@@ -11,7 +11,7 @@ interface Props {
 export function CO2Badge({ co2Consumption }: Props) {
   return (
     <Popover.Root>
-      <Popover.Trigger className="flex items-center space-x-2 bg-grass px-4 py-2 font-bold">
+      <Popover.Trigger className="flex items-center space-x-2 rounded-b-lg bg-grass px-4 py-2 font-bold">
         <RiLeafLine size={22} />
         <span>
           {co2Consumption.co2} g of CO<sub>2</sub>
@@ -21,7 +21,7 @@ export function CO2Badge({ co2Consumption }: Props) {
         className="max-w-xs space-y-6 rounded-3xl bg-grass p-10 sm:max-w-xl"
         sideOffset={40}
       >
-        <Popover.Close>
+        <Popover.Close className="focus:outline-none">
           <FiX size={24} />
         </Popover.Close>
         <div className="space-y-6">
