@@ -9,7 +9,7 @@ const Imprint = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Layout co2Consumption={co2Consumption} title="Imprint" slug="imprint">
-      <section className="max-w-xl space-y-20">
+      <section className="space-y-20">
         <h1 className="mb-6 text-5xl font-bold">{content.title}</h1>
         <div
           className="prose"

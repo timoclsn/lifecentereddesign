@@ -3,12 +3,12 @@ import { allPages } from '../.contentlayer/generated';
 import { Layout } from '../components/Layout';
 import { getCO2Consumtion } from '../lib/co2';
 
-const Privacy = ({
+const About = ({
   co2Consumption,
   content,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layout co2Consumption={co2Consumption} title="Privacy" slug="privacy">
+    <Layout co2Consumption={co2Consumption} title="Imprint" slug="imprint">
       <section className="space-y-20">
         <h1 className="mb-6 text-5xl font-bold">{content.title}</h1>
         <div
@@ -25,11 +25,11 @@ export const getStaticProps = async () => {
     'https://lifecentereddesign.net'
   );
 
-  const content = allPages.find((page) => page.title === 'Privacy');
+  const content = allPages.find((page) => page.title === 'About');
 
   return {
     props: { co2Consumption, content },
   };
 };
 
-export default Privacy;
+export default About;
