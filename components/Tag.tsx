@@ -1,21 +1,35 @@
+import { cva, VariantProps } from 'class-variance-authority';
 import { ReactNode } from 'react';
 
-const variants = {
-  light: 'bg-tag-light rounded-full',
-  dark: 'bg-tag-dark rounded-lg',
-} as const;
+const tag = cva(
+  [
+    'px-4 py-2',
+    'font-bold',
+    'text-ghost-contrast-text',
+    'rounded-full',
+    'flex justify-center items-center gap-2',
+    '[&>svg]:w-[16px]',
+    '[&>svg]:h-[16px]',
+  ],
+  {
+    variants: {
+      variant: {
+        light: ['bg-ghost-main-light-bg'],
+        dark: ['bg-ghost-main-dark-bg'],
+        outline: ['border-2 border-ghost-main-dark-bg'],
+      },
+    },
+  }
+);
 
-interface Props {
+type TagProps = VariantProps<typeof tag>;
+
+interface ComponentProps {
   children: ReactNode;
-  variant?: keyof typeof variants;
 }
 
+type Props = ComponentProps & TagProps;
+
 export const Tag = ({ children, variant = 'light' }: Props) => {
-  return (
-    <div
-      className={`inline-block px-3 py-1 text-sm font-bold ${variants[variant]}`}
-    >
-      {children}
-    </div>
-  );
+  return <div className={tag({ variant })}>{children}</div>;
 };

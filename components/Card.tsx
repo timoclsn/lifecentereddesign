@@ -42,11 +42,11 @@ export const Card = ({
     <div
       className={`rounded-4xl p-8 ${variants[variant]} flex h-full w-full flex-col gap-8 sm:gap-24`}
     >
-      <div className="flex flex-1 flex-col gap-5">
+      <div className="flex flex-1 flex-col items-start gap-5">
         {/* Type */}
         {showType && (
           <div>
-            <Tag variant="dark">{type}</Tag>
+            <Tag variant="outline">{type}</Tag>
           </div>
         )}
 
