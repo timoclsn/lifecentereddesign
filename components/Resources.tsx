@@ -143,7 +143,7 @@ export const Resources = ({ resources }: Props) => {
               </Select.Icon>
             </Select.Trigger>
 
-            <Select.Content className="bg-black text-white rounded-2xl px-4 py-6">
+            <Select.Content className="rounded-2xl bg-primary-main-bg px-4 py-6 text-primary-contrast-text">
               <Select.Viewport className="flex flex-col gap-1">
                 <Select.Item
                   value="date"
