@@ -64,9 +64,6 @@ module.exports = {
       light: 'rgba(50, 45, 38, 0.16)',
       dark: 'rgba(50, 45, 38, 0.84)',
       black: '#322D26',
-      grass: '#F0F2D1',
-      'tag-light': 'rgba(255, 255, 255, 0.56)',
-      'tag-dark': 'rgba(50, 45, 38, 0.16)',
     },
     extend: {
       fontFamily: {

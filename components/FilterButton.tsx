@@ -12,7 +12,7 @@ const variants = {
   oak: 'bg-oak text-dark',
   forest: 'bg-forest text-dark',
   evening: 'bg-evening text-dark',
-  grass: 'bg-grass text-dark',
+  lime: 'bg-lime text-dark',
   sand: 'bg-sand text-dark',
   sky: 'bg-sky text-dark',
   stone: 'bg-stone text-dark',

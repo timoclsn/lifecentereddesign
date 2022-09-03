@@ -100,7 +100,7 @@ export const Resources = ({ resources }: Props) => {
           PodcastEpisodes
         </FilterButton>
         <FilterButton
-          variant="grass"
+          variant="lime"
           selected={filteredType === 'video'}
           onClick={() => filterResources('video')}
         >

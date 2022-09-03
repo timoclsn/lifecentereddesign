@@ -16,7 +16,7 @@ interface Props {
   twitter?: string;
   bgColor?:
     | 'bg-oak'
-    | 'bg-grass'
+    | 'bg-lime'
     | 'bg-sky'
     | 'bg-evening'
     | 'bg-sand'

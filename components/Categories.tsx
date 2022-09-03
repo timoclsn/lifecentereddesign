@@ -14,7 +14,7 @@ export function Categories() {
         <CategoryCard
           headline="Podcast"
           text="We are planning to host a podcast, where inspiring guests would be interviewed around life-centered design and related topics. "
-          bgColor="bg-grass"
+          bgColor="bg-lime"
         />
         <CategoryCard
           headline="Job Board"
