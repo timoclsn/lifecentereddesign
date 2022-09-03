@@ -62,7 +62,6 @@ module.exports = {
       // Old
       light: 'rgba(50, 45, 38, 0.16)',
       dark: 'rgba(50, 45, 38, 0.84)',
-      black: '#322D26',
     },
     extend: {
       fontFamily: {
