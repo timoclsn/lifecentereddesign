@@ -19,7 +19,7 @@ export const NewResources = ({ resources }: Props) => {
       <h2 className="text-white mb-10 font-serif text-4xl font-bold">
         New Resources
       </h2>
-      <ul className="mb-14 ml-[calc(50%-50vw)] flex w-screen snap-x gap-6 overflow-x-scroll px-6">
+      <ul className="mb-14 ml-[calc(50%-50vw)] flex w-screen gap-6 overflow-x-scroll px-6">
         <Image
           src="/ground.jpg"
           alt="Image of desert ground."
@@ -30,10 +30,7 @@ export const NewResources = ({ resources }: Props) => {
         {newResources.map((resource) => {
           const component = getCardComponent(resource);
           return (
-            <li
-              key={resource.id}
-              className="w-[330px] flex-none snap-center sm:w-[600px]"
-            >
+            <li key={resource.id} className="w-[330px] flex-none sm:w-[600px]">
               {component}
             </li>
           );
