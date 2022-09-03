@@ -42,7 +42,6 @@ export const Resources = ({ resources }: Props) => {
   };
 
   const filterResources = (type: Filter) => setFilteredType(type);
-  console.log(filteredType);
 
   return (
     <section id="resources" className="flex flex-col gap-10">
