@@ -1,6 +1,5 @@
 import Image from 'next/future/image';
 import { Resources } from '../lib/content';
-import { Button } from './Button';
 import { getCardComponent } from './utils';
 
 interface Props {
@@ -65,24 +64,6 @@ export const NewResources = ({ resources }: Props) => {
             );
           })}
         </ul>
-        <div className="flex flex-col gap-6 sm:flex-row">
-          <div className="flex-none">
-            <Button
-              variant="white"
-              size="l"
-              href="http://eepurl.com/htoWRr"
-              target="_blank"
-            >
-              Newsletter Signup
-            </Button>
-          </div>
-          <p className="text-white">
-            Sign up for our Newsletter in case you want to get new resources and
-            other news delivered to your inbox. We are mindful about this
-            Newsletter and will only send you updates when there is interesting
-            news to share.
-          </p>
-        </div>
       </div>
     </section>
   );

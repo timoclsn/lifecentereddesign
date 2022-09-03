@@ -14,7 +14,7 @@ export function NewsletterCard() {
           </a>
           .
         </p>
-        <Button size="l" href="http://eepurl.com/htoWRr" target="_blank">
+        <Button size="large" href="http://eepurl.com/htoWRr" target="_blank">
           Newsletter signup
         </Button>
       </div>

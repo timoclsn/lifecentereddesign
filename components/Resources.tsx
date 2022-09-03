@@ -182,7 +182,7 @@ export const Resources = ({ resources }: Props) => {
       </div>
       {showShowMoreBtn && (
         <div className="flex justify-center">
-          <Button size="l" onClick={() => showMore()}>
+          <Button size="large" onClick={() => showMore()}>
             <UilArrowCircleDown />
             Show More
           </Button>

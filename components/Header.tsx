@@ -11,7 +11,7 @@ export function Header() {
         design more responsible, sustainable, ethical and all in all more
         meaningful products and services.
       </p>
-      <Button variant="grass" size="l" href="/">
+      <Button size="large" href="/" variant="contained">
         About this directory
       </Button>
     </section>

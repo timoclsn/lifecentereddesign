@@ -55,12 +55,7 @@ export function Categories() {
           are interested, please signup for our newsletter and consider letting
           us know what ideas you like most.
         </p>
-        <Button
-          variant="grass"
-          size="l"
-          href="http://eepurl.com/htoWRr"
-          target="_blank"
-        >
+        <Button size="large" href="http://eepurl.com/htoWRr" target="_blank">
           Newsletter signup
         </Button>
       </div>

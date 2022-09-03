@@ -1,27 +1,70 @@
+import { cva, VariantProps } from 'class-variance-authority';
 import { ReactNode } from 'react';
 
-const variants = {
-  black: 'bg-black text-white',
-  white: 'bg-white text-black',
-  oak: 'bg-oak text-black',
-  grass: 'bg-grass text-black',
-  sky: 'bg-sky text-black',
-  evening: 'bg-evening text-black',
-  sand: 'bg-sand text-black',
-  morning: 'bg-morning text-black',
-  forest: 'bg-forest text-black',
-  stone: 'bg-stone text-black',
-} as const;
+const button = cva(
+  [
+    'inline-flex',
+    'items-center',
+    'justify-center',
+    'gap-2',
+    'leading-none',
+    'px-6',
+    'py-4',
+  ],
+  {
+    variants: {
+      variant: {
+        contained: [],
+        text: [],
+      },
 
-const sizes = {
-  s: 'px-6 py-2',
-  l: 'px-8 py-4',
-} as const;
+      size: {
+        medium: [
+          'text-base',
+          'leading-6',
+          '[&>svg]:w-[20px]',
+          '[&>svg]:h-[20px]',
+        ],
+        large: [
+          'text-2xl',
+          'leading-8',
+          '[&>svg]:w-[25px]',
+          '[&>svg]:h-[25px]',
+        ],
+      },
 
-interface Props {
+      color: {
+        primary: [],
+      },
+    },
+
+    compoundVariants: [
+      {
+        variant: 'contained',
+        color: 'primary',
+        class: [
+          'text-primary-contrast-text bg-primary-main-bg',
+          'hover:bg-primary-hover-bg',
+          'disabled:bg-primary-disabled-bg',
+        ],
+      },
+      {
+        variant: 'text',
+        color: 'primary',
+        class: [
+          'text-primary-main-text',
+          'hover:text-primary-hover-text hover:bg-primary-ghost-bg',
+          'disabled:text-primary-disabled-text disabled:bg-transparent',
+        ],
+      },
+    ],
+  }
+);
+
+export type ButtonProps = VariantProps<typeof button>;
+
+interface ComponentProps {
   children: ReactNode;
-  size?: keyof typeof sizes;
-  variant?: keyof typeof variants;
   type?: 'button' | 'submit' | 'reset';
   onClick?: () => void;
   disabled?: boolean;
@@ -29,36 +72,24 @@ interface Props {
   target?: '_blank';
 }
 
+type Props = ComponentProps & ButtonProps;
+
 export function Button({
   children,
-  variant = 'black',
-  size = 's',
+  variant = 'contained',
+  color = 'primary',
+  size = 'medium',
   type = 'button',
   onClick,
   disabled,
   href,
   target,
 }: Props) {
-  const Tag = href ? 'a' : 'button';
-  const className = [
-    'inline-flex',
-    'items-center',
-    'justify-center',
-    'gap-2',
-    'rounded-full',
-    'font-bold',
-    'disabled:opacity-50',
-    'hover:opacity-80',
-    '[&>svg]:w-[20px]',
-    '[&>svg]:h-[20px]',
-    variants[variant],
-    sizes[size],
-  ].join(' ');
-
+  const Element = href ? 'a' : 'button';
   return (
-    <Tag
-      className={className}
-      type={Tag === 'button' ? type : undefined}
+    <Element
+      className={button({ variant, size, color })}
+      type={Element === 'button' ? type : undefined}
       onClick={onClick}
       disabled={disabled}
       href={href}
@@ -66,6 +97,6 @@ export function Button({
       rel={target === '_blank' ? 'noopener noreferrer' : undefined}
     >
       {children}
-    </Tag>
+    </Element>
   );
 }

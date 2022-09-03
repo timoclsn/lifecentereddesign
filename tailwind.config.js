@@ -8,24 +8,70 @@ module.exports = {
   ],
   theme: {
     colors: {
+      transparent: 'transparent',
+      oak: '#EFE9E2',
+      forest: '#E4F2E6',
+      sand: '#F3E6D1',
+      lime: '#F0F2D1',
+      sky: '#E7ECF7',
+      evening: '#F4E6E4',
+      stone: '#EAEAEA',
+      morning: '#F1E6F5',
+      text: {
+        primary: '#101B2C',
+        secondary: 'rgba(16, 27, 44, 0.64)',
+      },
+      bg: {
+        primary: '#F8F6F1',
+        secondary: '#FFFFFF',
+      },
+      primary: {
+        main: {
+          bg: '#101B2C',
+          text: '#101B2C',
+        },
+        hover: {
+          bg: 'rgba(16, 27, 44, 0.8)',
+          text: '#101B2C',
+        },
+        disabled: {
+          bg: 'rgba(16, 27, 44, 0.4)',
+          text: 'rgba(16, 27, 44, 0.4)',
+        },
+        contrast: {
+          text: '#FFFFFF',
+        },
+        ghost: {
+          bg: 'rgba(16, 27, 44, 0.12)',
+        },
+      },
+      ghost: {
+        main: {
+          light: {
+            bg: 'rgba(255, 255, 255, 0.56)',
+          },
+          dark: {
+            bg: 'rgba(16, 27, 44, 0.12)',
+          },
+        },
+        contrast: {
+          text: '#101B2C',
+        },
+      },
+
+      // Old
       white: '#FFFFFF',
       light: 'rgba(50, 45, 38, 0.16)',
       dark: 'rgba(50, 45, 38, 0.84)',
       black: '#322D26',
       grass: '#F0F2D1',
-      sky: '#E7ECF7',
-      evening: '#F4E6E4',
-      sand: '#F3EAD1',
-      morning: '#F1E6F5',
-      oak: '#EFE9E2',
-      forest: '#E4F2E6',
-      stone: '#EAEAEA',
       'tag-light': 'rgba(255, 255, 255, 0.56)',
       'tag-dark': 'rgba(50, 45, 38, 0.16)',
     },
     extend: {
       fontFamily: {
-        sans: ['Noto Sans', ...fontFamily.sans],
+        sans: ['"DM Sans"', ...fontFamily.sans],
+        serif: ['"Source Serif 4"', fontFamily.serif],
       },
       borderRadius: {
         '4xl': '2rem',
