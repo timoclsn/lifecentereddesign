@@ -10,6 +10,7 @@ const button = cva(
     'leading-none',
     'px-6',
     'py-4',
+    'whitespace-nowrap',
   ],
   {
     variants: {
@@ -35,6 +36,10 @@ const button = cva(
 
       color: {
         primary: [],
+      },
+
+      selected: {
+        true: ['text-primary-hover-text bg-primary-ghost-bg'],
       },
     },
 
@@ -84,11 +89,12 @@ export function Button({
   disabled,
   href,
   target,
+  selected,
 }: Props) {
   const Element = href ? 'a' : 'button';
   return (
     <Element
-      className={button({ variant, size, color })}
+      className={button({ variant, size, color, selected })}
       type={Element === 'button' ? type : undefined}
       onClick={onClick}
       disabled={disabled}

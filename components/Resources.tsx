@@ -1,13 +1,8 @@
-import {
-  UilArrowCircleDown,
-  UilAngleDown,
-  UilCheck,
-} from '@iconscout/react-unicons';
+import { UilArrowDown, UilAngleDown, UilCheck } from '@iconscout/react-unicons';
 import { useState } from 'react';
 import * as Select from '@radix-ui/react-select';
 import { Resources as TResources, ContenType } from '../lib/content';
 import { Button } from './Button';
-import { FilterButton } from './FilterButton';
 import { getCardComponent } from './utils';
 
 type Filter = ContenType | null;
@@ -47,90 +42,92 @@ export const Resources = ({ resources }: Props) => {
   };
 
   const filterResources = (type: Filter) => setFilteredType(type);
+  console.log(filteredType);
 
   return (
     <section id="resources" className="flex flex-col gap-10">
-      <div className="flex items-center gap-1 overflow-x-scroll sm:gap-6">
-        <FilterButton
+      <div className="flex items-center overflow-x-scroll">
+        <Button
+          variant="text"
           selected={filteredType === null}
           onClick={() => filterResources(null)}
         >
           All resources
-        </FilterButton>
-        <FilterButton
-          variant="evening"
+        </Button>
+        <Button
+          variant="text"
           selected={filteredType === 'thoughtleader'}
           onClick={() => filterResources('thoughtleader')}
         >
           Thoughtleaders
-        </FilterButton>
-        <FilterButton
-          variant="oak"
+        </Button>
+        <Button
+          variant="text"
           selected={filteredType === 'book'}
           onClick={() => filterResources('book')}
         >
           Books
-        </FilterButton>
-        <FilterButton
-          variant="forest"
+        </Button>
+        <Button
+          variant="text"
           selected={filteredType === 'article'}
           onClick={() => filterResources('article')}
         >
           Articles
-        </FilterButton>
-        <FilterButton
-          variant="evening"
+        </Button>
+        <Button
+          variant="text"
           selected={filteredType === 'course'}
           onClick={() => filterResources('course')}
         >
           Courses
-        </FilterButton>
-        <FilterButton
-          variant="sky"
+        </Button>
+        <Button
+          variant="text"
           selected={filteredType === 'podcast'}
           onClick={() => filterResources('podcast')}
         >
           Podcasts
-        </FilterButton>
-        <FilterButton
-          variant="sand"
+        </Button>
+        <Button
+          variant="text"
           selected={filteredType === 'podcastEpisode'}
           onClick={() => filterResources('podcastEpisode')}
         >
-          PodcastEpisodes
-        </FilterButton>
-        <FilterButton
-          variant="lime"
+          Podcast Episodes
+        </Button>
+        <Button
+          variant="text"
           selected={filteredType === 'video'}
           onClick={() => filterResources('video')}
         >
           Videos
-        </FilterButton>
-        <FilterButton
-          variant="stone"
+        </Button>
+        <Button
+          variant="text"
           selected={filteredType === 'tool'}
           onClick={() => filterResources('tool')}
         >
           Tools
-        </FilterButton>
-        <FilterButton
-          variant="oak"
+        </Button>
+        <Button
+          variant="text"
           selected={filteredType === 'directory'}
           onClick={() => filterResources('directory')}
         >
           Directories
-        </FilterButton>
-        <FilterButton
-          variant="morning"
+        </Button>
+        <Button
+          variant="text"
           selected={filteredType === 'communityOrOrganization'}
           onClick={() => filterResources('communityOrOrganization')}
         >
-          CommunitiesAndOrganization
-        </FilterButton>
+          Communities And Organization
+        </Button>
       </div>
       <div className="flex flex-col gap-6">
-        <div className="relative self-end">
-          <span className="absolute right-24 whitespace-nowrap">
+        <div className="flex gap-6 self-end">
+          <span className="whitespace-nowrap text-text-secondary">
             Sorted by:
           </span>
           <Select.Root
@@ -141,7 +138,9 @@ export const Resources = ({ resources }: Props) => {
             <Select.Trigger className="flex items-center gap-1 font-bold outline-none">
               <Select.Value aria-label={sort} />
               <Select.Icon>
-                <UilAngleDown />
+                <div className="text-text-secondary">
+                  <UilAngleDown />
+                </div>
               </Select.Icon>
             </Select.Trigger>
 
@@ -154,7 +153,9 @@ export const Resources = ({ resources }: Props) => {
                   <Select.ItemIndicator className="absolute left-1 w-[25px]">
                     <UilCheck />
                   </Select.ItemIndicator>
-                  <Select.ItemText>Date</Select.ItemText>
+                  <Select.ItemText>
+                    <span className="whitespace-nowrap">Date added</span>
+                  </Select.ItemText>
                 </Select.Item>
                 <Select.Item
                   value="title"
@@ -163,17 +164,19 @@ export const Resources = ({ resources }: Props) => {
                   <Select.ItemIndicator className="absolute left-1 w-[25px]">
                     <UilCheck />
                   </Select.ItemIndicator>
-                  <Select.ItemText>Title</Select.ItemText>
+                  <Select.ItemText>
+                    <span className="whitespace-nowrap">Title</span>
+                  </Select.ItemText>
                 </Select.Item>
               </Select.Viewport>
             </Select.Content>
           </Select.Root>
         </div>
-        <ul className="flex flex-col flex-wrap gap-10 md:flex-row">
+        <ul className="flex flex-col flex-wrap gap-4 md:flex-row">
           {resourcesToDisplay.map((ressource) => {
             const component = getCardComponent(ressource);
             return (
-              <li key={ressource.id} className="md:w-[calc(50%-1.25rem)]">
+              <li key={ressource.id} className="md:w-[calc(50%-0.5rem)]">
                 {component}
               </li>
             );
@@ -183,7 +186,7 @@ export const Resources = ({ resources }: Props) => {
       {showShowMoreBtn && (
         <div className="flex justify-center">
           <Button size="large" onClick={() => showMore()}>
-            <UilArrowCircleDown />
+            <UilArrowDown />
             Show More
           </Button>
         </div>
