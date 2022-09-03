@@ -144,11 +144,11 @@ export const Resources = ({ resources }: Props) => {
               </Select.Icon>
             </Select.Trigger>
 
-            <Select.Content className="rounded-2xl bg-black px-4 py-6 text-white">
+            <Select.Content className="bg-black text-white rounded-2xl px-4 py-6">
               <Select.Viewport className="flex flex-col gap-1">
                 <Select.Item
                   value="date"
-                  className="rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-white hover:text-black"
+                  className="hover:bg-white hover:text-black rounded-lg py-1 pl-[29px] pr-2 outline-none"
                 >
                   <Select.ItemIndicator className="absolute left-1 w-[25px]">
                     <UilCheck />
@@ -159,7 +159,7 @@ export const Resources = ({ resources }: Props) => {
                 </Select.Item>
                 <Select.Item
                   value="title"
-                  className="rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-white hover:text-black"
+                  className="hover:bg-white hover:text-black rounded-lg py-1 pl-[29px] pr-2 outline-none"
                 >
                   <Select.ItemIndicator className="absolute left-1 w-[25px]">
                     <UilCheck />

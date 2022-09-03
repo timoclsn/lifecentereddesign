@@ -44,7 +44,7 @@ export function ProfileCard({
         alt={`Portrait image of ${name}`}
         width={120}
         height={120}
-        className="rounded-full border-4 border-solid border-white leading-none"
+        className="border-white rounded-full border-4 border-solid leading-none"
       />
       <div className="flex-1">
         <h3 className="mb-4 font-bold">{name}</h3>
