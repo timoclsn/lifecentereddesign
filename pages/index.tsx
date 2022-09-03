@@ -1,10 +1,8 @@
 import { InferGetStaticPropsType } from 'next';
-
 import { Header } from '../components/Header';
 import { Layout } from '../components/Layout';
 import { NewResources } from '../components/NewResources';
 import { Resources } from '../components/Resources';
-import { getCO2Consumtion } from '../lib/co2';
 import {
   getArticles,
   getBooks,
@@ -19,11 +17,10 @@ import {
 } from '../lib/content';
 
 export default function Home({
-  co2Consumption,
   resources,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <Layout co2Consumption={co2Consumption}>
+    <Layout>
       <Header />
       <NewResources resources={resources} />
       <Resources resources={resources} />
@@ -32,10 +29,6 @@ export default function Home({
 }
 
 export const getStaticProps = async () => {
-  const co2Consumption = await getCO2Consumtion(
-    'https://lifecentereddesign.net'
-  );
-
   const resources = [
     ...(await getBooks()),
     ...(await getThoughtleaders()),
@@ -55,7 +48,6 @@ export const getStaticProps = async () => {
 
   return {
     props: {
-      co2Consumption,
       resources,
     },
   };

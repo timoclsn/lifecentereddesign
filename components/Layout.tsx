@@ -2,7 +2,6 @@ import Script from 'next/script';
 import type { ReactNode } from 'react';
 import { Suspense } from 'react';
 
-import type { CO2 } from '../lib/co2';
 import { CenteredColumn } from './CenteredColumn';
 import { Favicons } from './Favicons';
 import { Footer } from './Footer';
@@ -11,7 +10,6 @@ import { SEO } from './SEO';
 
 interface Props {
   children: ReactNode;
-  co2Consumption: CO2;
   title?: string;
   description?: string;
   slug?: string;
@@ -20,7 +18,6 @@ interface Props {
 
 export function Layout({
   children,
-  co2Consumption,
   title,
   description,
   slug,
@@ -45,9 +42,9 @@ export function Layout({
       <Favicons />
       <Suspense fallback={null}>
         <div className="space-y-20 sm:space-y-40">
-          <Navigation co2Consumption={co2Consumption} />
+          <Navigation />
           <CenteredColumn>
-            <main className="space-y-10 sm:space-y-20">{children}</main>
+            <main className="space-y-10 sm:space-y-40">{children}</main>
           </CenteredColumn>
           <Footer />
         </div>
