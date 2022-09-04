@@ -26,7 +26,7 @@ export function CO2Badge({ co2Consumption }: Props) {
         </Popover.Close>
         <div className="space-y-6">
           <h2 className="text-3xl font-bold">Website carbon footprint:</h2>
-          <div className="space-y-4 text-dark">
+          <div className="space-y-4">
             <p>
               Everytime someone opens this website only{' '}
               <strong>{co2Consumption.co2} g of CO2</strong> are produced. This
@@ -54,7 +54,7 @@ export function CO2Badge({ co2Consumption }: Props) {
               <li>Focus on page speed</li>
             </ul>
           </div>
-          <div className="flex space-x-4 font-bold text-dark">
+          <div className="text-dark flex space-x-4 font-bold">
             <FiArrowRight size={24} />
             <a
               href="https://www.websitecarbon.com"
