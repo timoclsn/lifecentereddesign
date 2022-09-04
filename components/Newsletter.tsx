@@ -24,12 +24,12 @@ export const Newsletter = () => {
             Newsletter and will only send you updates when there is interesting
             news to share.
           </p>
-          <div className="flex items-center gap-8">
+          <div className="flex flex-col items-center gap-8 sm:flex-row">
             <a
               href="http://eepurl.com/htoWRr"
               target="_blank"
               rel="noopener noreferrer"
-              className="min-w-[645px] bg-ghost-main-dark-bg py-6 px-10"
+              className="w-full max-w-[645px] bg-ghost-main-dark-bg py-6 px-10"
             >
               <span className="text-2xl text-text-secondary">
                 Email address
