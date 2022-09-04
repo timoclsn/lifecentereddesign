@@ -8,7 +8,8 @@
     "postbuild": "node ./scripts/generate-sitemap.mjs",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@fontsource/dm-sans": "4.5.8",
