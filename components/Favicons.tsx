@@ -78,7 +78,6 @@ export function Favicons() {
         name="msapplication-TileImage"
         content="/favicons/ms-icon-144x144.png"
       />
-      <meta name="theme-color" content="#F0F2D1"></meta>
     </Head>
   );
 }
