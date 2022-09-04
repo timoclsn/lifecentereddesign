@@ -2,6 +2,7 @@ import { InferGetStaticPropsType } from 'next';
 import { Header } from '../components/Header';
 import { Layout } from '../components/Layout';
 import { NewResources } from '../components/NewResources';
+import { Newsletter } from '../components/Newsletter';
 import { Resources } from '../components/Resources';
 import {
   getArticles,
@@ -23,6 +24,7 @@ export default function Home({
     <Layout>
       <Header />
       <NewResources resources={resources} />
+      <Newsletter />
       <Resources resources={resources} />
     </Layout>
   );

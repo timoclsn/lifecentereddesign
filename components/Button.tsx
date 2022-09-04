@@ -74,7 +74,7 @@ interface ComponentProps {
   onClick?: () => void;
   disabled?: boolean;
   href?: string;
-  target?: '_blank';
+  external?: boolean;
 }
 
 type Props = ComponentProps & ButtonProps;
@@ -88,7 +88,7 @@ export function Button({
   onClick,
   disabled,
   href,
-  target,
+  external,
   selected,
 }: Props) {
   const Element = href ? 'a' : 'button';
@@ -99,8 +99,8 @@ export function Button({
       onClick={onClick}
       disabled={disabled}
       href={href}
-      target={target}
-      rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
     >
       {children}
     </Element>
