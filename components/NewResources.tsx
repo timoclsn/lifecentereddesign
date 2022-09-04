@@ -15,11 +15,14 @@ export const NewResources = ({ resources }: Props) => {
     .slice(0, 10);
 
   return (
-    <section id="new-resources" className="">
+    <section
+      id="new-resources"
+      className="ml-[calc(50%-50vw)] w-screen px-6 sm:px-8 xl:px-10"
+    >
       <h2 className="text-white mb-10 font-serif text-4xl font-bold">
         New Resources
       </h2>
-      <ul className="mb-14 ml-[calc(50%-50vw)] flex w-screen gap-6 overflow-x-scroll px-6">
+      <ul className="mb-14 flex gap-6 overflow-x-scroll">
         <Image
           src="/ground.jpg"
           alt="Image of desert ground."
