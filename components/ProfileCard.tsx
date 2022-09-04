@@ -48,7 +48,7 @@ export function ProfileCard({
       />
       <div className="flex-1">
         <h3 className="mb-4 font-bold">{name}</h3>
-        <p className="mb-6 text-dark">
+        <p className="mb-6">
           {job.role} @{' '}
           <a href={job.url} className="underline">
             {job.name}
