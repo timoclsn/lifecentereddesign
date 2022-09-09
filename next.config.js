@@ -8,9 +8,6 @@ const config = {
     legacyBrowsers: false,
     browsersListForSwc: true,
     scrollRestoration: true,
-    images: {
-      allowFutureImage: true,
-    },
   },
   async rewrites() {
     return [
