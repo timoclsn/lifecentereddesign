@@ -12,14 +12,18 @@ export const CourseCard = ({ course }: Props) => {
     <Card
       variant="evening"
       type="Course"
-      title={course.Name}
-      category={course.Category[0].Name}
+      title={course.fields.Name}
+      category={course.fields.Category?.at(0)?.fields.Name}
       tags={[
-        {
-          icon: UilLinkAlt,
-          text: getHostname(course.Link),
-          url: course.Link,
-        },
+        ...(course.fields.Link
+          ? [
+              {
+                icon: UilLinkAlt,
+                text: getHostname(course.fields.Link),
+                url: course.fields.Link,
+              },
+            ]
+          : []),
       ]}
       showType
     />

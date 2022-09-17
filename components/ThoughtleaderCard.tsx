@@ -12,27 +12,27 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
     <Card
       variant="evening"
       type="Thoughtleader"
-      title={thoughtleader.Name}
+      title={thoughtleader.fields.Name}
       metaInfos={[
-        ...(thoughtleader['Job/Description']
+        ...(thoughtleader.fields['Job/Description']
           ? [
               {
-                text: thoughtleader['Job/Description'],
+                text: thoughtleader.fields['Job/Description'],
                 icon: UilBriefcaseAlt,
               },
             ]
           : []),
       ]}
-      {...(thoughtleader.Category && {
-        category: thoughtleader.Category[0].Name,
+      {...(thoughtleader.fields.Category && {
+        category: thoughtleader.fields.Category?.at(0)?.fields.Name,
       })}
       tags={[
-        ...(thoughtleader.Link
+        ...(thoughtleader.fields.Link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(thoughtleader.Link),
-                url: thoughtleader.Link,
+                text: getHostname(thoughtleader.fields.Link),
+                url: thoughtleader.fields.Link,
               },
             ]
           : []),

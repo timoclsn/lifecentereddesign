@@ -8,10 +8,10 @@ const Privacy = ({
   return (
     <Layout title="Privacy" slug="privacy">
       <section className="space-y-20">
-        <h1 className="mb-6 text-5xl font-bold">{content.title}</h1>
+        <h1 className="mb-6 text-5xl font-bold">{content?.title}</h1>
         <div
           className="prose"
-          dangerouslySetInnerHTML={{ __html: content.body.html }}
+          dangerouslySetInnerHTML={{ __html: content?.body.html ?? '' }}
         />
       </section>
     </Layout>

@@ -1,11 +1,11 @@
 import { UilArrowDown, UilAngleDown, UilCheck } from '@iconscout/react-unicons';
 import { useState } from 'react';
 import * as Select from '@radix-ui/react-select';
-import { Resources as TResources, ContenType } from '../lib/content';
+import { Resources as TResources, ContentType } from '../lib/content';
 import { Button } from './Button';
 import { getCardComponent } from './utils';
 
-type Filter = ContenType | null;
+type Filter = ContentType | null;
 type Sort = 'date' | 'title';
 
 interface Props {
@@ -23,8 +23,8 @@ export const Resources = ({ resources }: Props) => {
         new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime()
       );
     } else if (sort === 'title') {
-      const itemA = 'Title' in a ? a.Title : a.Name;
-      const itemB = 'Title' in b ? b.Title : b.Name;
+      const itemA = 'Title' in a.fields ? a.fields.Title : a.fields.Name;
+      const itemB = 'Title' in b.fields ? b.fields.Title : b.fields.Name;
       return itemA.localeCompare(itemB);
     }
     return 0;

@@ -17,42 +17,46 @@ export const ArticleCard = ({ article }: Props) => {
     <Card
       variant="forest"
       type="Article"
-      title={article.Title}
+      title={article.fields.Title}
       metaInfos={[
-        ...(article['Author(s)']
+        ...(article.fields['Author(s)']
           ? [
               {
-                text: article['Author(s)']
-                  .map((author) => author.Name)
+                text: article.fields['Author(s)']
+                  .map((author) => author?.fields.Name)
                   .join(', '),
                 icon: UilBookReader,
               },
             ]
           : []),
-        ...(article.Date
+        ...(article.fields.Date
           ? [
               {
-                text: new Date(article.Date).toLocaleDateString('en'),
+                text: new Date(article.fields.Date).toLocaleDateString('en'),
                 icon: UilCalendarAlt,
               },
             ]
           : []),
-        ...(article.Duration
+        ...(article.fields.Duration
           ? [
               {
-                text: (article.Duration / 60).toString() + ' min',
+                text: (article.fields.Duration / 60).toString() + ' min',
                 icon: UilClockThree,
               },
             ]
           : []),
       ]}
-      category={article.Category[0].Name}
+      category={article.fields.Category?.at(0)?.fields.Name}
       tags={[
-        {
-          icon: UilLinkAlt,
-          text: getHostname(article.Link),
-          url: article.Link,
-        },
+        ...(article.fields.Link
+          ? [
+              {
+                icon: UilLinkAlt,
+                text: getHostname(article.fields.Link),
+                url: article.fields.Link,
+              },
+            ]
+          : []),
       ]}
       showType
     />

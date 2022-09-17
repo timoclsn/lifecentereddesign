@@ -14,14 +14,18 @@ export const CommunityOrOranizationCard = ({
     <Card
       variant="morning"
       type="Community or Organization"
-      title={communityOrOrganization.Name}
-      category={communityOrOrganization.Category[0].Name}
+      title={communityOrOrganization.fields.Name}
+      category={communityOrOrganization.fields.Category?.at(0)?.fields.Name}
       tags={[
-        {
-          icon: UilLinkAlt,
-          text: getHostname(communityOrOrganization.Link),
-          url: communityOrOrganization.Link,
-        },
+        ...(communityOrOrganization.fields.Link
+          ? [
+              {
+                icon: UilLinkAlt,
+                text: getHostname(communityOrOrganization.fields.Link),
+                url: communityOrOrganization.fields.Link,
+              },
+            ]
+          : []),
       ]}
       showType
     />

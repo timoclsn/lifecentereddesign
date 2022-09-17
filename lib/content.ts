@@ -1,15 +1,14 @@
-import Airtable from 'airtable';
+import Airtable, { FieldSet, Record } from 'airtable';
+import { z } from 'zod';
 
 Airtable.configure({
-  apiKey: process.env.AIRTABLE_API_KEY,
+  apiKey: z.string().parse(process.env.AIRTABLE_API_KEY),
 });
 
-const base = Airtable.base(process.env.AIRTABLE_BASE_ID);
+const base = Airtable.base(z.string().parse(process.env.AIRTABLE_BASE_ID));
 
-const getAllRecordsFromTable = async <TRecord>(
-  name: string
-): Promise<TRecord[]> => {
-  const allRecords = [];
+const getAllRecordsFromTable = async (name: string) => {
+  const allRecords: Array<Record<FieldSet>> = [];
 
   await base(name)
     .select({})
@@ -20,386 +19,590 @@ const getAllRecordsFromTable = async <TRecord>(
       fetchNextPage();
     });
 
-  const allRecordsMinified = allRecords.map((record) => ({
-    id: record.id,
-    createdTime: record._rawJson.createdTime,
-    ...record.fields,
-  }));
-
-  return allRecordsMinified;
+  return allRecords.map((record) => record._rawJson);
 };
 
-let dataStore;
+const dateSchema = z.string();
+
+const referenceSchema = z.array(z.string());
+
+const imageSchema = z.array(
+  z.object({
+    width: z.number(),
+    height: z.number(),
+    url: z.string().url(),
+  })
+);
+
+const bookSchema = z.object({
+  id: z.string(),
+  createdTime: dateSchema,
+  fields: z.object({
+    Title: z.string(),
+    Authors: referenceSchema.optional(),
+    Category: referenceSchema.optional(),
+    'Link Title': z.string().optional(),
+    Link: z.string().url().optional(),
+    Topics: referenceSchema.optional(),
+    'Publishing Date': dateSchema.optional(),
+    Publisher: z.string().optional(),
+    ISBN: z.string().optional(),
+    Description: z.string().optional(),
+    Image: imageSchema.optional(),
+    Rating: z.number().optional(),
+    'Personal Note': z.string().optional(),
+  }),
+});
+
+type BookSchema = z.infer<typeof bookSchema>;
+
+const articleSchema = z.object({
+  id: z.string(),
+  createdTime: dateSchema,
+  fields: z.object({
+    Title: z.string(),
+    'Author(s)': referenceSchema.optional(),
+    Category: referenceSchema.optional(),
+    'Link Title': z.string().optional(),
+    Link: z.string().url().optional(),
+    Topics: referenceSchema.optional(),
+    Date: dateSchema.optional(),
+    Duration: z.number().optional(),
+    Image: imageSchema.optional(),
+    Description: z.string().optional(),
+    Rating: z.number().optional(),
+    'Personal Note': z.string().optional(),
+  }),
+});
+
+type ArticleSchema = z.infer<typeof articleSchema>;
+
+const thoughtleaderSchema = z.object({
+  id: z.string(),
+  createdTime: dateSchema,
+  fields: z.object({
+    Name: z.string(),
+    'Job/Description': z.string().optional(),
+    Category: referenceSchema.optional(),
+    'Link Title': z.string().optional(),
+    Link: z.string().url().optional(),
+    Books: referenceSchema.optional(),
+    'Article(s)': referenceSchema.optional(),
+    'Podcast Episode(s)': referenceSchema.optional(),
+    'Video(s)': referenceSchema.optional(),
+    Podcasts: referenceSchema.optional(),
+  }),
+});
+
+type ThoughtleaderSchema = z.infer<typeof thoughtleaderSchema>;
+
+const categorySchema = z.object({
+  id: z.string(),
+  createdTime: dateSchema,
+  fields: z.object({
+    Name: z.string(),
+    Description: z.string().optional(),
+    Books: referenceSchema.optional(),
+    Thoughtleaders: referenceSchema.optional(),
+    Articles: referenceSchema.optional(),
+    'Podcast Episodes': referenceSchema.optional(),
+    Podcasts: referenceSchema.optional(),
+    Studies: z.string().optional(),
+    Directories: referenceSchema.optional(),
+    Organizations: z.string().optional(),
+    Videos: referenceSchema.optional(),
+    'Directories copy': referenceSchema.optional(),
+    'Tools copy': referenceSchema.optional(),
+    'Communities, Associations, Organizations copy': referenceSchema.optional(),
+  }),
+});
+
+type CategorySchema = z.infer<typeof categorySchema>;
+
+const topicSchema = z.object({
+  id: z.string(),
+  createdTime: dateSchema,
+  fields: z.object({
+    Name: z.string(),
+    Books: referenceSchema.optional(),
+    Articles: referenceSchema.optional(),
+    'Articles, Podcastepisodes & Videos copy': referenceSchema.optional(),
+    'Podcast Episodes copy': z.string().optional(),
+  }),
+});
+
+type TopicSchema = z.infer<typeof topicSchema>;
+
+const podcastepisodeSchema = z.object({
+  id: z.string(),
+  createdTime: dateSchema,
+  fields: z.object({
+    Title: z.string(),
+    Podcast: z.string().optional(),
+    Date: dateSchema.optional(),
+    Duration: z.number().optional(),
+    Category: referenceSchema.optional(),
+    'Podcast = relevant': referenceSchema.optional(),
+    Guest: referenceSchema.optional(),
+    'Link Title': z.string().optional(),
+    Link: z.string().url().optional(),
+    Topics: referenceSchema.optional(),
+    Image: imageSchema.optional(),
+    Description: z.string().optional(),
+    Rating: z.number().optional(),
+    'Personal Note': z.string().optional(),
+  }),
+});
+
+type PodcastepisodeSchema = z.infer<typeof podcastepisodeSchema>;
+
+const podcastSchema = z.object({
+  id: z.string(),
+  createdTime: dateSchema,
+  fields: z.object({
+    Name: z.string(),
+    'Host(s)': z.array(z.string()).optional(),
+    'Link Title': z.string().optional(),
+    Link: z.string().url().optional(),
+    Category: referenceSchema.optional(),
+    'Host(s) = Thoughtleader(s)': referenceSchema.optional(),
+    'Podcast Episodes': z.string().optional(),
+    Description: z.string().optional(),
+    'Podcast Episodes 2': referenceSchema.optional(),
+  }),
+});
+
+type PodcastSchema = z.infer<typeof podcastSchema>;
+
+const directorySchema = z.object({
+  id: z.string(),
+  createdTime: dateSchema,
+  fields: z.object({
+    Name: z.string(),
+    Description: z.string().optional(),
+    'Link Title': z.string().optional(),
+    Link: z.string().url().optional(),
+    Category: referenceSchema.optional(),
+  }),
+});
+
+type DirectorySchema = z.infer<typeof directorySchema>;
+
+const videoSchema = z.object({
+  id: z.string(),
+  createdTime: dateSchema,
+  fields: z.object({
+    Title: z.string(),
+    Thoughtleader: referenceSchema.optional(),
+    Category: referenceSchema.optional(),
+    'Link Title': z.string().optional(),
+    Link: z.string().url().optional(),
+    Date: dateSchema.optional(),
+    Duration: z.number().optional(),
+    Image: imageSchema.optional(),
+    Description: z.string().optional(),
+    Rating: z.number().optional(),
+    'Personal Note': z.string().optional(),
+  }),
+});
+
+type VideoSchema = z.infer<typeof videoSchema>;
+
+const toolSchema = z.object({
+  id: z.string(),
+  createdTime: dateSchema,
+  fields: z.object({
+    Name: z.string(),
+    Description: z.string().optional(),
+    'Link Title': z.string().optional(),
+    Link: z.string().url().optional(),
+    Category: referenceSchema.optional(),
+  }),
+});
+
+type ToolSchema = z.infer<typeof toolSchema>;
+
+const communityOrOrganizationSchema = z.object({
+  id: z.string(),
+  createdTime: dateSchema,
+  fields: z.object({
+    Name: z.string(),
+    Description: z.string().optional(),
+    'Link Title': z.string().optional(),
+    Link: z.string().url().optional(),
+    Category: referenceSchema.optional(),
+  }),
+});
+
+type CommunityOrOrganizationSchema = z.infer<
+  typeof communityOrOrganizationSchema
+>;
+
+const courseSchema = z.object({
+  id: z.string(),
+  createdTime: dateSchema,
+  fields: z.object({
+    Name: z.string(),
+    Description: z.string().optional(),
+    'Link Title': z.string().optional(),
+    Link: z.string().url().optional(),
+    Category: referenceSchema.optional(),
+  }),
+});
+
+type CourseSchema = z.infer<typeof courseSchema>;
+
+let dataStore: {
+  books: Array<BookSchema>;
+  articles: Array<ArticleSchema>;
+  thoughtleaders: Array<ThoughtleaderSchema>;
+  categories: Array<CategorySchema>;
+  topics: Array<TopicSchema>;
+  podcastEpisodes: Array<PodcastepisodeSchema>;
+  podcasts: Array<PodcastSchema>;
+  directories: Array<DirectorySchema>;
+  videos: Array<VideoSchema>;
+  tools: Array<ToolSchema>;
+  communitiesAndOrganizations: Array<CommunityOrOrganizationSchema>;
+  courses: Array<CourseSchema>;
+};
+
 const getData = async () => {
+  const [
+    books,
+    articles,
+    thoughtleaders,
+    categories,
+    topics,
+    podcastEpisodes,
+    podcasts,
+    directories,
+    videos,
+    communitiesAndOrganizations,
+    courses,
+  ] = await Promise.all([
+    getAllRecordsFromTable('Books'),
+    getAllRecordsFromTable('Articles'),
+    getAllRecordsFromTable('Thoughtleaders'),
+    getAllRecordsFromTable('Categories'),
+    getAllRecordsFromTable('Topics'),
+    getAllRecordsFromTable('Podcast Episodes'),
+    getAllRecordsFromTable('Podcasts'),
+    getAllRecordsFromTable('Directories'),
+    getAllRecordsFromTable('Videos'),
+    getAllRecordsFromTable('Communities & Organizations'),
+    getAllRecordsFromTable('Courses'),
+  ]);
+
+  const parsedBooks = z.array(bookSchema).parse(books);
+  const parsedArticles = z.array(articleSchema).parse(articles);
+  const parsedThoughtleaders = z
+    .array(thoughtleaderSchema)
+    .parse(thoughtleaders);
+  const parsedCategories = z.array(categorySchema).parse(categories);
+  const parsedTopics = z.array(topicSchema).parse(topics);
+  const parsedPodcastEpisodes = z
+    .array(podcastepisodeSchema)
+    .parse(podcastEpisodes);
+  const parsedPodcasts = z.array(podcastSchema).parse(podcasts);
+  const parsedDirectories = z.array(directorySchema).parse(directories);
+  const parsedVideos = z.array(videoSchema).parse(videos);
+  const tools = await getAllRecordsFromTable('Tools');
+  const parsedTools = z.array(toolSchema).parse(tools);
+  const parsedCommunitiesAndOrganizations = z
+    .array(communityOrOrganizationSchema)
+    .parse(communitiesAndOrganizations);
+  const parsedCourses = z.array(courseSchema).parse(courses);
+
   if (!dataStore) {
     dataStore = {
-      books: await getAllRecordsFromTable('Books'),
-      articles: await getAllRecordsFromTable('Articles'),
-      thoughtleaders: await getAllRecordsFromTable('Thoughtleaders'),
-      categories: await getAllRecordsFromTable('Categories'),
-      topics: await getAllRecordsFromTable('Topics'),
-      podcastEpisodes: await getAllRecordsFromTable('Podcast Episodes'),
-      podcasts: await getAllRecordsFromTable('Podcasts'),
-      directories: await getAllRecordsFromTable('Directories'),
-      videos: await getAllRecordsFromTable('Videos'),
-      tools: await getAllRecordsFromTable('Tools'),
-      communitiesAndOrganizations: await getAllRecordsFromTable(
-        'Communities & Organizations'
-      ),
-      courses: await getAllRecordsFromTable('Courses'),
+      books: parsedBooks,
+      articles: parsedArticles,
+      thoughtleaders: parsedThoughtleaders,
+      categories: parsedCategories,
+      topics: parsedTopics,
+      podcastEpisodes: parsedPodcastEpisodes,
+      podcasts: parsedPodcasts,
+      directories: parsedDirectories,
+      videos: parsedVideos,
+      tools: parsedTools,
+      communitiesAndOrganizations: parsedCommunitiesAndOrganizations,
+      courses: parsedCourses,
     };
   }
   return dataStore;
 };
 
-const findReference = (ids: string[], data: any) =>
-  ids.map((id) => data.find((date) => date.id === id));
+const findReference = <
+  TObj extends {
+    id: string;
+    [key: string]: any;
+  }
+>(
+  ids: Array<string>,
+  data: Array<TObj>
+) => ids.map((id) => data.find((date) => date.id === id));
 
-export type ContenType =
-  | 'book'
-  | 'article'
-  | 'thoughtleader'
-  | 'category'
-  | 'topic'
-  | 'podcastEpisode'
-  | 'podcast'
-  | 'directory'
-  | 'video'
-  | 'tool'
-  | 'communityOrOrganization'
-  | 'course';
+const contentType = {
+  book: 'book',
+  article: 'article',
+  thoughtleader: 'thoughtleader',
+  category: 'category',
+  topic: 'topic',
+  podcastEpisode: 'podcastEpisode',
+  podcast: 'podcast',
+  directory: 'directory',
+  video: 'video',
+  tool: 'tool',
+  communityOrOrganization: 'communityOrOrganization',
+  course: 'course',
+} as const;
 
-type Category = Array<{ Name: string }>;
+export type ContentType = keyof typeof contentType;
 
-export interface Book {
-  type: ContenType;
-  id: string;
-  createdTime: string;
-  Title: string;
-  Authors?: Array<{ Name: string }>;
-  Category?: Category;
-  'Link Title': string;
-  Link: string;
-  'Publishing Date': string;
-  Publisher: string;
-  ISBN: string;
-  Description: string;
-  Image: string[];
-  Rating: number;
-  'Personal Note': string;
-  Topics?: string[];
-}
-
-export const getBooks = async (): Promise<Book[]> => {
+const getBooks = async () => {
   const data = await getData();
   return data.books.map((book) => ({
-    type: 'book',
+    type: contentType.book,
     ...book,
-    ...(book.Authors && {
-      Authors: findReference(book.Authors, data.thoughtleaders),
-    }),
-    ...(book.Category && {
-      Category: findReference(book.Category, data.categories),
-    }),
-    ...(book.Topics && {
-      Topics: findReference(book.Topics, data.topics),
-    }),
+    fields: {
+      ...book.fields,
+      Authors: book.fields.Authors
+        ? findReference(book.fields.Authors, data.thoughtleaders)
+        : null,
+      Category: book.fields.Category
+        ? findReference(book.fields.Category, data.categories)
+        : null,
+      Topics: book.fields.Topics
+        ? findReference(book.fields.Topics, data.topics)
+        : null,
+    },
   }));
 };
 
-export interface Article {
-  type: ContenType;
-  id: string;
-  createdTime: string;
-  Title: string;
-  'Author(s)'?: Array<{ Name: string }>;
-  Category?: Category;
-  'Link Title': string;
-  Link: string;
-  Date: string;
-  Duration: number;
-  Topics?: string[];
-  Image: string[];
-  Description: string;
-  Rating: number;
-  'Personal Note': string;
-}
+export type Book = Awaited<ReturnType<typeof getBooks>>[number];
 
-export const getArticles = async (): Promise<Article[]> => {
+const getArticles = async () => {
   const data = await getData();
   return data.articles.map((article) => ({
-    type: 'article',
+    type: contentType.article,
     ...article,
-    ...(article['Author(s)'] && {
-      'Author(s)': findReference(article['Author(s)'], data.thoughtleaders),
-    }),
-    ...(article.Category && {
-      Category: findReference(article.Category, data.categories),
-    }),
-    ...(article.Topics && {
-      Topics: findReference(article.Topics, data.topics),
-    }),
+    fields: {
+      ...article.fields,
+      'Author(s)': article.fields['Author(s)']
+        ? findReference(article.fields['Author(s)'], data.thoughtleaders)
+        : null,
+      Category: article.fields.Category
+        ? findReference(article.fields.Category, data.categories)
+        : null,
+      Topics: article.fields.Topics
+        ? findReference(article.fields.Topics, data.topics)
+        : null,
+    },
   }));
 };
 
-export interface Thoughtleader {
-  type: ContenType;
-  id: string;
-  createdTime: string;
-  Name: string;
-  'Job/Description': string;
-  Category?: Category;
-  'Link Title': string;
-  Link: string;
-  Books: string[];
-  'Article(s)': string[];
-  'Podcast Episode(s)': string[];
-  'Video(s)': string[];
-  Podcasts: string[];
-}
+export type Article = Awaited<ReturnType<typeof getArticles>>[number];
 
-export const getThoughtleaders = async (): Promise<Thoughtleader[]> => {
+const getThoughtleaders = async () => {
   const data = await getData();
   return data.thoughtleaders.map((thoughtleader) => ({
-    type: 'thoughtleader',
+    type: contentType.thoughtleader,
     ...thoughtleader,
-    ...(thoughtleader.Category && {
-      Category: findReference(thoughtleader.Category, data.categories),
-    }),
-    ...(thoughtleader.Books && {
-      Books: findReference(thoughtleader.Books, data.books),
-    }),
-    ...(thoughtleader['Article(s)'] && {
-      'Article(s)': findReference(thoughtleader['Article(s)'], data.articles),
-    }),
-    ...(thoughtleader['Podcast Episode(s)'] && {
-      'Podcast Episode(s)': findReference(
-        thoughtleader['Podcast Episode(s)'],
-        data.podcastEpisodes
-      ),
-    }),
-    ...(thoughtleader['Video(s)'] && {
-      'Video(s)': findReference(thoughtleader['Video(s)'], data.videos),
-    }),
-    ...(thoughtleader.Podcasts && {
-      Podcasts: findReference(thoughtleader.Podcasts, data.podcasts),
-    }),
+    fields: {
+      ...thoughtleader.fields,
+      Category: thoughtleader.fields.Category
+        ? findReference(thoughtleader.fields.Category, data.categories)
+        : null,
+      Books: thoughtleader.fields.Books
+        ? findReference(thoughtleader.fields.Books, data.books)
+        : null,
+      'Article(s)': thoughtleader.fields['Article(s)']
+        ? findReference(thoughtleader.fields['Article(s)'], data.articles)
+        : null,
+      'Podcast Episode(s)': thoughtleader.fields['Podcast Episode(s)']
+        ? findReference(
+            thoughtleader.fields['Podcast Episode(s)'],
+            data.podcastEpisodes
+          )
+        : null,
+      'Video(s)': thoughtleader.fields['Video(s)']
+        ? findReference(thoughtleader.fields['Video(s)'], data.videos)
+        : null,
+      Podcasts: thoughtleader.fields.Podcasts
+        ? findReference(thoughtleader.fields.Podcasts, data.podcasts)
+        : null,
+    },
   }));
 };
 
-export interface PodcastEpisode {
-  type: ContenType;
-  id: string;
-  createdTime: string;
-  Title: string;
-  Podcast: string;
-  Category?: Category;
-  Date: string;
-  Duration: number;
-  'Podcast = relevant': string[];
-  Guest?: Array<{ Name: string }>;
-  Link: string;
-  Topics?: string[];
-  Image: string[];
-  Description: string;
-  Rating: number;
-  'Personal Note': string;
-}
+export type Thoughtleader = Awaited<
+  ReturnType<typeof getThoughtleaders>
+>[number];
 
-export const getPodcastEpisodes = async (): Promise<PodcastEpisode[]> => {
+const getPodcastEpisodes = async () => {
   const data = await getData();
   return data.podcastEpisodes.map((podcastEpisode) => ({
-    type: 'podcastEpisode',
+    type: contentType.podcastEpisode,
     ...podcastEpisode,
-    ...(podcastEpisode.Category && {
-      Category: findReference(podcastEpisode.Category, data.categories),
-    }),
-    ...(podcastEpisode['Podcast = relevant'] && {
-      'Podcast = relevant': findReference(
-        podcastEpisode['Podcast = relevant'],
-        data.podcasts
-      ),
-    }),
-    ...(podcastEpisode.Guest && {
-      Guest: findReference(podcastEpisode.Guest, data.thoughtleaders),
-    }),
-    ...(podcastEpisode.Topics && {
-      Topics: findReference(podcastEpisode.Topics, data.topics),
-    }),
+    fields: {
+      ...podcastEpisode.fields,
+      Category: podcastEpisode.fields.Category
+        ? findReference(podcastEpisode.fields.Category, data.categories)
+        : null,
+      'Podcast = relevant': podcastEpisode.fields['Podcast = relevant']
+        ? findReference(
+            podcastEpisode.fields['Podcast = relevant'],
+            data.podcasts
+          )
+        : null,
+      Guest: podcastEpisode.fields.Guest
+        ? findReference(podcastEpisode.fields.Guest, data.thoughtleaders)
+        : null,
+      Topics: podcastEpisode.fields.Topics
+        ? findReference(podcastEpisode.fields.Topics, data.topics)
+        : null,
+    },
   }));
 };
 
-export interface Podcast {
-  type: ContenType;
-  id: string;
-  createdTime: string;
-  Name: string;
-  'Host(s)': string[];
-  'Link Title': string;
-  Link: string;
-  Category?: Category;
-  'Host(s) = Thoughtleader(s)': string[];
-  'Podcast Episodes': string[];
-  Description: string;
-  'Podcast Episodes 2': string[];
-}
+export type PodcastEpisode = Awaited<
+  ReturnType<typeof getPodcastEpisodes>
+>[number];
 
-export const getPodcasts = async (): Promise<Podcast[]> => {
+const getPodcasts = async () => {
   const data = await getData();
   return data.podcasts.map((podcast) => ({
-    type: 'podcast',
+    type: contentType.podcast,
     ...podcast,
-    ...(podcast.Category && {
-      Category: findReference(podcast.Category, data.categories),
-    }),
-    ...(podcast['Host(s) = Thoughtleader(s)'] && {
-      'Host(s) = Thoughtleader(s)': findReference(
-        podcast['Host(s) = Thoughtleader(s)'],
-        data.thoughtleaders
-      ),
-    }),
-    ...(podcast['Podcast Episodes 2'] && {
-      'Podcast Episodes 2': findReference(
-        podcast['Podcast Episodes 2'],
-        data.podcastEpisodes
-      ),
-    }),
+    fields: {
+      ...podcast.fields,
+      Category: podcast.fields.Category
+        ? findReference(podcast.fields.Category, data.categories)
+        : null,
+      'Host(s) = Thoughtleader(s)': podcast.fields['Host(s) = Thoughtleader(s)']
+        ? findReference(
+            podcast.fields['Host(s) = Thoughtleader(s)'],
+            data.thoughtleaders
+          )
+        : null,
+      'Podcast Episodes 2': podcast.fields['Podcast Episodes 2']
+        ? findReference(
+            podcast.fields['Podcast Episodes 2'],
+            data.podcastEpisodes
+          )
+        : null,
+    },
   }));
 };
 
-export interface Directory {
-  type: ContenType;
-  id: string;
-  createdTime: string;
-  Name: string;
-  Description: string;
-  'Link Title': string;
-  Link: string;
-  Category?: Category;
-}
+export type Podcast = Awaited<ReturnType<typeof getPodcasts>>[number];
 
-export const getDirectories = async (): Promise<Directory[]> => {
+const getDirectories = async () => {
   const data = await getData();
   return data.directories.map((directory) => ({
-    type: 'directory',
+    type: contentType.directory,
     ...directory,
-    ...(directory.Category && {
-      Category: findReference(directory.Category, data.categories),
-    }),
+    fields: {
+      ...directory.fields,
+      Category: directory.fields.Category
+        ? findReference(directory.fields.Category, data.categories)
+        : null,
+    },
   }));
 };
 
-export interface Video {
-  type: ContenType;
-  id: string;
-  createdTime: string;
-  Title: string;
-  Thoughtleader?: Array<{ Name: string }>;
-  Category?: Category;
-  'Link Title': string;
-  Link: string;
-  Date: string;
-  Duration: number;
-  Image: string[];
-  Description: string;
-  Rating: number;
-  'Personal Note': string;
-}
+export type Directory = Awaited<ReturnType<typeof getDirectories>>[number];
 
-export const getVideos = async (): Promise<Video[]> => {
+const getVideos = async () => {
   const data = await getData();
   return data.videos.map((video) => ({
-    type: 'video',
+    type: contentType.video,
     ...video,
-    ...(video.Category && {
-      Category: findReference(video.Category, data.categories),
-    }),
-    ...(video.Thoughtleader && {
-      Thoughtleader: findReference(video.Thoughtleader, data.thoughtleaders),
-    }),
+    fields: {
+      ...video.fields,
+      Category: video.fields.Category
+        ? findReference(video.fields.Category, data.categories)
+        : null,
+      Thoughtleader: video.fields.Thoughtleader
+        ? findReference(video.fields.Thoughtleader, data.thoughtleaders)
+        : null,
+    },
   }));
 };
 
-export interface Tool {
-  type: ContenType;
-  id: string;
-  createdTime: string;
-  Name: string;
-  Description: string;
-  'Link Title': string;
-  Link: string;
-  Category?: Category;
-}
+export type Video = Awaited<ReturnType<typeof getVideos>>[number];
 
-export const getTools = async (): Promise<Tool[]> => {
+const getTools = async () => {
   const data = await getData();
   return data.tools.map((tool) => ({
-    type: 'tool',
+    type: contentType.tool,
     ...tool,
-    ...(tool.Category && {
-      Category: findReference(tool.Category, data.categories),
-    }),
+    fields: {
+      ...tool.fields,
+      Category: tool.fields.Category
+        ? findReference(tool.fields.Category, data.categories)
+        : null,
+    },
   }));
 };
 
-export interface CommunityOrOrganization {
-  type: ContenType;
-  id: string;
-  createdTime: string;
-  Name: string;
-  Description: string;
-  'Link Title': string;
-  Link: string;
-  Category?: Category;
-}
+export type Tool = Awaited<ReturnType<typeof getTools>>[number];
 
-export const getCommunitiesAndOrganizations = async (): Promise<
-  CommunityOrOrganization[]
-> => {
+const getCommunitiesAndOrganizations = async () => {
   const data = await getData();
   return data.communitiesAndOrganizations.map((communityOrOrganization) => ({
-    type: 'communityOrOrganization',
+    type: contentType.communityOrOrganization,
     ...communityOrOrganization,
-    ...(communityOrOrganization.Category && {
-      Category: findReference(
-        communityOrOrganization.Category,
-        data.categories
-      ),
-    }),
+    fields: {
+      ...communityOrOrganization.fields,
+      Category: communityOrOrganization.fields.Category
+        ? findReference(
+            communityOrOrganization.fields.Category,
+            data.categories
+          )
+        : null,
+    },
   }));
 };
 
-export interface Course {
-  type: ContenType;
-  id: string;
-  createdTime: string;
-  Name: string;
-  Description: string;
-  'Link Title': string;
-  Link: string;
-  Category?: Category;
-}
+export type CommunityOrOrganization = Awaited<
+  ReturnType<typeof getCommunitiesAndOrganizations>
+>[number];
 
-export const getCourses = async (): Promise<Course[]> => {
+const getCourses = async () => {
   const data = await getData();
   return data.courses.map((course) => ({
-    type: 'course',
+    type: contentType.course,
     ...course,
-    ...(course.Category && {
-      Category: findReference(course.Category, data.categories),
-    }),
+    fields: {
+      ...course.fields,
+      Category: course.fields.Category
+        ? findReference(course.fields.Category, data.categories)
+        : null,
+    },
   }));
 };
 
-export type Resources = Array<
-  | Book
-  | Article
-  | Thoughtleader
-  | PodcastEpisode
-  | Podcast
-  | Directory
-  | Video
-  | Tool
-  | CommunityOrOrganization
-  | Course
->;
+export type Course = Awaited<ReturnType<typeof getCourses>>[number];
+
+export const getAllResources = async () => {
+  return [
+    ...(await getBooks()),
+    ...(await getThoughtleaders()),
+    ...(await getArticles()),
+    ...(await getCourses()),
+    ...(await getPodcastEpisodes()),
+    ...(await getPodcasts()),
+    ...(await getVideos()),
+    ...(await getTools()),
+    ...(await getDirectories()),
+    ...(await getCommunitiesAndOrganizations()),
+  ].sort((a, b) => {
+    const itemA = 'Title' in a.fields ? a.fields.Title : a.fields.Name;
+    const itemB = 'Title' in b.fields ? b.fields.Title : b.fields.Name;
+    return itemA.localeCompare(itemB);
+  });
+};
+
+export type Resources = Awaited<ReturnType<typeof getAllResources>>;

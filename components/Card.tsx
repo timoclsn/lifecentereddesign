@@ -94,7 +94,7 @@ export const Card = ({
         }`}
       >
         {category && <Tag variant="light">{category}</Tag>}
-        {tags?.length > 0 && (
+        {tags && tags.length > 0 && (
           <ul className="flex gap-8">
             {tags.map((tag, idx) => (
               <li key={idx}>

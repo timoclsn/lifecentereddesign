@@ -12,24 +12,28 @@ export const PodcastCard = ({ podcast }: Props) => {
     <Card
       variant="sky"
       type="Podcast"
-      title={podcast.Name}
+      title={podcast.fields.Name}
       metaInfos={[
-        ...(podcast['Host(s)']
+        ...(podcast.fields['Host(s)']
           ? [
               {
-                text: podcast['Host(s)'].join(', '),
+                text: podcast.fields['Host(s)'].join(', '),
                 icon: UilGrin,
               },
             ]
           : []),
       ]}
-      category={podcast.Category[0].Name}
+      category={podcast.fields.Category?.at(0)?.fields.Name}
       tags={[
-        {
-          icon: UilLinkAlt,
-          text: getHostname(podcast.Link),
-          url: podcast.Link,
-        },
+        ...(podcast.fields.Link
+          ? [
+              {
+                icon: UilLinkAlt,
+                text: getHostname(podcast.fields.Link),
+                url: podcast.fields.Link,
+              },
+            ]
+          : []),
       ]}
       showType
     />

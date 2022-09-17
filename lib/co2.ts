@@ -9,7 +9,7 @@ const demoResult = {
 
 export type CO2 = typeof demoResult;
 
-export async function getCO2Consumtion(url) {
+export async function getCO2Consumtion(url: string) {
   if (env === 'development') {
     return demoResult;
   }

@@ -1,16 +1,4 @@
-import {
-  Thoughtleader,
-  Book,
-  Article,
-  Course,
-  Podcast,
-  PodcastEpisode,
-  Video,
-  Tool,
-  Directory,
-  CommunityOrOrganization,
-  Resources,
-} from '../lib/content';
+import { Resources } from '../lib/content';
 import { ArticleCard } from './ArticleCard';
 import { BookCard } from './BookCard';
 import { CommunityOrOranizationCard } from './CommunityOrOranizationCard';
@@ -27,45 +15,39 @@ export const getCardComponent = (resource: Resources[0]) => {
 
   switch (resource.type) {
     case 'thoughtleader':
-      component = (
-        <ThoughtleaderCard thoughtleader={resource as Thoughtleader} />
-      );
+      component = <ThoughtleaderCard thoughtleader={resource} />;
       break;
     case 'book':
-      component = <BookCard book={resource as Book} />;
+      component = <BookCard book={resource} />;
       break;
     case 'article':
-      component = <ArticleCard article={resource as Article} />;
+      component = <ArticleCard article={resource} />;
       break;
     case 'course':
-      component = <CourseCard course={resource as Course} />;
+      component = <CourseCard course={resource} />;
       break;
     case 'podcast':
-      component = <PodcastCard podcast={resource as Podcast} />;
+      component = <PodcastCard podcast={resource} />;
       break;
     case 'podcastEpisode':
-      component = (
-        <PodcastEpisodeCard podcastEpisode={resource as PodcastEpisode} />
-      );
+      component = <PodcastEpisodeCard podcastEpisode={resource} />;
       break;
     case 'video':
-      component = <VideoCard video={resource as Video} />;
+      component = <VideoCard video={resource} />;
       break;
     case 'tool':
-      component = <ToolCard tool={resource as Tool} />;
+      component = <ToolCard tool={resource} />;
       break;
     case 'directory':
-      component = <DirectoryCard directory={resource as Directory} />;
+      component = <DirectoryCard directory={resource} />;
       break;
     case 'communityOrOrganization':
       component = (
-        <CommunityOrOranizationCard
-          communityOrOrganization={resource as CommunityOrOrganization}
-        />
+        <CommunityOrOranizationCard communityOrOrganization={resource} />
       );
       break;
     default:
-      throw new Error(`Unknown resource type: ${resource.type}`);
+      throw new Error('Unknown resource type');
   }
 
   return component;

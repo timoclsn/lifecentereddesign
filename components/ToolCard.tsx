@@ -12,14 +12,18 @@ export const ToolCard = ({ tool }: Props) => {
     <Card
       variant="stone"
       type="Tool"
-      title={tool.Name}
-      category={tool.Category[0].Name}
+      title={tool.fields.Name}
+      category={tool.fields.Category?.at(0)?.fields.Name}
       tags={[
-        {
-          icon: UilLinkAlt,
-          text: getHostname(tool.Link),
-          url: tool.Link,
-        },
+        ...(tool.fields.Link
+          ? [
+              {
+                icon: UilLinkAlt,
+                text: getHostname(tool.fields.Link),
+                url: tool.fields.Link,
+              },
+            ]
+          : []),
       ]}
       showType
     />

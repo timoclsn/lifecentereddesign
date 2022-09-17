@@ -18,51 +18,58 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
     <Card
       variant="sand"
       type="Podcast Episode"
-      title={podcastEpisode.Title}
+      title={podcastEpisode.fields.Title}
       metaInfos={[
-        ...(podcastEpisode.Podcast
+        ...(podcastEpisode.fields.Podcast
           ? [
               {
-                text: podcastEpisode.Podcast,
+                text: podcastEpisode.fields.Podcast,
                 icon: UilMicrophone,
               },
             ]
           : []),
-        ...(podcastEpisode.Guest
+        ...(podcastEpisode.fields.Guest
           ? [
               {
-                text: podcastEpisode.Guest.map((guest) => guest.Name).join(
-                  ', '
-                ),
+                text: podcastEpisode.fields.Guest.map(
+                  (guest) => guest?.fields.Name
+                ).join(', '),
                 icon: UilGrin,
               },
             ]
           : []),
-        ...(podcastEpisode.Date
+        ...(podcastEpisode.fields.Date
           ? [
               {
-                text: new Date(podcastEpisode.Date).toLocaleDateString('en'),
+                text: new Date(podcastEpisode.fields.Date).toLocaleDateString(
+                  'en'
+                ),
                 icon: UilCalendarAlt,
               },
             ]
           : []),
-        ...(podcastEpisode.Duration
+        ...(podcastEpisode.fields.Duration
           ? [
               {
                 text:
-                  Math.round(podcastEpisode.Duration / 60).toString() + ' min',
+                  Math.round(podcastEpisode.fields.Duration / 60).toString() +
+                  ' min',
                 icon: UilClockThree,
               },
             ]
           : []),
       ]}
-      category={podcastEpisode.Category[0].Name}
+      category={podcastEpisode.fields.Category?.at(0)?.fields.Name}
       tags={[
-        {
-          icon: UilLinkAlt,
-          text: getHostname(podcastEpisode.Link),
-          url: podcastEpisode.Link,
-        },
+        ...(podcastEpisode.fields.Link
+          ? [
+              {
+                icon: UilLinkAlt,
+                text: getHostname(podcastEpisode.fields.Link),
+                url: podcastEpisode.fields.Link,
+              },
+            ]
+          : []),
       ]}
       showType
     />

@@ -12,14 +12,18 @@ export const DirectoryCard = ({ directory }: Props) => {
     <Card
       variant="oak"
       type="Directory"
-      title={directory.Name}
-      category={directory.Category[0].Name}
+      title={directory.fields.Name}
+      category={directory.fields.Category?.at(0)?.fields.Name}
       tags={[
-        {
-          icon: UilLinkAlt,
-          text: getHostname(directory.Link),
-          url: directory.Link,
-        },
+        ...(directory.fields.Link
+          ? [
+              {
+                icon: UilLinkAlt,
+                text: getHostname(directory.fields.Link),
+                url: directory.fields.Link,
+              },
+            ]
+          : []),
       ]}
       showType
     />

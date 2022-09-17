@@ -18,50 +18,56 @@ export const BookCard = ({ book }: Props) => {
     <Card
       variant="oak"
       type="Book"
-      title={book.Title}
+      title={book.fields.Title}
       metaInfos={[
-        ...(book.Authors
+        ...(book.fields.Authors
           ? [
               {
-                text: book.Authors.map((author) => author.Name).join(', '),
+                text: book.fields.Authors.map(
+                  (author) => author?.fields.Name
+                ).join(', '),
                 icon: UilBookReader,
               },
             ]
           : []),
-        ...(book['Publishing Date']
+        ...(book.fields['Publishing Date']
           ? [
               {
-                text: new Date(book['Publishing Date']).toLocaleDateString(
-                  'en'
-                ),
+                text: new Date(
+                  book.fields['Publishing Date']
+                ).toLocaleDateString('en'),
                 icon: UilCalendarAlt,
               },
             ]
           : []),
-        ...(book.Publisher
+        ...(book.fields.Publisher
           ? [
               {
-                text: book.Publisher,
+                text: book.fields.Publisher,
                 icon: UilBooks,
               },
             ]
           : []),
-        ...(book.ISBN
+        ...(book.fields.ISBN
           ? [
               {
-                text: book.ISBN,
+                text: book.fields.ISBN,
                 icon: UilQrcodeScan,
               },
             ]
           : []),
       ]}
-      category={book.Category[0].Name}
+      category={book.fields.Category?.at(0)?.fields.Name}
       tags={[
-        {
-          icon: UilLinkAlt,
-          text: getHostname(book.Link),
-          url: book.Link,
-        },
+        ...(book.fields.Link
+          ? [
+              {
+                icon: UilLinkAlt,
+                text: getHostname(book.fields.Link),
+                url: book.fields.Link,
+              },
+            ]
+          : []),
       ]}
       showType
     />

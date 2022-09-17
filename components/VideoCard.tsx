@@ -17,42 +17,47 @@ export const VideoCard = ({ video }: Props) => {
     <Card
       variant="lime"
       type="Video"
-      title={video.Title}
+      title={video.fields.Title}
       metaInfos={[
-        ...(video.Thoughtleader
+        ...(video.fields.Thoughtleader
           ? [
               {
-                text: video.Thoughtleader.map((author) => author.Name).join(
-                  ', '
-                ),
+                text: video.fields.Thoughtleader.map(
+                  (author) => author?.fields.Name
+                ).join(', '),
                 icon: UilVideo,
               },
             ]
           : []),
-        ...(video.Date
+        ...(video.fields.Date
           ? [
               {
-                text: new Date(video.Date).toLocaleDateString('en'),
+                text: new Date(video.fields.Date).toLocaleDateString('en'),
                 icon: UilCalendarAlt,
               },
             ]
           : []),
-        ...(video.Duration
+        ...(video.fields.Duration
           ? [
               {
-                text: Math.round(video.Duration / 60).toString() + ' min',
+                text:
+                  Math.round(video.fields.Duration / 60).toString() + ' min',
                 icon: UilClockThree,
               },
             ]
           : []),
       ]}
-      category={video.Category[0].Name}
+      category={video.fields.Category?.at(0)?.fields.Name}
       tags={[
-        {
-          icon: UilLinkAlt,
-          text: getHostname(video.Link),
-          url: video.Link,
-        },
+        ...(video.fields.Link
+          ? [
+              {
+                icon: UilLinkAlt,
+                text: getHostname(video.fields.Link),
+                url: video.fields.Link,
+              },
+            ]
+          : []),
       ]}
       showType
     />

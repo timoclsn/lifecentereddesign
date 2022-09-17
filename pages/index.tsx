@@ -4,18 +4,7 @@ import { Layout } from '../components/Layout';
 import { NewResources } from '../components/NewResources';
 import { Newsletter } from '../components/Newsletter';
 import { Resources } from '../components/Resources';
-import {
-  getArticles,
-  getBooks,
-  getCommunitiesAndOrganizations,
-  getCourses,
-  getDirectories,
-  getPodcastEpisodes,
-  getPodcasts,
-  getThoughtleaders,
-  getTools,
-  getVideos,
-} from '../lib/content';
+import { getAllResources } from '../lib/content';
 
 export default function Home({
   resources,
@@ -31,22 +20,7 @@ export default function Home({
 }
 
 export const getStaticProps = async () => {
-  const resources = [
-    ...(await getBooks()),
-    ...(await getThoughtleaders()),
-    ...(await getArticles()),
-    ...(await getCourses()),
-    ...(await getPodcastEpisodes()),
-    ...(await getPodcasts()),
-    ...(await getVideos()),
-    ...(await getTools()),
-    ...(await getDirectories()),
-    ...(await getCommunitiesAndOrganizations()),
-  ].sort((a, b) => {
-    const itemA = 'Title' in a ? a.Title : a.Name;
-    const itemB = 'Title' in b ? b.Title : b.Name;
-    return itemA.localeCompare(itemB);
-  });
+  const resources = await getAllResources();
 
   return {
     props: {
