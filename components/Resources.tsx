@@ -147,7 +147,7 @@ export const Resources = ({ resources }: Props) => {
               <Select.Viewport className="flex flex-col gap-1">
                 <Select.Item
                   value="date"
-                  className="hover:bg-white hover:text-black rounded-lg py-1 pl-[29px] pr-2 outline-none"
+                  className="cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg"
                 >
                   <Select.ItemIndicator className="absolute left-1 w-[25px]">
                     <UilCheck />
@@ -158,7 +158,7 @@ export const Resources = ({ resources }: Props) => {
                 </Select.Item>
                 <Select.Item
                   value="title"
-                  className="hover:bg-white hover:text-black rounded-lg py-1 pl-[29px] pr-2 outline-none"
+                  className="cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg"
                 >
                   <Select.ItemIndicator className="absolute left-1 w-[25px]">
                     <UilCheck />
