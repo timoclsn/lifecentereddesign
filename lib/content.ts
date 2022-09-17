@@ -274,53 +274,53 @@ let dataStore: {
 };
 
 const getData = async () => {
-  const [
-    books,
-    articles,
-    thoughtleaders,
-    categories,
-    topics,
-    podcastEpisodes,
-    podcasts,
-    directories,
-    videos,
-    communitiesAndOrganizations,
-    courses,
-  ] = await Promise.all([
-    getAllRecordsFromTable('Books'),
-    getAllRecordsFromTable('Articles'),
-    getAllRecordsFromTable('Thoughtleaders'),
-    getAllRecordsFromTable('Categories'),
-    getAllRecordsFromTable('Topics'),
-    getAllRecordsFromTable('Podcast Episodes'),
-    getAllRecordsFromTable('Podcasts'),
-    getAllRecordsFromTable('Directories'),
-    getAllRecordsFromTable('Videos'),
-    getAllRecordsFromTable('Communities & Organizations'),
-    getAllRecordsFromTable('Courses'),
-  ]);
-
-  const parsedBooks = z.array(bookSchema).parse(books);
-  const parsedArticles = z.array(articleSchema).parse(articles);
-  const parsedThoughtleaders = z
-    .array(thoughtleaderSchema)
-    .parse(thoughtleaders);
-  const parsedCategories = z.array(categorySchema).parse(categories);
-  const parsedTopics = z.array(topicSchema).parse(topics);
-  const parsedPodcastEpisodes = z
-    .array(podcastepisodeSchema)
-    .parse(podcastEpisodes);
-  const parsedPodcasts = z.array(podcastSchema).parse(podcasts);
-  const parsedDirectories = z.array(directorySchema).parse(directories);
-  const parsedVideos = z.array(videoSchema).parse(videos);
-  const tools = await getAllRecordsFromTable('Tools');
-  const parsedTools = z.array(toolSchema).parse(tools);
-  const parsedCommunitiesAndOrganizations = z
-    .array(communityOrOrganizationSchema)
-    .parse(communitiesAndOrganizations);
-  const parsedCourses = z.array(courseSchema).parse(courses);
-
   if (!dataStore) {
+    const [
+      books,
+      articles,
+      thoughtleaders,
+      categories,
+      topics,
+      podcastEpisodes,
+      podcasts,
+      directories,
+      videos,
+      communitiesAndOrganizations,
+      courses,
+    ] = await Promise.all([
+      getAllRecordsFromTable('Books'),
+      getAllRecordsFromTable('Articles'),
+      getAllRecordsFromTable('Thoughtleaders'),
+      getAllRecordsFromTable('Categories'),
+      getAllRecordsFromTable('Topics'),
+      getAllRecordsFromTable('Podcast Episodes'),
+      getAllRecordsFromTable('Podcasts'),
+      getAllRecordsFromTable('Directories'),
+      getAllRecordsFromTable('Videos'),
+      getAllRecordsFromTable('Communities & Organizations'),
+      getAllRecordsFromTable('Courses'),
+    ]);
+
+    const parsedBooks = z.array(bookSchema).parse(books);
+    const parsedArticles = z.array(articleSchema).parse(articles);
+    const parsedThoughtleaders = z
+      .array(thoughtleaderSchema)
+      .parse(thoughtleaders);
+    const parsedCategories = z.array(categorySchema).parse(categories);
+    const parsedTopics = z.array(topicSchema).parse(topics);
+    const parsedPodcastEpisodes = z
+      .array(podcastepisodeSchema)
+      .parse(podcastEpisodes);
+    const parsedPodcasts = z.array(podcastSchema).parse(podcasts);
+    const parsedDirectories = z.array(directorySchema).parse(directories);
+    const parsedVideos = z.array(videoSchema).parse(videos);
+    const tools = await getAllRecordsFromTable('Tools');
+    const parsedTools = z.array(toolSchema).parse(tools);
+    const parsedCommunitiesAndOrganizations = z
+      .array(communityOrOrganizationSchema)
+      .parse(communitiesAndOrganizations);
+    const parsedCourses = z.array(courseSchema).parse(courses);
+
     dataStore = {
       books: parsedBooks,
       articles: parsedArticles,
@@ -336,6 +336,7 @@ const getData = async () => {
       courses: parsedCourses,
     };
   }
+
   return dataStore;
 };
 
