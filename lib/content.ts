@@ -285,6 +285,7 @@ const getData = async () => {
       podcasts,
       directories,
       videos,
+      tools,
       communitiesAndOrganizations,
       courses,
     ] = await Promise.all([
@@ -297,6 +298,7 @@ const getData = async () => {
       getAllRecordsFromTable('Podcasts'),
       getAllRecordsFromTable('Directories'),
       getAllRecordsFromTable('Videos'),
+      getAllRecordsFromTable('Tools'),
       getAllRecordsFromTable('Communities & Organizations'),
       getAllRecordsFromTable('Courses'),
     ]);
@@ -314,7 +316,6 @@ const getData = async () => {
     const parsedPodcasts = z.array(podcastSchema).parse(podcasts);
     const parsedDirectories = z.array(directorySchema).parse(directories);
     const parsedVideos = z.array(videoSchema).parse(videos);
-    const tools = await getAllRecordsFromTable('Tools');
     const parsedTools = z.array(toolSchema).parse(tools);
     const parsedCommunitiesAndOrganizations = z
       .array(communityOrOrganizationSchema)
