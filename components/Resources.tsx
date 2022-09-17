@@ -51,7 +51,7 @@ export const Resources = ({ resources }: Props) => {
           selected={filteredType === null}
           onClick={() => filterResources(null)}
         >
-          All resources
+          All Resources
         </Button>
         <Button
           variant="text"
