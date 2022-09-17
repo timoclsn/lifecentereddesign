@@ -22,7 +22,13 @@ const getAllRecordsFromTable = async (name: string) => {
   return allRecords.map((record) => record._rawJson);
 };
 
-const dateSchema = z.string();
+const isoDateTimeRegExp = new RegExp(
+  /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/
+);
+const dateTimeSchema = z.string().regex(isoDateTimeRegExp);
+
+const isoDateRegExp = new RegExp(/^\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01])$/);
+const dateSchema = z.string().regex(isoDateRegExp);
 
 const referenceSchema = z.array(z.string());
 
@@ -36,7 +42,7 @@ const imageSchema = z.array(
 
 const bookSchema = z.object({
   id: z.string(),
-  createdTime: dateSchema,
+  createdTime: dateTimeSchema,
   fields: z.object({
     Title: z.string(),
     Authors: referenceSchema.optional(),
@@ -58,7 +64,7 @@ type BookSchema = z.infer<typeof bookSchema>;
 
 const articleSchema = z.object({
   id: z.string(),
-  createdTime: dateSchema,
+  createdTime: dateTimeSchema,
   fields: z.object({
     Title: z.string(),
     'Author(s)': referenceSchema.optional(),
@@ -79,7 +85,7 @@ type ArticleSchema = z.infer<typeof articleSchema>;
 
 const thoughtleaderSchema = z.object({
   id: z.string(),
-  createdTime: dateSchema,
+  createdTime: dateTimeSchema,
   fields: z.object({
     Name: z.string(),
     'Job/Description': z.string().optional(),
@@ -98,7 +104,7 @@ type ThoughtleaderSchema = z.infer<typeof thoughtleaderSchema>;
 
 const categorySchema = z.object({
   id: z.string(),
-  createdTime: dateSchema,
+  createdTime: dateTimeSchema,
   fields: z.object({
     Name: z.string(),
     Description: z.string().optional(),
@@ -121,7 +127,7 @@ type CategorySchema = z.infer<typeof categorySchema>;
 
 const topicSchema = z.object({
   id: z.string(),
-  createdTime: dateSchema,
+  createdTime: dateTimeSchema,
   fields: z.object({
     Name: z.string(),
     Books: referenceSchema.optional(),
@@ -135,7 +141,7 @@ type TopicSchema = z.infer<typeof topicSchema>;
 
 const podcastepisodeSchema = z.object({
   id: z.string(),
-  createdTime: dateSchema,
+  createdTime: dateTimeSchema,
   fields: z.object({
     Title: z.string(),
     Podcast: z.string().optional(),
@@ -158,7 +164,7 @@ type PodcastepisodeSchema = z.infer<typeof podcastepisodeSchema>;
 
 const podcastSchema = z.object({
   id: z.string(),
-  createdTime: dateSchema,
+  createdTime: dateTimeSchema,
   fields: z.object({
     Name: z.string(),
     'Host(s)': z.array(z.string()).optional(),
@@ -176,7 +182,7 @@ type PodcastSchema = z.infer<typeof podcastSchema>;
 
 const directorySchema = z.object({
   id: z.string(),
-  createdTime: dateSchema,
+  createdTime: dateTimeSchema,
   fields: z.object({
     Name: z.string(),
     Description: z.string().optional(),
@@ -190,7 +196,7 @@ type DirectorySchema = z.infer<typeof directorySchema>;
 
 const videoSchema = z.object({
   id: z.string(),
-  createdTime: dateSchema,
+  createdTime: dateTimeSchema,
   fields: z.object({
     Title: z.string(),
     Thoughtleader: referenceSchema.optional(),
@@ -210,7 +216,7 @@ type VideoSchema = z.infer<typeof videoSchema>;
 
 const toolSchema = z.object({
   id: z.string(),
-  createdTime: dateSchema,
+  createdTime: dateTimeSchema,
   fields: z.object({
     Name: z.string(),
     Description: z.string().optional(),
@@ -224,7 +230,7 @@ type ToolSchema = z.infer<typeof toolSchema>;
 
 const communityOrOrganizationSchema = z.object({
   id: z.string(),
-  createdTime: dateSchema,
+  createdTime: dateTimeSchema,
   fields: z.object({
     Name: z.string(),
     Description: z.string().optional(),
@@ -240,7 +246,7 @@ type CommunityOrOrganizationSchema = z.infer<
 
 const courseSchema = z.object({
   id: z.string(),
-  createdTime: dateSchema,
+  createdTime: dateTimeSchema,
   fields: z.object({
     Name: z.string(),
     Description: z.string().optional(),
