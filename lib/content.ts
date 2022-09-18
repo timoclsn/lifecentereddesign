@@ -341,14 +341,12 @@ const getData = async () => {
   return dataStore;
 };
 
-const findReference = <
-  TObj extends {
+const findReference = (
+  ids: Array<string>,
+  data: Array<{
     id: string;
     [key: string]: any;
-  }
->(
-  ids: Array<string>,
-  data: Array<TObj>
+  }>
 ) => ids.map((id) => data.find((date) => date.id === id));
 
 const contentType = {
