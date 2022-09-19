@@ -40,9 +40,14 @@ const imageSchema = z.array(
   })
 );
 
-const bookSchema = z.object({
+const baseSchema = z.object({
   id: z.string(),
   createdTime: dateTimeSchema,
+});
+
+type BookSchema = z.infer<typeof bookSchema>;
+
+const bookSchema = baseSchema.extend({
   fields: z.object({
     Title: z.string(),
     Authors: referenceSchema.optional(),
@@ -60,11 +65,9 @@ const bookSchema = z.object({
   }),
 });
 
-type BookSchema = z.infer<typeof bookSchema>;
+type ArticleSchema = z.infer<typeof articleSchema>;
 
-const articleSchema = z.object({
-  id: z.string(),
-  createdTime: dateTimeSchema,
+const articleSchema = baseSchema.extend({
   fields: z.object({
     Title: z.string(),
     'Author(s)': referenceSchema.optional(),
@@ -81,11 +84,9 @@ const articleSchema = z.object({
   }),
 });
 
-type ArticleSchema = z.infer<typeof articleSchema>;
+type ThoughtleaderSchema = z.infer<typeof thoughtleaderSchema>;
 
-const thoughtleaderSchema = z.object({
-  id: z.string(),
-  createdTime: dateTimeSchema,
+const thoughtleaderSchema = baseSchema.extend({
   fields: z.object({
     Name: z.string(),
     'Job/Description': z.string().optional(),
@@ -100,11 +101,9 @@ const thoughtleaderSchema = z.object({
   }),
 });
 
-type ThoughtleaderSchema = z.infer<typeof thoughtleaderSchema>;
+type CategorySchema = z.infer<typeof categorySchema>;
 
-const categorySchema = z.object({
-  id: z.string(),
-  createdTime: dateTimeSchema,
+const categorySchema = baseSchema.extend({
   fields: z.object({
     Name: z.string(),
     Description: z.string().optional(),
@@ -123,11 +122,9 @@ const categorySchema = z.object({
   }),
 });
 
-type CategorySchema = z.infer<typeof categorySchema>;
+type TopicSchema = z.infer<typeof topicSchema>;
 
-const topicSchema = z.object({
-  id: z.string(),
-  createdTime: dateTimeSchema,
+const topicSchema = baseSchema.extend({
   fields: z.object({
     Name: z.string(),
     Books: referenceSchema.optional(),
@@ -137,11 +134,9 @@ const topicSchema = z.object({
   }),
 });
 
-type TopicSchema = z.infer<typeof topicSchema>;
+type PodcastepisodeSchema = z.infer<typeof podcastepisodeSchema>;
 
-const podcastepisodeSchema = z.object({
-  id: z.string(),
-  createdTime: dateTimeSchema,
+const podcastepisodeSchema = baseSchema.extend({
   fields: z.object({
     Title: z.string(),
     Podcast: z.string().optional(),
@@ -160,11 +155,9 @@ const podcastepisodeSchema = z.object({
   }),
 });
 
-type PodcastepisodeSchema = z.infer<typeof podcastepisodeSchema>;
+type PodcastSchema = z.infer<typeof podcastSchema>;
 
-const podcastSchema = z.object({
-  id: z.string(),
-  createdTime: dateTimeSchema,
+const podcastSchema = baseSchema.extend({
   fields: z.object({
     Name: z.string(),
     'Host(s)': z.array(z.string()).optional(),
@@ -178,11 +171,9 @@ const podcastSchema = z.object({
   }),
 });
 
-type PodcastSchema = z.infer<typeof podcastSchema>;
+type DirectorySchema = z.infer<typeof directorySchema>;
 
-const directorySchema = z.object({
-  id: z.string(),
-  createdTime: dateTimeSchema,
+const directorySchema = baseSchema.extend({
   fields: z.object({
     Name: z.string(),
     Description: z.string().optional(),
@@ -192,11 +183,9 @@ const directorySchema = z.object({
   }),
 });
 
-type DirectorySchema = z.infer<typeof directorySchema>;
+type VideoSchema = z.infer<typeof videoSchema>;
 
-const videoSchema = z.object({
-  id: z.string(),
-  createdTime: dateTimeSchema,
+const videoSchema = baseSchema.extend({
   fields: z.object({
     Title: z.string(),
     Thoughtleader: referenceSchema.optional(),
@@ -212,25 +201,9 @@ const videoSchema = z.object({
   }),
 });
 
-type VideoSchema = z.infer<typeof videoSchema>;
-
-const toolSchema = z.object({
-  id: z.string(),
-  createdTime: dateTimeSchema,
-  fields: z.object({
-    Name: z.string(),
-    Description: z.string().optional(),
-    'Link Title': z.string().optional(),
-    Link: z.string().url().optional(),
-    Category: referenceSchema.optional(),
-  }),
-});
-
 type ToolSchema = z.infer<typeof toolSchema>;
 
-const communityOrOrganizationSchema = z.object({
-  id: z.string(),
-  createdTime: dateTimeSchema,
+const toolSchema = baseSchema.extend({
   fields: z.object({
     Name: z.string(),
     Description: z.string().optional(),
@@ -244,9 +217,7 @@ type CommunityOrOrganizationSchema = z.infer<
   typeof communityOrOrganizationSchema
 >;
 
-const courseSchema = z.object({
-  id: z.string(),
-  createdTime: dateTimeSchema,
+const communityOrOrganizationSchema = baseSchema.extend({
   fields: z.object({
     Name: z.string(),
     Description: z.string().optional(),
@@ -257,6 +228,16 @@ const courseSchema = z.object({
 });
 
 type CourseSchema = z.infer<typeof courseSchema>;
+
+const courseSchema = baseSchema.extend({
+  fields: z.object({
+    Name: z.string(),
+    Description: z.string().optional(),
+    'Link Title': z.string().optional(),
+    Link: z.string().url().optional(),
+    Category: referenceSchema.optional(),
+  }),
+});
 
 let dataStore: {
   books: Array<BookSchema>;
