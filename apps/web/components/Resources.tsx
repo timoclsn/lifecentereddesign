@@ -2,8 +2,8 @@ import { UilArrowDown, UilAngleDown, UilCheck } from '@iconscout/react-unicons';
 import { useState } from 'react';
 import * as Select from '@radix-ui/react-select';
 import { Resources as TResources, ContentType } from '../lib/content';
-import { Button } from './Button';
 import { getCardComponent } from './utils';
+import { Button } from 'design-system';
 
 type Filter = ContentType | null;
 type Sort = 'date' | 'title';

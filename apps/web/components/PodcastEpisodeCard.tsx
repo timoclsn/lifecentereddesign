@@ -7,7 +7,7 @@ import {
 } from '@iconscout/react-unicons';
 import { PodcastEpisode } from '../lib/content';
 import { getHostname } from '../lib/utils';
-import { Card } from './Card';
+import { Card } from 'design-system';
 
 interface Props {
   podcastEpisode: PodcastEpisode;

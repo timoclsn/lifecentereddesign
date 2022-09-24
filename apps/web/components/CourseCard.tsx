@@ -1,7 +1,7 @@
 import { UilLinkAlt } from '@iconscout/react-unicons';
 import { Course } from '../lib/content';
 import { getHostname } from '../lib/utils';
-import { Card } from './Card';
+import { Card } from 'design-system';
 
 interface Props {
   course: Course;

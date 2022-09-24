@@ -1,4 +1,5 @@
 const { withContentlayer } = require('next-contentlayer');
+const withTM = require('next-transpile-modules')(['design-system']);
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -23,4 +24,4 @@ const config = {
   },
 };
 
-module.exports = withContentlayer(config);
+module.exports = withContentlayer(withTM(config));

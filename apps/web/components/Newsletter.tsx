@@ -1,7 +1,6 @@
 import { UilEnvelopeAlt } from '@iconscout/react-unicons';
+import { Button, CenteredColumn } from 'design-system';
 import Image from 'next/future/image';
-import { Button } from './Button';
-import { CenteredColumn } from './CenteredColumn';
 
 export const Newsletter = () => {
   return (

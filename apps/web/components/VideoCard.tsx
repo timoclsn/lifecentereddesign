@@ -6,7 +6,7 @@ import {
 } from '@iconscout/react-unicons';
 import { Video } from '../lib/content';
 import { getHostname } from '../lib/utils';
-import { Card } from './Card';
+import { Card } from 'design-system';
 
 interface Props {
   video: Video;

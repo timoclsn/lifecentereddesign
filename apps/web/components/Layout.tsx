@@ -2,7 +2,7 @@ import Script from 'next/script';
 import type { ReactNode } from 'react';
 import { Suspense } from 'react';
 
-import { CenteredColumn } from './CenteredColumn';
+import { CenteredColumn } from 'design-system';
 import { Favicons } from './Favicons';
 import { Footer } from './Footer';
 import { Navigation } from './Navigation';

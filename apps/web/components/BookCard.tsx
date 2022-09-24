@@ -5,9 +5,9 @@ import {
   UilLinkAlt,
   UilQrcodeScan,
 } from '@iconscout/react-unicons';
+import { Card } from 'design-system';
 import { Book } from '../lib/content';
 import { getHostname } from '../lib/utils';
-import { Card } from './Card';
 
 interface Props {
   book: Book;

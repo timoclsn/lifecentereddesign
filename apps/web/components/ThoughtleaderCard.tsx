@@ -1,7 +1,7 @@
 import { UilBriefcaseAlt, UilLinkAlt } from '@iconscout/react-unicons';
 import { Thoughtleader } from '../lib/content';
 import { getHostname } from '../lib/utils';
-import { Card } from './Card';
+import { Card } from 'design-system';
 
 interface Props {
   thoughtleader: Thoughtleader;
