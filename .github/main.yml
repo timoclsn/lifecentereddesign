@@ -16,6 +16,8 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 7.12.2
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
@@ -41,6 +43,8 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 7.12.2
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
