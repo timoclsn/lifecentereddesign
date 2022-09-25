@@ -28,6 +28,8 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
+    "@tailwindcss/line-clamp": "0.4.2",
+    "@tailwindcss/typography": "0.5.7",
     "@types/node": "18.7.18",
     "@types/react": "18.0.20",
     "@typescript-eslint/eslint-plugin": "5.37.0",
@@ -39,6 +41,7 @@
     "next-transpile-modules": "9.0.0",
     "postcss": "8.4.16",
     "tailwindcss": "3.1.8",
+    "tailwind-config": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "4.8.3"
   }

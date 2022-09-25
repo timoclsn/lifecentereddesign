@@ -19,6 +19,8 @@ importers:
       '@iconscout/react-unicons': 1.1.6
       '@radix-ui/react-popover': 1.0.0
       '@radix-ui/react-select': 1.0.0
+      '@tailwindcss/line-clamp': 0.4.2
+      '@tailwindcss/typography': 0.5.7
       '@types/node': 18.7.18
       '@types/react': 18.0.20
       '@typescript-eslint/eslint-plugin': 5.37.0
@@ -38,6 +40,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0
       react-icons: 4.4.0
+      tailwind-config: workspace:*
       tailwindcss: 3.1.8
       tsconfig: workspace:*
       typescript: 4.8.3
@@ -59,6 +62,8 @@ importers:
       react-icons: 4.4.0_react@18.2.0
       zod: 3.19.1
     devDependencies:
+      '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.1.8
+      '@tailwindcss/typography': 0.5.7_tailwindcss@3.1.8
       '@types/node': 18.7.18
       '@types/react': 18.0.20
       '@typescript-eslint/eslint-plugin': 5.37.0_22c5fnooleyfkzrkkgdmel5kmi
@@ -69,14 +74,13 @@ importers:
       globby: 13.1.2
       next-transpile-modules: 9.0.0
       postcss: 8.4.16
+      tailwind-config: link:../../packages/tailwind-config
       tailwindcss: 3.1.8_postcss@8.4.16
       tsconfig: link:../../packages/tsconfig
       typescript: 4.8.3
 
   packages/design-system:
     specifiers:
-      '@tailwindcss/line-clamp': 0.4.2
-      '@tailwindcss/typography': 0.5.7
       '@types/react': 18.0.20
       '@types/react-dom': 18.0.6
       class-variance-authority: 0.2.3
@@ -88,8 +92,6 @@ importers:
     dependencies:
       class-variance-authority: 0.2.3_typescript@4.8.3
     devDependencies:
-      '@tailwindcss/line-clamp': 0.4.2
-      '@tailwindcss/typography': 0.5.7
       '@types/react': 18.0.20
       '@types/react-dom': 18.0.6
       eslint: 8.23.1
@@ -107,6 +109,9 @@ importers:
       eslint-config-next: 12.3.1
       eslint-config-prettier: 8.5.0
       eslint-config-turbo: 0.0.4
+
+  packages/tailwind-config:
+    specifiers: {}
 
   packages/tsconfig:
     specifiers: {}
@@ -1188,13 +1193,15 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@tailwindcss/line-clamp/0.4.2:
+  /@tailwindcss/line-clamp/0.4.2_tailwindcss@3.1.8:
     resolution: {integrity: sha512-HFzAQuqYCjyy/SX9sLGB1lroPzmcnWv1FHkIpmypte10hptf4oPUfucryMKovZh2u0uiS9U5Ty3GghWfEJGwVw==}
     peerDependencies:
       tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
+    dependencies:
+      tailwindcss: 3.1.8_postcss@8.4.16
     dev: true
 
-  /@tailwindcss/typography/0.5.7:
+  /@tailwindcss/typography/0.5.7_tailwindcss@3.1.8:
     resolution: {integrity: sha512-JTTSTrgZfp6Ki4svhPA4mkd9nmQ/j9EfE7SbHJ1cLtthKkpW2OxsFXzSmxbhYbEkfNIyAyhle5p4SYyKRbz/jg==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
@@ -1203,6 +1210,7 @@ packages:
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
+      tailwindcss: 3.1.8_postcss@8.4.16
     dev: true
 
   /@types/acorn/4.0.6:
