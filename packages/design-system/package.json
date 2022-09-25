@@ -5,7 +5,7 @@
   "types": "./src/index.ts",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint *.ts*",
+    "lint": "eslint",
     "typecheck": "tsc"
   },
   "dependencies": {
@@ -17,6 +17,7 @@
     "@types/react": "18.0.20",
     "@types/react-dom": "18.0.6",
     "eslint": "8.23.1",
+    "eslint-config-custom": "workspace:*",
     "react": "18.2.0",
     "tsconfig": "workspace:*",
     "typescript": "4.8.3"
