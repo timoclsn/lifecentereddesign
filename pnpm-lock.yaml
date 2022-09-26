@@ -91,13 +91,13 @@ importers:
       typescript: 4.8.3
     dependencies:
       class-variance-authority: 0.2.3_typescript@4.8.3
+      tsconfig: link:../tsconfig
     devDependencies:
       '@types/react': 18.0.21
       '@types/react-dom': 18.0.6
       eslint: 8.24.0
       eslint-config-custom: link:../eslint-config-custom
       react: 18.2.0
-      tsconfig: link:../tsconfig
       typescript: 4.8.3
 
   packages/eslint-config-custom:

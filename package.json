@@ -10,7 +10,7 @@
     "typecheck": "turbo run typecheck",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
-  "devDependencies": {
+  "dependencies": {
     "prettier": "2.7.1",
     "prettier-plugin-tailwindcss": "0.1.13",
     "turbo": "1.5.3"
