@@ -19,7 +19,7 @@
     "airtable": "0.11.5",
     "class-variance-authority": "0.2.3",
     "contentlayer": "0.2.8",
-    "design-system": "*",
+    "design-system": "workspace:*",
     "next": "12.3.1",
     "next-contentlayer": "0.2.8",
     "react": "18.2.0",
@@ -36,13 +36,13 @@
     "@typescript-eslint/parser": "5.38.0",
     "autoprefixer": "10.4.12",
     "eslint": "8.24.0",
-    "eslint-config-custom": "*",
+    "eslint-config-custom": "workspace:*",
     "globby": "13.1.2",
     "next-transpile-modules": "9.0.0",
     "postcss": "8.4.16",
-    "tailwind-config": "*",
+    "tailwind-config": "workspace:*",
     "tailwindcss": "3.1.8",
-    "tsconfig": "*",
+    "tsconfig": "workspace:*",
     "typescript": "4.8.3"
   }
 }
