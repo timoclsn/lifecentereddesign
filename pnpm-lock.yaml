@@ -55,7 +55,7 @@ importers:
       tsconfig: link:../../packages/tsconfig
       typescript: 4.8.4
 
-  apps/web:
+  apps/resources:
     specifiers:
       '@fontsource/dm-sans': 4.5.8
       '@fontsource/source-serif-4': 4.5.14
