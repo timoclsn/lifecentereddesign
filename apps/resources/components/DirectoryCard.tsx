@@ -1,7 +1,7 @@
 import { UilLinkAlt } from '@iconscout/react-unicons';
 import { Directory } from '../lib/content';
 import { getHostname } from '../lib/utils';
-import { Card } from 'design-system';
+import { Card } from './Card';
 
 interface Props {
   directory: Directory;

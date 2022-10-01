@@ -5,7 +5,7 @@ import {
   UilLinkAlt,
   UilQrcodeScan,
 } from '@iconscout/react-unicons';
-import { Card } from 'design-system';
+import { Card } from './Card';
 import { Book } from '../lib/content';
 import { getHostname } from '../lib/utils';
 

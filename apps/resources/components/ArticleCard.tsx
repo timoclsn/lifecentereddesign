@@ -4,7 +4,7 @@ import {
   UilCalendarAlt,
   UilLinkAlt,
 } from '@iconscout/react-unicons';
-import { Card } from 'design-system';
+import { Card } from './Card';
 import { Article } from '../lib/content';
 import { getHostname } from '../lib/utils';
 

@@ -1,7 +1,7 @@
 import { UilLinkAlt, UilGrin } from '@iconscout/react-unicons';
 import { Podcast } from '../lib/content';
 import { getHostname } from '../lib/utils';
-import { Card } from 'design-system';
+import { Card } from './Card';
 
 interface Props {
   podcast: Podcast;
