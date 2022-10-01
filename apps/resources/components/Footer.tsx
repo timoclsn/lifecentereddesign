@@ -1,3 +1,4 @@
+import { Text } from 'design-system';
 import Link from 'next/link';
 
 export function Footer() {
@@ -6,7 +7,9 @@ export function Footer() {
       <ul className="flex flex-col gap-4 sm:flex-row sm:gap-10">
         <li className="hover:underline">
           <Link href="/about">
-            <a>About</a>
+            <a>
+              <Text>About</Text>
+            </a>
           </Link>
         </li>
         <li className="hover:underline">
@@ -15,25 +18,33 @@ export function Footer() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Newsletter
+            <Text>Newsletter</Text>
           </a>
         </li>
         <li className="hover:underline">
-          <a href="https://katharinaclasen.de">Katharina Clasen</a>
+          <a href="https://katharinaclasen.de">
+            <Text>Katharina Clasen</Text>
+          </a>
         </li>
         <li className="hover:underline">
-          <a href="https://timoclasen.de">Timo Clasen</a>
+          <a href="https://timoclasen.de">
+            <Text>Timo Clasen</Text>
+          </a>
         </li>
       </ul>
       <ul className="flex flex-col space-y-4 font-bold sm:flex-row sm:space-y-0 sm:space-x-8">
         <li className="hover:underline">
           <Link href="/imprint">
-            <a>Imprint</a>
+            <a>
+              <Text>Imprint</Text>
+            </a>
           </Link>
         </li>
         <li className="hover:underline">
           <Link href="/privacy">
-            <a>Privacy</a>
+            <a>
+              <Text>Privacy</Text>
+            </a>
           </Link>
         </li>
       </ul>

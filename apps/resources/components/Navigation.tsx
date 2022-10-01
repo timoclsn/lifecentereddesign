@@ -1,3 +1,4 @@
+import { Heading, Text } from 'design-system';
 import Link from 'next/link';
 
 export function Navigation() {
@@ -6,17 +7,25 @@ export function Navigation() {
       <ul className="flex w-full items-baseline gap-10">
         <li className="flex-1 font-serif text-2xl font-bold hover:underline">
           <Link href="/">
-            <a>Life Centered Design.Net</a>
+            <a>
+              <Heading as="span" level="4">
+                Life Centered Design.Net
+              </Heading>
+            </a>
           </Link>
         </li>
-        <li className="text-sm font-bold text-text-secondary hover:underline">
+        <li className="text-text-secondary hover:underline">
           <Link href="/about">
-            <a>About</a>
+            <a>
+              <Text>About</Text>
+            </a>
           </Link>
         </li>
-        <li className="text-sm font-bold hover:underline">
+        <li className="hover:underline">
           <Link href="/#new-resources">
-            <a>Resources</a>
+            <a>
+              <Text weight="bold">Resources</Text>
+            </a>
           </Link>
         </li>
       </ul>

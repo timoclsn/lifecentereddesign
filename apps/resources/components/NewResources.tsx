@@ -1,3 +1,4 @@
+import { Heading } from 'design-system';
 import Image from 'next/future/image';
 import { Resources } from '../lib/content';
 import { getCardComponent } from './utils';
@@ -16,9 +17,9 @@ export const NewResources = ({ resources }: Props) => {
 
   return (
     <section id="new-resources" className="ml-[calc(50%-50vw)] w-screen">
-      <h2 className="text-white mb-10 px-6 font-serif text-4xl font-bold sm:px-8 xl:px-10">
+      <Heading level="2" className="text-white mb-10 px-6 sm:px-8 xl:px-10">
         New Resources
-      </h2>
+      </Heading>
       <ul className="mb-14 flex gap-6 overflow-x-scroll px-6 sm:px-8 xl:px-10">
         <Image
           src="/ground.jpg"

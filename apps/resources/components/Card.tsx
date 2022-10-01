@@ -1,4 +1,4 @@
-import { CardProps, Tag } from 'design-system';
+import { CardProps, Heading, Tag, Text } from 'design-system';
 import { Card as CardPrimitive } from 'design-system';
 
 interface Props {
@@ -43,12 +43,13 @@ export const Card = ({
 
         <div className="flex flex-col items-start gap-4">
           {/* Title */}
-          <h2
+          <Heading
+            level="3"
             title={title}
-            className="font-serif text-xl font-bold line-clamp-2 sm:text-3xl sm:line-clamp-none"
+            className="line-clamp-2 sm:line-clamp-none"
           >
             {title}
-          </h2>
+          </Heading>
 
           {/* Meta infos */}
           {metaInfos && (
@@ -68,7 +69,7 @@ export const Card = ({
                       })}
                     >
                       <metaInfo.icon size="18" />
-                      <span>{metaInfo.text}</span>
+                      <Text>{metaInfo.text}</Text>
                     </Element>
                   </li>
                 );
