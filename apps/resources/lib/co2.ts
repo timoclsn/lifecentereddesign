@@ -1,13 +1,36 @@
+import { z } from 'zod';
 import { fetcher } from './fetcher';
 
-const env = process.env.NODE_ENV;
+const env = z.string().parse(process.env.NODE_ENV);
 
 const demoResult = {
-  co2: 0.11,
-  cleanerThan: 90,
+  co2: 0.04,
+  cleanerThan: 96,
 };
 
 export type CO2 = typeof demoResult;
+
+const wccSchema = z.object({
+  url: z.string().url(),
+  green: z.boolean(),
+  bytes: z.number(),
+  cleanerThan: z.number(),
+  statistics: z.object({
+    adjustedBytes: z.number(),
+    energy: z.number(),
+    co2: z.object({
+      grid: z.object({
+        grams: z.number(),
+        litres: z.number(),
+      }),
+      renewable: z.object({
+        grams: z.number(),
+        litres: z.number(),
+      }),
+    }),
+  }),
+  timestamp: z.number(),
+});
 
 export async function getCO2Consumtion(url: string) {
   if (env === 'development') {
@@ -15,14 +38,19 @@ export async function getCO2Consumtion(url: string) {
   }
 
   const result = await fetcher(`https://api.websitecarbon.com/site?url=${url}`);
+  const parsedResult = wccSchema.safeParse(result);
 
-  if (result.error || Object.keys(result).length === 0) {
-    console.log(`Website Carbon Error: ${result.error}`);
+  if (!parsedResult.success) {
+    console.log(parsedResult.error);
     return demoResult;
   }
 
+  const co2 =
+    Math.round(parsedResult.data.statistics.co2.grid.grams * 100) / 100;
+  const cleanerThan = Math.round(parsedResult.data.cleanerThan * 100);
+
   return {
-    co2: Math.round(result.statistics.co2.grid.grams * 100) / 100,
-    cleanerThan: Math.round(result.cleanerThan * 100),
+    co2,
+    cleanerThan,
   };
 }

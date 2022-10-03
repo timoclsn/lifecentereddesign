@@ -1,8 +1,9 @@
+import { CenteredColumn } from 'design-system';
+import { CO2 } from 'lib/co2';
 import Script from 'next/script';
 import type { ReactNode } from 'react';
 import { Suspense } from 'react';
-
-import { CenteredColumn } from 'design-system';
+import { CO2Badge } from './CO2Badge';
 import { Favicons } from './Favicons';
 import { Footer } from './Footer';
 import { Navigation } from './Navigation';
@@ -14,6 +15,7 @@ interface Props {
   description?: string;
   slug?: string;
   previewImage?: string;
+  co2Consumption?: CO2;
 }
 
 export function Layout({
@@ -22,6 +24,7 @@ export function Layout({
   description,
   slug,
   previewImage,
+  co2Consumption,
 }: Props) {
   const defaultTitle = 'Life Centered Design.Net';
   const pageTitle = !title ? defaultTitle : `${title}  |  ${defaultTitle}`;
@@ -41,6 +44,11 @@ export function Layout({
       />
       <Favicons />
       <Suspense fallback={null}>
+        {co2Consumption && (
+          <div className="flex justify-center">
+            <CO2Badge co2Consumption={co2Consumption} />
+          </div>
+        )}
         <div className="space-y-20 sm:space-y-40">
           <Navigation />
           <CenteredColumn>
