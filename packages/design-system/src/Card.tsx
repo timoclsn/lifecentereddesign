@@ -19,6 +19,10 @@ export interface CardProps {
 }
 
 export const Card = ({ children, variant = 'sand', className }: CardProps) => {
-  const styles = cx(['rounded-4xl p-8 pt-10', variants[variant], className]);
+  const styles = cx([
+    'rounded-4xl p-8 pt-10 w-full',
+    variants[variant],
+    className,
+  ]);
   return <div className={styles}>{children}</div>;
 };

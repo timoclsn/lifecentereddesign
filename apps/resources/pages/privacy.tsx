@@ -8,7 +8,7 @@ const Privacy = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Layout title="Privacy" slug="privacy">
-      <section className="space-y-20">
+      <section className="space-y-20 max-w-prose mx-auto">
         <Heading level="1" className="mb-6">
           {content?.title}
         </Heading>
