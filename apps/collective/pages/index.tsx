@@ -1,12 +1,12 @@
-import { Button, Heading } from 'design-system';
+import { Heading } from 'design-system';
 import type { NextPage } from 'next';
+import { Layout } from '../components/Layout';
 
 const Home: NextPage = () => {
   return (
-    <div className="flex flex-col gap-8 justify-center items-center h-screen">
+    <Layout>
       <Heading>Life Centered Design Collective</Heading>
-      <Button>Go!</Button>
-    </div>
+    </Layout>
   );
 };
 

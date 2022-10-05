@@ -16,6 +16,8 @@ importers:
 
   apps/collective:
     specifiers:
+      '@fontsource/dm-sans': 4.5.8
+      '@fontsource/source-serif-4': 4.5.14
       '@tailwindcss/line-clamp': 0.4.2
       '@tailwindcss/typography': 0.5.7
       '@types/node': 18.7.23
@@ -35,6 +37,8 @@ importers:
       tsconfig: workspace:*
       typescript: 4.8.4
     dependencies:
+      '@fontsource/dm-sans': 4.5.8
+      '@fontsource/source-serif-4': 4.5.14
       design-system: link:../../packages/design-system
       next: 12.3.1_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0

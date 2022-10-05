@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fontsource/dm-sans": "4.5.8",
+    "@fontsource/source-serif-4": "4.5.14",
     "design-system": "workspace:*",
     "next": "12.3.1",
     "react": "18.2.0",
