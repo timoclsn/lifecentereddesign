@@ -1,5 +1,5 @@
 import { UilEnvelopeAlt } from '@iconscout/react-unicons';
-import { Button, CenteredColumn, Heading, Text } from 'design-system';
+import { Button, Container, Heading, Text } from 'design-system';
 import Image from 'next/future/image';
 
 export const Newsletter = () => {
@@ -13,7 +13,7 @@ export const Newsletter = () => {
         className="h-[800px] w-full object-cover object-top"
       />
       <div className="absolute top-0 left-0 h-full w-full py-28">
-        <CenteredColumn>
+        <Container>
           <Heading level="2" className="text-white mb-10">
             Newsletter
           </Heading>
@@ -39,7 +39,7 @@ export const Newsletter = () => {
               Newsletter Signup
             </Button>
           </div>
-        </CenteredColumn>
+        </Container>
       </div>
     </section>
   );

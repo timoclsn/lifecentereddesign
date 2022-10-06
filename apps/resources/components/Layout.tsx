@@ -1,4 +1,4 @@
-import { CenteredColumn } from 'design-system';
+import { Container } from 'design-system';
 import { CO2 } from 'lib/co2';
 import Script from 'next/script';
 import type { ReactNode } from 'react';
@@ -51,9 +51,9 @@ export function Layout({
         )}
         <div className="space-y-20 sm:space-y-40">
           <Navigation />
-          <CenteredColumn>
+          <Container>
             <main className="space-y-10 sm:space-y-40">{children}</main>
-          </CenteredColumn>
+          </Container>
           <Footer />
         </div>
       </Suspense>
