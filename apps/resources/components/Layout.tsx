@@ -51,7 +51,7 @@ export function Layout({
         )}
         <div className="space-y-20 sm:space-y-40">
           <Navigation />
-          <Container>
+          <Container inset>
             <main className="space-y-10 sm:space-y-40">{children}</main>
           </Container>
           <Footer />

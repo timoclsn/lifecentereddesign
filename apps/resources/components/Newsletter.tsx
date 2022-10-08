@@ -13,7 +13,7 @@ export const Newsletter = () => {
         className="h-[800px] w-full object-cover object-top"
       />
       <div className="absolute top-0 left-0 h-full w-full py-28">
-        <Container>
+        <Container inset>
           <Heading level="2" className="text-white mb-10">
             Newsletter
           </Heading>
