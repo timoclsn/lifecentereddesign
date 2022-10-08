@@ -22,7 +22,7 @@ export function Navigation() {
           </Link>
         </li>
         <li className="hover:underline">
-          <Link href="/#new-resources">
+          <Link href="/#resources">
             <a>
               <Text weight="bold">Resources</Text>
             </a>
