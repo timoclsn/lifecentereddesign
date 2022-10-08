@@ -1,17 +1,22 @@
-import { UilLinkAlt, UilGrin } from '@iconscout/react-unicons';
+import { UilGrin, UilLinkAlt } from '@iconscout/react-unicons';
 import { Podcast } from '../lib/content';
 import { getHostname } from '../lib/utils';
 import { Card } from './Card';
+import { useResources } from './Resources';
 
 interface Props {
   podcast: Podcast;
 }
 
 export const PodcastCard = ({ podcast }: Props) => {
+  const { dispatch } = useResources();
   return (
     <Card
       variant="sky"
       type="Podcast"
+      onTypeClick={() => {
+        dispatch({ type: 'filter', payload: 'podcast' });
+      }}
       title={podcast.fields.Name}
       metaInfos={[
         ...(podcast.fields['Host(s)']

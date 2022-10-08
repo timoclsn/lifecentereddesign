@@ -2,16 +2,21 @@ import { UilLinkAlt } from '@iconscout/react-unicons';
 import { Course } from '../lib/content';
 import { getHostname } from '../lib/utils';
 import { Card } from './Card';
+import { useResources } from './Resources';
 
 interface Props {
   course: Course;
 }
 
 export const CourseCard = ({ course }: Props) => {
+  const { dispatch } = useResources();
   return (
     <Card
       variant="evening"
       type="Course"
+      onTypeClick={() => {
+        dispatch({ type: 'filter', payload: 'course' });
+      }}
       title={course.fields.Name}
       category={course.fields.Category?.at(0)?.fields.Name}
       tags={[

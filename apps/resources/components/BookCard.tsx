@@ -5,19 +5,24 @@ import {
   UilLinkAlt,
   UilQrcodeScan,
 } from '@iconscout/react-unicons';
-import { Card } from './Card';
 import { Book } from '../lib/content';
 import { getHostname } from '../lib/utils';
+import { Card } from './Card';
+import { useResources } from './Resources';
 
 interface Props {
   book: Book;
 }
 
 export const BookCard = ({ book }: Props) => {
+  const { dispatch } = useResources();
   return (
     <Card
       variant="oak"
       type="Book"
+      onTypeClick={() => {
+        dispatch({ type: 'filter', payload: 'book' });
+      }}
       title={book.fields.Title}
       metaInfos={[
         ...(book.fields.Authors

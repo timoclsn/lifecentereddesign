@@ -1,22 +1,27 @@
 import {
   UilBookReader,
-  UilClockThree,
   UilCalendarAlt,
+  UilClockThree,
   UilLinkAlt,
 } from '@iconscout/react-unicons';
-import { Card } from './Card';
 import { Article } from '../lib/content';
 import { getHostname } from '../lib/utils';
+import { Card } from './Card';
+import { useResources } from './Resources';
 
 interface Props {
   article: Article;
 }
 
 export const ArticleCard = ({ article }: Props) => {
+  const { dispatch } = useResources();
   return (
     <Card
       variant="forest"
       type="Article"
+      onTypeClick={() => {
+        dispatch({ type: 'filter', payload: 'article' });
+      }}
       title={article.fields.Title}
       metaInfos={[
         ...(article.fields['Author(s)']

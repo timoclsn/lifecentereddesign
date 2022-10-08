@@ -8,16 +8,21 @@ import {
 import { PodcastEpisode } from '../lib/content';
 import { getHostname } from '../lib/utils';
 import { Card } from './Card';
+import { useResources } from './Resources';
 
 interface Props {
   podcastEpisode: PodcastEpisode;
 }
 
 export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
+  const { dispatch } = useResources();
   return (
     <Card
       variant="sand"
       type="Podcast Episode"
+      onTypeClick={() => {
+        dispatch({ type: 'filter', payload: 'podcastEpisode' });
+      }}
       title={podcastEpisode.fields.Title}
       metaInfos={[
         ...(podcastEpisode.fields.Podcast

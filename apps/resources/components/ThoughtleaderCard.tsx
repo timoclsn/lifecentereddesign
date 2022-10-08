@@ -2,16 +2,21 @@ import { UilBriefcaseAlt, UilLinkAlt } from '@iconscout/react-unicons';
 import { Thoughtleader } from '../lib/content';
 import { getHostname } from '../lib/utils';
 import { Card } from './Card';
+import { useResources } from './Resources';
 
 interface Props {
   thoughtleader: Thoughtleader;
 }
 
 export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
+  const { dispatch } = useResources();
   return (
     <Card
       variant="evening"
       type="Thoughtleader"
+      onTypeClick={() => {
+        dispatch({ type: 'filter', payload: 'thoughtleader' });
+      }}
       title={thoughtleader.fields.Name}
       metaInfos={[
         ...(thoughtleader.fields['Job/Description']

@@ -1,21 +1,68 @@
-import { UilArrowDown, UilAngleDown, UilCheck } from '@iconscout/react-unicons';
-import { useState } from 'react';
+import { UilAngleDown, UilArrowDown, UilCheck } from '@iconscout/react-unicons';
 import * as Select from '@radix-ui/react-select';
-import { Resources as TResources, ContentType } from '../lib/content';
-import { getCardComponent } from './utils';
 import { Button } from 'design-system';
+import { createContext, Dispatch, useContext, useReducer } from 'react';
+import { ContentType, Resources as TResources } from '../lib/content';
+import { getCardComponent } from './utils';
 
 type Filter = ContentType | null;
 type Sort = 'date' | 'title';
+
+interface State {
+  filteredType: Filter;
+  itemsCount: number;
+  sort: Sort;
+}
+
+const initalState: State = {
+  filteredType: null,
+  itemsCount: 12,
+  sort: 'title',
+};
+
+type Action =
+  | { type: 'filter'; payload: Filter }
+  | { type: 'showMore'; payload: number }
+  | { type: 'sort'; payload: Sort };
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case 'filter':
+      return {
+        ...state,
+        filteredType: action.payload,
+      };
+    case 'showMore':
+      return {
+        ...state,
+        itemsCount: state.itemsCount + action.payload,
+      };
+    case 'sort':
+      return {
+        ...state,
+        sort: action.payload,
+      };
+    default:
+      throw new Error('Unknown action type');
+  }
+};
+
+const ResourcesContext = createContext<{
+  state: State;
+  dispatch: Dispatch<Action>;
+}>({
+  state: initalState,
+  dispatch: () => null,
+});
+export const useResources = () => useContext(ResourcesContext);
 
 interface Props {
   resources: TResources;
 }
 
 export const Resources = ({ resources }: Props) => {
-  const [filteredType, setFilteredType] = useState<Filter>(null);
-  const [itemsCount, setItemsCount] = useState(12);
-  const [sort, setSort] = useState<Sort>('title');
+  const [state, dispatch] = useReducer(reducer, initalState);
+  const { filteredType, itemsCount, sort } = state;
 
   const sortedResources = resources.sort((a, b) => {
     if (sort === 'date') {
@@ -38,158 +85,163 @@ export const Resources = ({ resources }: Props) => {
   const showShowMoreBtn = filteredResources.length > itemsCount;
 
   const showMore = () => {
-    setItemsCount(itemsCount + 12);
+    dispatch({ type: 'showMore', payload: 12 });
   };
 
-  const filterResources = (type: Filter) => setFilteredType(type);
+  const filterResources = (type: Filter) =>
+    dispatch({ type: 'filter', payload: type });
 
   return (
-    <section id="resources" className="flex flex-col gap-10">
-      <div className="flex items-center overflow-x-scroll">
-        <Button
-          variant="text"
-          selected={filteredType === null}
-          onClick={() => filterResources(null)}
-        >
-          All Resources
-        </Button>
-        <Button
-          variant="text"
-          selected={filteredType === 'thoughtleader'}
-          onClick={() => filterResources('thoughtleader')}
-        >
-          Thoughtleaders
-        </Button>
-        <Button
-          variant="text"
-          selected={filteredType === 'book'}
-          onClick={() => filterResources('book')}
-        >
-          Books
-        </Button>
-        <Button
-          variant="text"
-          selected={filteredType === 'article'}
-          onClick={() => filterResources('article')}
-        >
-          Articles
-        </Button>
-        <Button
-          variant="text"
-          selected={filteredType === 'course'}
-          onClick={() => filterResources('course')}
-        >
-          Courses
-        </Button>
-        <Button
-          variant="text"
-          selected={filteredType === 'podcast'}
-          onClick={() => filterResources('podcast')}
-        >
-          Podcasts
-        </Button>
-        <Button
-          variant="text"
-          selected={filteredType === 'podcastEpisode'}
-          onClick={() => filterResources('podcastEpisode')}
-        >
-          Podcast Episodes
-        </Button>
-        <Button
-          variant="text"
-          selected={filteredType === 'video'}
-          onClick={() => filterResources('video')}
-        >
-          Videos
-        </Button>
-        <Button
-          variant="text"
-          selected={filteredType === 'tool'}
-          onClick={() => filterResources('tool')}
-        >
-          Tools
-        </Button>
-        <Button
-          variant="text"
-          selected={filteredType === 'directory'}
-          onClick={() => filterResources('directory')}
-        >
-          Directories
-        </Button>
-        <Button
-          variant="text"
-          selected={filteredType === 'communityOrOrganization'}
-          onClick={() => filterResources('communityOrOrganization')}
-        >
-          Communities And Organization
-        </Button>
-      </div>
-      <div className="flex flex-col gap-6">
-        <div className="flex gap-6 self-end">
-          <span className="whitespace-nowrap text-text-secondary">
-            Sorted by:
-          </span>
-          <Select.Root
-            defaultValue="date"
-            value={sort}
-            onValueChange={(value: Sort) => setSort(value)}
+    <ResourcesContext.Provider value={{ state, dispatch }}>
+      <section id="resources" className="flex flex-col gap-10">
+        <div className="flex items-center overflow-x-scroll">
+          <Button
+            variant="text"
+            selected={filteredType === null}
+            onClick={() => filterResources(null)}
           >
-            <Select.Trigger className="flex items-center gap-1 font-bold outline-none">
-              <Select.Value aria-label={sort} />
-              <Select.Icon>
-                <div className="text-text-secondary">
-                  <UilAngleDown />
-                </div>
-              </Select.Icon>
-            </Select.Trigger>
-
-            <Select.Content className="rounded-2xl bg-primary-main-bg px-4 py-6 text-primary-contrast-text">
-              <Select.Viewport className="flex flex-col gap-1">
-                <Select.Item
-                  value="date"
-                  className="cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg"
-                >
-                  <Select.ItemIndicator className="absolute left-1 w-[25px]">
-                    <UilCheck />
-                  </Select.ItemIndicator>
-                  <Select.ItemText>
-                    <span className="whitespace-nowrap">Date added</span>
-                  </Select.ItemText>
-                </Select.Item>
-                <Select.Item
-                  value="title"
-                  className="cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg"
-                >
-                  <Select.ItemIndicator className="absolute left-1 w-[25px]">
-                    <UilCheck />
-                  </Select.ItemIndicator>
-                  <Select.ItemText>
-                    <span className="whitespace-nowrap">Title</span>
-                  </Select.ItemText>
-                </Select.Item>
-              </Select.Viewport>
-            </Select.Content>
-          </Select.Root>
-        </div>
-        <ul className="flex flex-col flex-wrap gap-4 md:flex-row">
-          {resourcesToDisplay.map((ressource) => {
-            const component = getCardComponent(ressource);
-            return (
-              <li key={ressource.id} className="md:w-[calc(50%-0.5rem)]">
-                {component}
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-      {showShowMoreBtn && (
-        <div className="flex justify-center">
-          <Button size="large" onClick={() => showMore()}>
-            <UilArrowDown />
-            Show More
+            All Resources
+          </Button>
+          <Button
+            variant="text"
+            selected={filteredType === 'thoughtleader'}
+            onClick={() => filterResources('thoughtleader')}
+          >
+            Thoughtleaders
+          </Button>
+          <Button
+            variant="text"
+            selected={filteredType === 'book'}
+            onClick={() => filterResources('book')}
+          >
+            Books
+          </Button>
+          <Button
+            variant="text"
+            selected={filteredType === 'article'}
+            onClick={() => filterResources('article')}
+          >
+            Articles
+          </Button>
+          <Button
+            variant="text"
+            selected={filteredType === 'course'}
+            onClick={() => filterResources('course')}
+          >
+            Courses
+          </Button>
+          <Button
+            variant="text"
+            selected={filteredType === 'podcast'}
+            onClick={() => filterResources('podcast')}
+          >
+            Podcasts
+          </Button>
+          <Button
+            variant="text"
+            selected={filteredType === 'podcastEpisode'}
+            onClick={() => filterResources('podcastEpisode')}
+          >
+            Podcast Episodes
+          </Button>
+          <Button
+            variant="text"
+            selected={filteredType === 'video'}
+            onClick={() => filterResources('video')}
+          >
+            Videos
+          </Button>
+          <Button
+            variant="text"
+            selected={filteredType === 'tool'}
+            onClick={() => filterResources('tool')}
+          >
+            Tools
+          </Button>
+          <Button
+            variant="text"
+            selected={filteredType === 'directory'}
+            onClick={() => filterResources('directory')}
+          >
+            Directories
+          </Button>
+          <Button
+            variant="text"
+            selected={filteredType === 'communityOrOrganization'}
+            onClick={() => filterResources('communityOrOrganization')}
+          >
+            Communities And Organization
           </Button>
         </div>
-      )}
-    </section>
+        <div className="flex flex-col gap-6">
+          <div className="flex gap-6 self-end">
+            <span className="whitespace-nowrap text-text-secondary">
+              Sorted by:
+            </span>
+            <Select.Root
+              defaultValue="date"
+              value={sort}
+              onValueChange={(value: Sort) =>
+                dispatch({ type: 'sort', payload: value })
+              }
+            >
+              <Select.Trigger className="flex items-center gap-1 font-bold outline-none">
+                <Select.Value aria-label={sort} />
+                <Select.Icon>
+                  <div className="text-text-secondary">
+                    <UilAngleDown />
+                  </div>
+                </Select.Icon>
+              </Select.Trigger>
+
+              <Select.Content className="rounded-2xl bg-primary-main-bg px-4 py-6 text-primary-contrast-text">
+                <Select.Viewport className="flex flex-col gap-1">
+                  <Select.Item
+                    value="date"
+                    className="cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg"
+                  >
+                    <Select.ItemIndicator className="absolute left-1 w-[25px]">
+                      <UilCheck />
+                    </Select.ItemIndicator>
+                    <Select.ItemText>
+                      <span className="whitespace-nowrap">Date added</span>
+                    </Select.ItemText>
+                  </Select.Item>
+                  <Select.Item
+                    value="title"
+                    className="cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg"
+                  >
+                    <Select.ItemIndicator className="absolute left-1 w-[25px]">
+                      <UilCheck />
+                    </Select.ItemIndicator>
+                    <Select.ItemText>
+                      <span className="whitespace-nowrap">Title</span>
+                    </Select.ItemText>
+                  </Select.Item>
+                </Select.Viewport>
+              </Select.Content>
+            </Select.Root>
+          </div>
+          <ul className="flex flex-col flex-wrap gap-4 md:flex-row">
+            {resourcesToDisplay.map((ressource) => {
+              const component = getCardComponent(ressource);
+              return (
+                <li key={ressource.id} className="md:w-[calc(50%-0.5rem)]">
+                  {component}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+        {showShowMoreBtn && (
+          <div className="flex justify-center">
+            <Button size="large" onClick={() => showMore()}>
+              <UilArrowDown />
+              Show More
+            </Button>
+          </div>
+        )}
+      </section>
+    </ResourcesContext.Provider>
   );
 };

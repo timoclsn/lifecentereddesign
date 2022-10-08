@@ -4,6 +4,7 @@ import { Card as CardPrimitive } from 'design-system';
 interface Props {
   variant: CardProps['variant'];
   type: string;
+  onTypeClick?: () => void;
   title: string;
   showType?: boolean;
   metaInfos?: Array<{
@@ -23,11 +24,27 @@ export const Card = ({
   showType,
   variant,
   type,
+  onTypeClick,
   title,
   metaInfos,
   category,
   tags,
 }: Props) => {
+  const getType = () => {
+    if (!!onTypeClick) {
+      return (
+        <button onClick={onTypeClick}>
+          <Tag variant="outline">{type}</Tag>
+        </button>
+      );
+    }
+
+    return (
+      <div>
+        <Tag variant="outline">{type}</Tag>
+      </div>
+    );
+  };
   return (
     <CardPrimitive
       variant={variant}
@@ -35,11 +52,7 @@ export const Card = ({
     >
       <div className="flex flex-1 flex-col items-start gap-9">
         {/* Type */}
-        {showType && (
-          <div>
-            <Tag variant="outline">{type}</Tag>
-          </div>
-        )}
+        {showType && getType()}
 
         <div className="flex flex-col items-start gap-4">
           {/* Title */}

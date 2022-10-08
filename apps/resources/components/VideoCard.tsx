@@ -7,16 +7,21 @@ import {
 import { Video } from '../lib/content';
 import { getHostname } from '../lib/utils';
 import { Card } from './Card';
+import { useResources } from './Resources';
 
 interface Props {
   video: Video;
 }
 
 export const VideoCard = ({ video }: Props) => {
+  const { dispatch } = useResources();
   return (
     <Card
       variant="lime"
       type="Video"
+      onTypeClick={() => {
+        dispatch({ type: 'filter', payload: 'video' });
+      }}
       title={video.fields.Title}
       metaInfos={[
         ...(video.fields.Thoughtleader
