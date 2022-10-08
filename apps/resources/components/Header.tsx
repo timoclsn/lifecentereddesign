@@ -13,7 +13,7 @@ export function Header() {
         design more responsible, sustainable, ethical and all in all more
         meaningful products and services.
       </Text>
-      <Button size="large" href="/" variant="contained">
+      <Button size="large" href="/about" variant="contained">
         About this directory
       </Button>
       <div className="relative ml-[calc(50%-50vw)] mt-24 flex h-[200px] w-screen overflow-hidden bg-[#1A2539] md:h-[380px]">
