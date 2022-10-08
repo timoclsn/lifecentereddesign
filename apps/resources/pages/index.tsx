@@ -1,4 +1,3 @@
-import { CO2Badge } from 'components/CO2Badge';
 import { getCO2Consumtion } from 'lib/co2';
 import { InferGetStaticPropsType } from 'next';
 import { Header } from '../components/Header';
