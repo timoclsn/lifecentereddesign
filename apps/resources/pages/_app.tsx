@@ -1,5 +1,6 @@
 import '@fontsource/dm-sans';
 import '@fontsource/source-serif-4/variable.css';
+import 'design-system/src/themes/resources.css';
 import { AppProps } from 'next/app';
 import '../styles/globals.css';
 

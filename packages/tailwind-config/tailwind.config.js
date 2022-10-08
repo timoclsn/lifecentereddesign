@@ -1,5 +1,3 @@
-const { fontFamily } = require('tailwindcss/defaultTheme');
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -9,61 +7,61 @@ module.exports = {
   ],
   theme: {
     colors: {
-      transparent: 'transparent',
-      oak: '#EFE9E2',
-      forest: '#E4F2E6',
-      sand: '#F3E6D1',
-      lime: '#F0F2D1',
-      sky: '#E7ECF7',
-      evening: '#F4E6E4',
-      stone: '#EAEAEA',
-      morning: '#F1E6F5',
+      transparent: 'var(--color-transparent)',
+      oak: 'var(--color-oak)',
+      forest: 'var(--color-forest)',
+      sand: 'var(--color-sand)',
+      lime: 'var(--color-lime)',
+      sky: 'var(--color-sky)',
+      evening: 'var(--color-evening)',
+      stone: 'var(--color-stone)',
+      morning: 'var(--color-morning)',
       text: {
-        primary: '#101B2C',
-        secondary: 'rgba(16, 27, 44, 0.64)',
+        primary: 'var(--color-text-primary)',
+        secondary: 'var(--color-text-secondary)',
       },
       bg: {
-        primary: '#F8F6F1',
-        secondary: '#FFFFFF',
+        primary: 'var(--color-bg-primary)',
+        secondary: 'var(--color-bg-secondary)',
       },
       primary: {
         main: {
-          bg: '#101B2C',
-          text: '#101B2C',
+          bg: 'var(--color-primary-main-bg)',
+          text: 'var(--color-primary-main-text)',
         },
         hover: {
-          bg: 'rgba(16, 27, 44, 0.8)',
-          text: '#101B2C',
+          bg: 'var(--color-primary-hover-bg)',
+          text: 'var(--color-primary-hover-text)',
         },
         disabled: {
-          bg: 'rgba(16, 27, 44, 0.4)',
-          text: 'rgba(16, 27, 44, 0.4)',
+          bg: 'var(--color-primary-disabled-bg)',
+          text: 'var(--color-primary-disabled-text)',
         },
         contrast: {
-          text: '#FFFFFF',
+          text: 'var(--color-primary-contrast-text)',
         },
         ghost: {
-          bg: 'rgba(16, 27, 44, 0.12)',
+          bg: 'var(--color-primary-ghost-bg)',
         },
       },
       ghost: {
         main: {
           light: {
-            bg: 'rgba(255, 255, 255, 0.56)',
+            bg: 'var(--color-ghost-main-light-bg)',
           },
           dark: {
-            bg: 'rgba(16, 27, 44, 0.12)',
+            bg: 'var(--color-ghost-main-dark-bg)',
           },
         },
         contrast: {
-          text: '#101B2C',
+          text: 'var(--color-ghost-contrast-text)',
         },
       },
     },
     extend: {
       fontFamily: {
-        sans: ['"DM Sans"', ...fontFamily.sans],
-        serif: ['"Source Serif 4"', fontFamily.serif],
+        sans: 'var(--font-sans)',
+        serif: 'var(--font-serif)',
       },
       borderRadius: {
         '4xl': '2rem',
