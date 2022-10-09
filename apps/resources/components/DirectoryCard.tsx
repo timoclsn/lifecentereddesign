@@ -15,7 +15,7 @@ export const DirectoryCard = ({ directory }: Props) => {
       variant="oak"
       type="Directory"
       onTypeClick={() => {
-        dispatch({ type: 'filter', payload: 'directory' });
+        dispatch({ type: 'FILTER', filterType: 'directory' });
       }}
       title={directory.fields.Name}
       category={directory.fields.Category?.at(0)?.fields.Name}

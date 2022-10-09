@@ -20,7 +20,7 @@ export const VideoCard = ({ video }: Props) => {
       variant="lime"
       type="Video"
       onTypeClick={() => {
-        dispatch({ type: 'filter', payload: 'video' });
+        dispatch({ type: 'FILTER', filterType: 'video' });
       }}
       title={video.fields.Title}
       metaInfos={[

@@ -15,7 +15,7 @@ export const ToolCard = ({ tool }: Props) => {
       variant="stone"
       type="Tool"
       onTypeClick={() => {
-        dispatch({ type: 'filter', payload: 'tool' });
+        dispatch({ type: 'FILTER', filterType: 'tool' });
       }}
       title={tool.fields.Name}
       category={tool.fields.Category?.at(0)?.fields.Name}

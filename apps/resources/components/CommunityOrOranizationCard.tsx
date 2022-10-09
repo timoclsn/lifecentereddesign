@@ -17,7 +17,7 @@ export const CommunityOrOranizationCard = ({
       variant="morning"
       type="Community or Organization"
       onTypeClick={() => {
-        dispatch({ type: 'filter', payload: 'communityOrOrganization' });
+        dispatch({ type: 'FILTER', filterType: 'communityOrOrganization' });
       }}
       title={communityOrOrganization.fields.Name}
       category={communityOrOrganization.fields.Category?.at(0)?.fields.Name}

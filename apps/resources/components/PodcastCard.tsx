@@ -15,7 +15,7 @@ export const PodcastCard = ({ podcast }: Props) => {
       variant="sky"
       type="Podcast"
       onTypeClick={() => {
-        dispatch({ type: 'filter', payload: 'podcast' });
+        dispatch({ type: 'FILTER', filterType: 'podcast' });
       }}
       title={podcast.fields.Name}
       metaInfos={[

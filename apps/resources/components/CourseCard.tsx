@@ -15,7 +15,7 @@ export const CourseCard = ({ course }: Props) => {
       variant="evening"
       type="Course"
       onTypeClick={() => {
-        dispatch({ type: 'filter', payload: 'course' });
+        dispatch({ type: 'FILTER', filterType: 'course' });
       }}
       title={course.fields.Name}
       category={course.fields.Category?.at(0)?.fields.Name}

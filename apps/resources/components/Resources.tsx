@@ -21,26 +21,26 @@ const initalState: State = {
 };
 
 type Action =
-  | { type: 'filter'; payload: Filter }
-  | { type: 'showMore'; payload: number }
-  | { type: 'sort'; payload: Sort };
+  | { type: 'FILTER'; filterType: Filter }
+  | { type: 'SHOW_MORE'; itemsCount: number }
+  | { type: 'SORT'; sortBy: Sort };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case 'filter':
+    case 'FILTER':
       return {
         ...state,
-        filteredType: action.payload,
+        filteredType: action.filterType,
       };
-    case 'showMore':
+    case 'SHOW_MORE':
       return {
         ...state,
-        itemsCount: state.itemsCount + action.payload,
+        itemsCount: state.itemsCount + action.itemsCount,
       };
-    case 'sort':
+    case 'SORT':
       return {
         ...state,
-        sort: action.payload,
+        sort: action.sortBy,
       };
     default:
       throw new Error('Unknown action type');
@@ -85,11 +85,11 @@ export const Resources = ({ resources }: Props) => {
   const showShowMoreBtn = filteredResources.length > itemsCount;
 
   const showMore = () => {
-    dispatch({ type: 'showMore', payload: 12 });
+    dispatch({ type: 'SHOW_MORE', itemsCount: 12 });
   };
 
   const filterResources = (type: Filter) =>
-    dispatch({ type: 'filter', payload: type });
+    dispatch({ type: 'FILTER', filterType: type });
 
   return (
     <ResourcesContext.Provider value={{ state, dispatch }}>
@@ -182,7 +182,7 @@ export const Resources = ({ resources }: Props) => {
               defaultValue="date"
               value={sort}
               onValueChange={(value: Sort) =>
-                dispatch({ type: 'sort', payload: value })
+                dispatch({ type: 'SORT', sortBy: value })
               }
             >
               <Select.Trigger className="flex items-center gap-1 font-bold outline-none">

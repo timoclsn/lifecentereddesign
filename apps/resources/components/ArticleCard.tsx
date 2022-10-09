@@ -20,7 +20,7 @@ export const ArticleCard = ({ article }: Props) => {
       variant="forest"
       type="Article"
       onTypeClick={() => {
-        dispatch({ type: 'filter', payload: 'article' });
+        dispatch({ type: 'FILTER', filterType: 'article' });
       }}
       title={article.fields.Title}
       metaInfos={[

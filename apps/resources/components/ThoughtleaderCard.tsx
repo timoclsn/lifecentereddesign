@@ -15,7 +15,7 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
       variant="evening"
       type="Thoughtleader"
       onTypeClick={() => {
-        dispatch({ type: 'filter', payload: 'thoughtleader' });
+        dispatch({ type: 'FILTER', filterType: 'thoughtleader' });
       }}
       title={thoughtleader.fields.Name}
       metaInfos={[

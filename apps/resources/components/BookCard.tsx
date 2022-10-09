@@ -21,7 +21,7 @@ export const BookCard = ({ book }: Props) => {
       variant="oak"
       type="Book"
       onTypeClick={() => {
-        dispatch({ type: 'filter', payload: 'book' });
+        dispatch({ type: 'FILTER', filterType: 'book' });
       }}
       title={book.fields.Title}
       metaInfos={[
