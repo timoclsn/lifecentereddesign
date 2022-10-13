@@ -16,6 +16,6 @@
     "@manypkg/cli": "0.19.2",
     "prettier": "2.7.1",
     "prettier-plugin-tailwindcss": "0.1.13",
-    "turbo": "1.5.5"
+    "turbo": "1.5.6"
   }
 }
