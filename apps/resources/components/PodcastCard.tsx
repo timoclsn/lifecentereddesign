@@ -17,25 +17,25 @@ export const PodcastCard = ({ podcast }: Props) => {
       onTypeClick={() => {
         dispatch({ type: 'FILTER', filterType: 'podcast' });
       }}
-      title={podcast.fields.Name}
+      title={podcast.fields.name}
       metaInfos={[
-        ...(podcast.fields['Host(s)']
+        ...(podcast.fields.host
           ? [
               {
-                text: podcast.fields['Host(s)'].join(', '),
+                text: podcast.fields.host,
                 icon: UilGrin,
               },
             ]
           : []),
       ]}
-      category={podcast.fields.Category?.at(0)?.fields.Name}
+      category={podcast.fields.category?.at(0)?.fields.name}
       tags={[
-        ...(podcast.fields.Link
+        ...(podcast.fields.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(podcast.fields.Link),
-                url: podcast.fields.Link,
+                text: getHostname(podcast.fields.link),
+                url: podcast.fields.link,
               },
             ]
           : []),

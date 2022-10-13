@@ -22,43 +22,43 @@ export const ArticleCard = ({ article }: Props) => {
       onTypeClick={() => {
         dispatch({ type: 'FILTER', filterType: 'article' });
       }}
-      title={article.fields.Title}
+      title={article.fields.title}
       metaInfos={[
-        ...(article.fields['Author(s)']
+        ...(article.fields['author-is-thoughtleader']
           ? [
               {
-                text: article.fields['Author(s)']
+                text: article.fields['author-is-thoughtleader']
                   .map((author) => author?.fields.Name)
                   .join(', '),
                 icon: UilBookReader,
               },
             ]
           : []),
-        ...(article.fields.Date
+        ...(article.fields.date
           ? [
               {
-                text: new Date(article.fields.Date).toLocaleDateString('en'),
+                text: new Date(article.fields.date).toLocaleDateString('en'),
                 icon: UilCalendarAlt,
               },
             ]
           : []),
-        ...(article.fields.Duration
+        ...(article.fields.duration
           ? [
               {
-                text: (article.fields.Duration / 60).toString() + ' min',
+                text: (article.fields.duration / 60).toString() + ' min',
                 icon: UilClockThree,
               },
             ]
           : []),
       ]}
-      category={article.fields.Category?.at(0)?.fields.Name}
+      category={article.fields.category?.at(0)?.fields.Name}
       tags={[
-        ...(article.fields.Link
+        ...(article.fields.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(article.fields.Link),
-                url: article.fields.Link,
+                text: getHostname(article.fields.link),
+                url: article.fields.link,
               },
             ]
           : []),

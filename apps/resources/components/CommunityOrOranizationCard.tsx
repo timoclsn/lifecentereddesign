@@ -19,15 +19,15 @@ export const CommunityOrOranizationCard = ({
       onTypeClick={() => {
         dispatch({ type: 'FILTER', filterType: 'communityOrOrganization' });
       }}
-      title={communityOrOrganization.fields.Name}
-      category={communityOrOrganization.fields.Category?.at(0)?.fields.Name}
+      title={communityOrOrganization.fields.name}
+      category={communityOrOrganization.fields.category?.at(0)?.fields.name}
       tags={[
-        ...(communityOrOrganization.fields.Link
+        ...(communityOrOrganization.fields.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(communityOrOrganization.fields.Link),
-                url: communityOrOrganization.fields.Link,
+                text: getHostname(communityOrOrganization.fields.link),
+                url: communityOrOrganization.fields.link,
               },
             ]
           : []),

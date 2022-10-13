@@ -17,15 +17,15 @@ export const DirectoryCard = ({ directory }: Props) => {
       onTypeClick={() => {
         dispatch({ type: 'FILTER', filterType: 'directory' });
       }}
-      title={directory.fields.Name}
-      category={directory.fields.Category?.at(0)?.fields.Name}
+      title={directory.fields.name}
+      category={directory.fields.category?.at(0)?.fields.name}
       tags={[
-        ...(directory.fields.Link
+        ...(directory.fields.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(directory.fields.Link),
-                url: directory.fields.Link,
+                text: getHostname(directory.fields.link),
+                url: directory.fields.link,
               },
             ]
           : []),

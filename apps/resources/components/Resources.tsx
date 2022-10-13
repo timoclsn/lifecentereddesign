@@ -70,8 +70,8 @@ export const Resources = ({ resources }: Props) => {
         new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime()
       );
     } else if (sort === 'title') {
-      const itemA = 'Title' in a.fields ? a.fields.Title : a.fields.Name;
-      const itemB = 'Title' in b.fields ? b.fields.Title : b.fields.Name;
+      const itemA = 'title' in a.fields ? a.fields.title : a.fields.name;
+      const itemB = 'title' in b.fields ? b.fields.title : b.fields.name;
       return itemA.localeCompare(itemB);
     }
     return 0;

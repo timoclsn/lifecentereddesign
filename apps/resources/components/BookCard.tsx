@@ -23,53 +23,53 @@ export const BookCard = ({ book }: Props) => {
       onTypeClick={() => {
         dispatch({ type: 'FILTER', filterType: 'book' });
       }}
-      title={book.fields.Title}
+      title={book.fields.title}
       metaInfos={[
-        ...(book.fields.Authors
+        ...(book.fields.authors
           ? [
               {
-                text: book.fields.Authors.map(
-                  (author) => author?.fields.Name
-                ).join(', '),
+                text: book.fields.authors
+                  .map((author) => author?.fields.Name)
+                  .join(', '),
                 icon: UilBookReader,
               },
             ]
           : []),
-        ...(book.fields['Publishing Date']
+        ...(book.fields['publishing-date']
           ? [
               {
                 text: new Date(
-                  book.fields['Publishing Date']
+                  book.fields['publishing-date']
                 ).toLocaleDateString('en'),
                 icon: UilCalendarAlt,
               },
             ]
           : []),
-        ...(book.fields.Publisher
+        ...(book.fields.publisher
           ? [
               {
-                text: book.fields.Publisher,
+                text: book.fields.publisher,
                 icon: UilBooks,
               },
             ]
           : []),
-        ...(book.fields.ISBN
+        ...(book.fields.isbn
           ? [
               {
-                text: book.fields.ISBN,
+                text: book.fields.isbn,
                 icon: UilQrcodeScan,
               },
             ]
           : []),
       ]}
-      category={book.fields.Category?.at(0)?.fields.Name}
+      category={book.fields.category?.at(0)?.fields.name}
       tags={[
-        ...(book.fields.Link
+        ...(book.fields.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(book.fields.Link),
-                url: book.fields.Link,
+                text: getHostname(book.fields.link),
+                url: book.fields.link,
               },
             ]
           : []),

@@ -23,55 +23,57 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
       onTypeClick={() => {
         dispatch({ type: 'FILTER', filterType: 'podcastEpisode' });
       }}
-      title={podcastEpisode.fields.Title}
+      title={podcastEpisode.fields.title}
       metaInfos={[
-        ...(podcastEpisode.fields.Podcast
+        ...(podcastEpisode.fields.podcast
           ? [
               {
-                text: podcastEpisode.fields.Podcast,
+                text: podcastEpisode.fields.podcast
+                  .map((podcast) => podcast?.fields.title)
+                  .join(', '),
                 icon: UilMicrophone,
               },
             ]
           : []),
-        ...(podcastEpisode.fields.Guest
+        ...(podcastEpisode.fields.guest
           ? [
               {
-                text: podcastEpisode.fields.Guest.map(
-                  (guest) => guest?.fields.Name
-                ).join(', '),
+                text: podcastEpisode.fields.guest
+                  .map((guest) => guest?.fields.name)
+                  .join(', '),
                 icon: UilGrin,
               },
             ]
           : []),
-        ...(podcastEpisode.fields.Date
+        ...(podcastEpisode.fields.date
           ? [
               {
-                text: new Date(podcastEpisode.fields.Date).toLocaleDateString(
+                text: new Date(podcastEpisode.fields.date).toLocaleDateString(
                   'en'
                 ),
                 icon: UilCalendarAlt,
               },
             ]
           : []),
-        ...(podcastEpisode.fields.Duration
+        ...(podcastEpisode.fields.duration
           ? [
               {
                 text:
-                  Math.round(podcastEpisode.fields.Duration / 60).toString() +
+                  Math.round(podcastEpisode.fields.duration / 60).toString() +
                   ' min',
                 icon: UilClockThree,
               },
             ]
           : []),
       ]}
-      category={podcastEpisode.fields.Category?.at(0)?.fields.Name}
+      category={podcastEpisode.fields.category?.at(0)?.fields.name}
       tags={[
-        ...(podcastEpisode.fields.Link
+        ...(podcastEpisode.fields.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(podcastEpisode.fields.Link),
-                url: podcastEpisode.fields.Link,
+                text: getHostname(podcastEpisode.fields.link),
+                url: podcastEpisode.fields.link,
               },
             ]
           : []),

@@ -22,44 +22,44 @@ export const VideoCard = ({ video }: Props) => {
       onTypeClick={() => {
         dispatch({ type: 'FILTER', filterType: 'video' });
       }}
-      title={video.fields.Title}
+      title={video.fields.title}
       metaInfos={[
-        ...(video.fields.Thoughtleader
+        ...(video.fields.thoughtleader
           ? [
               {
-                text: video.fields.Thoughtleader.map(
-                  (author) => author?.fields.Name
-                ).join(', '),
+                text: video.fields.thoughtleader
+                  .map((author) => author?.fields.name)
+                  .join(', '),
                 icon: UilVideo,
               },
             ]
           : []),
-        ...(video.fields.Date
+        ...(video.fields.date
           ? [
               {
-                text: new Date(video.fields.Date).toLocaleDateString('en'),
+                text: new Date(video.fields.date).toLocaleDateString('en'),
                 icon: UilCalendarAlt,
               },
             ]
           : []),
-        ...(video.fields.Duration
+        ...(video.fields.duration
           ? [
               {
                 text:
-                  Math.round(video.fields.Duration / 60).toString() + ' min',
+                  Math.round(video.fields.duration / 60).toString() + ' min',
                 icon: UilClockThree,
               },
             ]
           : []),
       ]}
-      category={video.fields.Category?.at(0)?.fields.Name}
+      category={video.fields.category?.at(0)?.fields.name}
       tags={[
-        ...(video.fields.Link
+        ...(video.fields.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(video.fields.Link),
-                url: video.fields.Link,
+                text: getHostname(video.fields.link),
+                url: video.fields.link,
               },
             ]
           : []),

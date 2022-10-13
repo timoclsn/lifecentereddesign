@@ -17,27 +17,27 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
       onTypeClick={() => {
         dispatch({ type: 'FILTER', filterType: 'thoughtleader' });
       }}
-      title={thoughtleader.fields.Name}
+      title={thoughtleader.fields.name}
       metaInfos={[
-        ...(thoughtleader.fields['Job/Description']
+        ...(thoughtleader.fields['job-description']
           ? [
               {
-                text: thoughtleader.fields['Job/Description'],
+                text: thoughtleader.fields['job-description'],
                 icon: UilBriefcaseAlt,
               },
             ]
           : []),
       ]}
-      {...(thoughtleader.fields.Category && {
-        category: thoughtleader.fields.Category?.at(0)?.fields.Name,
+      {...(thoughtleader.fields.category && {
+        category: thoughtleader.fields.category?.at(0)?.fields.name,
       })}
       tags={[
-        ...(thoughtleader.fields.Link
+        ...(thoughtleader.fields.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(thoughtleader.fields.Link),
-                url: thoughtleader.fields.Link,
+                text: getHostname(thoughtleader.fields.link),
+                url: thoughtleader.fields.link,
               },
             ]
           : []),

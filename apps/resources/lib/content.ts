@@ -49,19 +49,14 @@ type BookSchema = z.infer<typeof bookSchema>;
 
 const bookSchema = baseSchema.extend({
   fields: z.object({
-    Title: z.string(),
-    Authors: referenceSchema.optional(),
-    Category: referenceSchema.optional(),
-    'Link Title': z.string().optional(),
-    Link: z.string().url().optional(),
-    Topics: referenceSchema.optional(),
-    'Publishing Date': dateSchema.optional(),
-    Publisher: z.string().optional(),
-    ISBN: z.string().optional(),
-    Description: z.string().optional(),
-    Image: imageSchema.optional(),
-    Rating: z.number().optional(),
-    'Personal Note': z.string().optional(),
+    title: z.string(),
+    authors: referenceSchema.optional(),
+    category: referenceSchema.optional(),
+    link: z.string().url().optional(),
+    topics: referenceSchema.optional(),
+    'publishing-date': dateSchema.optional(),
+    publisher: z.string().optional(),
+    isbn: z.string().optional(),
   }),
 });
 
@@ -69,18 +64,15 @@ type ArticleSchema = z.infer<typeof articleSchema>;
 
 const articleSchema = baseSchema.extend({
   fields: z.object({
-    Title: z.string(),
-    'Author(s)': referenceSchema.optional(),
-    Category: referenceSchema.optional(),
-    'Link Title': z.string().optional(),
-    Link: z.string().url().optional(),
-    Topics: referenceSchema.optional(),
-    Date: dateSchema.optional(),
-    Duration: z.number().optional(),
-    Image: imageSchema.optional(),
-    Description: z.string().optional(),
-    Rating: z.number().optional(),
-    'Personal Note': z.string().optional(),
+    title: z.string(),
+    'author-is-thoughtleader': referenceSchema.optional(),
+    author: z.string().optional(),
+    category: referenceSchema.optional(),
+    link: z.string().url().optional(),
+    topics: referenceSchema.optional(),
+    date: dateSchema.optional(),
+    'date-rough': z.string().optional(),
+    duration: z.number().optional(),
   }),
 });
 
@@ -88,16 +80,10 @@ type ThoughtleaderSchema = z.infer<typeof thoughtleaderSchema>;
 
 const thoughtleaderSchema = baseSchema.extend({
   fields: z.object({
-    Name: z.string(),
-    'Job/Description': z.string().optional(),
-    Category: referenceSchema.optional(),
-    'Link Title': z.string().optional(),
-    Link: z.string().url().optional(),
-    Books: referenceSchema.optional(),
-    'Article(s)': referenceSchema.optional(),
-    'Podcast Episode(s)': referenceSchema.optional(),
-    'Video(s)': referenceSchema.optional(),
-    Podcasts: referenceSchema.optional(),
+    name: z.string(),
+    'job-description': z.string().optional(),
+    category: referenceSchema.optional(),
+    link: z.string().url().optional(),
   }),
 });
 
@@ -105,20 +91,7 @@ type CategorySchema = z.infer<typeof categorySchema>;
 
 const categorySchema = baseSchema.extend({
   fields: z.object({
-    Name: z.string(),
-    Description: z.string().optional(),
-    Books: referenceSchema.optional(),
-    Thoughtleaders: referenceSchema.optional(),
-    Articles: referenceSchema.optional(),
-    'Podcast Episodes': referenceSchema.optional(),
-    Podcasts: referenceSchema.optional(),
-    Studies: z.string().optional(),
-    Directories: referenceSchema.optional(),
-    Organizations: z.string().optional(),
-    Videos: referenceSchema.optional(),
-    'Directories copy': referenceSchema.optional(),
-    'Tools copy': referenceSchema.optional(),
-    'Communities, Associations, Organizations copy': referenceSchema.optional(),
+    name: z.string(),
   }),
 });
 
@@ -126,11 +99,7 @@ type TopicSchema = z.infer<typeof topicSchema>;
 
 const topicSchema = baseSchema.extend({
   fields: z.object({
-    Name: z.string(),
-    Books: referenceSchema.optional(),
-    Articles: referenceSchema.optional(),
-    'Articles, Podcastepisodes & Videos copy': referenceSchema.optional(),
-    'Podcast Episodes copy': z.string().optional(),
+    name: z.string(),
   }),
 });
 
@@ -138,20 +107,15 @@ type PodcastepisodeSchema = z.infer<typeof podcastepisodeSchema>;
 
 const podcastepisodeSchema = baseSchema.extend({
   fields: z.object({
-    Title: z.string(),
-    Podcast: z.string().optional(),
-    Date: dateSchema.optional(),
-    Duration: z.number().optional(),
-    Category: referenceSchema.optional(),
-    'Podcast = relevant': referenceSchema.optional(),
-    Guest: referenceSchema.optional(),
-    'Link Title': z.string().optional(),
-    Link: z.string().url().optional(),
-    Topics: referenceSchema.optional(),
-    Image: imageSchema.optional(),
-    Description: z.string().optional(),
-    Rating: z.number().optional(),
-    'Personal Note': z.string().optional(),
+    title: z.string(),
+    'podcast-not-relevant': z.string().optional(),
+    date: dateSchema.optional(),
+    duration: z.number().optional(),
+    category: referenceSchema.optional(),
+    podcast: referenceSchema.optional(),
+    guest: referenceSchema.optional(),
+    link: z.string().url().optional(),
+    topics: referenceSchema.optional(),
   }),
 });
 
@@ -159,15 +123,12 @@ type PodcastSchema = z.infer<typeof podcastSchema>;
 
 const podcastSchema = baseSchema.extend({
   fields: z.object({
-    Name: z.string(),
-    'Host(s)': z.array(z.string()).optional(),
-    'Link Title': z.string().optional(),
-    Link: z.string().url().optional(),
-    Category: referenceSchema.optional(),
-    'Host(s) = Thoughtleader(s)': referenceSchema.optional(),
-    'Podcast Episodes': z.string().optional(),
-    Description: z.string().optional(),
-    'Podcast Episodes 2': referenceSchema.optional(),
+    name: z.string(),
+    host: z.string().optional(),
+    thoughtleader: referenceSchema.optional(),
+    link: z.string().url().optional(),
+    category: referenceSchema.optional(),
+    topics: referenceSchema.optional(),
   }),
 });
 
@@ -175,11 +136,11 @@ type DirectorySchema = z.infer<typeof directorySchema>;
 
 const directorySchema = baseSchema.extend({
   fields: z.object({
-    Name: z.string(),
-    Description: z.string().optional(),
-    'Link Title': z.string().optional(),
-    Link: z.string().url().optional(),
-    Category: referenceSchema.optional(),
+    name: z.string(),
+    description: z.string().optional(),
+    link: z.string().url().optional(),
+    category: referenceSchema.optional(),
+    topics: referenceSchema.optional(),
   }),
 });
 
@@ -187,17 +148,14 @@ type VideoSchema = z.infer<typeof videoSchema>;
 
 const videoSchema = baseSchema.extend({
   fields: z.object({
-    Title: z.string(),
-    Thoughtleader: referenceSchema.optional(),
-    Category: referenceSchema.optional(),
-    'Link Title': z.string().optional(),
-    Link: z.string().url().optional(),
-    Date: dateSchema.optional(),
-    Duration: z.number().optional(),
-    Image: imageSchema.optional(),
-    Description: z.string().optional(),
-    Rating: z.number().optional(),
-    'Personal Note': z.string().optional(),
+    title: z.string(),
+    thoughtleader: referenceSchema.optional(),
+    author: z.string().optional(),
+    category: referenceSchema.optional(),
+    link: z.string().url().optional(),
+    date: dateSchema.optional(),
+    duration: z.number().optional(),
+    topics: referenceSchema.optional(),
   }),
 });
 
@@ -205,11 +163,11 @@ type ToolSchema = z.infer<typeof toolSchema>;
 
 const toolSchema = baseSchema.extend({
   fields: z.object({
-    Name: z.string(),
-    Description: z.string().optional(),
-    'Link Title': z.string().optional(),
-    Link: z.string().url().optional(),
-    Category: referenceSchema.optional(),
+    name: z.string(),
+    description: z.string().optional(),
+    link: z.string().url().optional(),
+    category: referenceSchema.optional(),
+    topics: referenceSchema.optional(),
   }),
 });
 
@@ -219,11 +177,11 @@ type CommunityOrOrganizationSchema = z.infer<
 
 const communityOrOrganizationSchema = baseSchema.extend({
   fields: z.object({
-    Name: z.string(),
-    Description: z.string().optional(),
-    'Link Title': z.string().optional(),
-    Link: z.string().url().optional(),
-    Category: referenceSchema.optional(),
+    name: z.string(),
+    description: z.string().optional(),
+    link: z.string().url().optional(),
+    category: referenceSchema.optional(),
+    topics: referenceSchema.optional(),
   }),
 });
 
@@ -231,11 +189,10 @@ type CourseSchema = z.infer<typeof courseSchema>;
 
 const courseSchema = baseSchema.extend({
   fields: z.object({
-    Name: z.string(),
-    Description: z.string().optional(),
-    'Link Title': z.string().optional(),
-    Link: z.string().url().optional(),
-    Category: referenceSchema.optional(),
+    name: z.string(),
+    description: z.string().optional(),
+    link: z.string().url().optional(),
+    category: referenceSchema.optional(),
   }),
 });
 
@@ -270,18 +227,18 @@ const getData = async () => {
       communitiesAndOrganizations,
       courses,
     ] = await Promise.all([
-      getAllRecordsFromTable('Books'),
-      getAllRecordsFromTable('Articles'),
-      getAllRecordsFromTable('Thoughtleaders'),
-      getAllRecordsFromTable('Categories'),
-      getAllRecordsFromTable('Topics'),
-      getAllRecordsFromTable('Podcast Episodes'),
-      getAllRecordsFromTable('Podcasts'),
-      getAllRecordsFromTable('Directories'),
-      getAllRecordsFromTable('Videos'),
-      getAllRecordsFromTable('Tools'),
-      getAllRecordsFromTable('Communities & Organizations'),
-      getAllRecordsFromTable('Courses'),
+      getAllRecordsFromTable('books'),
+      getAllRecordsFromTable('articles'),
+      getAllRecordsFromTable('thoughtleaders'),
+      getAllRecordsFromTable('categories'),
+      getAllRecordsFromTable('topics'),
+      getAllRecordsFromTable('podcast-episodes'),
+      getAllRecordsFromTable('podcasts'),
+      getAllRecordsFromTable('directories'),
+      getAllRecordsFromTable('videos'),
+      getAllRecordsFromTable('tools'),
+      getAllRecordsFromTable('communities-and-organizations'),
+      getAllRecordsFromTable('courses'),
     ]);
 
     const parsedBooks = z.array(bookSchema).parse(books);
@@ -354,14 +311,14 @@ const getBooks = async () => {
     ...book,
     fields: {
       ...book.fields,
-      Authors: book.fields.Authors
-        ? findReference(book.fields.Authors, data.thoughtleaders)
+      authors: book.fields.authors
+        ? findReference(book.fields.authors, data.thoughtleaders)
         : null,
-      Category: book.fields.Category
-        ? findReference(book.fields.Category, data.categories)
+      category: book.fields.category
+        ? findReference(book.fields.category, data.categories)
         : null,
-      Topics: book.fields.Topics
-        ? findReference(book.fields.Topics, data.topics)
+      topics: book.fields.topics
+        ? findReference(book.fields.topics, data.topics)
         : null,
     },
   }));
@@ -376,14 +333,17 @@ const getArticles = async () => {
     ...article,
     fields: {
       ...article.fields,
-      'Author(s)': article.fields['Author(s)']
-        ? findReference(article.fields['Author(s)'], data.thoughtleaders)
+      'author-is-thoughtleader': article.fields['author-is-thoughtleader']
+        ? findReference(
+            article.fields['author-is-thoughtleader'],
+            data.thoughtleaders
+          )
         : null,
-      Category: article.fields.Category
-        ? findReference(article.fields.Category, data.categories)
+      category: article.fields.category
+        ? findReference(article.fields.category, data.categories)
         : null,
-      Topics: article.fields.Topics
-        ? findReference(article.fields.Topics, data.topics)
+      topics: article.fields.topics
+        ? findReference(article.fields.topics, data.topics)
         : null,
     },
   }));
@@ -398,26 +358,8 @@ const getThoughtleaders = async () => {
     ...thoughtleader,
     fields: {
       ...thoughtleader.fields,
-      Category: thoughtleader.fields.Category
-        ? findReference(thoughtleader.fields.Category, data.categories)
-        : null,
-      Books: thoughtleader.fields.Books
-        ? findReference(thoughtleader.fields.Books, data.books)
-        : null,
-      'Article(s)': thoughtleader.fields['Article(s)']
-        ? findReference(thoughtleader.fields['Article(s)'], data.articles)
-        : null,
-      'Podcast Episode(s)': thoughtleader.fields['Podcast Episode(s)']
-        ? findReference(
-            thoughtleader.fields['Podcast Episode(s)'],
-            data.podcastEpisodes
-          )
-        : null,
-      'Video(s)': thoughtleader.fields['Video(s)']
-        ? findReference(thoughtleader.fields['Video(s)'], data.videos)
-        : null,
-      Podcasts: thoughtleader.fields.Podcasts
-        ? findReference(thoughtleader.fields.Podcasts, data.podcasts)
+      category: thoughtleader.fields.category
+        ? findReference(thoughtleader.fields.category, data.categories)
         : null,
     },
   }));
@@ -434,20 +376,17 @@ const getPodcastEpisodes = async () => {
     ...podcastEpisode,
     fields: {
       ...podcastEpisode.fields,
-      Category: podcastEpisode.fields.Category
-        ? findReference(podcastEpisode.fields.Category, data.categories)
+      category: podcastEpisode.fields.category
+        ? findReference(podcastEpisode.fields.category, data.categories)
         : null,
-      'Podcast = relevant': podcastEpisode.fields['Podcast = relevant']
-        ? findReference(
-            podcastEpisode.fields['Podcast = relevant'],
-            data.podcasts
-          )
+      podcast: podcastEpisode.fields.podcast
+        ? findReference(podcastEpisode.fields.podcast, data.podcasts)
         : null,
-      Guest: podcastEpisode.fields.Guest
-        ? findReference(podcastEpisode.fields.Guest, data.thoughtleaders)
+      guest: podcastEpisode.fields.guest
+        ? findReference(podcastEpisode.fields.guest, data.thoughtleaders)
         : null,
-      Topics: podcastEpisode.fields.Topics
-        ? findReference(podcastEpisode.fields.Topics, data.topics)
+      topics: podcastEpisode.fields.topics
+        ? findReference(podcastEpisode.fields.topics, data.topics)
         : null,
     },
   }));
@@ -464,20 +403,14 @@ const getPodcasts = async () => {
     ...podcast,
     fields: {
       ...podcast.fields,
-      Category: podcast.fields.Category
-        ? findReference(podcast.fields.Category, data.categories)
+      category: podcast.fields.category
+        ? findReference(podcast.fields.category, data.categories)
         : null,
-      'Host(s) = Thoughtleader(s)': podcast.fields['Host(s) = Thoughtleader(s)']
-        ? findReference(
-            podcast.fields['Host(s) = Thoughtleader(s)'],
-            data.thoughtleaders
-          )
+      thoughtleader: podcast.fields.thoughtleader
+        ? findReference(podcast.fields.thoughtleader, data.thoughtleaders)
         : null,
-      'Podcast Episodes 2': podcast.fields['Podcast Episodes 2']
-        ? findReference(
-            podcast.fields['Podcast Episodes 2'],
-            data.podcastEpisodes
-          )
+      topics: podcast.fields.topics
+        ? findReference(podcast.fields.topics, data.topics)
         : null,
     },
   }));
@@ -492,8 +425,11 @@ const getDirectories = async () => {
     ...directory,
     fields: {
       ...directory.fields,
-      Category: directory.fields.Category
-        ? findReference(directory.fields.Category, data.categories)
+      category: directory.fields.category
+        ? findReference(directory.fields.category, data.categories)
+        : null,
+      topics: directory.fields.topics
+        ? findReference(directory.fields.topics, data.topics)
         : null,
     },
   }));
@@ -508,11 +444,14 @@ const getVideos = async () => {
     ...video,
     fields: {
       ...video.fields,
-      Category: video.fields.Category
-        ? findReference(video.fields.Category, data.categories)
+      category: video.fields.category
+        ? findReference(video.fields.category, data.categories)
         : null,
-      Thoughtleader: video.fields.Thoughtleader
-        ? findReference(video.fields.Thoughtleader, data.thoughtleaders)
+      thoughtleader: video.fields.thoughtleader
+        ? findReference(video.fields.thoughtleader, data.thoughtleaders)
+        : null,
+      topics: video.fields.topics
+        ? findReference(video.fields.topics, data.topics)
         : null,
     },
   }));
@@ -527,8 +466,11 @@ const getTools = async () => {
     ...tool,
     fields: {
       ...tool.fields,
-      Category: tool.fields.Category
-        ? findReference(tool.fields.Category, data.categories)
+      category: tool.fields.category
+        ? findReference(tool.fields.category, data.categories)
+        : null,
+      topics: tool.fields.topics
+        ? findReference(tool.fields.topics, data.topics)
         : null,
     },
   }));
@@ -543,11 +485,14 @@ const getCommunitiesAndOrganizations = async () => {
     ...communityOrOrganization,
     fields: {
       ...communityOrOrganization.fields,
-      Category: communityOrOrganization.fields.Category
+      category: communityOrOrganization.fields.category
         ? findReference(
-            communityOrOrganization.fields.Category,
+            communityOrOrganization.fields.category,
             data.categories
           )
+        : null,
+      topics: communityOrOrganization.fields.topics
+        ? findReference(communityOrOrganization.fields.topics, data.topics)
         : null,
     },
   }));
@@ -564,8 +509,8 @@ const getCourses = async () => {
     ...course,
     fields: {
       ...course.fields,
-      Category: course.fields.Category
-        ? findReference(course.fields.Category, data.categories)
+      category: course.fields.category
+        ? findReference(course.fields.category, data.categories)
         : null,
     },
   }));
@@ -586,8 +531,8 @@ export const getAllResources = async () => {
     ...(await getDirectories()),
     ...(await getCommunitiesAndOrganizations()),
   ].sort((a, b) => {
-    const itemA = 'Title' in a.fields ? a.fields.Title : a.fields.Name;
-    const itemB = 'Title' in b.fields ? b.fields.Title : b.fields.Name;
+    const itemA = 'title' in a.fields ? a.fields.title : a.fields.name;
+    const itemB = 'title' in b.fields ? b.fields.title : b.fields.name;
     return itemA.localeCompare(itemB);
   });
 };

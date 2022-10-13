@@ -17,15 +17,15 @@ export const ToolCard = ({ tool }: Props) => {
       onTypeClick={() => {
         dispatch({ type: 'FILTER', filterType: 'tool' });
       }}
-      title={tool.fields.Name}
-      category={tool.fields.Category?.at(0)?.fields.Name}
+      title={tool.fields.name}
+      category={tool.fields.category?.at(0)?.fields.name}
       tags={[
-        ...(tool.fields.Link
+        ...(tool.fields.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(tool.fields.Link),
-                url: tool.fields.Link,
+                text: getHostname(tool.fields.link),
+                url: tool.fields.link,
               },
             ]
           : []),

@@ -17,15 +17,15 @@ export const CourseCard = ({ course }: Props) => {
       onTypeClick={() => {
         dispatch({ type: 'FILTER', filterType: 'course' });
       }}
-      title={course.fields.Name}
-      category={course.fields.Category?.at(0)?.fields.Name}
+      title={course.fields.name}
+      category={course.fields.category?.at(0)?.fields.name}
       tags={[
-        ...(course.fields.Link
+        ...(course.fields.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(course.fields.Link),
-                url: course.fields.Link,
+                text: getHostname(course.fields.link),
+                url: course.fields.link,
               },
             ]
           : []),
