@@ -206,6 +206,13 @@ export const Resources = ({ resources }: Props) => {
           >
             Slides
           </Button>
+          <Button
+            variant="text"
+            selected={filteredType === 'magazine'}
+            onClick={() => filterResources('magazine')}
+          >
+            Magazines
+          </Button>
         </div>
         <div className="flex flex-col gap-6">
           <div className="flex gap-6 self-end">

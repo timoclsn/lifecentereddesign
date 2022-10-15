@@ -32,14 +32,6 @@ const dateSchema = z.string().regex(isoDateRegExp);
 
 const referenceSchema = z.array(z.string());
 
-const imageSchema = z.array(
-  z.object({
-    width: z.number(),
-    height: z.number(),
-    url: z.string().url(),
-  })
-);
-
 const baseSchema = z.object({
   id: z.string(),
   createdTime: dateTimeSchema,
@@ -235,6 +227,18 @@ const slideSchema = baseSchema.extend({
   }),
 });
 
+type MagazineSchema = z.infer<typeof magazineSchema>;
+
+const magazineSchema = baseSchema.extend({
+  fields: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+    link: z.string().url().optional(),
+    category: referenceSchema.optional(),
+    topics: referenceSchema.optional(),
+  }),
+});
+
 let dataStore: {
   books: Array<BookSchema>;
   articles: Array<ArticleSchema>;
@@ -251,6 +255,7 @@ let dataStore: {
   examplesAndCaseStudies: Array<ExampleOrCaseStudySchema>;
   agencies: Array<AgencySchema>;
   slides: Array<SlideSchema>;
+  magazines: Array<MagazineSchema>;
 };
 
 const getData = async () => {
@@ -271,6 +276,7 @@ const getData = async () => {
       examplesAndCaseStudies,
       agencies,
       slides,
+      magazines,
     ] = await Promise.all([
       getAllRecordsFromTable('books'),
       getAllRecordsFromTable('articles'),
@@ -287,6 +293,7 @@ const getData = async () => {
       getAllRecordsFromTable('examples-and-case-studies'),
       getAllRecordsFromTable('agencies'),
       getAllRecordsFromTable('slides'),
+      getAllRecordsFromTable('magazines'),
     ]);
 
     const parsedBooks = z.array(bookSchema).parse(books);
@@ -312,6 +319,7 @@ const getData = async () => {
       .parse(examplesAndCaseStudies);
     const parsedAgencies = z.array(agencySchema).parse(agencies);
     const parsedSlides = z.array(slideSchema).parse(slides);
+    const parsedMagazines = z.array(magazineSchema).parse(magazines);
 
     dataStore = {
       books: parsedBooks,
@@ -329,6 +337,7 @@ const getData = async () => {
       examplesAndCaseStudies: parsedExamplesAndCaseStudies,
       agencies: parsedAgencies,
       slides: parsedSlides,
+      magazines: parsedMagazines,
     };
   }
 
@@ -359,6 +368,7 @@ const contentType = {
   exampleOrCaseStudy: 'exampleOrCaseStudy',
   agency: 'agency',
   slide: 'slide',
+  magazine: 'magazine',
 } as const;
 
 export type ContentType = keyof typeof contentType;
@@ -636,6 +646,25 @@ const getSlides = async () => {
 
 export type Slide = Awaited<ReturnType<typeof getSlides>>[number];
 
+const getMagazines = async () => {
+  const data = await getData();
+  return data.magazines.map((magazine) => ({
+    type: contentType.magazine,
+    ...magazine,
+    fields: {
+      ...magazine.fields,
+      category: magazine.fields.category
+        ? findReference(magazine.fields.category, data.categories)
+        : null,
+      topics: magazine.fields.topics
+        ? findReference(magazine.fields.topics, data.topics)
+        : null,
+    },
+  }));
+};
+
+export type Magazine = Awaited<ReturnType<typeof getMagazines>>[number];
+
 export const getAllResources = async () => {
   return [
     ...(await getBooks()),
@@ -651,6 +680,7 @@ export const getAllResources = async () => {
     ...(await getExamplesAndCaseStudies()),
     ...(await getAgencies()),
     ...(await getSlides()),
+    ...(await getMagazines()),
   ].sort((a, b) => {
     const itemA = 'title' in a.fields ? a.fields.title : a.fields.name;
     const itemB = 'title' in b.fields ? b.fields.title : b.fields.name;
