@@ -183,7 +183,7 @@ export const Resources = ({ resources }: Props) => {
             selected={filteredType === 'communityOrOrganization'}
             onClick={() => filterResources('communityOrOrganization')}
           >
-            Communities And Organization
+            Communities And Organizations
           </Button>
           <Button
             variant="text"
@@ -198,6 +198,13 @@ export const Resources = ({ resources }: Props) => {
             onClick={() => filterResources('agency')}
           >
             Agencies
+          </Button>
+          <Button
+            variant="text"
+            selected={filteredType === 'slide'}
+            onClick={() => filterResources('slide')}
+          >
+            Slides
           </Button>
         </div>
         <div className="flex flex-col gap-6">
