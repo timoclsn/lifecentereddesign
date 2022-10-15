@@ -11,7 +11,7 @@ export function Header() {
       <Text as="p" size="large" className="mb-20 max-w-5xl text-text-secondary">
         Life Centered Design.Net is a curated directory of resources to help us
         design more responsible, sustainable, ethical and all in all more
-        meaningful products and services.
+        meaningful products, systems, and services.
       </Text>
       <Button size="large" href="/about" variant="contained">
         About this directory
