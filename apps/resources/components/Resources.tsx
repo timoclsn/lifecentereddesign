@@ -213,6 +213,13 @@ export const Resources = ({ resources }: Props) => {
           >
             Magazines
           </Button>
+          <Button
+            variant="text"
+            selected={filteredType === 'newsletter'}
+            onClick={() => filterResources('newsletter')}
+          >
+            Newsletters
+          </Button>
         </div>
         <div className="flex flex-col gap-6">
           <div className="flex gap-6 self-end">

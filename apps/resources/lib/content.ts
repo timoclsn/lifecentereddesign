@@ -239,6 +239,21 @@ const magazineSchema = baseSchema.extend({
   }),
 });
 
+type NewsletterSchema = z.infer<typeof newsletterSchema>;
+
+const newsletterSchema = baseSchema.extend({
+  fields: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+    author: z.string().optional(),
+    thoughtleader: referenceSchema.optional(),
+    frequency: z.string().optional(),
+    link: z.string().url().optional(),
+    category: referenceSchema.optional(),
+    topics: referenceSchema.optional(),
+  }),
+});
+
 let dataStore: {
   books: Array<BookSchema>;
   articles: Array<ArticleSchema>;
@@ -256,6 +271,7 @@ let dataStore: {
   agencies: Array<AgencySchema>;
   slides: Array<SlideSchema>;
   magazines: Array<MagazineSchema>;
+  newsletters: Array<NewsletterSchema>;
 };
 
 const getData = async () => {
@@ -277,6 +293,7 @@ const getData = async () => {
       agencies,
       slides,
       magazines,
+      newsletters,
     ] = await Promise.all([
       getAllRecordsFromTable('books'),
       getAllRecordsFromTable('articles'),
@@ -294,6 +311,7 @@ const getData = async () => {
       getAllRecordsFromTable('agencies'),
       getAllRecordsFromTable('slides'),
       getAllRecordsFromTable('magazines'),
+      getAllRecordsFromTable('newsletters'),
     ]);
 
     const parsedBooks = z.array(bookSchema).parse(books);
@@ -320,6 +338,7 @@ const getData = async () => {
     const parsedAgencies = z.array(agencySchema).parse(agencies);
     const parsedSlides = z.array(slideSchema).parse(slides);
     const parsedMagazines = z.array(magazineSchema).parse(magazines);
+    const parsedNewsletters = z.array(newsletterSchema).parse(newsletters);
 
     dataStore = {
       books: parsedBooks,
@@ -338,6 +357,7 @@ const getData = async () => {
       agencies: parsedAgencies,
       slides: parsedSlides,
       magazines: parsedMagazines,
+      newsletters: parsedNewsletters,
     };
   }
 
@@ -369,6 +389,7 @@ const contentType = {
   agency: 'agency',
   slide: 'slide',
   magazine: 'magazine',
+  newsletter: 'newsletter',
 } as const;
 
 export type ContentType = keyof typeof contentType;
@@ -665,6 +686,25 @@ const getMagazines = async () => {
 
 export type Magazine = Awaited<ReturnType<typeof getMagazines>>[number];
 
+const getNewsletters = async () => {
+  const data = await getData();
+  return data.newsletters.map((newsletter) => ({
+    type: contentType.newsletter,
+    ...newsletter,
+    fields: {
+      ...newsletter.fields,
+      category: newsletter.fields.category
+        ? findReference(newsletter.fields.category, data.categories)
+        : null,
+      topics: newsletter.fields.topics
+        ? findReference(newsletter.fields.topics, data.topics)
+        : null,
+    },
+  }));
+};
+
+export type Newsletter = Awaited<ReturnType<typeof getNewsletters>>[number];
+
 export const getAllResources = async () => {
   return [
     ...(await getBooks()),
@@ -681,6 +721,7 @@ export const getAllResources = async () => {
     ...(await getAgencies()),
     ...(await getSlides()),
     ...(await getMagazines()),
+    ...(await getNewsletters()),
   ].sort((a, b) => {
     const itemA = 'title' in a.fields ? a.fields.title : a.fields.name;
     const itemB = 'title' in b.fields ? b.fields.title : b.fields.name;
