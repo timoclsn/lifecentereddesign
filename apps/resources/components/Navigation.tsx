@@ -1,7 +1,9 @@
 import { Heading, Text } from 'design-system';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export function Navigation() {
+  const { pathname } = useRouter();
   return (
     <header className="flex items-center justify-between py-6 px-6 sm:px-8 xl:px-10">
       <ul className="flex w-full items-baseline gap-10">
@@ -14,16 +16,20 @@ export function Navigation() {
             </a>
           </Link>
         </li>
-        <li className="text-text-secondary hover:underline">
+        <li>
           <Link href="/about">
-            <a>
+            <a
+              className={`text-text-secondary hover:underline${
+                pathname.includes('/about') ? ' underline' : ''
+              }`}
+            >
               <Text>About</Text>
             </a>
           </Link>
         </li>
-        <li className="hover:underline">
+        <li>
           <Link href="/#resources">
-            <a>
+            <a className="hover:underline">
               <Text weight="bold">Resources</Text>
             </a>
           </Link>
