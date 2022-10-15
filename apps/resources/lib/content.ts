@@ -208,6 +208,18 @@ const exampleOrCaseStudySchema = baseSchema.extend({
   }),
 });
 
+type AgencySchema = z.infer<typeof agencySchema>;
+
+const agencySchema = baseSchema.extend({
+  fields: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+    link: z.string().url().optional(),
+    category: referenceSchema.optional(),
+    topics: referenceSchema.optional(),
+  }),
+});
+
 let dataStore: {
   books: Array<BookSchema>;
   articles: Array<ArticleSchema>;
@@ -222,6 +234,7 @@ let dataStore: {
   communitiesAndOrganizations: Array<CommunityOrOrganizationSchema>;
   courses: Array<CourseSchema>;
   examplesAndCaseStudies: Array<ExampleOrCaseStudySchema>;
+  agencies: Array<AgencySchema>;
 };
 
 const getData = async () => {
@@ -240,6 +253,7 @@ const getData = async () => {
       communitiesAndOrganizations,
       courses,
       examplesAndCaseStudies,
+      agencies,
     ] = await Promise.all([
       getAllRecordsFromTable('books'),
       getAllRecordsFromTable('articles'),
@@ -254,6 +268,7 @@ const getData = async () => {
       getAllRecordsFromTable('communities-and-organizations'),
       getAllRecordsFromTable('courses'),
       getAllRecordsFromTable('examples-and-case-studies'),
+      getAllRecordsFromTable('agencies'),
     ]);
 
     const parsedBooks = z.array(bookSchema).parse(books);
@@ -277,6 +292,7 @@ const getData = async () => {
     const parsedExamplesAndCaseStudies = z
       .array(exampleOrCaseStudySchema)
       .parse(examplesAndCaseStudies);
+    const parsedAgencies = z.array(agencySchema).parse(agencies);
 
     dataStore = {
       books: parsedBooks,
@@ -292,6 +308,7 @@ const getData = async () => {
       communitiesAndOrganizations: parsedCommunitiesAndOrganizations,
       courses: parsedCourses,
       examplesAndCaseStudies: parsedExamplesAndCaseStudies,
+      agencies: parsedAgencies,
     };
   }
 
@@ -320,6 +337,7 @@ const contentType = {
   communityOrOrganization: 'communityOrOrganization',
   course: 'course',
   exampleOrCaseStudy: 'exampleOrCaseStudy',
+  agency: 'agency',
 } as const;
 
 export type ContentType = keyof typeof contentType;
@@ -559,6 +577,25 @@ export type ExampleOrCaseStudy = Awaited<
   ReturnType<typeof getExamplesAndCaseStudies>
 >[number];
 
+const getAgencies = async () => {
+  const data = await getData();
+  return data.agencies.map((agency) => ({
+    type: contentType.agency,
+    ...agency,
+    fields: {
+      ...agency.fields,
+      category: agency.fields.category
+        ? findReference(agency.fields.category, data.categories)
+        : null,
+      topics: agency.fields.topics
+        ? findReference(agency.fields.topics, data.topics)
+        : null,
+    },
+  }));
+};
+
+export type Agency = Awaited<ReturnType<typeof getAgencies>>[number];
+
 export const getAllResources = async () => {
   return [
     ...(await getBooks()),
@@ -572,6 +609,7 @@ export const getAllResources = async () => {
     ...(await getDirectories()),
     ...(await getCommunitiesAndOrganizations()),
     ...(await getExamplesAndCaseStudies()),
+    ...(await getAgencies()),
   ].sort((a, b) => {
     const itemA = 'title' in a.fields ? a.fields.title : a.fields.name;
     const itemB = 'title' in b.fields ? b.fields.title : b.fields.name;

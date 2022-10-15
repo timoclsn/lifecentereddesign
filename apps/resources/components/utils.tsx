@@ -1,4 +1,5 @@
 import { Resources } from '../lib/content';
+import { AgencyCard } from './ResourceCards/AgencyCard';
 import { ArticleCard } from './ResourceCards/ArticleCard';
 import { BookCard } from './ResourceCards/BookCard';
 import { CommunityOrOranizationCard } from './ResourceCards/CommunityOrOranizationCard';
@@ -35,6 +36,8 @@ export const getCardComponent = (resource: Resources[0]) => {
       return <CommunityOrOranizationCard communityOrOrganization={resource} />;
     case 'exampleOrCaseStudy':
       return <ExampleOrCaseStudyCard exampleOrCaseStudy={resource} />;
+    case 'agency':
+      return <AgencyCard agency={resource} />;
     default:
       throw new Error('Unknown resource type');
   }
