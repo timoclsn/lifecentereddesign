@@ -28,7 +28,7 @@ export function CO2Badge({ co2Consumption }: Props) {
           <Heading level="3">Website carbon footprint</Heading>
           <div className="space-y-4">
             <Text as="p">
-              Everytime someone opens this website only{' '}
+              Everytime someone opens this website{' '}
               <strong>{co2Consumption.co2} g of CO2</strong> are produced. This
               site is{' '}
               <strong>cleaner than {co2Consumption.cleanerThan} %</strong> of
@@ -40,7 +40,7 @@ export function CO2Badge({ co2Consumption }: Props) {
             </Text>
             <p>What we considered to make this page as clean as possible:</p>
             <ul className="list-outside list-disc space-y-2">
-              <li>Reduce information to text</li>
+              <li>Focus on text (instead of video or audio)</li>
               <li>Use static page generation</li>
               <li>Serve from edge CDN</li>
               <li>Self-host optimized font file in modern file format</li>
