@@ -196,6 +196,18 @@ const courseSchema = baseSchema.extend({
   }),
 });
 
+type ExampleOrCaseStudySchema = z.infer<typeof exampleOrCaseStudySchema>;
+
+const exampleOrCaseStudySchema = baseSchema.extend({
+  fields: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+    link: z.string().url().optional(),
+    category: referenceSchema.optional(),
+    topics: referenceSchema.optional(),
+  }),
+});
+
 let dataStore: {
   books: Array<BookSchema>;
   articles: Array<ArticleSchema>;
@@ -209,6 +221,7 @@ let dataStore: {
   tools: Array<ToolSchema>;
   communitiesAndOrganizations: Array<CommunityOrOrganizationSchema>;
   courses: Array<CourseSchema>;
+  examplesAndCaseStudies: Array<ExampleOrCaseStudySchema>;
 };
 
 const getData = async () => {
@@ -226,6 +239,7 @@ const getData = async () => {
       tools,
       communitiesAndOrganizations,
       courses,
+      examplesAndCaseStudies,
     ] = await Promise.all([
       getAllRecordsFromTable('books'),
       getAllRecordsFromTable('articles'),
@@ -239,6 +253,7 @@ const getData = async () => {
       getAllRecordsFromTable('tools'),
       getAllRecordsFromTable('communities-and-organizations'),
       getAllRecordsFromTable('courses'),
+      getAllRecordsFromTable('examples-and-case-studies'),
     ]);
 
     const parsedBooks = z.array(bookSchema).parse(books);
@@ -259,6 +274,9 @@ const getData = async () => {
       .array(communityOrOrganizationSchema)
       .parse(communitiesAndOrganizations);
     const parsedCourses = z.array(courseSchema).parse(courses);
+    const parsedExamplesAndCaseStudies = z
+      .array(exampleOrCaseStudySchema)
+      .parse(examplesAndCaseStudies);
 
     dataStore = {
       books: parsedBooks,
@@ -273,6 +291,7 @@ const getData = async () => {
       tools: parsedTools,
       communitiesAndOrganizations: parsedCommunitiesAndOrganizations,
       courses: parsedCourses,
+      examplesAndCaseStudies: parsedExamplesAndCaseStudies,
     };
   }
 
@@ -300,6 +319,7 @@ const contentType = {
   tool: 'tool',
   communityOrOrganization: 'communityOrOrganization',
   course: 'course',
+  exampleOrCaseStudy: 'exampleOrCaseStudy',
 } as const;
 
 export type ContentType = keyof typeof contentType;
@@ -518,6 +538,27 @@ const getCourses = async () => {
 
 export type Course = Awaited<ReturnType<typeof getCourses>>[number];
 
+const getExamplesAndCaseStudies = async () => {
+  const data = await getData();
+  return data.examplesAndCaseStudies.map((exampleOrCaseStudy) => ({
+    type: contentType.exampleOrCaseStudy,
+    ...exampleOrCaseStudy,
+    fields: {
+      ...exampleOrCaseStudy.fields,
+      category: exampleOrCaseStudy.fields.category
+        ? findReference(exampleOrCaseStudy.fields.category, data.categories)
+        : null,
+      topics: exampleOrCaseStudy.fields.topics
+        ? findReference(exampleOrCaseStudy.fields.topics, data.topics)
+        : null,
+    },
+  }));
+};
+
+export type ExampleOrCaseStudy = Awaited<
+  ReturnType<typeof getExamplesAndCaseStudies>
+>[number];
+
 export const getAllResources = async () => {
   return [
     ...(await getBooks()),
@@ -530,6 +571,7 @@ export const getAllResources = async () => {
     ...(await getTools()),
     ...(await getDirectories()),
     ...(await getCommunitiesAndOrganizations()),
+    ...(await getExamplesAndCaseStudies()),
   ].sort((a, b) => {
     const itemA = 'title' in a.fields ? a.fields.title : a.fields.name;
     const itemB = 'title' in b.fields ? b.fields.title : b.fields.name;

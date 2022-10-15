@@ -185,6 +185,13 @@ export const Resources = ({ resources }: Props) => {
           >
             Communities And Organization
           </Button>
+          <Button
+            variant="text"
+            selected={filteredType === 'exampleOrCaseStudy'}
+            onClick={() => filterResources('exampleOrCaseStudy')}
+          >
+            Examples And Case Studies
+          </Button>
         </div>
         <div className="flex flex-col gap-6">
           <div className="flex gap-6 self-end">

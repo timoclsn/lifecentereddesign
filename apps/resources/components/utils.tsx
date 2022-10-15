@@ -4,6 +4,7 @@ import { BookCard } from './ResourceCards/BookCard';
 import { CommunityOrOranizationCard } from './ResourceCards/CommunityOrOranizationCard';
 import { CourseCard } from './ResourceCards/CourseCard';
 import { DirectoryCard } from './ResourceCards/DirectoryCard';
+import { ExampleOrCaseStudyCard } from './ResourceCards/ExampleOrCaseStudyCard';
 import { PodcastCard } from './ResourceCards/PodcastCard';
 import { PodcastEpisodeCard } from './ResourceCards/PodcastEpisodeCard';
 import { ThoughtleaderCard } from './ResourceCards/ThoughtleaderCard';
@@ -11,44 +12,30 @@ import { ToolCard } from './ResourceCards/ToolCard';
 import { VideoCard } from './ResourceCards/VideoCard';
 
 export const getCardComponent = (resource: Resources[0]) => {
-  let component;
-
   switch (resource.type) {
     case 'thoughtleader':
-      component = <ThoughtleaderCard thoughtleader={resource} />;
-      break;
+      return <ThoughtleaderCard thoughtleader={resource} />;
     case 'book':
-      component = <BookCard book={resource} />;
-      break;
+      return <BookCard book={resource} />;
     case 'article':
-      component = <ArticleCard article={resource} />;
-      break;
+      return <ArticleCard article={resource} />;
     case 'course':
-      component = <CourseCard course={resource} />;
-      break;
+      return <CourseCard course={resource} />;
     case 'podcast':
-      component = <PodcastCard podcast={resource} />;
-      break;
+      return <PodcastCard podcast={resource} />;
     case 'podcastEpisode':
-      component = <PodcastEpisodeCard podcastEpisode={resource} />;
-      break;
+      return <PodcastEpisodeCard podcastEpisode={resource} />;
     case 'video':
-      component = <VideoCard video={resource} />;
-      break;
+      return <VideoCard video={resource} />;
     case 'tool':
-      component = <ToolCard tool={resource} />;
-      break;
+      return <ToolCard tool={resource} />;
     case 'directory':
-      component = <DirectoryCard directory={resource} />;
-      break;
+      return <DirectoryCard directory={resource} />;
     case 'communityOrOrganization':
-      component = (
-        <CommunityOrOranizationCard communityOrOrganization={resource} />
-      );
-      break;
+      return <CommunityOrOranizationCard communityOrOrganization={resource} />;
+    case 'exampleOrCaseStudy':
+      return <ExampleOrCaseStudyCard exampleOrCaseStudy={resource} />;
     default:
       throw new Error('Unknown resource type');
   }
-
-  return component;
 };
