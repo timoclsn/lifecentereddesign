@@ -18,10 +18,10 @@ export const Newsletter = () => {
             Newsletter
           </Heading>
           <Text as="p" size="large" className="mb-16 text-text-secondary">
-            Sign up for our Newsletter in case you want to get new resources and
-            other news delivered to your inbox. We are mindful about this
-            Newsletter and will only send you updates when there is interesting
-            news to share.
+            Sign up for our Newsletter to get all the new resources and other
+            Life-centered Design related news delivered to your inbox once a
+            month. Clicking the button or input field will bring you to the
+            signup page, where you will find further information.
           </Text>
           <div className="flex flex-col items-center gap-8 sm:flex-row">
             <a
