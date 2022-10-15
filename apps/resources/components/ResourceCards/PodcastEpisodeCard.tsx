@@ -5,10 +5,10 @@ import {
   UilCalendarAlt,
   UilClockThree,
 } from '@iconscout/react-unicons';
-import { PodcastEpisode } from '../lib/content';
-import { getHostname } from '../lib/utils';
-import { Card } from './Card';
-import { useResources } from './Resources';
+import { PodcastEpisode } from '../../lib/content';
+import { getHostname } from '../../lib/utils';
+import { Card } from '../Card';
+import { useResources } from '../Resources';
 
 interface Props {
   podcastEpisode: PodcastEpisode;

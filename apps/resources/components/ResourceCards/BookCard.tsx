@@ -5,10 +5,10 @@ import {
   UilLinkAlt,
   UilQrcodeScan,
 } from '@iconscout/react-unicons';
-import { Book } from '../lib/content';
-import { getHostname } from '../lib/utils';
-import { Card } from './Card';
-import { useResources } from './Resources';
+import { Book } from '../../lib/content';
+import { getHostname } from '../../lib/utils';
+import { Card } from '../Card';
+import { useResources } from '../Resources';
 
 interface Props {
   book: Book;

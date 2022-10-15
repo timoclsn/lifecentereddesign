@@ -4,10 +4,10 @@ import {
   UilClockThree,
   UilLinkAlt,
 } from '@iconscout/react-unicons';
-import { Article } from '../lib/content';
-import { getHostname } from '../lib/utils';
-import { Card } from './Card';
-import { useResources } from './Resources';
+import { Article } from '../../lib/content';
+import { getHostname } from '../../lib/utils';
+import { Card } from '../Card';
+import { useResources } from '../Resources';
 
 interface Props {
   article: Article;

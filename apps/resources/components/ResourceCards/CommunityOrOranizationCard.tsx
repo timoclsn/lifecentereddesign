@@ -1,8 +1,8 @@
 import { UilLinkAlt } from '@iconscout/react-unicons';
-import { CommunityOrOrganization } from '../lib/content';
-import { getHostname } from '../lib/utils';
-import { Card } from './Card';
-import { useResources } from './Resources';
+import { CommunityOrOrganization } from '../../lib/content';
+import { getHostname } from '../../lib/utils';
+import { Card } from '../Card';
+import { useResources } from '../Resources';
 
 interface Props {
   communityOrOrganization: CommunityOrOrganization;

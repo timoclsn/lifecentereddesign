@@ -1,14 +1,14 @@
 import { Resources } from '../lib/content';
-import { ArticleCard } from './ArticleCard';
-import { BookCard } from './BookCard';
-import { CommunityOrOranizationCard } from './CommunityOrOranizationCard';
-import { CourseCard } from './CourseCard';
-import { DirectoryCard } from './DirectoryCard';
-import { PodcastCard } from './PodcastCard';
-import { PodcastEpisodeCard } from './PodcastEpisodeCard';
-import { ThoughtleaderCard } from './ThoughtleaderCard';
-import { ToolCard } from './ToolCard';
-import { VideoCard } from './VideoCard';
+import { ArticleCard } from './ResourceCards/ArticleCard';
+import { BookCard } from './ResourceCards/BookCard';
+import { CommunityOrOranizationCard } from './ResourceCards/CommunityOrOranizationCard';
+import { CourseCard } from './ResourceCards/CourseCard';
+import { DirectoryCard } from './ResourceCards/DirectoryCard';
+import { PodcastCard } from './ResourceCards/PodcastCard';
+import { PodcastEpisodeCard } from './ResourceCards/PodcastEpisodeCard';
+import { ThoughtleaderCard } from './ResourceCards/ThoughtleaderCard';
+import { ToolCard } from './ResourceCards/ToolCard';
+import { VideoCard } from './ResourceCards/VideoCard';
 
 export const getCardComponent = (resource: Resources[0]) => {
   let component;
