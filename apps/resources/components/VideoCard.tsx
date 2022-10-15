@@ -14,14 +14,22 @@ interface Props {
 }
 
 export const VideoCard = ({ video }: Props) => {
-  const { dispatch } = useResources();
+  const { dispatch, state } = useResources();
+  const { inContext, filteredType } = state;
   return (
     <Card
       variant="lime"
       type="Video"
-      onTypeClick={() => {
-        dispatch({ type: 'FILTER', filterType: 'video' });
-      }}
+      onTypeClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER',
+                filterType: filteredType === 'video' ? null : 'video',
+              });
+            }
+          : undefined
+      }
       title={video.fields.title}
       metaInfos={[
         ...(video.fields.thoughtleader

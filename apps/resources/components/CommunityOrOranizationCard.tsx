@@ -11,14 +11,25 @@ interface Props {
 export const CommunityOrOranizationCard = ({
   communityOrOrganization,
 }: Props) => {
-  const { dispatch } = useResources();
+  const { dispatch, state } = useResources();
+  const { inContext, filteredType } = state;
   return (
     <Card
       variant="morning"
       type="Community or Organization"
-      onTypeClick={() => {
-        dispatch({ type: 'FILTER', filterType: 'communityOrOrganization' });
-      }}
+      onTypeClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER',
+                filterType:
+                  filteredType === 'communityOrOrganization'
+                    ? null
+                    : 'communityOrOrganization',
+              });
+            }
+          : undefined
+      }
       title={communityOrOrganization.fields.name}
       category={communityOrOrganization.fields.category?.at(0)?.fields.name}
       tags={[

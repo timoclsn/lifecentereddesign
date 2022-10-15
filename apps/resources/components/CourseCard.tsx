@@ -9,14 +9,22 @@ interface Props {
 }
 
 export const CourseCard = ({ course }: Props) => {
-  const { dispatch } = useResources();
+  const { dispatch, state } = useResources();
+  const { inContext, filteredType } = state;
   return (
     <Card
       variant="evening"
       type="Course"
-      onTypeClick={() => {
-        dispatch({ type: 'FILTER', filterType: 'course' });
-      }}
+      onTypeClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER',
+                filterType: filteredType === 'course' ? null : 'course',
+              });
+            }
+          : undefined
+      }
       title={course.fields.name}
       category={course.fields.category?.at(0)?.fields.name}
       tags={[

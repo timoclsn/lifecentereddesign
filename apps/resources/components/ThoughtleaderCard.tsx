@@ -9,14 +9,23 @@ interface Props {
 }
 
 export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
-  const { dispatch } = useResources();
+  const { dispatch, state } = useResources();
+  const { inContext, filteredType } = state;
   return (
     <Card
       variant="evening"
       type="Thoughtleader"
-      onTypeClick={() => {
-        dispatch({ type: 'FILTER', filterType: 'thoughtleader' });
-      }}
+      onTypeClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER',
+                filterType:
+                  filteredType === 'thoughtleader' ? null : 'thoughtleader',
+              });
+            }
+          : undefined
+      }
       title={thoughtleader.fields.name}
       metaInfos={[
         ...(thoughtleader.fields['job-description']

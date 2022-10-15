@@ -9,14 +9,22 @@ interface Props {
 }
 
 export const ToolCard = ({ tool }: Props) => {
-  const { dispatch } = useResources();
+  const { dispatch, state } = useResources();
+  const { inContext, filteredType } = state;
   return (
     <Card
       variant="stone"
       type="Tool"
-      onTypeClick={() => {
-        dispatch({ type: 'FILTER', filterType: 'tool' });
-      }}
+      onTypeClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER',
+                filterType: filteredType === 'tool' ? null : 'tool',
+              });
+            }
+          : undefined
+      }
       title={tool.fields.name}
       category={tool.fields.category?.at(0)?.fields.name}
       tags={[

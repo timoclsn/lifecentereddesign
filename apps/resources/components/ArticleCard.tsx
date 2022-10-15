@@ -14,14 +14,22 @@ interface Props {
 }
 
 export const ArticleCard = ({ article }: Props) => {
-  const { dispatch } = useResources();
+  const { dispatch, state } = useResources();
+  const { inContext, filteredType } = state;
   return (
     <Card
       variant="forest"
       type="Article"
-      onTypeClick={() => {
-        dispatch({ type: 'FILTER', filterType: 'article' });
-      }}
+      onTypeClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER',
+                filterType: filteredType === 'article' ? null : 'article',
+              });
+            }
+          : undefined
+      }
       title={article.fields.title}
       metaInfos={[
         ...(article.fields['author-is-thoughtleader']

@@ -33,7 +33,7 @@ export const Card = ({
   const getType = () => {
     if (!!onTypeClick) {
       return (
-        <button onClick={onTypeClick}>
+        <button onClick={onTypeClick} className="hover:opacity-80">
           <Tag variant="outline">{type}</Tag>
         </button>
       );

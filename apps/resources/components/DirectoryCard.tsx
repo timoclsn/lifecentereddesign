@@ -9,14 +9,22 @@ interface Props {
 }
 
 export const DirectoryCard = ({ directory }: Props) => {
-  const { dispatch } = useResources();
+  const { dispatch, state } = useResources();
+  const { inContext, filteredType } = state;
   return (
     <Card
       variant="oak"
       type="Directory"
-      onTypeClick={() => {
-        dispatch({ type: 'FILTER', filterType: 'directory' });
-      }}
+      onTypeClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER',
+                filterType: filteredType === 'directory' ? null : 'directory',
+              });
+            }
+          : undefined
+      }
       title={directory.fields.name}
       category={directory.fields.category?.at(0)?.fields.name}
       tags={[

@@ -15,14 +15,22 @@ interface Props {
 }
 
 export const BookCard = ({ book }: Props) => {
-  const { dispatch } = useResources();
+  const { dispatch, state } = useResources();
+  const { inContext, filteredType } = state;
   return (
     <Card
       variant="oak"
       type="Book"
-      onTypeClick={() => {
-        dispatch({ type: 'FILTER', filterType: 'book' });
-      }}
+      onTypeClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER',
+                filterType: filteredType === 'book' ? null : 'book',
+              });
+            }
+          : undefined
+      }
       title={book.fields.title}
       metaInfos={[
         ...(book.fields.authors

@@ -12,18 +12,21 @@ interface State {
   filteredType: Filter;
   itemsCount: number;
   sort: Sort;
+  inContext: boolean;
 }
 
 const initalState: State = {
   filteredType: null,
   itemsCount: 12,
   sort: 'title',
+  inContext: false,
 };
 
 type Action =
   | { type: 'FILTER'; filterType: Filter }
   | { type: 'SHOW_MORE'; itemsCount: number }
-  | { type: 'SORT'; sortBy: Sort };
+  | { type: 'SORT'; sortBy: Sort }
+  | { type: 'IN_CONTEXT' };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -41,6 +44,11 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         sort: action.sortBy,
+      };
+    case 'IN_CONTEXT':
+      return {
+        ...state,
+        inContext: true,
       };
     default:
       throw new Error('Unknown action type');
@@ -62,7 +70,12 @@ interface Props {
 
 export const Resources = ({ resources }: Props) => {
   const [state, dispatch] = useReducer(reducer, initalState);
-  const { filteredType, itemsCount, sort } = state;
+  const { filteredType, itemsCount, sort, inContext } = state;
+
+  // Flag so componets can check if they are rendered in context
+  if (!inContext) {
+    dispatch({ type: 'IN_CONTEXT' });
+  }
 
   const sortedResources = resources.sort((a, b) => {
     if (sort === 'date') {

@@ -15,14 +15,23 @@ interface Props {
 }
 
 export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
-  const { dispatch } = useResources();
+  const { dispatch, state } = useResources();
+  const { inContext, filteredType } = state;
   return (
     <Card
       variant="sand"
       type="Podcast Episode"
-      onTypeClick={() => {
-        dispatch({ type: 'FILTER', filterType: 'podcastEpisode' });
-      }}
+      onTypeClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER',
+                filterType:
+                  filteredType === 'podcastEpisode' ? null : 'podcastEpisode',
+              });
+            }
+          : undefined
+      }
       title={podcastEpisode.fields.title}
       metaInfos={[
         ...(podcastEpisode.fields.podcast
