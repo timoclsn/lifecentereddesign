@@ -13,7 +13,7 @@ export const NewsletterCard = ({ newsletter }: Props) => {
   const { inContext, filteredType } = state;
   return (
     <Card
-      variant="lime"
+      variant="sand"
       type="Newsletter"
       onTypeClick={
         inContext

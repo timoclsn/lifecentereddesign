@@ -13,7 +13,7 @@ export const SlideCard = ({ slide }: Props) => {
   const { inContext, filteredType } = state;
   return (
     <Card
-      variant="lime"
+      variant="evening"
       type="Slide"
       onTypeClick={
         inContext
