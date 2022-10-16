@@ -42,6 +42,14 @@ export const VideoCard = ({ video }: Props) => {
               },
             ]
           : []),
+        ...(video.fields.author
+          ? [
+              {
+                text: video.fields.author,
+                icon: UilVideo,
+              },
+            ]
+          : []),
         ...(video.fields.date
           ? [
               {

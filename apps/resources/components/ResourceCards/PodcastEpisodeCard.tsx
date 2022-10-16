@@ -44,6 +44,14 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
               },
             ]
           : []),
+        ...(podcastEpisode.fields['podcast-not-relevant']
+          ? [
+              {
+                text: podcastEpisode.fields['podcast-not-relevant'],
+                icon: UilMicrophone,
+              },
+            ]
+          : []),
         ...(podcastEpisode.fields.guest
           ? [
               {

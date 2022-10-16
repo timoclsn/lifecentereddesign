@@ -35,6 +35,16 @@ export const PodcastCard = ({ podcast }: Props) => {
               },
             ]
           : []),
+        ...(podcast.fields.thoughtleader
+          ? [
+              {
+                text: podcast.fields.thoughtleader
+                  .map((thoughtleader) => thoughtleader?.fields.name)
+                  .join(', '),
+                icon: UilGrin,
+              },
+            ]
+          : []),
       ]}
       category={podcast.fields.category?.at(0)?.fields.name}
       tags={[

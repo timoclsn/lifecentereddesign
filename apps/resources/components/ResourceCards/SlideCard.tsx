@@ -27,12 +27,20 @@ export const SlideCard = ({ slide }: Props) => {
       }
       title={slide.fields.title}
       metaInfos={[
-        ...(slide.fields['author-is-thoughtleader']
+        ...(slide.fields.thoughtleader
           ? [
               {
-                text: slide.fields['author-is-thoughtleader']
+                text: slide.fields.thoughtleader
                   .map((author) => author?.fields.name)
                   .join(', '),
+                icon: UilBookReader,
+              },
+            ]
+          : []),
+        ...(slide.fields.author
+          ? [
+              {
+                text: slide.fields.author,
                 icon: UilBookReader,
               },
             ]

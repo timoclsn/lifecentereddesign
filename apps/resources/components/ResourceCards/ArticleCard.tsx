@@ -32,12 +32,20 @@ export const ArticleCard = ({ article }: Props) => {
       }
       title={article.fields.title}
       metaInfos={[
-        ...(article.fields['author-is-thoughtleader']
+        ...(article.fields.thoughtleader
           ? [
               {
-                text: article.fields['author-is-thoughtleader']
+                text: article.fields.thoughtleader
                   .map((author) => author?.fields.name)
                   .join(', '),
+                icon: UilBookReader,
+              },
+            ]
+          : []),
+        ...(article.fields.author
+          ? [
+              {
+                text: article.fields.author,
                 icon: UilBookReader,
               },
             ]

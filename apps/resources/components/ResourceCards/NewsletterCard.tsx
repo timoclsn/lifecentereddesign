@@ -27,12 +27,20 @@ export const NewsletterCard = ({ newsletter }: Props) => {
       }
       title={newsletter.fields.name}
       metaInfos={[
-        ...(newsletter.fields['author-is-thoughtleader']
+        ...(newsletter.fields.thoughtleader
           ? [
               {
-                text: newsletter.fields['author-is-thoughtleader']
+                text: newsletter.fields.thoughtleader
                   .map((author) => author?.fields.name)
                   .join(', '),
+                icon: UilBookReader,
+              },
+            ]
+          : []),
+        ...(newsletter.fields.author
+          ? [
+              {
+                text: newsletter.fields.author,
                 icon: UilBookReader,
               },
             ]

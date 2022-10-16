@@ -57,7 +57,7 @@ type ArticleSchema = z.infer<typeof articleSchema>;
 const articleSchema = baseSchema.extend({
   fields: z.object({
     title: z.string(),
-    'author-is-thoughtleader': referenceSchema.optional(),
+    thoughtleader: referenceSchema.optional(),
     author: z.string().optional(),
     category: referenceSchema.optional(),
     link: z.string().url().optional(),
@@ -217,7 +217,7 @@ type SlideSchema = z.infer<typeof slideSchema>;
 const slideSchema = baseSchema.extend({
   fields: z.object({
     title: z.string(),
-    'author-is-thoughtleader': referenceSchema.optional(),
+    thoughtleader: referenceSchema.optional(),
     author: z.string().optional(),
     link: z.string().url().optional(),
     category: referenceSchema.optional(),
@@ -246,7 +246,7 @@ const newsletterSchema = baseSchema.extend({
     name: z.string(),
     description: z.string().optional(),
     author: z.string().optional(),
-    'author-is-thoughtleader': referenceSchema.optional(),
+    thoughtleader: referenceSchema.optional(),
     frequency: z.string().optional(),
     link: z.string().url().optional(),
     category: referenceSchema.optional(),
@@ -423,11 +423,8 @@ const getArticles = async () => {
     ...article,
     fields: {
       ...article.fields,
-      'author-is-thoughtleader': article.fields['author-is-thoughtleader']
-        ? findReference(
-            article.fields['author-is-thoughtleader'],
-            data.thoughtleaders
-          )
+      thoughtleader: article.fields.thoughtleader
+        ? findReference(article.fields.thoughtleader, data.thoughtleaders)
         : null,
       category: article.fields.category
         ? findReference(article.fields.category, data.categories)
@@ -655,11 +652,8 @@ const getSlides = async () => {
     ...slide,
     fields: {
       ...slide.fields,
-      'author-is-thoughtleader': slide.fields['author-is-thoughtleader']
-        ? findReference(
-            slide.fields['author-is-thoughtleader'],
-            data.thoughtleaders
-          )
+      thoughtleader: slide.fields.thoughtleader
+        ? findReference(slide.fields.thoughtleader, data.thoughtleaders)
         : null,
       category: slide.fields.category
         ? findReference(slide.fields.category, data.categories)
@@ -699,11 +693,8 @@ const getNewsletters = async () => {
     ...newsletter,
     fields: {
       ...newsletter.fields,
-      'author-is-thoughtleader': newsletter.fields['author-is-thoughtleader']
-        ? findReference(
-            newsletter.fields['author-is-thoughtleader'],
-            data.thoughtleaders
-          )
+      thoughtleader: newsletter.fields.thoughtleader
+        ? findReference(newsletter.fields.thoughtleader, data.thoughtleaders)
         : null,
       category: newsletter.fields.category
         ? findReference(newsletter.fields.category, data.categories)
