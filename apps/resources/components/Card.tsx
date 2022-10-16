@@ -81,7 +81,7 @@ export const Card = ({
                         rel: 'noopener noreferrer',
                       })}
                     >
-                      <metaInfo.icon size="18" />
+                      <metaInfo.icon size="18" className="flex-none" />
                       <Text>{metaInfo.text}</Text>
                     </Element>
                   </li>
