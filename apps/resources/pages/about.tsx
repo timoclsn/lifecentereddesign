@@ -20,7 +20,7 @@ const About = ({
           dangerouslySetInnerHTML={{ __html: content?.body.html ?? '' }}
         />
       </section>
-      <section className="flex gap-5 flex-col md:flex-row">
+      <section className="flex gap-5 flex-col md:flex-row max-w-5xl mx-auto">
         <ProfileCard
           variant="sky"
           name="Katharina Clasen"
@@ -30,10 +30,14 @@ const About = ({
           instagramUrl="https://www.instagram.com/katharinaclasen/"
           twitterUrl="https://twitter.com/KatharinaClasen"
         >
-          Idea, concept, design & content
-          <br />
-          <br />
-          Self-employed UX Designer
+          <span className="block text-text-primary mb-4">
+            Idea, concept, design & content
+          </span>
+          UX Designer (self-employed), Lecturer (
+          <Link url="https://www.hdm-stuttgart.de/" external>
+            Stuttgart Media University
+          </Link>
+          )
         </ProfileCard>
         <ProfileCard
           variant="evening"
@@ -43,13 +47,12 @@ const About = ({
           linkedInUrl="https://www.linkedin.com/in/timoclsn"
           twitterUrl="https://twitter.com/timoclsn"
         >
-          Development
-          <br />
-          <br />
-          Frontend Engineer @{' '}
+          <span className="block text-text-primary mb-4">Development</span>
+          Frontend Engineer (
           <Link url="https://steuerbot.com" external>
             Steuerbot
           </Link>
+          )
         </ProfileCard>
       </section>
     </Layout>

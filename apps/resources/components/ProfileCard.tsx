@@ -1,4 +1,4 @@
-import { Card, CardProps, Text } from 'design-system';
+import { Card, CardProps, Heading, Text } from 'design-system';
 import Image from 'next/future/image';
 import { ReactNode } from 'react';
 import {
@@ -31,7 +31,7 @@ export function ProfileCard({
 }: Props) {
   return (
     <Card variant={variant}>
-      <div className="flex items-start gap-2">
+      <div className="flex items-center gap-6">
         <Image
           src={imagePath}
           alt={`Portrait image of ${name}`}
@@ -40,9 +40,9 @@ export function ProfileCard({
           className="border-primary-contrast-text rounded-full border-4 border-solid leading-none"
         />
         <div className="flex-1">
-          <Text as="h3" weight="bold" className="mb-2">
+          <Heading as="h2" level="4" className="mb-1">
             {name}
-          </Text>
+          </Heading>
           <Text as="p" className="mb-6 text-text-secondary">
             {children}
           </Text>
