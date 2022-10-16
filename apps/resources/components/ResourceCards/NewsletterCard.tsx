@@ -38,6 +38,7 @@ export const NewsletterCard = ({ newsletter }: Props) => {
             ]
           : []),
       ]}
+      description={newsletter.fields.description}
       showType
     />
   );

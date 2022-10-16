@@ -38,6 +38,7 @@ export const CourseCard = ({ course }: Props) => {
             ]
           : []),
       ]}
+      description={course.fields.description}
       showType
     />
   );

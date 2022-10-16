@@ -38,6 +38,7 @@ export const DirectoryCard = ({ directory }: Props) => {
             ]
           : []),
       ]}
+      description={directory.fields.description}
       showType
     />
   );

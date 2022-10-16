@@ -38,6 +38,7 @@ export const MagazineCard = ({ magazine }: Props) => {
             ]
           : []),
       ]}
+      description={magazine.fields.description}
       showType
     />
   );

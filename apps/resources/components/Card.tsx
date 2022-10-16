@@ -18,6 +18,7 @@ interface Props {
     text: string;
     url: string;
   }>;
+  description?: string;
 }
 
 export const Card = ({
@@ -29,6 +30,7 @@ export const Card = ({
   metaInfos,
   category,
   tags,
+  description,
 }: Props) => {
   const getType = () => {
     if (!!onTypeClick) {
@@ -88,6 +90,11 @@ export const Card = ({
                 );
               })}
             </ul>
+          )}
+
+          {/* Description */}
+          {description && (
+            <Text className="text-text-secondary">{description}</Text>
           )}
         </div>
       </div>

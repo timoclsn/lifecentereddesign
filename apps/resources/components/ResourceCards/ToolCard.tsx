@@ -38,6 +38,7 @@ export const ToolCard = ({ tool }: Props) => {
             ]
           : []),
       ]}
+      description={tool.fields.description}
       showType
     />
   );

@@ -41,6 +41,7 @@ export const ExampleOrCaseStudyCard = ({ exampleOrCaseStudy }: Props) => {
             ]
           : []),
       ]}
+      description={exampleOrCaseStudy.fields.description}
       showType
     />
   );

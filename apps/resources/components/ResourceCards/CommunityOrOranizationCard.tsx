@@ -43,6 +43,7 @@ export const CommunityOrOranizationCard = ({
             ]
           : []),
       ]}
+      description={communityOrOrganization.fields.description}
       showType
     />
   );

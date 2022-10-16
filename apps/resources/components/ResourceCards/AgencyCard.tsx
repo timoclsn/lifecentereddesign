@@ -38,6 +38,7 @@ export const AgencyCard = ({ agency }: Props) => {
             ]
           : []),
       ]}
+      description={agency.fields.description}
       showType
     />
   );
