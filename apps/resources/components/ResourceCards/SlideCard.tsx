@@ -1,4 +1,4 @@
-import { UilLinkAlt } from '@iconscout/react-unicons';
+import { UilBookReader, UilLinkAlt } from '@iconscout/react-unicons';
 import { Slide } from '../../lib/content';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
@@ -26,6 +26,18 @@ export const SlideCard = ({ slide }: Props) => {
           : undefined
       }
       title={slide.fields.title}
+      metaInfos={[
+        ...(slide.fields['author-is-thoughtleader']
+          ? [
+              {
+                text: slide.fields['author-is-thoughtleader']
+                  .map((author) => author?.fields.name)
+                  .join(', '),
+                icon: UilBookReader,
+              },
+            ]
+          : []),
+      ]}
       category={slide.fields.category?.at(0)?.fields.name}
       tags={[
         ...(slide.fields.link

@@ -655,6 +655,12 @@ const getSlides = async () => {
     ...slide,
     fields: {
       ...slide.fields,
+      'author-is-thoughtleader': slide.fields['author-is-thoughtleader']
+        ? findReference(
+            slide.fields['author-is-thoughtleader'],
+            data.thoughtleaders
+          )
+        : null,
       category: slide.fields.category
         ? findReference(slide.fields.category, data.categories)
         : null,
