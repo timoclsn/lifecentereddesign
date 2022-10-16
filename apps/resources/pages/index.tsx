@@ -30,5 +30,6 @@ export const getStaticProps = async () => {
       resources,
       co2Consumption,
     },
+    revalidate: 3600, // 1h in seconds
   };
 };
