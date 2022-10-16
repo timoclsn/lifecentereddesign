@@ -246,7 +246,7 @@ const newsletterSchema = baseSchema.extend({
     name: z.string(),
     description: z.string().optional(),
     author: z.string().optional(),
-    thoughtleader: referenceSchema.optional(),
+    'author-is-thoughtleader': referenceSchema.optional(),
     frequency: z.string().optional(),
     link: z.string().url().optional(),
     category: referenceSchema.optional(),
@@ -699,6 +699,12 @@ const getNewsletters = async () => {
     ...newsletter,
     fields: {
       ...newsletter.fields,
+      'author-is-thoughtleader': newsletter.fields['author-is-thoughtleader']
+        ? findReference(
+            newsletter.fields['author-is-thoughtleader'],
+            data.thoughtleaders
+          )
+        : null,
       category: newsletter.fields.category
         ? findReference(newsletter.fields.category, data.categories)
         : null,

@@ -1,4 +1,4 @@
-import { UilLinkAlt } from '@iconscout/react-unicons';
+import { UilBookReader, UilLinkAlt } from '@iconscout/react-unicons';
 import { Newsletter } from '../../lib/content';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
@@ -26,6 +26,18 @@ export const NewsletterCard = ({ newsletter }: Props) => {
           : undefined
       }
       title={newsletter.fields.name}
+      metaInfos={[
+        ...(newsletter.fields['author-is-thoughtleader']
+          ? [
+              {
+                text: newsletter.fields['author-is-thoughtleader']
+                  .map((author) => author?.fields.name)
+                  .join(', '),
+                icon: UilBookReader,
+              },
+            ]
+          : []),
+      ]}
       category={newsletter.fields.category?.at(0)?.fields.name}
       tags={[
         ...(newsletter.fields.link
