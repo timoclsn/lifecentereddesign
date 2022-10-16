@@ -37,7 +37,7 @@ export const BookCard = ({ book }: Props) => {
           ? [
               {
                 text: book.fields.authors
-                  .map((author) => author?.fields.Name)
+                  .map((author) => author?.fields.name)
                   .join(', '),
                 icon: UilBookReader,
               },
