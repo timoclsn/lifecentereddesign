@@ -1,0 +1,33 @@
+:root {
+  --color-transparent: transparent;
+  --color-oak: #efe9e2;
+  --color-forest: #e4f2e6;
+  --color-sand: #f3e6d1;
+  --color-lime: #f0f2d1;
+  --color-sky: #e7ecf7;
+  --color-evening: #f4e6e4;
+  --color-stone: #eaeaea;
+  --color-morning: #f1e6f5;
+  --color-text-primary: #101b2c;
+  --color-text-secondary: rgba(16, 27, 44, 0.64);
+  --color-bg-primary: #f8f6f1;
+  --color-bg-secondary: #ffffff;
+  --color-primary-main-bg: #101b2c;
+  --color-primary-main-text: #101b2c;
+  --color-primary-hover-bg: rgba(16, 27, 44, 0.8);
+  --color-primary-hover-text: #101b2c;
+  --color-primary-disabled-bg: rgba(16, 27, 44, 0.4);
+  --color-primary-disabled-text: rgba(16, 27, 44, 0.4);
+  --color-primary-contrast-text: #ffffff;
+  --color-primary-ghost-bg: rgba(16, 27, 44, 0.12);
+  --color-ghost-main-light-bg: rgba(255, 255, 255, 0.56);
+  --color-ghost-main-dark-bg: rgba(16, 27, 44, 0.12);
+  --color-ghost-contrast-text: #101b2c;
+
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, avenir next, avenir,
+    segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial,
+    sans-serif;
+  --font-serif: 'Source Serif 4Variable', Iowan Old Style, Apple Garamond,
+    Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+}

@@ -1,0 +1,48 @@
+{
+  "name": "resources",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "postbuild": "node ./scripts/generate-sitemap.mjs",
+    "start": "next start  -p 3000",
+    "lint": "next lint",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@fontsource/dm-sans": "4.5.9",
+    "@fontsource/source-serif-4": "4.5.14",
+    "@iconscout/react-unicons": "1.1.6",
+    "@radix-ui/react-popover": "1.0.0",
+    "@radix-ui/react-select": "1.0.0",
+    "airtable": "0.11.5",
+    "class-variance-authority": "0.2.3",
+    "contentlayer": "0.2.8",
+    "design-system": "workspace:*",
+    "next": "12.3.1",
+    "next-contentlayer": "0.2.8",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "4.4.0",
+    "zod": "^3.19.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/line-clamp": "0.4.2",
+    "@tailwindcss/typography": "0.5.7",
+    "@types/node": "18.8.5",
+    "@types/react": "18.0.21",
+    "@typescript-eslint/eslint-plugin": "5.40.0",
+    "@typescript-eslint/parser": "5.40.0",
+    "autoprefixer": "10.4.12",
+    "eslint": "8.25.0",
+    "eslint-config-custom": "workspace:*",
+    "globby": "13.1.2",
+    "next-transpile-modules": "9.1.0",
+    "postcss": "8.4.18",
+    "tailwind-config": "workspace:*",
+    "tailwindcss": "3.1.8",
+    "tsconfig": "workspace:*",
+    "typescript": "4.8.4"
+  }
+}
