@@ -36,7 +36,7 @@ export const ArticleCard = ({ article }: Props) => {
           ? [
               {
                 text: article.fields['author-is-thoughtleader']
-                  .map((author) => author?.fields.Name)
+                  .map((author) => author?.fields.name)
                   .join(', '),
                 icon: UilBookReader,
               },
