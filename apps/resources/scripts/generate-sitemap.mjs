@@ -3,37 +3,37 @@ import { globby } from 'globby';
 import prettier from 'prettier';
 
 (async () => {
-    const prettierConfig = await prettier.resolveConfig('./.prettierrc.js');
+  const prettierConfig = await prettier.resolveConfig('./.prettierrc.js');
 
-    const pages = await globby([
-        'pages/**/*js',
-        '!pages/_*.js',
-        '!pages/404.js',
-        '!pages/api'
-    ]);
+  const pages = await globby([
+    'pages/**/*tsx',
+    '!pages/_*.tsx',
+    '!pages/404.tsx',
+    '!pages/api',
+  ]);
 
-    const sitemap = `
+  const sitemap = `
         <?xml version="1.0" encoding="UTF-8"?>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             ${pages
-                .map((page) => {
-                    const path = page.replace('pages', '').replace('.js', '');
-                    const route = path === '/index' ? '' : path;
+              .map((page) => {
+                const path = page.replace('pages', '').replace('.tsx', '');
+                const route = path === '/index' ? '' : path;
 
-                    return `
+                return `
                         <url>
                             <loc>${`https://lifecentereddesign.net${route}`}</loc>
                         </url>
                     `;
-                })
-                .join('')}
+              })
+              .join('')}
         </urlset>
     `;
 
-    const formatted = prettier.format(sitemap, {
-        ...prettierConfig,
-        parser: 'html'
-    });
+  const formatted = prettier.format(sitemap, {
+    ...prettierConfig,
+    parser: 'html',
+  });
 
-    writeFileSync('./public/sitemap.xml', formatted);
+  writeFileSync('./public/sitemap.xml', formatted);
 })();
