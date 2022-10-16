@@ -30,7 +30,7 @@ export function Layout({
   const pageTitle = !title ? defaultTitle : `${title}  |  ${defaultTitle}`;
   const pageDescription = description
     ? description
-    : 'A hub for life-centered design: information, news, resources, and conversations to move beyond human-centered and user experience design';
+    : 'A curated directory of resources around Life-centered Design and related fields.';
   slug = slug ? `/${slug}` : '';
   const pagePreviewImage = previewImage ? previewImage : 'og-image.png';
   return (
