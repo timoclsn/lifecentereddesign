@@ -26,7 +26,7 @@ export const NewResources = ({ resources }: Props) => {
           alt="Image of desert ground."
           width={320}
           height={400}
-          className="hidden rounded-4xl sm:block"
+          className="hidden rounded-4xl sm:block flex-none"
         />
         {newResources.map((resource) => {
           const component = getCardComponent(resource);
