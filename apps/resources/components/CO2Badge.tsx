@@ -19,7 +19,7 @@ export function CO2Badge({ co2Consumption }: Props) {
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content
-          className="max-w-xs sm:max-w-md space-y-6 rounded-3xl bg-lime p-10 md:max-w-xl"
+          className="max-w-xs sm:max-w-md space-y-6 rounded-3xl bg-lime p-10 md:max-w-xl max-h-[80vh] overflow-y-auto"
           sideOffset={40}
         >
           <Popover.Close className="focus:outline-none">
