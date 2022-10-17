@@ -23,17 +23,7 @@ export const Newsletter = () => {
             month. Clicking the button or input field will bring you to the
             signup page, where you will find further information.
           </Text>
-          <div className="flex flex-col items-center gap-8 sm:flex-row">
-            <a
-              href="http://eepurl.com/htoWRr"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full max-w-[645px] bg-ghost-main-dark-bg py-6 px-10"
-            >
-              <Text size="large" className="text-text-secondary">
-                Email address
-              </Text>
-            </a>
+          <div className="w-full flex justify-center">
             <Button size="large" href="http://eepurl.com/htoWRr" external>
               <UilEnvelopeAlt />
               Newsletter Signup
