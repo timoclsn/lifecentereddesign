@@ -273,7 +273,7 @@ export const Resources = ({ resources }: Props) => {
             </Select.Root>
           </div>
           <ul
-            className="flex flex-col flex-wrap gap-4 md:flex-row"
+            className="flex flex-col flex-wrap gap-4 md:flex-row overflow-hidden"
             ref={listRef}
           >
             {resourcesToDisplay.map((ressource) => {
