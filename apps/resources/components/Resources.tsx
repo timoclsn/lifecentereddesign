@@ -1,3 +1,4 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { UilAngleDown, UilArrowDown, UilCheck } from '@iconscout/react-unicons';
 import * as Select from '@radix-ui/react-select';
 import { Button } from 'design-system';
@@ -71,6 +72,7 @@ interface Props {
 export const Resources = ({ resources }: Props) => {
   const [state, dispatch] = useReducer(reducer, initalState);
   const { filteredType, itemsCount, sort, inContext } = state;
+  const [listRef] = useAutoAnimate<HTMLUListElement>();
 
   // Flag so componets can check if they are rendered in context
   if (!inContext) {
@@ -242,7 +244,7 @@ export const Resources = ({ resources }: Props) => {
                 </Select.Icon>
               </Select.Trigger>
 
-              <Select.Content className="rounded-2xl bg-primary-main-bg px-4 py-6 text-primary-contrast-text">
+              <Select.Content className="rounded-2xl bg-primary-main-bg px-4 py-6 text-primary-contrast-text z-10">
                 <Select.Viewport className="flex flex-col gap-1">
                   <Select.Item
                     value="date"
@@ -270,7 +272,10 @@ export const Resources = ({ resources }: Props) => {
               </Select.Content>
             </Select.Root>
           </div>
-          <ul className="flex flex-col flex-wrap gap-4 md:flex-row">
+          <ul
+            className="flex flex-col flex-wrap gap-4 md:flex-row"
+            ref={listRef}
+          >
             {resourcesToDisplay.map((ressource) => {
               const component = getCardComponent(ressource);
               return (

@@ -63,6 +63,7 @@ importers:
     specifiers:
       '@fontsource/dm-sans': 4.5.9
       '@fontsource/source-serif-4': 4.5.14
+      '@formkit/auto-animate': 1.0.0-beta.3
       '@iconscout/react-unicons': 1.1.6
       '@radix-ui/react-popover': 1.0.0
       '@radix-ui/react-select': 1.0.0
@@ -91,10 +92,11 @@ importers:
       tailwindcss: 3.1.8
       tsconfig: workspace:*
       typescript: 4.8.4
-      zod: ^3.19.1
+      zod: 3.19.1
     dependencies:
       '@fontsource/dm-sans': 4.5.9
       '@fontsource/source-serif-4': 4.5.14
+      '@formkit/auto-animate': 1.0.0-beta.3
       '@iconscout/react-unicons': 1.1.6_react@18.2.0
       '@radix-ui/react-popover': 1.0.0_rj7ozvcq3uehdlnj3cbwzbi5ce
       '@radix-ui/react-select': 1.0.0_rj7ozvcq3uehdlnj3cbwzbi5ce
@@ -445,6 +447,10 @@ packages:
 
   /@fontsource/source-serif-4/4.5.14:
     resolution: {integrity: sha512-6MwFP11UKEKy5GXv7yadr8X6exP8MCPPTMBOt/YLxEKHO2Pi7Qj0/KckEdSxfj5S0YUMmZHPsQQUFBILfkYuJA==}
+    dev: false
+
+  /@formkit/auto-animate/1.0.0-beta.3:
+    resolution: {integrity: sha512-glsi+ytwQpxT/Ctr9GtcIfVr4dO6mJ04mQbNU8MFSdCdqMopHtyfU5Fib0+9lNFIeR0luY4/0NW95/2R5pKsag==}
     dev: false
 
   /@grpc/grpc-js/1.7.1:
