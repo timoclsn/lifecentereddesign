@@ -10,7 +10,7 @@ const About = ({
   co2Consumption,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layout title="Imprint" slug="imprint" co2Consumption={co2Consumption}>
+    <Layout title="About" slug="about" co2Consumption={co2Consumption}>
       <section className="space-y-20 max-w-prose mx-auto">
         <Heading level="1" className="mb-6">
           {content?.title}
