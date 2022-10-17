@@ -244,32 +244,34 @@ export const Resources = ({ resources }: Props) => {
                 </Select.Icon>
               </Select.Trigger>
 
-              <Select.Content className="rounded-2xl bg-primary-main-bg px-4 py-6 text-primary-contrast-text z-10">
-                <Select.Viewport className="flex flex-col gap-1">
-                  <Select.Item
-                    value="date"
-                    className="cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg"
-                  >
-                    <Select.ItemIndicator className="absolute left-1 w-[25px]">
-                      <UilCheck />
-                    </Select.ItemIndicator>
-                    <Select.ItemText>
-                      <span className="whitespace-nowrap">Date added</span>
-                    </Select.ItemText>
-                  </Select.Item>
-                  <Select.Item
-                    value="title"
-                    className="cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg"
-                  >
-                    <Select.ItemIndicator className="absolute left-1 w-[25px]">
-                      <UilCheck />
-                    </Select.ItemIndicator>
-                    <Select.ItemText>
-                      <span className="whitespace-nowrap">Title</span>
-                    </Select.ItemText>
-                  </Select.Item>
-                </Select.Viewport>
-              </Select.Content>
+              <Select.Portal>
+                <Select.Content className="rounded-2xl bg-primary-main-bg px-4 py-6 text-primary-contrast-text">
+                  <Select.Viewport className="flex flex-col gap-1">
+                    <Select.Item
+                      value="date"
+                      className="cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg"
+                    >
+                      <Select.ItemIndicator className="absolute left-1 w-[25px]">
+                        <UilCheck />
+                      </Select.ItemIndicator>
+                      <Select.ItemText>
+                        <span className="whitespace-nowrap">Date added</span>
+                      </Select.ItemText>
+                    </Select.Item>
+                    <Select.Item
+                      value="title"
+                      className="cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg"
+                    >
+                      <Select.ItemIndicator className="absolute left-1 w-[25px]">
+                        <UilCheck />
+                      </Select.ItemIndicator>
+                      <Select.ItemText>
+                        <span className="whitespace-nowrap">Title</span>
+                      </Select.ItemText>
+                    </Select.Item>
+                  </Select.Viewport>
+                </Select.Content>
+              </Select.Portal>
             </Select.Root>
           </div>
           <ul
