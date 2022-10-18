@@ -1,0 +1,55 @@
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -100%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translateY(0);
+  }
+
+  20%,
+  80% {
+    transform: translateY(-2px);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translateY(2px);
+  }
+
+  40%,
+  60% {
+    transform: translateY(-2px);
+  }
+}
+
+.trigger:hover svg {
+  will-change: translate;
+  animation: shake 1500ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.overlay {
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.content {
+  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}

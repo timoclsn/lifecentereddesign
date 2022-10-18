@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const Link = ({ children, url, external, className }: Props) => {
-  const styles = cx(['underline', className]);
+  const styles = cx(['underline hover:opacity-80', className]);
   return (
     <a
       href={url}
