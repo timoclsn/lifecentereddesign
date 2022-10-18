@@ -3,7 +3,7 @@ import { CO2 } from 'lib/co2';
 import Script from 'next/script';
 import type { ReactNode } from 'react';
 import { Suspense } from 'react';
-import { CO2Badge } from './CO2Badge';
+import { CO2Badge } from './CO2Badge/CO2Badge';
 import { Favicons } from './Favicons';
 import { Footer } from './Footer';
 import { Navigation } from './Navigation';
