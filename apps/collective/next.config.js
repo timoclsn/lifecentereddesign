@@ -1,4 +1,5 @@
 const withTM = require('next-transpile-modules')(['design-system']);
+const { withContentlayer } = require('next-contentlayer');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -8,7 +9,8 @@ const nextConfig = {
     legacyBrowsers: false,
     browsersListForSwc: true,
     scrollRestoration: true,
+    newNextLinkBehavior: true,
   },
 };
 
-module.exports = withTM(nextConfig);
+module.exports = withContentlayer(withTM(nextConfig));

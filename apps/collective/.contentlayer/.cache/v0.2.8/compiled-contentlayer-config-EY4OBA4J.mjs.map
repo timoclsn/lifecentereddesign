@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../contentlayer.config.ts"],
+  "sourcesContent": ["import { defineDocumentType, makeSource } from 'contentlayer/source-files';\n\nconst Page = defineDocumentType(() => ({\n  name: 'Page',\n  filePathPattern: 'pages/*.md',\n  contentType: 'markdown',\n  fields: {\n    title: {\n      type: 'string',\n      required: true,\n    },\n  },\n}));\n\nexport default makeSource({\n  contentDirPath: 'content',\n  documentTypes: [Page],\n});\n"],
+  "mappings": ";AAAA,SAAS,oBAAoB,kBAAkB;AAE/C,IAAM,OAAO,mBAAmB,OAAO;AAAA,EACrC,MAAM;AAAA,EACN,iBAAiB;AAAA,EACjB,aAAa;AAAA,EACb,QAAQ;AAAA,IACN,OAAO;AAAA,MACL,MAAM;AAAA,MACN,UAAU;AAAA,IACZ;AAAA,EACF;AACF,EAAE;AAEF,IAAO,8BAAQ,WAAW;AAAA,EACxB,gBAAgB;AAAA,EAChB,eAAe,CAAC,IAAI;AACtB,CAAC;",
+  "names": []
+}

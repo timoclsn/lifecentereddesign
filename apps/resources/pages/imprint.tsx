@@ -16,7 +16,7 @@ const Imprint = ({
         </Heading>
         <div
           className="prose"
-          dangerouslySetInnerHTML={{ __html: content?.body.html ?? '' }}
+          dangerouslySetInnerHTML={{ __html: content.body.html }}
         />
       </section>
     </Layout>
@@ -25,6 +25,7 @@ const Imprint = ({
 
 export const getStaticProps = async () => {
   const content = allPages.find((page) => page.title === 'Imprint');
+  if (!content) throw new Error('Imprint not found');
   const co2Consumption = await getCO2Consumtion('lifecentereddesign.net');
 
   return {

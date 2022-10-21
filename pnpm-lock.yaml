@@ -24,10 +24,12 @@ importers:
       '@types/react': 18.0.21
       '@types/react-dom': 18.0.6
       autoprefixer: 10.4.12
+      contentlayer: 0.2.8
       design-system: workspace:*
       eslint: 8.25.0
       eslint-config-custom: workspace:*
       next: 12.3.1
+      next-contentlayer: 0.2.8
       next-transpile-modules: 9.1.0
       postcss: 8.4.18
       react: 18.2.0
@@ -39,8 +41,10 @@ importers:
     dependencies:
       '@fontsource/dm-sans': 4.5.9
       '@fontsource/source-serif-4': 4.5.14
+      contentlayer: 0.2.8
       design-system: link:../../packages/design-system
       next: 12.3.1_biqbaboplfbrettd7655fr4n2y
+      next-contentlayer: 0.2.8_azq6kxkn3od7qdylwkyksrwopy
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:

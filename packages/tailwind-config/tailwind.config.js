@@ -57,6 +57,16 @@ module.exports = {
           text: 'var(--color-ghost-contrast-text)',
         },
       },
+      collective: {
+        white: '#FFFFFF',
+        'white-light': 'rgba(255, 255, 255, 0.72)',
+        text: '#18213A',
+        'text-light': 'rgba(24, 33, 58, 0.64)',
+        grey: '#F3F4F8',
+        principles: '#FCF4E9',
+        about: '#4F3045',
+        team: '#E9EFE8',
+      },
     },
     extend: {
       fontFamily: {
