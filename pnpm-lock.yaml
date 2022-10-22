@@ -137,6 +137,7 @@ importers:
       '@types/react': 18.0.21
       '@types/react-dom': 18.0.6
       class-variance-authority: 0.2.3
+      clsx: 1.2.1
       eslint: 8.24.0
       eslint-config-custom: workspace:*
       react: 18.2.0
@@ -144,6 +145,7 @@ importers:
       typescript: 4.8.3
     dependencies:
       class-variance-authority: 0.2.3_typescript@4.8.3
+      clsx: 1.2.1
       tsconfig: link:../tsconfig
     devDependencies:
       '@types/react': 18.0.21
@@ -1922,6 +1924,11 @@ packages:
     resolution: {integrity: sha512-ROoL94jJH2dUVML2Y/5PEDNaSHgeOdSDicUyS7izcF63G6sTc/FTjLub4b8Il9S8S0beOfYt0TaA5qvFK+w0wA==}
     dependencies:
       mimic-response: 1.0.1
+    dev: false
+
+  /clsx/1.2.1:
+    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
+    engines: {node: '>=6'}
     dev: false
 
   /color-convert/1.9.3:

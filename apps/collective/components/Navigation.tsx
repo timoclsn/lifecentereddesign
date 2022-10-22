@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 export const Navigation = () => {
   return (
-    <Container inset>
-      <header className="w-full py-6">
+    <header>
+      <Container inset className="py-8">
         <nav>
           <ul className="flex gap-10">
             <li className="flex-1">
@@ -31,7 +31,7 @@ export const Navigation = () => {
             </li>
           </ul>
         </nav>
-      </header>
-    </Container>
+      </Container>
+    </header>
   );
 };

@@ -1,4 +1,4 @@
-import { cx } from 'class-variance-authority';
+import clsx from 'clsx';
 import { ReactNode } from 'react';
 
 interface Props {
@@ -8,10 +8,10 @@ interface Props {
 }
 
 export const Container = ({ children, inset, className }: Props) => {
-  const styles = cx([
+  const styles = clsx(
     'mx-auto max-w-screen-2xl w-full',
-    inset ? 'px-6 sm:px-8' : '',
-    className,
-  ]);
+    inset && 'px-6 sm:px-8',
+    className
+  );
   return <div className={styles}>{children}</div>;
 };

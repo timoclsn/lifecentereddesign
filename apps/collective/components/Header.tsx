@@ -3,36 +3,46 @@ import Image from 'next/future/image';
 
 export const Header = () => {
   return (
-    <section className="bg-collective-grey">
-      <Container>
-        <div className="flex">
-          <div className="flex flex-col items-start justify-end pb-32 px-6 sm:px-8">
-            <Heading
-              level="1"
-              className="font-normal mb-8 text-collective-text"
-            >
-              The <span className="font-bold">Life Centered Design</span>{' '}
-              Collective
-            </Heading>
-            <Text
-              as="p"
-              size="large"
-              className="text-collective-text-light mb-20"
-            >
-              Spreading the Life-centered Design mindset
-            </Text>
-            <Button>Join the Collective</Button>
-          </div>
-          <div>
-            <Image
-              src="/earth.png"
-              alt="Image of the earth"
-              width={656}
-              height={1117}
-            />
-          </div>
-        </div>
-      </Container>
+    <section className="relative">
+      {/* Background */}
+      <div className="absolute inset-0 flex">
+        <div className="w-2/3 bg-collective-grey" />
+        <div className="w-1/3 bg-collective-header-bg" />
+      </div>
+
+      {/* Foreground */}
+      <div className="relative">
+        <Container className="flex">
+          <Container inset className="w-2/3 pt-80 pb-32">
+            <div className="max-w-prose">
+              <Heading
+                level="1"
+                className="font-normal mb-8 text-collective-text"
+              >
+                The <span className="font-bold">Life Centered Design</span>{' '}
+                Collective
+              </Heading>
+              <Text
+                as="p"
+                size="large"
+                className="text-collective-text-light mb-20"
+              >
+                Spreading the Life-centered Design mindset
+              </Text>
+              <Button size="large" href="/#about">
+                About the Collective
+              </Button>
+            </div>
+          </Container>
+          <Image
+            src="/earth.png"
+            alt="Image of the earth"
+            width={1480}
+            height={1300}
+            className="object-contain w-1/3 bg-collective-header-bg"
+          />
+        </Container>
+      </div>
     </section>
   );
 };

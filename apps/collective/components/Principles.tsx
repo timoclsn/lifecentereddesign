@@ -25,8 +25,13 @@ export const Principles = () => {
 
 const Principle = () => {
   return (
-    <div>
-      <Heading level="4" className="text-collective-text mb-3 uppercase">
+    <>
+      <Heading
+        as="h3"
+        level="5"
+        uppercase
+        className="text-collective-text mb-3"
+      >
         1. Principle Headline
       </Heading>
       <Text as="p" className="text-collective-text-light">
@@ -34,6 +39,6 @@ const Principle = () => {
         eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
         voluptua.{' '}
       </Text>
-    </div>
+    </>
   );
 };

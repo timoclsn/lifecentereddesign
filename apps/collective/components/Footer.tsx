@@ -4,7 +4,7 @@ import Link from 'next/link';
 export const Footer = () => {
   return (
     <footer>
-      <Container inset className="py-6">
+      <Container inset className="py-8">
         <ul className="flex gap-10 justify-end">
           <li>
             <Link href="/privacy">Privacy</Link>

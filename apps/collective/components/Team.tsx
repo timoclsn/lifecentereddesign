@@ -52,7 +52,7 @@ export const Team = () => {
         <ul className="flex flex-wrap gap-20">
           {team.map((member, idx) => (
             <li key={idx} className="w-[calc(25%-80px)]">
-              <TeamMember name={member.name} description={member.description} />
+              <Member name={member.name} description={member.description} />
             </li>
           ))}
         </ul>
@@ -61,27 +61,28 @@ export const Team = () => {
   );
 };
 
-interface Props {
+interface MemberProps {
   name: string;
   description: string;
 }
 
-const TeamMember = ({ name, description }: Props) => {
+const Member = ({ name, description }: MemberProps) => {
+  const imageName = `${name.split(' ').join('-').toLocaleLowerCase()}.png`;
   return (
-    <div>
+    <>
       <Image
-        src={`/team/${name.split(' ').join('-').toLocaleLowerCase()}.png`}
+        src={`/team/${imageName}`}
         alt={`Portrait of ${name}`}
         width={336}
         height={336}
         className="mb-4"
       />
-      <Heading level="4" className="text-collective-text mb-2">
+      <Heading as="h3" level="4" className="text-collective-text mb-2">
         {name}
       </Heading>
       <Text as="p" className="text-collective-text-light">
         {description}
       </Text>
-    </div>
+    </>
   );
 };
