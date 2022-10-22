@@ -43,6 +43,7 @@ export const Header = () => {
             width={1480}
             height={1300}
             priority
+            sizes="33vw"
             className="hidden md:block object-contain w-1/3 bg-collective-header-bg"
           />
         </Container>

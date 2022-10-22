@@ -18,8 +18,9 @@ const Home = ({
         src="/beach.jpg"
         alt="Beach coastline from the top."
         width={1728}
-        height="440"
+        height={440}
         className="w-full h-[200px] md:h-[440px] object-cover object-center"
+        sizes="100vw"
       />
       <Principles principles={principles} />
       <About />

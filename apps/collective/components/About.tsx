@@ -6,12 +6,13 @@ export const About = () => {
   return (
     <section id="about" className="relative bg-collective-about">
       {/* Background */}
-      <div className="hidden md:flex absolute inset-0 flex">
+      <div className="hidden md:flex absolute inset-0">
         <Image
           src="/cave.png"
           alt="View from inside a dessert canyon into the sky."
           width={864}
           height={904}
+          sizes="50vw"
           className="w-1/2 object-cover object-right max-h-[904px]"
         />
         <div className="w-1/2" />

@@ -45,6 +45,10 @@ const Member = ({ name, description }: MemberProps) => {
         alt={`Portrait of ${name}`}
         width={336}
         height={336}
+        sizes="(max-width: 480px) 100vw,
+              (max-width: 768px) 50vw,
+              (max-width: 976px) 33vw,
+              25vw"
         className="mb-4 w-full"
       />
       <Heading as="h3" level="4" className="text-collective-text mb-2">
