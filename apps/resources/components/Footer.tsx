@@ -32,7 +32,7 @@ export function Footer() {
           </a>
         </li>
       </ul>
-      <ul className="flex flex-col space-y-4 font-bold sm:flex-row sm:space-y-0 sm:space-x-8">
+      <ul className="flex flex-col font-bold sm:flex-row gap-4 sm:gap-10">
         <li className="hover:underline">
           <Link href="/imprint">
             <a>

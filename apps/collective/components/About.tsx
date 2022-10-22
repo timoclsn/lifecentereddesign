@@ -29,7 +29,7 @@ export const About = () => {
             <Text
               as="p"
               size="large"
-              className="text-collective-white-light mb-20"
+              className="text-collective-white-light mb-14"
             >
               Why we exist and our purpose
             </Text>
