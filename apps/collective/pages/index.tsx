@@ -15,7 +15,7 @@ const Home: NextPage = () => {
         alt="Beach coastline from the top."
         width={1728}
         height="440"
-        className="w-full h-[440px] object-cover object-center"
+        className="w-full h-[200px] md:h-[440px] object-cover object-center"
       />
       <Principles />
       <About />

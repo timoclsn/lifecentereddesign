@@ -1,4 +1,4 @@
-import { Heading } from 'design-system';
+import { Container, Heading } from 'design-system';
 import { InferGetStaticPropsType } from 'next';
 import { allPages } from '../.contentlayer/generated';
 import { Layout } from '../components/Layout';
@@ -8,15 +8,17 @@ const Imprint = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Layout title="Imprint" slug="imprint">
-      <section className="space-y-20 max-w-prose mx-auto">
-        <Heading level="1" className="mb-6">
-          {content?.title}
-        </Heading>
-        <div
-          className="prose"
-          dangerouslySetInnerHTML={{ __html: content.body.html }}
-        />
-      </section>
+      <Container inset>
+        <section className="space-y-20 max-w-prose mx-auto">
+          <Heading level="1" className="mb-6">
+            {content?.title}
+          </Heading>
+          <div
+            className="prose"
+            dangerouslySetInnerHTML={{ __html: content.body.html }}
+          />
+        </section>
+      </Container>
     </Layout>
   );
 };

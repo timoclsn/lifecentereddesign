@@ -6,7 +6,7 @@ export const Navigation = () => {
     <header>
       <Container inset className="py-8">
         <nav>
-          <ul className="flex gap-10">
+          <ul className="flex gap-10 items-center">
             <li className="flex-1">
               <Link href="/">
                 <Heading as="span" level="4">
@@ -21,12 +21,7 @@ export const Navigation = () => {
             </li>
             <li>
               <Link href="/#principles">
-                <Text>LCD Principles</Text>
-              </Link>
-            </li>
-            <li>
-              <Link href="/">
-                <Text weight="bold">Join us</Text>
+                <Text>Principles</Text>
               </Link>
             </li>
           </ul>

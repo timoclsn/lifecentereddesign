@@ -6,14 +6,17 @@ export const Header = () => {
     <section className="relative">
       {/* Background */}
       <div className="absolute inset-0 flex">
-        <div className="w-2/3 bg-collective-grey" />
-        <div className="w-1/3 bg-collective-header-bg" />
+        <div className="w-full md:w-2/3 bg-collective-grey" />
+        <div className="hidden md:block w-1/3 bg-collective-header-bg" />
       </div>
 
       {/* Foreground */}
       <div className="relative">
         <Container className="flex">
-          <Container inset className="w-2/3 pt-80 pb-32">
+          <Container
+            inset
+            className="w-full md:w-2/3 pt-40 sm:pt-80 pb-16 sm:pb-32"
+          >
             <div className="max-w-prose">
               <Heading
                 level="1"
@@ -39,7 +42,8 @@ export const Header = () => {
             alt="Image of the earth"
             width={1480}
             height={1300}
-            className="object-contain w-1/3 bg-collective-header-bg"
+            priority
+            className="hidden md:block object-contain w-1/3 bg-collective-header-bg"
           />
         </Container>
       </div>

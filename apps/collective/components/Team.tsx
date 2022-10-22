@@ -51,7 +51,10 @@ export const Team = () => {
         </Text>
         <ul className="flex flex-wrap gap-20">
           {team.map((member, idx) => (
-            <li key={idx} className="w-[calc(25%-80px)]">
+            <li
+              key={idx}
+              className="w-full sm:w-[calc(50%-40px)] md:w-[calc(33.33%-53.33px)] lg:w-[calc(25%-60px)]"
+            >
               <Member name={member.name} description={member.description} />
             </li>
           ))}
@@ -75,7 +78,7 @@ const Member = ({ name, description }: MemberProps) => {
         alt={`Portrait of ${name}`}
         width={336}
         height={336}
-        className="mb-4"
+        className="mb-4 w-full"
       />
       <Heading as="h3" level="4" className="text-collective-text mb-2">
         {name}

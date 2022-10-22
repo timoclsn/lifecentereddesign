@@ -5,7 +5,7 @@ export const About = () => {
   return (
     <section id="about" className="relative bg-collective-about">
       {/* Background */}
-      <div className="absolute inset-0 flex">
+      <div className="hidden md:flex absolute inset-0 flex">
         <Image
           src="/cave.png"
           alt="View from inside a dessert canyon into the sky."
@@ -19,8 +19,8 @@ export const About = () => {
       {/* Foreground */}
       <div className="relative">
         <Container className="flex">
-          <div className="w-1/2" />
-          <Container inset className="w-1/2 pt-20 pb-32">
+          <div className="hidden md:block w-1/2" />
+          <Container inset className="w-full md:w-1/2 pt-20 pb-32">
             <Heading className="text-collective-white mb-4">
               About the Collective
             </Heading>

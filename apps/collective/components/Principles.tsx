@@ -13,7 +13,10 @@ export const Principles = () => {
         </Text>
         <ul className="flex flex-wrap gap-12">
           {count.map((item) => (
-            <li key={item} className="w-[calc(20%-48px)]">
+            <li
+              key={item}
+              className="w-full sm:w-[calc(50%-24px)]  md:w-[calc(33.33%-32px)] lg:w-[calc(20%-38.4px)]"
+            >
               <Principle />
             </li>
           ))}
