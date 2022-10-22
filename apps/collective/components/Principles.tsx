@@ -1,7 +1,11 @@
+import { Principle } from 'contentlayer/generated';
 import { Container, Heading, Text } from 'design-system';
-const count = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-export const Principles = () => {
+interface PrinciplesProps {
+  principles: Array<Principle>;
+}
+
+export const Principles = ({ principles }: PrinciplesProps) => {
   return (
     <section id="principles" className="bg-collective-principles">
       <Container inset className="pt-20 pb-32">
@@ -11,22 +15,30 @@ export const Principles = () => {
         <Text as="p" size="large" className="text-collective-text-light mb-20">
           The 10 principles our collective lives and works by
         </Text>
-        <ul className="flex flex-wrap gap-12">
-          {count.map((item) => (
+        <ol className="flex flex-wrap gap-12">
+          {principles.map((principle, idx) => (
             <li
-              key={item}
-              className="w-full sm:w-[calc(50%-24px)]  md:w-[calc(33.33%-32px)] lg:w-[calc(20%-38.4px)]"
+              key={idx}
+              className="w-full sm:w-[calc(50%-24px)] md:w-[calc(33.33%-32px)] lg:w-[calc(20%-38.4px)]"
             >
-              <Principle />
+              <Principle
+                title={principle.title}
+                description={principle.body.raw}
+              />
             </li>
           ))}
-        </ul>
+        </ol>
       </Container>
     </section>
   );
 };
 
-const Principle = () => {
+interface PrincipleProps {
+  title: string;
+  description: string;
+}
+
+const Principle = ({ title, description }: PrincipleProps) => {
   return (
     <>
       <Heading
@@ -35,12 +47,10 @@ const Principle = () => {
         uppercase
         className="text-collective-text mb-3"
       >
-        1. Principle Headline
+        {title}
       </Heading>
       <Text as="p" className="text-collective-text-light">
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-        voluptua.{' '}
+        {description}
       </Text>
     </>
   );

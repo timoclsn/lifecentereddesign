@@ -1,47 +1,14 @@
+import { Member } from 'contentlayer/generated';
 import { Container, Heading, Text } from 'design-system';
 import Image from 'next/future/image';
 
-const team = [
-  {
-    name: 'Damien Lutz',
-    description:
-      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ',
-  },
-  {
-    name: 'Monika Sznel',
-    description:
-      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ',
-  },
-  {
-    name: 'Martin Tomitsch',
-    description:
-      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ',
-  },
-  {
-    name: 'Jeroen Spoelstra',
-    description:
-      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ',
-  },
-  {
-    name: 'Katharina Clasen',
-    description:
-      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ',
-  },
-  {
-    name: 'Estela Duhart Benavides',
-    description:
-      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ',
-  },
-  {
-    name: 'Madeleine van Venetie',
-    description:
-      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ',
-  },
-] as const;
+interface TeamProps {
+  members: Array<Member>;
+}
 
-export const Team = () => {
+export const Team = ({ members }: TeamProps) => {
   return (
-    <section className="bg-collective-team">
+    <section id="team" className="bg-collective-team">
       <Container inset className="pt-20 pb-32">
         <Heading level="2" className="text-collective-text mb-4">
           The Team
@@ -50,12 +17,12 @@ export const Team = () => {
           The 7 people behind the Life Centered Design Collective
         </Text>
         <ul className="flex flex-wrap gap-20">
-          {team.map((member, idx) => (
+          {members.map((member, idx) => (
             <li
               key={idx}
               className="w-full sm:w-[calc(50%-40px)] md:w-[calc(33.33%-53.33px)] lg:w-[calc(25%-60px)]"
             >
-              <Member name={member.name} description={member.description} />
+              <Member name={member.name} description={member.body.raw} />
             </li>
           ))}
         </ul>

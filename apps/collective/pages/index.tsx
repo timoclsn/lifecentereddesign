@@ -1,4 +1,5 @@
-import type { NextPage } from 'next';
+import { allMembers, allPrinciples } from 'contentlayer/generated';
+import type { InferGetStaticPropsType } from 'next';
 import Image from 'next/future/image';
 import { About } from '../components/About';
 import { Header } from '../components/Header';
@@ -6,7 +7,10 @@ import { Layout } from '../components/Layout';
 import { Principles } from '../components/Principles';
 import { Team } from '../components/Team';
 
-const Home: NextPage = () => {
+const Home = ({
+  members,
+  principles,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Layout>
       <Header />
@@ -17,11 +21,22 @@ const Home: NextPage = () => {
         height="440"
         className="w-full h-[200px] md:h-[440px] object-cover object-center"
       />
-      <Principles />
+      <Principles principles={principles} />
       <About />
-      <Team />
+      <Team members={members} />
     </Layout>
   );
+};
+
+export const getStaticProps = async () => {
+  const members = allMembers;
+  const principles = allPrinciples;
+  return {
+    props: {
+      members,
+      principles,
+    },
+  };
 };
 
 export default Home;

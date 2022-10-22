@@ -1,5 +1,6 @@
 import { Container, Heading, Text } from 'design-system';
 import Image from 'next/future/image';
+import Link from 'next/link';
 
 export const About = () => {
   return (
@@ -32,20 +33,22 @@ export const About = () => {
               Why we exist and our purpose
             </Text>
             <Text as="p" className="text-collective-white-light">
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-              erat, sed diam voluptua. At vero eos et accusam et justo duo
-              dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
-              sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-              amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-              invidunt ut labore et dolore magna aliquyam erat, sed diam
-              voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-              Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
-              dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
-              elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
-              magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
-              justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-              takimata sanctus est Lorem ipsum dolor sit amet.
+              The Life Centered Design Collective is a small group of designers
+              and educators with varying backgrounds. Our goal is to bring
+              together people, skills and knowledge that advance the practice
+              and advocate for the philosophy of life-centered design.
+              <br />
+              <br />
+              We imagine a world where all life and long-term effects are top of
+              mind while creating products, services and systems.
+              <br />
+              <br />
+              If you have questions or just want to get in touch, feel free to
+              contact anyone of our{' '}
+              <Link href="/#team" className="underline">
+                members
+              </Link>
+              .
             </Text>
           </Container>
         </Container>
