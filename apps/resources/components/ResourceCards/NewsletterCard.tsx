@@ -20,7 +20,8 @@ export const NewsletterCard = ({ newsletter }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'newsletter' ? null : 'newsletter',
+                filterType:
+                  filteredType === 'newsletter' ? 'all' : 'newsletter',
               });
             }
           : undefined

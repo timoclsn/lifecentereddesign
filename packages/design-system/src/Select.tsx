@@ -18,7 +18,7 @@ export const SelectTrigger = forwardRef<
   ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
 >(({ className, ...props }, ref) => {
   const styles = clsx(
-    'flex items-center gap-1 font-bold outline-none',
+    'flex items-center gap-1 font-bold outline-none text-left',
     className
   );
   return <SelectPrimitive.Trigger className={styles} {...props} ref={ref} />;
@@ -36,7 +36,10 @@ SelectValue.displayName = 'SelectValue';
 export const SelectIcon = forwardRef<
   ElementRef<typeof SelectPrimitive.Icon>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Icon>
->(({ ...props }, ref) => <SelectPrimitive.Icon {...props} ref={ref} />);
+>(({ className, ...props }, ref) => {
+  const styles = clsx('text-text-secondary', className);
+  return <SelectPrimitive.Icon className={styles} {...props} ref={ref} />;
+});
 
 SelectIcon.displayName = 'SelectIcon';
 
@@ -97,6 +100,9 @@ SelectItemIndicator.displayName = 'SelectItemIndicator';
 export const SelectItemText = forwardRef<
   ElementRef<typeof SelectPrimitive.ItemText>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.ItemText>
->(({ ...props }, ref) => <SelectPrimitive.ItemText {...props} ref={ref} />);
+>(({ className, ...props }, ref) => {
+  const styles = clsx('whitespace-nowrap', className);
+  return <SelectPrimitive.ItemText className={styles} {...props} ref={ref} />;
+});
 
 SelectItemText.displayName = 'SelectItemText';

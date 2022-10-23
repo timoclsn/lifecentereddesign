@@ -21,7 +21,7 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
               dispatch({
                 type: 'FILTER',
                 filterType:
-                  filteredType === 'thoughtleader' ? null : 'thoughtleader',
+                  filteredType === 'thoughtleader' ? 'all' : 'thoughtleader',
               });
             }
           : undefined
