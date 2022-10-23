@@ -197,9 +197,8 @@ export const Resources = ({ resources }: Props) => {
       <section id="resources" className="flex flex-col gap-10">
         <ul className="items-center overflow-x-scroll hidden sm:flex">
           {filterList.map((filter, idx) => (
-            <li>
+            <li key={idx}>
               <Button
-                key={idx}
                 variant="text"
                 selected={filteredType === filter.type}
                 onClick={() => filterResources(filter.type)}
