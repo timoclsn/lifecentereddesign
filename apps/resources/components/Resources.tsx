@@ -1,7 +1,18 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { UilAngleDown, UilArrowDown, UilCheck } from '@iconscout/react-unicons';
-import * as Select from '@radix-ui/react-select';
-import { Button } from 'design-system';
+import {
+  Button,
+  Select,
+  SelectContent,
+  SelectIcon,
+  SelectItem,
+  SelectItemIndicator,
+  SelectItemText,
+  SelectPortal,
+  SelectTrigger,
+  SelectValue,
+  SelectViewport,
+} from 'design-system';
 import { createContext, Dispatch, useContext, useReducer } from 'react';
 import { ContentType, Resources as TResources } from '../lib/content';
 import { getCardComponent } from './utils';
@@ -228,51 +239,48 @@ export const Resources = ({ resources }: Props) => {
             <span className="whitespace-nowrap text-text-secondary">
               Sorted by:
             </span>
-            <Select.Root
+            <Select
               defaultValue="date"
               value={sort}
               onValueChange={(value: Sort) =>
                 dispatch({ type: 'SORT', sortBy: value })
               }
             >
-              <Select.Trigger className="flex items-center gap-1 font-bold outline-none">
-                <Select.Value aria-label={sort} />
-                <Select.Icon>
+              <SelectTrigger>
+                <SelectValue aria-label={sort} />
+                <SelectIcon>
                   <div className="text-text-secondary">
                     <UilAngleDown />
                   </div>
-                </Select.Icon>
-              </Select.Trigger>
+                </SelectIcon>
+              </SelectTrigger>
 
-              <Select.Portal>
-                <Select.Content className="rounded-2xl bg-primary-main-bg px-4 py-6 text-primary-contrast-text">
-                  <Select.Viewport className="flex flex-col gap-1">
-                    <Select.Item
-                      value="date"
-                      className="cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg"
-                    >
-                      <Select.ItemIndicator className="absolute left-1 w-[25px]">
+              <SelectPortal>
+                <SelectContent>
+                  <SelectViewport>
+                    <SelectItem value="date">
+                      <SelectItemIndicator>
                         <UilCheck />
-                      </Select.ItemIndicator>
-                      <Select.ItemText>
+                      </SelectItemIndicator>
+                      <SelectItemText>
                         <span className="whitespace-nowrap">Date added</span>
-                      </Select.ItemText>
-                    </Select.Item>
-                    <Select.Item
+                      </SelectItemText>
+                    </SelectItem>
+                    <SelectItem
                       value="title"
                       className="cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg"
                     >
-                      <Select.ItemIndicator className="absolute left-1 w-[25px]">
+                      <SelectItemIndicator className="absolute left-1 w-[25px]">
                         <UilCheck />
-                      </Select.ItemIndicator>
-                      <Select.ItemText>
+                      </SelectItemIndicator>
+                      <SelectItemText>
                         <span className="whitespace-nowrap">Title</span>
-                      </Select.ItemText>
-                    </Select.Item>
-                  </Select.Viewport>
-                </Select.Content>
-              </Select.Portal>
-            </Select.Root>
+                      </SelectItemText>
+                    </SelectItem>
+                  </SelectViewport>
+                </SelectContent>
+              </SelectPortal>
+            </Select>
           </div>
           <ul
             className="flex flex-col flex-wrap gap-4 md:flex-row overflow-hidden"
