@@ -20,7 +20,7 @@ export const CourseCard = ({ course }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'course' ? null : 'course',
+                filterType: filteredType === 'course' ? 'all' : 'course',
               });
             }
           : undefined

@@ -20,7 +20,7 @@ export const MagazineCard = ({ magazine }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'magazine' ? null : 'magazine',
+                filterType: filteredType === 'magazine' ? 'all' : 'magazine',
               });
             }
           : undefined

@@ -26,7 +26,7 @@ export const BookCard = ({ book }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'book' ? null : 'book',
+                filterType: filteredType === 'book' ? 'all' : 'book',
               });
             }
           : undefined

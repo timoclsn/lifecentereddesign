@@ -8,6 +8,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@radix-ui/react-select": "1.1.1",
     "class-variance-authority": "0.2.3",
     "clsx": "1.2.1",
     "tsconfig": "workspace:*"

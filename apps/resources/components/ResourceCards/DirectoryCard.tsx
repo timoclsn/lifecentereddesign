@@ -20,7 +20,7 @@ export const DirectoryCard = ({ directory }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'directory' ? null : 'directory',
+                filterType: filteredType === 'directory' ? 'all' : 'directory',
               });
             }
           : undefined
