@@ -21,7 +21,7 @@ export function SEO({ title, description, slug, previewImage }: Props) {
       <meta property="og:type" content="website" key="og:type" />
       <meta
         property="og:site_name"
-        content="Life Centered Design.Net"
+        content="LifeCenteredDesign.Net"
         key="og:site_name"
       />
       <meta property="og:locale" content="en" key="og:locale" />

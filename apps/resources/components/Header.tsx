@@ -9,7 +9,7 @@ export function Header() {
         resources
       </Heading>
       <Text as="p" size="large" className="mb-20 max-w-5xl text-text-secondary">
-        Life Centered Design.Net is a curated directory of resources to help us
+        LifeCenteredDesign.Net is a curated directory of resources to help us
         design more responsible, sustainable, ethical and all in all more
         meaningful products, systems, and services.
       </Text>

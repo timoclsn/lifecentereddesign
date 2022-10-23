@@ -11,7 +11,7 @@ export function Navigation() {
           <Link href="/">
             <a>
               <Heading as="span" level="4" className="hover:underline">
-                Life Centered Design.Net
+                LifeCenteredDesign.Net
               </Heading>
             </a>
           </Link>
