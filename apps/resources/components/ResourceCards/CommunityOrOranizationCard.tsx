@@ -24,7 +24,7 @@ export const CommunityOrOranizationCard = ({
                 type: 'FILTER',
                 filterType:
                   filteredType === 'communityOrOrganization'
-                    ? null
+                    ? 'all'
                     : 'communityOrOrganization',
               });
             }

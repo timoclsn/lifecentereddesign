@@ -20,7 +20,7 @@ export const PodcastCard = ({ podcast }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'podcast' ? null : 'podcast',
+                filterType: filteredType === 'podcast' ? 'all' : 'podcast',
               });
             }
           : undefined

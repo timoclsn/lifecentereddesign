@@ -1,12 +1,95 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { UilAngleDown, UilArrowDown, UilCheck } from '@iconscout/react-unicons';
-import * as Select from '@radix-ui/react-select';
-import { Button } from 'design-system';
+import {
+  Button,
+  Select,
+  SelectContent,
+  SelectIcon,
+  SelectItem,
+  SelectItemIndicator,
+  SelectItemText,
+  SelectPortal,
+  SelectTrigger,
+  SelectValue,
+  SelectViewport,
+} from 'design-system';
 import { createContext, Dispatch, useContext, useReducer } from 'react';
 import { ContentType, Resources as TResources } from '../lib/content';
 import { getCardComponent } from './utils';
 
-type Filter = ContentType | null;
+type FilterList = Array<{
+  text: string;
+  type: Filter;
+}>;
+
+const filterList: FilterList = [
+  {
+    text: 'All Resources',
+    type: 'all',
+  },
+  {
+    text: 'Thoughtleaders',
+    type: 'thoughtleader',
+  },
+  {
+    text: 'Books',
+    type: 'book',
+  },
+  {
+    text: 'Articles',
+    type: 'article',
+  },
+  {
+    text: 'Courses',
+    type: 'course',
+  },
+  {
+    text: 'Podcasts',
+    type: 'podcast',
+  },
+  {
+    text: 'Podcast Episodes',
+    type: 'podcastEpisode',
+  },
+  {
+    text: 'Videos',
+    type: 'video',
+  },
+  {
+    text: 'Tools',
+    type: 'tool',
+  },
+  {
+    text: 'Directories',
+    type: 'directory',
+  },
+  {
+    text: 'Communities And Organizations',
+    type: 'communityOrOrganization',
+  },
+  {
+    text: 'Examples And Case Studies',
+    type: 'exampleOrCaseStudy',
+  },
+  {
+    text: 'Agencies',
+    type: 'agency',
+  },
+  {
+    text: 'Slides',
+    type: 'slide',
+  },
+  {
+    text: 'Magazines',
+    type: 'magazine',
+  },
+  {
+    text: 'Newsletters',
+    type: 'newsletter',
+  },
+];
+
+type Filter = ContentType | 'all';
 type Sort = 'date' | 'title';
 
 interface State {
@@ -17,7 +100,7 @@ interface State {
 }
 
 const initalState: State = {
-  filteredType: null,
+  filteredType: 'all',
   itemsCount: 12,
   sort: 'title',
   inContext: false,
@@ -93,7 +176,7 @@ export const Resources = ({ resources }: Props) => {
   });
 
   const filteredResources =
-    filteredType === null
+    filteredType === 'all'
       ? sortedResources
       : sortedResources.filter((resource) => resource.type === filteredType);
   const resourcesToDisplay = filteredResources.slice(0, itemsCount);
@@ -106,173 +189,99 @@ export const Resources = ({ resources }: Props) => {
   const filterResources = (type: Filter) =>
     dispatch({ type: 'FILTER', filterType: type });
 
+  const sortResources = (value: Sort) =>
+    dispatch({ type: 'SORT', sortBy: value });
+
   return (
     <ResourcesContext.Provider value={{ state, dispatch }}>
       <section id="resources" className="flex flex-col gap-10">
-        <div className="flex items-center overflow-x-scroll">
-          <Button
-            variant="text"
-            selected={filteredType === null}
-            onClick={() => filterResources(null)}
-          >
-            All Resources
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'thoughtleader'}
-            onClick={() => filterResources('thoughtleader')}
-          >
-            Thoughtleaders
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'book'}
-            onClick={() => filterResources('book')}
-          >
-            Books
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'article'}
-            onClick={() => filterResources('article')}
-          >
-            Articles
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'course'}
-            onClick={() => filterResources('course')}
-          >
-            Courses
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'podcast'}
-            onClick={() => filterResources('podcast')}
-          >
-            Podcasts
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'podcastEpisode'}
-            onClick={() => filterResources('podcastEpisode')}
-          >
-            Podcast Episodes
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'video'}
-            onClick={() => filterResources('video')}
-          >
-            Videos
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'tool'}
-            onClick={() => filterResources('tool')}
-          >
-            Tools
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'directory'}
-            onClick={() => filterResources('directory')}
-          >
-            Directories
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'communityOrOrganization'}
-            onClick={() => filterResources('communityOrOrganization')}
-          >
-            Communities And Organizations
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'exampleOrCaseStudy'}
-            onClick={() => filterResources('exampleOrCaseStudy')}
-          >
-            Examples And Case Studies
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'agency'}
-            onClick={() => filterResources('agency')}
-          >
-            Agencies
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'slide'}
-            onClick={() => filterResources('slide')}
-          >
-            Slides
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'magazine'}
-            onClick={() => filterResources('magazine')}
-          >
-            Magazines
-          </Button>
-          <Button
-            variant="text"
-            selected={filteredType === 'newsletter'}
-            onClick={() => filterResources('newsletter')}
-          >
-            Newsletters
-          </Button>
-        </div>
+        <ul className="items-center overflow-x-scroll hidden sm:flex">
+          {filterList.map((filter, idx) => (
+            <li>
+              <Button
+                key={idx}
+                variant="text"
+                selected={filteredType === filter.type}
+                onClick={() => filterResources(filter.type)}
+              >
+                {filter.text}
+              </Button>
+            </li>
+          ))}
+        </ul>
         <div className="flex flex-col gap-6">
-          <div className="flex gap-6 self-end">
-            <span className="whitespace-nowrap text-text-secondary">
-              Sorted by:
-            </span>
-            <Select.Root
-              defaultValue="date"
-              value={sort}
-              onValueChange={(value: Sort) =>
-                dispatch({ type: 'SORT', sortBy: value })
-              }
-            >
-              <Select.Trigger className="flex items-center gap-1 font-bold outline-none">
-                <Select.Value aria-label={sort} />
-                <Select.Icon>
-                  <div className="text-text-secondary">
+          <div className="flex flex-col sm:flex-row gap-6 justify-end">
+            {/* Filter select */}
+            <div className="flex gap-4 sm:gap-6 sm:hidden">
+              <span className="whitespace-nowrap text-text-secondary">
+                Filtered by:
+              </span>
+              <Select
+                defaultValue={undefined}
+                value={filteredType}
+                onValueChange={(type: Filter) => filterResources(type)}
+              >
+                <SelectTrigger>
+                  <SelectValue aria-label={sort} />
+                  <SelectIcon>
                     <UilAngleDown />
-                  </div>
-                </Select.Icon>
-              </Select.Trigger>
+                  </SelectIcon>
+                </SelectTrigger>
 
-              <Select.Portal>
-                <Select.Content className="rounded-2xl bg-primary-main-bg px-4 py-6 text-primary-contrast-text">
-                  <Select.Viewport className="flex flex-col gap-1">
-                    <Select.Item
-                      value="date"
-                      className="cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg"
-                    >
-                      <Select.ItemIndicator className="absolute left-1 w-[25px]">
-                        <UilCheck />
-                      </Select.ItemIndicator>
-                      <Select.ItemText>
-                        <span className="whitespace-nowrap">Date added</span>
-                      </Select.ItemText>
-                    </Select.Item>
-                    <Select.Item
-                      value="title"
-                      className="cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg"
-                    >
-                      <Select.ItemIndicator className="absolute left-1 w-[25px]">
-                        <UilCheck />
-                      </Select.ItemIndicator>
-                      <Select.ItemText>
-                        <span className="whitespace-nowrap">Title</span>
-                      </Select.ItemText>
-                    </Select.Item>
-                  </Select.Viewport>
-                </Select.Content>
-              </Select.Portal>
-            </Select.Root>
+                <SelectPortal>
+                  <SelectContent>
+                    <SelectViewport>
+                      {filterList.map((filter) => (
+                        <SelectItem value={filter.type}>
+                          <SelectItemIndicator>
+                            <UilCheck />
+                          </SelectItemIndicator>
+                          <SelectItemText>{filter.text}</SelectItemText>
+                        </SelectItem>
+                      ))}
+                    </SelectViewport>
+                  </SelectContent>
+                </SelectPortal>
+              </Select>
+            </div>
+
+            {/* Sort select */}
+            <div className="flex gap-4 sm:gap-6">
+              <span className="whitespace-nowrap text-text-secondary">
+                Sorted by:
+              </span>
+              <Select
+                defaultValue="date"
+                value={sort}
+                onValueChange={(value: Sort) => sortResources(value)}
+              >
+                <SelectTrigger>
+                  <SelectValue aria-label={sort} />
+                  <SelectIcon>
+                    <UilAngleDown />
+                  </SelectIcon>
+                </SelectTrigger>
+
+                <SelectPortal>
+                  <SelectContent>
+                    <SelectViewport>
+                      <SelectItem value="date">
+                        <SelectItemIndicator>
+                          <UilCheck />
+                        </SelectItemIndicator>
+                        <SelectItemText>Date added</SelectItemText>
+                      </SelectItem>
+                      <SelectItem value="title">
+                        <SelectItemIndicator>
+                          <UilCheck />
+                        </SelectItemIndicator>
+                        <SelectItemText>Title</SelectItemText>
+                      </SelectItem>
+                    </SelectViewport>
+                  </SelectContent>
+                </SelectPortal>
+              </Select>
+            </div>
           </div>
           <ul
             className="flex flex-col flex-wrap gap-4 md:flex-row overflow-hidden"

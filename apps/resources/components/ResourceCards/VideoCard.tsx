@@ -25,7 +25,7 @@ export const VideoCard = ({ video }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'video' ? null : 'video',
+                filterType: filteredType === 'video' ? 'all' : 'video',
               });
             }
           : undefined

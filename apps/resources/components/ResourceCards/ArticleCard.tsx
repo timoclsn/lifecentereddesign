@@ -25,7 +25,7 @@ export const ArticleCard = ({ article }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'article' ? null : 'article',
+                filterType: filteredType === 'article' ? 'all' : 'article',
               });
             }
           : undefined

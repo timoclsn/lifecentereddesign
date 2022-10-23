@@ -22,7 +22,7 @@ export const ExampleOrCaseStudyCard = ({ exampleOrCaseStudy }: Props) => {
                 type: 'FILTER',
                 filterType:
                   filteredType === 'exampleOrCaseStudy'
-                    ? null
+                    ? 'all'
                     : 'exampleOrCaseStudy',
               });
             }

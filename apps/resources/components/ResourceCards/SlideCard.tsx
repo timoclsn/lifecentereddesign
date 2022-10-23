@@ -20,7 +20,7 @@ export const SlideCard = ({ slide }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'slide' ? null : 'slide',
+                filterType: filteredType === 'slide' ? 'all' : 'slide',
               });
             }
           : undefined

@@ -20,7 +20,7 @@ export const AgencyCard = ({ agency }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'agency' ? null : 'agency',
+                filterType: filteredType === 'agency' ? 'all' : 'agency',
               });
             }
           : undefined
