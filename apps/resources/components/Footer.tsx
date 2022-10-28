@@ -7,44 +7,38 @@ export function Footer() {
       <ul className="flex flex-col gap-4 sm:flex-row sm:gap-10">
         <li className="hover:underline">
           <Link href="/about">
-            <a>
-              <Text>About</Text>
-            </a>
+            <Text>About</Text>
           </Link>
         </li>
         <li className="hover:underline">
-          <a
+          <Link
             href="http://eepurl.com/htoWRr"
             target="_blank"
             rel="noopener noreferrer"
           >
             <Text>Newsletter</Text>
-          </a>
+          </Link>
         </li>
         <li className="hover:underline">
-          <a href="https://katharinaclasen.de">
+          <Link href="https://katharinaclasen.de">
             <Text>Katharina Clasen</Text>
-          </a>
+          </Link>
         </li>
         <li className="hover:underline">
-          <a href="https://timoclasen.de">
+          <Link href="https://timoclasen.de">
             <Text>Timo Clasen</Text>
-          </a>
+          </Link>
         </li>
       </ul>
       <ul className="flex flex-col font-bold sm:flex-row gap-4 sm:gap-10">
         <li className="hover:underline">
           <Link href="/imprint">
-            <a>
-              <Text>Imprint</Text>
-            </a>
+            <Text>Imprint</Text>
           </Link>
         </li>
         <li className="hover:underline">
           <Link href="/privacy">
-            <a>
-              <Text>Privacy</Text>
-            </a>
+            <Text>Privacy</Text>
           </Link>
         </li>
       </ul>

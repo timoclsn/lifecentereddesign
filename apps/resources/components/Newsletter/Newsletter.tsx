@@ -1,15 +1,14 @@
 import { UilEnvelopeAlt } from '@iconscout/react-unicons';
 import { Button, Container, Heading, Text } from 'design-system';
-import Image from 'next/future/image';
+import Image from 'next/image';
+import forestImg from './forest.jpg';
 
 export const Newsletter = () => {
   return (
     <section className="relative ml-[calc(50%-50vw)] w-screen overflow-hidden bg-[#EDF4EE]">
       <Image
-        src="/forest.jpg"
+        src={forestImg}
         alt="Image of a foggy forest."
-        width={1949}
-        height={1466}
         className="h-[800px] w-full object-cover object-top"
       />
       <div className="absolute top-0 left-0 h-full w-full py-28">

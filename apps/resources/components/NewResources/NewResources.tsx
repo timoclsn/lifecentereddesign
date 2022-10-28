@@ -1,7 +1,8 @@
 import { Heading } from 'design-system';
-import Image from 'next/future/image';
-import { Resources } from '../lib/content';
-import { getCardComponent } from './utils';
+import Image from 'next/image';
+import { Resources } from '../../lib/content';
+import { getCardComponent } from '../utils';
+import groundImg from './ground.jpg';
 
 interface Props {
   resources: Resources;
@@ -22,10 +23,8 @@ export const NewResources = ({ resources }: Props) => {
       </Heading>
       <ul className="mb-14 flex gap-6 overflow-x-scroll px-6 sm:px-8 xl:px-10 snap-x">
         <Image
-          src="/ground.jpg"
+          src={groundImg}
           alt="Image of desert ground."
-          width={320}
-          height={400}
           className="hidden rounded-4xl sm:block flex-none snap-center"
         />
         {newResources.map((resource) => {

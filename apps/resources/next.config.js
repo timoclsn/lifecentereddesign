@@ -4,10 +4,7 @@ const withTM = require('next-transpile-modules')(['design-system']);
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
-  swcMinify: true,
   experimental: {
-    legacyBrowsers: false,
-    browsersListForSwc: true,
     scrollRestoration: true,
   },
   async rewrites() {
