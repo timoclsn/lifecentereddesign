@@ -1,5 +1,5 @@
 import { Card, CardProps, Heading, Text } from 'design-system';
-import Image from 'next/future/image';
+import Image, { StaticImageData } from 'next/image';
 import { ReactNode } from 'react';
 import {
   IoIosGlobe,
@@ -11,7 +11,7 @@ import {
 interface Props {
   children: ReactNode;
   name: string;
-  imagePath: string;
+  image: StaticImageData;
   websiteUrl?: string;
   linkedInUrl?: string;
   instagramUrl?: string;
@@ -22,7 +22,7 @@ interface Props {
 export function ProfileCard({
   children,
   name,
-  imagePath,
+  image,
   websiteUrl,
   linkedInUrl,
   instagramUrl,
@@ -31,13 +31,11 @@ export function ProfileCard({
 }: Props) {
   return (
     <Card variant={variant}>
-      <div className="flex items-center gap-6">
+      <div className="flex items-start gap-6">
         <Image
-          src={imagePath}
+          src={image}
           alt={`Portrait image of ${name}`}
-          width={120}
-          height={120}
-          className="border-primary-contrast-text rounded-full border-4 border-solid leading-none"
+          className="border-primary-contrast-text rounded-full border-4 border-solid leading-none w-[120px]"
         />
         <div className="flex-1">
           <Heading as="h2" level="4" className="mb-1">

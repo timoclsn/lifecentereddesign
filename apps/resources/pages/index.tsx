@@ -1,9 +1,9 @@
 import { getCO2Consumtion } from 'lib/co2';
 import { InferGetStaticPropsType } from 'next';
-import { Header } from '../components/Header';
+import { Header } from '../components/Header/Header';
 import { Layout } from '../components/Layout';
-import { NewResources } from '../components/NewResources';
-import { Newsletter } from '../components/Newsletter';
+import { NewResources } from '../components/NewResources/NewResources';
+import { Newsletter } from '../components/Newsletter/Newsletter';
 import { Resources } from '../components/Resources';
 import { getAllResources } from '../lib/content';
 
