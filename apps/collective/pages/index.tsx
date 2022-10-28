@@ -1,10 +1,9 @@
 import { allMembers, allPrinciples } from 'contentlayer/generated';
 import type { InferGetStaticPropsType } from 'next';
-import Image from 'next/future/image';
-import { About } from '../components/About';
-import { Header } from '../components/Header';
+import { About } from '../components/About/About';
+import { Header } from '../components/Header/Header';
 import { Layout } from '../components/Layout';
-import { Principles } from '../components/Principles';
+import { Principles } from '../components/Principles/Principles';
 import { Team } from '../components/Team';
 
 const Home = ({
@@ -14,14 +13,6 @@ const Home = ({
   return (
     <Layout>
       <Header />
-      <Image
-        src="/beach.jpg"
-        alt="Beach coastline from the top."
-        width={1728}
-        height={440}
-        className="w-full h-[200px] md:h-[440px] object-cover object-center"
-        sizes="100vw"
-      />
       <Principles principles={principles} />
       <About />
       <Team members={members} />

@@ -1,6 +1,6 @@
 import { Member } from 'contentlayer/generated';
 import { Container, Heading, Text } from 'design-system';
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 interface TeamProps {
   members: Array<Member>;

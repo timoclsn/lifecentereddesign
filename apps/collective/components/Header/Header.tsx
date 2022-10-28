@@ -1,5 +1,6 @@
 import { Button, Container, Heading, Text } from 'design-system';
-import Image from 'next/future/image';
+import Image from 'next/image';
+import earthImg from './earth.png';
 
 export const Header = () => {
   return (
@@ -38,10 +39,9 @@ export const Header = () => {
             </div>
           </Container>
           <Image
-            src="/earth.png"
+            src={earthImg}
             alt="Image of the earth"
-            width={1480}
-            height={1300}
+            placeholder="blur"
             priority
             sizes="33vw"
             className="hidden md:block object-contain w-1/3 bg-collective-header-bg"

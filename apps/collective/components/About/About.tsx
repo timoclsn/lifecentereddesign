@@ -1,6 +1,7 @@
 import { Container, Heading, Text } from 'design-system';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import Link from 'next/link';
+import caveImg from './cave.png';
 
 export const About = () => {
   return (
@@ -8,11 +9,10 @@ export const About = () => {
       {/* Background */}
       <div className="hidden md:flex absolute inset-0">
         <Image
-          src="/cave.png"
+          src={caveImg}
           alt="View from inside a dessert canyon into the sky."
-          width={864}
-          height={904}
           sizes="50vw"
+          placeholder="blur"
           className="w-1/2 object-cover object-right max-h-[904px]"
         />
         <div className="w-1/2" />
