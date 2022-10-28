@@ -1,6 +1,6 @@
 import { UilEnvelopeAlt } from '@iconscout/react-unicons';
 import { Button, Container, Heading, Text } from 'design-system';
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 export const Newsletter = () => {
   return (

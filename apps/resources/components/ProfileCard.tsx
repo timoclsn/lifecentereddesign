@@ -1,5 +1,5 @@
 import { Card, CardProps, Heading, Text } from 'design-system';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { ReactNode } from 'react';
 import {
   IoIosGlobe,

@@ -1,5 +1,5 @@
 import { Button, Heading, Text } from 'design-system';
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 export function Header() {
   return (

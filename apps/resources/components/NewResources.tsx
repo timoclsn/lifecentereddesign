@@ -1,5 +1,5 @@
 import { Heading } from 'design-system';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { Resources } from '../lib/content';
 import { getCardComponent } from './utils';
 

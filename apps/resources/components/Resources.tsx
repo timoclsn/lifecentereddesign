@@ -230,8 +230,8 @@ export const Resources = ({ resources }: Props) => {
                 <SelectPortal>
                   <SelectContent>
                     <SelectViewport>
-                      {filterList.map((filter) => (
-                        <SelectItem value={filter.type}>
+                      {filterList.map((filter, idx) => (
+                        <SelectItem key={idx} value={filter.type}>
                           <SelectItemIndicator>
                             <UilCheck />
                           </SelectItemIndicator>

@@ -9,29 +9,24 @@ export function Navigation() {
       <ul className="flex w-full items-baseline gap-10">
         <li className="flex-1 font-serif text-2xl font-bold">
           <Link href="/">
-            <a>
-              <Heading as="span" level="4" className="hover:underline">
-                Life Centered Design.Net
-              </Heading>
-            </a>
+            <Heading as="span" level="4" className="hover:underline">
+              Life Centered Design.Net
+            </Heading>
           </Link>
         </li>
         <li>
-          <Link href="/about">
-            <a
-              className={`text-text-secondary hover:underline${
-                pathname.includes('/about') ? ' underline' : ''
-              }`}
-            >
-              <Text>About</Text>
-            </a>
+          <Link
+            href="/about"
+            className={`text-text-secondary hover:underline${
+              pathname.includes('/about') ? ' underline' : ''
+            }`}
+          >
+            <Text>About</Text>
           </Link>
         </li>
         <li>
-          <Link href="/#resources">
-            <a className="hover:underline">
-              <Text weight="bold">Resources</Text>
-            </a>
+          <Link href="/#resources" className="hover:underline">
+            <Text weight="bold">Resources</Text>
           </Link>
         </li>
       </ul>
