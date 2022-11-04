@@ -1,11 +1,11 @@
 const { withContentlayer } = require('next-contentlayer');
-const withTM = require('next-transpile-modules')(['design-system']);
 
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
   experimental: {
     scrollRestoration: true,
+    transpilePackages: ['design-system'],
   },
   async rewrites() {
     return [
@@ -21,4 +21,4 @@ const config = {
   },
 };
 
-module.exports = withContentlayer(withTM(config));
+module.exports = withContentlayer(config);
