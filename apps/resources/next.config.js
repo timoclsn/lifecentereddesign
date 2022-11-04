@@ -3,6 +3,9 @@ const { withContentlayer } = require('next-contentlayer');
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
   experimental: {
     scrollRestoration: true,
     transpilePackages: ['design-system'],
