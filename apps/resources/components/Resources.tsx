@@ -99,7 +99,7 @@ interface State {
   inContext: boolean;
 }
 
-const initalState: State = {
+const initialState: State = {
   filteredType: 'all',
   itemsCount: 12,
   sort: 'title',
@@ -143,7 +143,7 @@ const ResourcesContext = createContext<{
   state: State;
   dispatch: Dispatch<Action>;
 }>({
-  state: initalState,
+  state: initialState,
   dispatch: () => null,
 });
 export const useResources = () => useContext(ResourcesContext);
@@ -153,7 +153,7 @@ interface Props {
 }
 
 export const Resources = ({ resources }: Props) => {
-  const [state, dispatch] = useReducer(reducer, initalState);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const { filteredType, itemsCount, sort, inContext } = state;
   const [listRef] = useAutoAnimate<HTMLUListElement>();
 
