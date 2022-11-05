@@ -238,7 +238,7 @@ export const Resources = ({ resources, initialSort = 'title' }: Props) => {
           className="sticky top-0 bg-bg-primary py-4 z-10"
           ref={filterBtnsRef}
         >
-          <ul className="items-center overflow-x-scroll hidden sm:flex mb-4">
+          <ul className="items-center overflow-x-auto hidden sm:flex mb-4">
             {filterList.map((filter, idx) => (
               <li
                 key={idx}

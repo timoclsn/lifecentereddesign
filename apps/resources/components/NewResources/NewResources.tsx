@@ -21,7 +21,7 @@ export const NewResources = ({ resources }: Props) => {
       <Heading level="2" className="text-white mb-10 px-6 sm:px-8 xl:px-10">
         New Resources
       </Heading>
-      <ul className="mb-14 flex gap-6 overflow-x-scroll px-6 sm:px-8 xl:px-10 snap-x">
+      <ul className="mb-14 flex gap-6 overflow-x-auto px-6 sm:px-8 xl:px-10 snap-x">
         <Image
           src={groundImg}
           alt="Image of desert ground."
