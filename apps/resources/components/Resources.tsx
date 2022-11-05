@@ -150,9 +150,11 @@ export const useResources = () => useContext(ResourcesContext);
 
 interface Props {
   resources: TResources;
+  initialSort?: Sort;
 }
 
-export const Resources = ({ resources }: Props) => {
+export const Resources = ({ resources, initialSort = 'title' }: Props) => {
+  initalState.sort = initialSort;
   const [state, dispatch] = useReducer(reducer, initalState);
   const { filteredType, itemsCount, sort, inContext } = state;
   const [listRef] = useAutoAnimate<HTMLUListElement>();

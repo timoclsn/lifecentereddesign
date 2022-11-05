@@ -15,7 +15,7 @@ const ResourcesPage = ({
   return (
     <Layout title="Resources" slug="about" co2Consumption={co2Consumption}>
       {title && <Heading level="1">{title}</Heading>}
-      <Resources resources={resources} />
+      <Resources resources={resources} initialSort="date" />
     </Layout>
   );
 };
