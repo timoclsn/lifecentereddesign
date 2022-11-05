@@ -54,7 +54,7 @@ export const SelectContent = forwardRef<
   ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
 >(({ className, ...props }, ref) => {
   const styles = clsx(
-    'rounded-2xl bg-primary-main-bg px-4 py-6 text-primary-contrast-text',
+    'rounded-2xl bg-primary-main-bg px-4 py-6 text-primary-contrast-text z-20',
     className
   );
   return <SelectPrimitive.Content className={styles} {...props} ref={ref} />;
