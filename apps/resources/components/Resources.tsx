@@ -283,16 +283,12 @@ export const Resources = ({ resources }: Props) => {
             </div>
           </div>
           <ul
-            className="flex flex-col flex-wrap gap-4 md:flex-row overflow-hidden"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden"
             ref={listRef}
           >
             {resourcesToDisplay.map((ressource) => {
               const component = getCardComponent(ressource);
-              return (
-                <li key={ressource.id} className="md:w-[calc(50%-0.5rem)]">
-                  {component}
-                </li>
-              );
+              return <li key={ressource.id}>{component}</li>;
             })}
           </ul>
         </div>
