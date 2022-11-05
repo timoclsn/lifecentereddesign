@@ -13,8 +13,16 @@ import {
   SelectValue,
   SelectViewport,
 } from 'design-system';
-import { createContext, Dispatch, useContext, useReducer } from 'react';
+import {
+  createContext,
+  Dispatch,
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+} from 'react';
 import { ContentType, Resources as TResources } from '../lib/content';
+import { useOnScreen } from './useOnScreen';
 import { getCardComponent } from './utils';
 
 type FilterList = Array<{
@@ -150,12 +158,18 @@ export const useResources = () => useContext(ResourcesContext);
 
 interface Props {
   resources: TResources;
+  initialSort?: Sort;
 }
 
-export const Resources = ({ resources }: Props) => {
+export const Resources = ({ resources, initialSort = 'title' }: Props) => {
+  initalState.sort = initialSort;
   const [state, dispatch] = useReducer(reducer, initalState);
   const { filteredType, itemsCount, sort, inContext } = state;
   const [listRef] = useAutoAnimate<HTMLUListElement>();
+  const buttonsRef = useRef<Map<string, HTMLLIElement> | null>(null);
+  const filterBtnsRef = useRef<HTMLDivElement>(null);
+
+  const isFilterVisible = useOnScreen(filterBtnsRef);
 
   // Flag so componets can check if they are rendered in context
   if (!inContext) {
@@ -182,6 +196,31 @@ export const Resources = ({ resources }: Props) => {
   const resourcesToDisplay = filteredResources.slice(0, itemsCount);
   const showShowMoreBtn = filteredResources.length > itemsCount;
 
+  useEffect(() => {
+    if (isFilterVisible) {
+      scrollToButton(state.filteredType);
+    }
+  }, [state.filteredType]);
+
+  const scrollToButton = (itemId: string) => {
+    const map = getMap();
+    const node = map.get(itemId);
+    if (node) {
+      node.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest',
+      });
+    }
+  };
+
+  const getMap = () => {
+    if (!buttonsRef.current) {
+      buttonsRef.current = new Map();
+    }
+    return buttonsRef.current;
+  };
+
   const showMore = () => {
     dispatch({ type: 'SHOW_MORE', itemsCount: 12 });
   };
@@ -195,20 +234,35 @@ export const Resources = ({ resources }: Props) => {
   return (
     <ResourcesContext.Provider value={{ state, dispatch }}>
       <section id="resources" className="flex flex-col gap-10">
-        <ul className="items-center overflow-x-scroll hidden sm:flex">
-          {filterList.map((filter, idx) => (
-            <li key={idx}>
-              <Button
-                variant="text"
-                selected={filteredType === filter.type}
-                onClick={() => filterResources(filter.type)}
+        <div
+          className="sticky top-0 bg-bg-primary py-4 z-10"
+          ref={filterBtnsRef}
+        >
+          <ul className="items-center overflow-x-auto hidden sm:flex mb-4">
+            {filterList.map((filter, idx) => (
+              <li
+                key={idx}
+                ref={(node) => {
+                  const map = getMap();
+                  if (node) {
+                    map.set(filter.type, node);
+                  } else {
+                    map.delete(filter.type);
+                  }
+                }}
               >
-                {filter.text}
-              </Button>
-            </li>
-          ))}
-        </ul>
-        <div className="flex flex-col gap-6">
+                <Button
+                  variant="text"
+                  selected={filteredType === filter.type}
+                  onClick={() => {
+                    filterResources(filter.type);
+                  }}
+                >
+                  {filter.text}
+                </Button>
+              </li>
+            ))}
+          </ul>
           <div className="flex flex-col sm:flex-row gap-6 justify-end">
             {/* Filter select */}
             <div className="flex gap-4 sm:gap-6 sm:hidden">
@@ -282,17 +336,15 @@ export const Resources = ({ resources }: Props) => {
               </Select>
             </div>
           </div>
+        </div>
+        <div className="flex flex-col gap-6">
           <ul
-            className="flex flex-col flex-wrap gap-4 md:flex-row overflow-hidden"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden"
             ref={listRef}
           >
             {resourcesToDisplay.map((ressource) => {
               const component = getCardComponent(ressource);
-              return (
-                <li key={ressource.id} className="md:w-[calc(50%-0.5rem)]">
-                  {component}
-                </li>
-              );
+              return <li key={ressource.id}>{component}</li>;
             })}
           </ul>
         </div>
