@@ -14,8 +14,14 @@ const ResourcesPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout title="Resources" slug="about" co2Consumption={co2Consumption}>
-      {title && <Heading level="1">{title}</Heading>}
-      <Resources resources={resources} initialSort="date" />
+      <div>
+        {title && (
+          <Heading level="1" className="mb-8 sm:mb-16">
+            {title}
+          </Heading>
+        )}
+        <Resources resources={resources} initialSort="date" />
+      </div>
     </Layout>
   );
 };
