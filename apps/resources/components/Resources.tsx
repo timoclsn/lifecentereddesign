@@ -13,8 +13,16 @@ import {
   SelectValue,
   SelectViewport,
 } from 'design-system';
-import { createContext, Dispatch, useContext, useReducer } from 'react';
+import {
+  createContext,
+  Dispatch,
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+} from 'react';
 import { ContentType, Resources as TResources } from '../lib/content';
+import { useOnScreen } from './useOnScreen';
 import { getCardComponent } from './utils';
 
 type FilterList = Array<{
@@ -158,6 +166,10 @@ export const Resources = ({ resources, initialSort = 'title' }: Props) => {
   const [state, dispatch] = useReducer(reducer, initalState);
   const { filteredType, itemsCount, sort, inContext } = state;
   const [listRef] = useAutoAnimate<HTMLUListElement>();
+  const buttonsRef = useRef<Map<string, HTMLLIElement> | null>(null);
+  const filterBtnsRef = useRef<HTMLDivElement>(null);
+
+  const isFilterVisible = useOnScreen(filterBtnsRef);
 
   // Flag so componets can check if they are rendered in context
   if (!inContext) {
@@ -184,6 +196,31 @@ export const Resources = ({ resources, initialSort = 'title' }: Props) => {
   const resourcesToDisplay = filteredResources.slice(0, itemsCount);
   const showShowMoreBtn = filteredResources.length > itemsCount;
 
+  useEffect(() => {
+    if (isFilterVisible) {
+      scrollToButton(state.filteredType);
+    }
+  }, [state.filteredType]);
+
+  const scrollToButton = (itemId: string) => {
+    const map = getMap();
+    const node = map.get(itemId);
+    if (node) {
+      node.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest',
+      });
+    }
+  };
+
+  const getMap = () => {
+    if (!buttonsRef.current) {
+      buttonsRef.current = new Map();
+    }
+    return buttonsRef.current;
+  };
+
   const showMore = () => {
     dispatch({ type: 'SHOW_MORE', itemsCount: 12 });
   };
@@ -197,20 +234,35 @@ export const Resources = ({ resources, initialSort = 'title' }: Props) => {
   return (
     <ResourcesContext.Provider value={{ state, dispatch }}>
       <section id="resources" className="flex flex-col gap-10">
-        <ul className="items-center overflow-x-scroll hidden sm:flex">
-          {filterList.map((filter, idx) => (
-            <li key={idx}>
-              <Button
-                variant="text"
-                selected={filteredType === filter.type}
-                onClick={() => filterResources(filter.type)}
+        <div
+          className="sticky top-0 bg-bg-primary py-4 z-10"
+          ref={filterBtnsRef}
+        >
+          <ul className="items-center overflow-x-scroll hidden sm:flex mb-4">
+            {filterList.map((filter, idx) => (
+              <li
+                key={idx}
+                ref={(node) => {
+                  const map = getMap();
+                  if (node) {
+                    map.set(filter.type, node);
+                  } else {
+                    map.delete(filter.type);
+                  }
+                }}
               >
-                {filter.text}
-              </Button>
-            </li>
-          ))}
-        </ul>
-        <div className="flex flex-col gap-6">
+                <Button
+                  variant="text"
+                  selected={filteredType === filter.type}
+                  onClick={() => {
+                    filterResources(filter.type);
+                  }}
+                >
+                  {filter.text}
+                </Button>
+              </li>
+            ))}
+          </ul>
           <div className="flex flex-col sm:flex-row gap-6 justify-end">
             {/* Filter select */}
             <div className="flex gap-4 sm:gap-6 sm:hidden">
@@ -284,6 +336,8 @@ export const Resources = ({ resources, initialSort = 'title' }: Props) => {
               </Select>
             </div>
           </div>
+        </div>
+        <div className="flex flex-col gap-6">
           <ul
             className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden"
             ref={listRef}
