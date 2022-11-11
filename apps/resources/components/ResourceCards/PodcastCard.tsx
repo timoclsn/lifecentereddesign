@@ -13,6 +13,7 @@ export const PodcastCard = ({ podcast }: Props) => {
   const { inContext, filteredType } = state;
   return (
     <Card
+      resourceId={podcast.id}
       variant="sky"
       type="Podcast"
       onTypeClick={

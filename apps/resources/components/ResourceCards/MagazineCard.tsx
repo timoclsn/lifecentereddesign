@@ -13,6 +13,7 @@ export const MagazineCard = ({ magazine }: Props) => {
   const { inContext, filteredType } = state;
   return (
     <Card
+      resourceId={magazine.id}
       variant="sky"
       type="Magazine"
       onTypeClick={

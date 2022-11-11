@@ -19,6 +19,7 @@ export const BookCard = ({ book }: Props) => {
   const { inContext, filteredType } = state;
   return (
     <Card
+      resourceId={book.id}
       variant="oak"
       type="Book"
       onTypeClick={

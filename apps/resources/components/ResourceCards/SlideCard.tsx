@@ -13,6 +13,7 @@ export const SlideCard = ({ slide }: Props) => {
   const { inContext, filteredType } = state;
   return (
     <Card
+      resourceId={slide.id}
       variant="evening"
       type="Slide"
       onTypeClick={

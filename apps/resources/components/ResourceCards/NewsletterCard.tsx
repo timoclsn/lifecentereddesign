@@ -13,6 +13,7 @@ export const NewsletterCard = ({ newsletter }: Props) => {
   const { inContext, filteredType } = state;
   return (
     <Card
+      resourceId={newsletter.id}
       variant="sand"
       type="Newsletter"
       onTypeClick={

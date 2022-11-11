@@ -13,6 +13,7 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
   const { inContext, filteredType } = state;
   return (
     <Card
+      resourceId={thoughtleader.id}
       variant="evening"
       type="Thoughtleader"
       onTypeClick={

@@ -25,6 +25,7 @@
     "airtable": "0.11.5",
     "class-variance-authority": "0.3.0",
     "contentlayer": "0.2.9",
+    "database": "workspace:*",
     "design-system": "workspace:*",
     "next": "13.0.3",
     "next-contentlayer": "0.2.9",
