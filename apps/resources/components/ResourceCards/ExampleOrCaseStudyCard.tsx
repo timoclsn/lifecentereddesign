@@ -13,6 +13,7 @@ export const ExampleOrCaseStudyCard = ({ exampleOrCaseStudy }: Props) => {
   const { inContext, filteredType } = state;
   return (
     <Card
+      resourceId={exampleOrCaseStudy.id}
       variant="lime"
       type="Example or Case Study"
       onTypeClick={

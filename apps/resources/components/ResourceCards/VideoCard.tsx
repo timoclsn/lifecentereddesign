@@ -18,6 +18,7 @@ export const VideoCard = ({ video }: Props) => {
   const { inContext, filteredType } = state;
   return (
     <Card
+      resourceId={video.id}
       variant="lime"
       type="Video"
       onTypeClick={

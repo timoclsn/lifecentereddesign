@@ -1,7 +1,10 @@
+import { UilHeart } from '@iconscout/react-unicons';
 import { CardProps, Heading, Tag, Text } from 'design-system';
 import { Card as CardPrimitive } from 'design-system';
+import { trpc } from 'utils/trpc';
 
 interface Props {
+  resourceId: string;
   variant: CardProps['variant'];
   type: string;
   onTypeClick?: () => void;
@@ -22,6 +25,7 @@ interface Props {
 }
 
 export const Card = ({
+  resourceId,
   showType,
   variant,
   type,
@@ -32,6 +36,33 @@ export const Card = ({
   tags,
   description,
 }: Props) => {
+  const utils = trpc.useContext();
+  const { data, isLoading } = trpc.resources.likes.useQuery({
+    id: resourceId,
+  });
+  const mutation = trpc.resources.likeResource.useMutation();
+
+  const likeResource = () => {
+    mutation.mutate(
+      {
+        id: resourceId,
+      },
+      {
+        onSuccess: (newData) => {
+          utils.resources.likes.setData(
+            {
+              id: resourceId,
+            },
+            () => ({
+              id: newData.id,
+              likes: newData.likes,
+            })
+          );
+        },
+      }
+    );
+  };
+
   const getType = () => {
     if (!!onTypeClick) {
       return (
@@ -54,7 +85,17 @@ export const Card = ({
     >
       <div className="flex flex-1 flex-col items-start gap-9">
         {/* Type */}
-        {showType && getType()}
+        <div className="flex justify-between w-full">
+          <div>{showType && getType()}</div>
+          <button
+            onClick={likeResource}
+            className="flex gap-2 group transition-transform ease"
+          >
+            {isLoading && '…'}
+            {data !== undefined && (data?.likes || 0)}
+            <UilHeart className="group-hover:scale-110" />
+          </button>
+        </div>
 
         <div className="flex flex-col items-start gap-4">
           {/* Title */}

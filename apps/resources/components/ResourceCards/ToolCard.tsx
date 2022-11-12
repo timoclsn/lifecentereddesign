@@ -13,6 +13,7 @@ export const ToolCard = ({ tool }: Props) => {
   const { inContext, filteredType } = state;
   return (
     <Card
+      resourceId={tool.id}
       variant="stone"
       type="Tool"
       onTypeClick={

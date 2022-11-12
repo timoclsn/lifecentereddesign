@@ -13,6 +13,7 @@ export const CourseCard = ({ course }: Props) => {
   const { inContext, filteredType } = state;
   return (
     <Card
+      resourceId={course.id}
       variant="evening"
       type="Course"
       onTypeClick={

@@ -15,6 +15,7 @@ export const CommunityOrOranizationCard = ({
   const { inContext, filteredType } = state;
   return (
     <Card
+      resourceId={communityOrOrganization.id}
       variant="morning"
       type="Community or Organization"
       onTypeClick={

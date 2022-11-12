@@ -19,6 +19,7 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
   const { inContext, filteredType } = state;
   return (
     <Card
+      resourceId={podcastEpisode.id}
       variant="sand"
       type="Podcast Episode"
       onTypeClick={

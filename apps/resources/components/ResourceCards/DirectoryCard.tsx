@@ -13,6 +13,7 @@ export const DirectoryCard = ({ directory }: Props) => {
   const { inContext, filteredType } = state;
   return (
     <Card
+      resourceId={directory.id}
       variant="oak"
       type="Directory"
       onTypeClick={
