@@ -1,5 +1,5 @@
-import { httpBatchLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
+import { httpBatchLink } from '@trpc/react-query';
 import type { AppRouter } from '../server/routers/_app';
 
 export const trpc = createTRPCNext<AppRouter>({
