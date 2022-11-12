@@ -53,13 +53,10 @@ export const Card = ({
             {
               id: resourceId,
             },
-            (oldData) =>
-              oldData
-                ? {
-                    ...oldData,
-                    likes: newData.likes,
-                  }
-                : oldData
+            () => ({
+              id: newData.id,
+              likes: newData.likes,
+            })
           );
         },
       }
