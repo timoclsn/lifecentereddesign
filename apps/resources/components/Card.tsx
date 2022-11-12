@@ -86,11 +86,14 @@ export const Card = ({
       <div className="flex flex-1 flex-col items-start gap-9">
         {/* Type */}
         <div className="flex justify-between w-full">
-          {showType && getType()}
-          <button onClick={likeResource} className="flex gap-2">
+          <div>{showType && getType()}</div>
+          <button
+            onClick={likeResource}
+            className="flex gap-2 group transition-transform ease"
+          >
             {isLoading && '…'}
             {data !== undefined && (data?.likes || 0)}
-            <UilHeart />
+            <UilHeart className="group-hover:scale-110" />
           </button>
         </div>
 
