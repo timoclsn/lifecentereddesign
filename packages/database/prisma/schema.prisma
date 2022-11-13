@@ -7,7 +7,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Article {
+  id              String         @id @default(uuid()) @db.Uuid
+  createdAt       DateTime       @default(now())
+  title           String
+  topics          Topic[]
+  thoughtleaderId String?        @db.Uuid
+  thoughtleader   Thoughtleader? @relation(fields: [thoughtleaderId], references: [id])
+}
+
 model ResourceMeta {
   id    String @id
   likes Int    @default(0)
+}
+
+model Thoughtleader {
+  id             String    @id @default(uuid()) @db.Uuid
+  createdAt      DateTime  @default(now())
+  name           String
+  jobDescription String?
+  link           String?
+  articles       Article[]
+}
+
+model Topic {
+  id        String    @id @default(uuid()) @db.Uuid
+  createdAt DateTime  @default(now())
+  name      String
+  articles  Article[]
 }
