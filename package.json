@@ -12,7 +12,8 @@
     "lint:workspace": "manypkg check",
     "lint:workspace:fix": "manypkg fix",
     "db:generate": "turbo run db:generate",
-    "db:push": "turbo run db:push"
+    "db:push": "turbo run db:push",
+    "db:pull": "turbo run db:push"
   },
   "dependencies": {
     "@manypkg/cli": "0.19.2",
