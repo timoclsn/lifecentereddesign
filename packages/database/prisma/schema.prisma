@@ -1,13 +1,16 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+// Legacy
 model ResourceMeta {
-  id    String @id
+  id    String @id @db.VarChar(255)
   likes Int    @default(0)
 }
