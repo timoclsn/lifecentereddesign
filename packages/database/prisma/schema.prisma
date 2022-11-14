@@ -1,38 +1,16 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
-model Article {
-  id              String         @id @default(uuid()) @db.Uuid
-  createdAt       DateTime       @default(now())
-  title           String
-  topics          Topic[]
-  thoughtleaderId String?        @db.Uuid
-  thoughtleader   Thoughtleader? @relation(fields: [thoughtleaderId], references: [id])
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
+// Legacy
 model ResourceMeta {
-  id    String @id
+  id    String @id @db.VarChar(255)
   likes Int    @default(0)
-}
-
-model Thoughtleader {
-  id             String    @id @default(uuid()) @db.Uuid
-  createdAt      DateTime  @default(now())
-  name           String
-  jobDescription String?
-  link           String?
-  articles       Article[]
-}
-
-model Topic {
-  id        String    @id @default(uuid()) @db.Uuid
-  createdAt DateTime  @default(now())
-  name      String
-  articles  Article[]
 }
