@@ -1,43 +1,44 @@
-import { prisma } from 'lib/prisma';
+import { getAllResources, likeResource } from 'lib/content';
 import { publicProcedure, router } from 'server/trpc';
 import { z } from 'zod';
 
 export const resourcesRouter = router({
-  likes: publicProcedure
+  get: publicProcedure
     .input(
-      z.object({
-        id: z.string(),
-      })
+      z
+        .object({
+          from: z.date().optional(),
+          till: z.date().optional(),
+        })
+        .optional()
     )
-    .query(async ({ input }) => {
-      const data = await prisma.resourceMeta.findUnique({
-        where: {
-          id: input.id,
-        },
-      });
-      return data;
+    .query(({ input }) => {
+      return getAllResources({ from: input?.from, till: input?.till });
     }),
-  likeResource: publicProcedure
+  like: publicProcedure
     .input(
       z.object({
-        id: z.string(),
+        id: z.number(),
+        type: z.enum([
+          'THOUGHTLEADER',
+          'ARTICLE',
+          'BOOK',
+          'PODCAST',
+          'PODCASTEPISODE',
+          'DIRECTORY',
+          'VIDEO',
+          'TOOL',
+          'COMMUNITY',
+          'COURSE',
+          'EXAMPLE',
+          'AGENCY',
+          'SLIDE',
+          'MAGAZINE',
+          'NEWSLETTER',
+        ]),
       })
     )
-    .mutation(async ({ input }) => {
-      const data = await prisma.resourceMeta.upsert({
-        where: {
-          id: input.id,
-        },
-        update: {
-          likes: {
-            increment: 1,
-          },
-        },
-        create: {
-          id: input.id,
-          likes: 1,
-        },
-      });
-      return data;
+    .mutation(({ input }) => {
+      return likeResource(input.id, input.type);
     }),
 });

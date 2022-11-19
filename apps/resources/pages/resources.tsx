@@ -1,17 +1,27 @@
+import '@tanstack/react-query';
+import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import { Layout } from 'components/Layout';
 import { Heading } from 'design-system';
 import { IncomingMessage, ServerResponse } from 'http';
 import { getCO2Consumtion } from 'lib/co2';
-import { getAllResources } from 'lib/content';
+import { Filter } from 'lib/content';
 import { InferGetServerSidePropsType } from 'next';
 import { ParsedUrlQuery } from 'querystring';
+import { appRouter } from 'server/routers/_app';
+import superjson from 'superjson';
+import { trpc } from 'utils/trpc';
+import { z } from 'zod';
 import { Resources } from '../components/Resources';
 
 const ResourcesPage = ({
   co2Consumption,
   title,
-  resources,
+  filter,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { data: resources } = trpc.resources.get.useQuery(filter, {
+    enabled: false,
+  });
+
   return (
     <Layout title="Resources" slug="about" co2Consumption={co2Consumption}>
       <div>
@@ -20,7 +30,7 @@ const ResourcesPage = ({
             {title}
           </Heading>
         )}
-        <Resources resources={resources} initialSort="date" />
+        {resources && <Resources resources={resources} initialSort="date" />}
       </div>
     </Layout>
   );
@@ -35,33 +45,33 @@ export const getServerSideProps = async ({
   res,
   query,
 }: GetServerSideProps) => {
+  const co2Consumption = await getCO2Consumtion('lifecentereddesign.net');
+
+  const ssg = createProxySSGHelpers({
+    router: appRouter,
+    ctx: {},
+    transformer: superjson,
+  });
+
   const { title, from, till } = query;
 
-  const co2Consumption = await getCO2Consumtion('lifecentereddesign.net');
-  const resources = await getAllResources();
+  const filter: Filter = {};
 
-  const filteredResources = resources.filter((resource) => {
-    // Typeguard params
-    if (!from || !till || Array.isArray(from) || Array.isArray(till)) {
-      return true;
+  if (from && !Array.isArray(from)) {
+    const parsedFrom = z.date().safeParse(new Date(from));
+    if (parsedFrom.success) {
+      filter.from = parsedFrom.data;
     }
+  }
 
-    const createdTime = new Date(resource.createdTime).getTime();
-    const fromTime = new Date(from).getTime();
-    const tillTime = new Date(till).getTime();
-
-    // Return true for broken input
-    if (!isNaN(createdTime) || !isNaN(fromTime) || !isNaN(tillTime)) {
-      return true;
+  if (till && !Array.isArray(till)) {
+    const parsedTill = z.date().safeParse(new Date(till));
+    if (parsedTill.success) {
+      filter.till = parsedTill.data;
     }
+  }
 
-    // Check if resource is within time frame
-    if (createdTime > fromTime && createdTime < tillTime) {
-      return true;
-    } else {
-      return false;
-    }
-  });
+  await ssg.resources.get.prefetch(filter);
 
   res.setHeader(
     'Cache-Control',
@@ -71,8 +81,9 @@ export const getServerSideProps = async ({
   return {
     props: {
       co2Consumption,
-      title: title || '',
-      resources: filteredResources,
+      title: title || null,
+      trpcState: ssg.dehydrate(),
+      filter,
     },
   };
 };

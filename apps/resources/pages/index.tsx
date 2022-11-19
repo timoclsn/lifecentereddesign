@@ -1,33 +1,46 @@
+import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import { getCO2Consumtion } from 'lib/co2';
 import { InferGetStaticPropsType } from 'next';
+import { appRouter } from 'server/routers/_app';
+import superjson from 'superjson';
+import { trpc } from 'utils/trpc';
 import { Header } from '../components/Header/Header';
 import { Layout } from '../components/Layout';
 import { NewResources } from '../components/NewResources/NewResources';
 import { Newsletter } from '../components/Newsletter/Newsletter';
 import { Resources } from '../components/Resources';
-import { getAllResources } from '../lib/content';
 
 export default function Home({
-  resources,
   co2Consumption,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const { data: resources } = trpc.resources.get.useQuery(undefined, {
+    enabled: false,
+  });
+
   return (
     <Layout co2Consumption={co2Consumption}>
       <Header />
-      <NewResources resources={resources} />
+      {resources && <NewResources resources={resources} />}
       <Newsletter />
-      <Resources resources={resources} />
+      {resources && <Resources resources={resources} />}
     </Layout>
   );
 }
 
 export const getStaticProps = async () => {
-  const resources = await getAllResources();
   const co2Consumption = await getCO2Consumtion('lifecentereddesign.net');
+
+  const ssg = createProxySSGHelpers({
+    router: appRouter,
+    ctx: {},
+    transformer: superjson,
+  });
+
+  await ssg.resources.get.prefetch();
 
   return {
     props: {
-      resources,
+      trpcState: ssg.dehydrate(),
       co2Consumption,
     },
     revalidate: 3600, // 1h in seconds

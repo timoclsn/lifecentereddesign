@@ -19,68 +19,67 @@ export const VideoCard = ({ video }: Props) => {
   return (
     <Card
       resourceId={video.id}
+      resourceType={video.type}
       variant="lime"
-      type="Video"
+      displayType="Video"
       onTypeClick={
         inContext
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'video' ? 'all' : 'video',
+                filterType: filteredType === 'VIDEO' ? 'ALL' : 'VIDEO',
               });
             }
           : undefined
       }
-      title={video.fields.title}
+      title={video.title}
       metaInfos={[
-        ...(video.fields.thoughtleader
+        ...(video.creators
           ? [
               {
-                text: video.fields.thoughtleader
-                  .map((author) => author?.fields.name)
-                  .join(', '),
+                text: video.creators.map((creator) => creator.name).join(', '),
                 icon: UilVideo,
               },
             ]
           : []),
-        ...(video.fields.author
+        ...(video.creatorsPlain
           ? [
               {
-                text: video.fields.author,
+                text: video.creatorsPlain,
                 icon: UilVideo,
               },
             ]
           : []),
-        ...(video.fields.date
+        ...(video.date
           ? [
               {
-                text: new Date(video.fields.date).toLocaleDateString('en'),
+                text: new Date(video.date).toLocaleDateString('en'),
                 icon: UilCalendarAlt,
               },
             ]
           : []),
-        ...(video.fields.duration
+        ...(video.duration
           ? [
               {
-                text:
-                  Math.round(video.fields.duration / 60).toString() + ' min',
+                text: `${video.duration} min`,
                 icon: UilClockThree,
               },
             ]
           : []),
       ]}
-      category={video.fields.category?.at(0)?.fields.name}
+      category={video.category?.name}
       tags={[
-        ...(video.fields.link
+        ...(video.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(video.fields.link),
-                url: video.fields.link,
+                text: getHostname(video.link),
+                url: video.link,
               },
             ]
           : []),
       ]}
+      likes={video.likes}
       showType
     />
   );

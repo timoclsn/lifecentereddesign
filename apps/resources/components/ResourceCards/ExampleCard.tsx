@@ -1,47 +1,47 @@
 import { UilLinkAlt } from '@iconscout/react-unicons';
-import { Agency } from '../../lib/content';
+import { Example } from 'lib/content';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
 import { useResources } from '../Resources';
 
 interface Props {
-  agency: Agency;
+  example: Example;
 }
 
-export const AgencyCard = ({ agency }: Props) => {
+export const ExampleCard = ({ example }: Props) => {
   const { dispatch, state } = useResources();
   const { inContext, filteredType } = state;
   return (
     <Card
-      resourceId={agency.id}
-      resourceType={agency.type}
-      variant="morning"
-      displayType="Agency"
+      resourceId={example.id}
+      resourceType={example.type}
+      variant="lime"
+      displayType="Example"
       onTypeClick={
         inContext
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'AGENCY' ? 'ALL' : 'AGENCY',
+                filterType: filteredType === 'EXAMPLE' ? 'ALL' : 'EXAMPLE',
               });
             }
           : undefined
       }
-      title={agency.name}
-      category={agency.category?.name}
+      title={example.name}
+      category={example.category?.name}
       tags={[
-        ...(agency.link
+        ...(example.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(agency.link),
-                url: agency.link,
+                text: getHostname(example.link),
+                url: example.link,
               },
             ]
           : []),
       ]}
-      description={agency.description}
-      likes={agency.likes}
+      description={example.description}
+      likes={example.likes}
       showType
     />
   );

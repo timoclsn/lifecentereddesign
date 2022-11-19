@@ -1,6 +1,6 @@
 import { Heading } from 'design-system';
+import { Resources } from 'lib/content';
 import Image from 'next/image';
-import { Resources } from '../../lib/content';
 import { getCardComponent } from '../utils';
 import groundImg from './ground.jpg';
 
@@ -12,7 +12,7 @@ export const NewResources = ({ resources }: Props) => {
   const newResources = resources
     .sort(
       (a, b) =>
-        new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime()
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     )
     .slice(0, 10);
 

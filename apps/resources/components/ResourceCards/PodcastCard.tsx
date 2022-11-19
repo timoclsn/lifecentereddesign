@@ -14,51 +14,51 @@ export const PodcastCard = ({ podcast }: Props) => {
   return (
     <Card
       resourceId={podcast.id}
+      resourceType={podcast.type}
       variant="sky"
-      type="Podcast"
+      displayType="Podcast"
       onTypeClick={
         inContext
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'podcast' ? 'all' : 'podcast',
+                filterType: filteredType === 'PODCAST' ? 'ALL' : 'PODCAST',
               });
             }
           : undefined
       }
-      title={podcast.fields.name}
+      title={podcast.title}
       metaInfos={[
-        ...(podcast.fields.host
+        ...(podcast.hostsPlain
           ? [
               {
-                text: podcast.fields.host,
+                text: podcast.hostsPlain,
                 icon: UilGrin,
               },
             ]
           : []),
-        ...(podcast.fields.thoughtleader
+        ...(podcast.hosts
           ? [
               {
-                text: podcast.fields.thoughtleader
-                  .map((thoughtleader) => thoughtleader?.fields.name)
-                  .join(', '),
+                text: podcast.hosts.map((host) => host.name).join(', '),
                 icon: UilGrin,
               },
             ]
           : []),
       ]}
-      category={podcast.fields.category?.at(0)?.fields.name}
+      category={podcast.category?.name}
       tags={[
-        ...(podcast.fields.link
+        ...(podcast.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(podcast.fields.link),
-                url: podcast.fields.link,
+                text: getHostname(podcast.link),
+                url: podcast.link,
               },
             ]
           : []),
       ]}
+      likes={podcast.likes}
       showType
     />
   );

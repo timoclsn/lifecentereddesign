@@ -14,32 +14,34 @@ export const CourseCard = ({ course }: Props) => {
   return (
     <Card
       resourceId={course.id}
+      resourceType={course.type}
       variant="evening"
-      type="Course"
+      displayType="Course"
       onTypeClick={
         inContext
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'course' ? 'all' : 'course',
+                filterType: filteredType === 'COURSE' ? 'ALL' : 'COURSE',
               });
             }
           : undefined
       }
-      title={course.fields.name}
-      category={course.fields.category?.at(0)?.fields.name}
+      title={course.name}
+      category={course.category?.name}
       tags={[
-        ...(course.fields.link
+        ...(course.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(course.fields.link),
-                url: course.fields.link,
+                text: getHostname(course.link),
+                url: course.link,
               },
             ]
           : []),
       ]}
-      description={course.fields.description}
+      description={course.description}
+      likes={course.likes}
       showType
     />
   );

@@ -19,67 +19,67 @@ export const ArticleCard = ({ article }: Props) => {
   return (
     <Card
       resourceId={article.id}
+      resourceType={article.type}
       variant="forest"
-      type="Article"
+      displayType="Article"
       onTypeClick={
         inContext
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'article' ? 'all' : 'article',
+                filterType: filteredType === 'ARTICLE' ? 'ALL' : 'ARTICLE',
               });
             }
           : undefined
       }
-      title={article.fields.title}
+      title={article.title}
       metaInfos={[
-        ...(article.fields.thoughtleader
+        ...(article.authors
           ? [
               {
-                text: article.fields.thoughtleader
-                  .map((author) => author?.fields.name)
-                  .join(', '),
+                text: article.authors.map((author) => author?.name).join(', '),
                 icon: UilBookReader,
               },
             ]
           : []),
-        ...(article.fields.author
+        ...(article.authorsPlain
           ? [
               {
-                text: article.fields.author,
+                text: article.authorsPlain,
                 icon: UilBookReader,
               },
             ]
           : []),
-        ...(article.fields.date
+        ...(article.date
           ? [
               {
-                text: new Date(article.fields.date).toLocaleDateString('en'),
+                text: new Date(article.date).toLocaleDateString('en'),
                 icon: UilCalendarAlt,
               },
             ]
           : []),
-        ...(article.fields.duration
+        ...(article.duration
           ? [
               {
-                text: (article.fields.duration / 60).toString() + ' min',
+                text: `${article.duration} min`,
                 icon: UilClockThree,
               },
             ]
           : []),
       ]}
-      category={article.fields.category?.at(0)?.fields.Name}
+      category={article.category?.name}
       tags={[
-        ...(article.fields.link
+        ...(article.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(article.fields.link),
-                url: article.fields.link,
+                text: getHostname(article.link),
+                url: article.link,
               },
             ]
           : []),
       ]}
+      likes={article.likes}
       showType
     />
   );

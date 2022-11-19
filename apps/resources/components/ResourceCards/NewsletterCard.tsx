@@ -14,53 +14,55 @@ export const NewsletterCard = ({ newsletter }: Props) => {
   return (
     <Card
       resourceId={newsletter.id}
+      resourceType={newsletter.type}
       variant="sand"
-      type="Newsletter"
+      displayType="Newsletter"
       onTypeClick={
         inContext
           ? () => {
               dispatch({
                 type: 'FILTER',
                 filterType:
-                  filteredType === 'newsletter' ? 'all' : 'newsletter',
+                  filteredType === 'NEWSLETTER' ? 'ALL' : 'NEWSLETTER',
               });
             }
           : undefined
       }
-      title={newsletter.fields.name}
+      title={newsletter.name}
       metaInfos={[
-        ...(newsletter.fields.thoughtleader
+        ...(newsletter.authors
           ? [
               {
-                text: newsletter.fields.thoughtleader
-                  .map((author) => author?.fields.name)
+                text: newsletter.authors
+                  .map((author) => author.name)
                   .join(', '),
                 icon: UilBookReader,
               },
             ]
           : []),
-        ...(newsletter.fields.author
+        ...(newsletter.authorsPlain
           ? [
               {
-                text: newsletter.fields.author,
+                text: newsletter.authorsPlain,
                 icon: UilBookReader,
               },
             ]
           : []),
       ]}
-      category={newsletter.fields.category?.at(0)?.fields.name}
+      category={newsletter.category?.name}
       tags={[
-        ...(newsletter.fields.link
+        ...(newsletter.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(newsletter.fields.link),
-                url: newsletter.fields.link,
+                text: getHostname(newsletter.link),
+                url: newsletter.link,
               },
             ]
           : []),
       ]}
-      description={newsletter.fields.description}
+      description={newsletter.description}
+      likes={newsletter.likes}
       showType
     />
   );

@@ -14,32 +14,34 @@ export const DirectoryCard = ({ directory }: Props) => {
   return (
     <Card
       resourceId={directory.id}
+      resourceType={directory.type}
       variant="oak"
-      type="Directory"
+      displayType="Directory"
       onTypeClick={
         inContext
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'directory' ? 'all' : 'directory',
+                filterType: filteredType === 'DIRECTORY' ? 'ALL' : 'DIRECTORY',
               });
             }
           : undefined
       }
-      title={directory.fields.name}
-      category={directory.fields.category?.at(0)?.fields.name}
+      title={directory.name}
+      category={directory.category?.name}
       tags={[
-        ...(directory.fields.link
+        ...(directory.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(directory.fields.link),
-                url: directory.fields.link,
+                text: getHostname(directory.link),
+                url: directory.link,
               },
             ]
           : []),
       ]}
-      description={directory.fields.description}
+      description={directory.description}
+      likes={directory.likes}
       showType
     />
   );

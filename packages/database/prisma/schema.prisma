@@ -1,7 +1,7 @@
 datasource db {
-  provider             = "mysql"
-  url                  = env("DATABASE_URL")
-  referentialIntegrity = "prisma"
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 generator client {
@@ -13,4 +13,320 @@ generator client {
 model ResourceMeta {
   id    String @id @db.VarChar(255)
   likes Int    @default(0)
+}
+
+// Metadata
+model Topic {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(255)
+
+  articles        Article[]
+  books           Book[]
+  podcasts        Podcast[]
+  podcastEpisodes PodcastEpisode[]
+  directories     Directory[]
+  videos          Video[]
+  tools           Tool[]
+  communities     Community[]
+  courses         Course[]
+  examples        Example[]
+  agencies        Agency[]
+  slides          Slide[]
+  magazines       Magazine[]
+  newsletters     Newsletter[]
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(255)
+
+  articles        Article[]
+  books           Book[]
+  podcasts        Podcast[]
+  podcastEpisodes PodcastEpisode[]
+  directories     Directory[]
+  videos          Video[]
+  tools           Tool[]
+  communities     Community[]
+  courses         Course[]
+  examples        Example[]
+  agencies        Agency[]
+  slide           Slide[]
+  magazines       Magazine[]
+  newsletters     Newsletter[]
+  thoughtleaders  Thoughtleader[]
+}
+
+enum Type {
+  THOUGHTLEADER
+  ARTICLE
+  BOOK
+  PODCAST
+  PODCASTEPISODE
+  DIRECTORY
+  VIDEO
+  TOOL
+  COMMUNITY
+  COURSE
+  EXAMPLE
+  AGENCY
+  SLIDE
+  MAGAZINE
+  NEWSLETTER
+}
+
+// Resources
+model Thoughtleader {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(THOUGHTLEADER)
+  name      String   @db.VarChar(255)
+  likes     Int      @default(0)
+
+  categoryId     Int?
+  link           String? @db.VarChar(255)
+  jobDescription String? @db.VarChar(255)
+
+  category        Category?        @relation(fields: [categoryId], references: [id])
+  articles        Article[]
+  books           Book[]
+  podcasts        Podcast[]
+  podcastEpisodes PodcastEpisode[]
+  videos          Video[]
+  slides          Slide[]
+  newsletters     Newsletter[]
+}
+
+model Article {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(ARTICLE)
+  likes     Int      @default(0)
+
+  title        String          @db.VarChar(255)
+  authors      Thoughtleader[]
+  authorsPlain String?         @db.VarChar(255)
+  date         DateTime?
+  datePlain    String?         @db.VarChar(255)
+  duration     String?         @db.VarChar(255)
+  link         String?         @db.VarChar(255)
+  categoryId   Int?
+  category     Category?       @relation(fields: [categoryId], references: [id])
+  topics       Topic[]
+}
+
+model Book {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(BOOK)
+  likes     Int      @default(0)
+
+  title String @db.VarChar(255)
+
+  authors        Thoughtleader[]
+  authorsPlain   String?         @db.VarChar(255)
+  publishingDate DateTime?
+  publisher      String?         @db.VarChar(255)
+  isbn           String?         @db.VarChar(255)
+  link           String?         @db.VarChar(255)
+  categoryId     Int?
+  category       Category?       @relation(fields: [categoryId], references: [id])
+  topics         Topic[]
+}
+
+model Podcast {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(PODCAST)
+  likes     Int      @default(0)
+
+  title      String          @db.VarChar(255)
+  hosts      Thoughtleader[]
+  hostsPlain String?         @db.VarChar(255)
+  link       String?         @db.VarChar(255)
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+
+  podcastEpisodes PodcastEpisode[]
+}
+
+model PodcastEpisode {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(PODCASTEPISODE)
+  likes     Int      @default(0)
+
+  title        String          @db.VarChar(255)
+  podcastId    Int?
+  podcast      Podcast?        @relation(fields: [podcastId], references: [id])
+  podcastPlain String?         @db.VarChar(255)
+  guests       Thoughtleader[]
+  date         DateTime?
+  duration     String?
+  link         String?         @db.VarChar(255)
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+}
+
+model Directory {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(DIRECTORY)
+  likes     Int      @default(0)
+
+  name        String  @db.VarChar(255)
+  description String? @db.VarChar(255)
+  link        String? @db.VarChar(255)
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+}
+
+model Video {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(VIDEO)
+  likes     Int      @default(0)
+
+  title         String          @db.VarChar(255)
+  creators      Thoughtleader[]
+  creatorsPlain String?         @db.VarChar(255)
+  date          DateTime?
+  duration      String?
+  link          String?         @db.VarChar(255)
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+}
+
+model Tool {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(TOOL)
+  likes     Int      @default(0)
+
+  name        String  @db.VarChar(255)
+  description String? @db.VarChar(255)
+  link        String? @db.VarChar(255)
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+}
+
+model Community {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(COMMUNITY)
+  likes     Int      @default(0)
+
+  name        String  @db.VarChar(255)
+  description String? @db.VarChar(255)
+  link        String? @db.VarChar(255)
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+}
+
+model Course {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(COURSE)
+  likes     Int      @default(0)
+
+  name        String  @db.VarChar(255)
+  description String? @db.VarChar(255)
+  link        String? @db.VarChar(255)
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+}
+
+model Example {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(EXAMPLE)
+  likes     Int      @default(0)
+
+  name        String  @db.VarChar(255)
+  description String? @db.VarChar(255)
+  link        String? @db.VarChar(255)
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+}
+
+model Agency {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(AGENCY)
+  likes     Int      @default(0)
+
+  name        String  @db.VarChar(255)
+  description String? @db.VarChar(255)
+  link        String? @db.VarChar(255)
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+}
+
+model Slide {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(SLIDE)
+  likes     Int      @default(0)
+
+  title        String          @db.VarChar(255)
+  authors      Thoughtleader[]
+  authorsPlain String?         @db.VarChar(255)
+  date         DateTime?
+  datePlain    String?         @db.VarChar(255)
+  link         String?         @db.VarChar(255)
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+}
+
+model Magazine {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(MAGAZINE)
+  likes     Int      @default(0)
+
+  name        String  @db.VarChar(255)
+  description String? @db.VarChar(255)
+  link        String? @db.VarChar(255)
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+}
+
+model Newsletter {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(NEWSLETTER)
+  likes     Int      @default(0)
+
+  name         String          @db.VarChar(255)
+  authors      Thoughtleader[]
+  authorsPlain String?         @db.VarChar(255)
+  description  String?         @db.VarChar(255)
+  frequency    String?         @db.VarChar(255)
+  link         String?         @db.VarChar(255)
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
 }
