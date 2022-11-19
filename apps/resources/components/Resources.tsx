@@ -98,7 +98,7 @@ const filterList: FilterList = [
 ];
 
 type Filter = ContentType | 'ALL';
-type Sort = 'date' | 'title';
+type Sort = 'date' | 'title' | 'likes';
 
 interface State {
   filteredType: Filter;
@@ -183,6 +183,8 @@ export const Resources = ({ resources, initialSort = 'title' }: Props) => {
       const itemA = 'title' in a ? a.title : a.name;
       const itemB = 'title' in b ? b.title : b.name;
       return itemA.localeCompare(itemB);
+    } else if (sort === 'likes') {
+      return b.likes - a.likes;
     }
     return 0;
   });
@@ -327,6 +329,12 @@ export const Resources = ({ resources, initialSort = 'title' }: Props) => {
                           <UilCheck />
                         </SelectItemIndicator>
                         <SelectItemText>Title</SelectItemText>
+                      </SelectItem>
+                      <SelectItem value="likes">
+                        <SelectItemIndicator>
+                          <UilCheck />
+                        </SelectItemIndicator>
+                        <SelectItemText>Likes</SelectItemText>
                       </SelectItem>
                     </SelectViewport>
                   </SelectContent>
