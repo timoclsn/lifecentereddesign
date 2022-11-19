@@ -14,51 +14,51 @@ export const SlideCard = ({ slide }: Props) => {
   return (
     <Card
       resourceId={slide.id}
+      resourceType={slide.type}
       variant="evening"
-      type="Slide"
+      displayType="Slide"
       onTypeClick={
         inContext
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'slide' ? 'all' : 'slide',
+                filterType: filteredType === 'SLIDE' ? 'ALL' : 'SLIDE',
               });
             }
           : undefined
       }
-      title={slide.fields.title}
+      title={slide.title}
       metaInfos={[
-        ...(slide.fields.thoughtleader
+        ...(slide.authors
           ? [
               {
-                text: slide.fields.thoughtleader
-                  .map((author) => author?.fields.name)
-                  .join(', '),
+                text: slide.authors.map((author) => author.name).join(', '),
                 icon: UilBookReader,
               },
             ]
           : []),
-        ...(slide.fields.author
+        ...(slide.authorsPlain
           ? [
               {
-                text: slide.fields.author,
+                text: slide.authorsPlain,
                 icon: UilBookReader,
               },
             ]
           : []),
       ]}
-      category={slide.fields.category?.at(0)?.fields.name}
+      category={slide.category?.name}
       tags={[
-        ...(slide.fields.link
+        ...(slide.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(slide.fields.link),
-                url: slide.fields.link,
+                text: getHostname(slide.link),
+                url: slide.link,
               },
             ]
           : []),
       ]}
+      likes={slide.likes}
       showType
     />
   );

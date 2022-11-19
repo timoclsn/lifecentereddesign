@@ -1,12 +1,14 @@
 import { UilHeart } from '@iconscout/react-unicons';
 import { CardProps, Heading, Tag, Text } from 'design-system';
 import { Card as CardPrimitive } from 'design-system';
+import { ContentType } from 'lib/content';
 import { trpc } from 'utils/trpc';
 
 interface Props {
-  resourceId: string;
+  resourceId: number;
+  resourceType: ContentType;
   variant: CardProps['variant'];
-  type: string;
+  displayType: string;
   onTypeClick?: () => void;
   title: string;
   showType?: boolean;
@@ -21,43 +23,48 @@ interface Props {
     text: string;
     url: string;
   }>;
-  description?: string;
+  description?: string | null;
+  likes: number;
 }
 
 export const Card = ({
   resourceId,
+  resourceType,
   showType,
   variant,
-  type,
+  displayType,
   onTypeClick,
   title,
   metaInfos,
   category,
   tags,
   description,
+  likes,
 }: Props) => {
   const utils = trpc.useContext();
-  const { data, isLoading } = trpc.resources.likes.useQuery({
-    id: resourceId,
-  });
-  const mutation = trpc.resources.likeResource.useMutation();
+  const mutation = trpc.resources.like.useMutation();
 
   const likeResource = () => {
     mutation.mutate(
       {
         id: resourceId,
+        type: resourceType,
       },
       {
         onSuccess: (newData) => {
-          utils.resources.likes.setData(
-            {
-              id: resourceId,
-            },
-            () => ({
-              id: newData.id,
-              likes: newData.likes,
-            })
-          );
+          utils.resources.get.setData(undefined, (oldData) => {
+            if (!oldData) return oldData;
+
+            return oldData.map((data) => {
+              if (
+                data.id === newData.id &&
+                data.categoryId === newData.categoryId
+              ) {
+                return { ...data, likes: newData.likes };
+              }
+              return data;
+            });
+          });
         },
       }
     );
@@ -67,14 +74,14 @@ export const Card = ({
     if (!!onTypeClick) {
       return (
         <button onClick={onTypeClick} className="hover:opacity-80">
-          <Tag variant="outline">{type}</Tag>
+          <Tag variant="outline">{displayType}</Tag>
         </button>
       );
     }
 
     return (
       <div>
-        <Tag variant="outline">{type}</Tag>
+        <Tag variant="outline">{displayType}</Tag>
       </div>
     );
   };
@@ -91,8 +98,7 @@ export const Card = ({
             onClick={likeResource}
             className="flex gap-2 group transition-transform ease"
           >
-            {isLoading && '…'}
-            {data !== undefined && (data?.likes || 0)}
+            {likes}
             <UilHeart className="group-hover:scale-110" />
           </button>
         </div>

@@ -33,71 +33,71 @@ type FilterList = Array<{
 const filterList: FilterList = [
   {
     text: 'All Resources',
-    type: 'all',
+    type: 'ALL',
   },
   {
     text: 'Thoughtleaders',
-    type: 'thoughtleader',
+    type: 'THOUGHTLEADER',
   },
   {
     text: 'Books',
-    type: 'book',
+    type: 'BOOK',
   },
   {
     text: 'Articles',
-    type: 'article',
+    type: 'ARTICLE',
   },
   {
     text: 'Courses',
-    type: 'course',
+    type: 'COURSE',
   },
   {
     text: 'Podcasts',
-    type: 'podcast',
+    type: 'PODCAST',
   },
   {
     text: 'Podcast Episodes',
-    type: 'podcastEpisode',
+    type: 'PODCASTEPISODE',
   },
   {
     text: 'Videos',
-    type: 'video',
+    type: 'VIDEO',
   },
   {
     text: 'Tools',
-    type: 'tool',
+    type: 'TOOL',
   },
   {
     text: 'Directories',
-    type: 'directory',
+    type: 'DIRECTORY',
   },
   {
-    text: 'Communities And Organizations',
-    type: 'communityOrOrganization',
+    text: 'Communities',
+    type: 'COMMUNITY',
   },
   {
-    text: 'Examples And Case Studies',
-    type: 'exampleOrCaseStudy',
+    text: 'Examples',
+    type: 'EXAMPLE',
   },
   {
     text: 'Agencies',
-    type: 'agency',
+    type: 'AGENCY',
   },
   {
     text: 'Slides',
-    type: 'slide',
+    type: 'SLIDE',
   },
   {
     text: 'Magazines',
-    type: 'magazine',
+    type: 'MAGAZINE',
   },
   {
     text: 'Newsletters',
-    type: 'newsletter',
+    type: 'NEWSLETTER',
   },
 ];
 
-type Filter = ContentType | 'all';
+type Filter = ContentType | 'ALL';
 type Sort = 'date' | 'title';
 
 interface State {
@@ -108,7 +108,7 @@ interface State {
 }
 
 const initalState: State = {
-  filteredType: 'all',
+  filteredType: 'ALL',
   itemsCount: 12,
   sort: 'title',
   inContext: false,
@@ -178,19 +178,17 @@ export const Resources = ({ resources, initialSort = 'title' }: Props) => {
 
   const sortedResources = resources.sort((a, b) => {
     if (sort === 'date') {
-      return (
-        new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime()
-      );
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     } else if (sort === 'title') {
-      const itemA = 'title' in a.fields ? a.fields.title : a.fields.name;
-      const itemB = 'title' in b.fields ? b.fields.title : b.fields.name;
+      const itemA = 'title' in a ? a.title : a.name;
+      const itemB = 'title' in b ? b.title : b.name;
       return itemA.localeCompare(itemB);
     }
     return 0;
   });
 
   const filteredResources =
-    filteredType === 'all'
+    filteredType === 'ALL'
       ? sortedResources
       : sortedResources.filter((resource) => resource.type === filteredType);
   const resourcesToDisplay = filteredResources.slice(0, itemsCount);
@@ -342,9 +340,11 @@ export const Resources = ({ resources, initialSort = 'title' }: Props) => {
             className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden"
             ref={listRef}
           >
-            {resourcesToDisplay.map((ressource) => {
-              const component = getCardComponent(ressource);
-              return <li key={ressource.id}>{component}</li>;
+            {resourcesToDisplay.map((resource) => {
+              const component = getCardComponent(resource);
+              return (
+                <li key={`${resource.type}-${resource.id}`}>{component}</li>
+              );
             })}
           </ul>
         </div>

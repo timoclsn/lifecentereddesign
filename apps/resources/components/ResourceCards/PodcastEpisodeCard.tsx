@@ -20,82 +20,78 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
   return (
     <Card
       resourceId={podcastEpisode.id}
+      resourceType={podcastEpisode.type}
       variant="sand"
-      type="Podcast Episode"
+      displayType="Podcast Episode"
       onTypeClick={
         inContext
           ? () => {
               dispatch({
                 type: 'FILTER',
                 filterType:
-                  filteredType === 'podcastEpisode' ? 'all' : 'podcastEpisode',
+                  filteredType === 'PODCASTEPISODE' ? 'ALL' : 'PODCASTEPISODE',
               });
             }
           : undefined
       }
-      title={podcastEpisode.fields.title}
+      title={podcastEpisode.title}
       metaInfos={[
-        ...(podcastEpisode.fields.podcast
+        ...(podcastEpisode.podcast
           ? [
               {
-                text: podcastEpisode.fields.podcast
-                  .map((podcast) => podcast?.fields.title)
-                  .join(', '),
+                text: podcastEpisode.podcast.title,
                 icon: UilMicrophone,
               },
             ]
           : []),
-        ...(podcastEpisode.fields['podcast-not-relevant']
+        ...(podcastEpisode.podcastPlain
           ? [
               {
-                text: podcastEpisode.fields['podcast-not-relevant'],
+                text: podcastEpisode.podcastPlain,
                 icon: UilMicrophone,
               },
             ]
           : []),
-        ...(podcastEpisode.fields.guest
+        ...(podcastEpisode.guests
           ? [
               {
-                text: podcastEpisode.fields.guest
-                  .map((guest) => guest?.fields.name)
+                text: podcastEpisode.guests
+                  .map((guest) => guest.name)
                   .join(', '),
                 icon: UilGrin,
               },
             ]
           : []),
-        ...(podcastEpisode.fields.date
+        ...(podcastEpisode.date
           ? [
               {
-                text: new Date(podcastEpisode.fields.date).toLocaleDateString(
-                  'en'
-                ),
+                text: new Date(podcastEpisode.date).toLocaleDateString('en'),
                 icon: UilCalendarAlt,
               },
             ]
           : []),
-        ...(podcastEpisode.fields.duration
+        ...(podcastEpisode.duration
           ? [
               {
-                text:
-                  Math.round(podcastEpisode.fields.duration / 60).toString() +
-                  ' min',
+                text: `${podcastEpisode.duration} min`,
                 icon: UilClockThree,
               },
             ]
           : []),
       ]}
-      category={podcastEpisode.fields.category?.at(0)?.fields.name}
+      category={podcastEpisode.category?.name}
       tags={[
-        ...(podcastEpisode.fields.link
+        ...(podcastEpisode.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(podcastEpisode.fields.link),
-                url: podcastEpisode.fields.link,
+                text: getHostname(podcastEpisode.link),
+                url: podcastEpisode.link,
               },
             ]
           : []),
       ]}
+      likes={podcastEpisode.likes}
       showType
     />
   );

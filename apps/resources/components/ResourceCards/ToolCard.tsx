@@ -14,32 +14,34 @@ export const ToolCard = ({ tool }: Props) => {
   return (
     <Card
       resourceId={tool.id}
+      resourceType={tool.type}
       variant="stone"
-      type="Tool"
+      displayType="Tool"
       onTypeClick={
         inContext
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'tool' ? 'all' : 'tool',
+                filterType: filteredType === 'TOOL' ? 'ALL' : 'TOOL',
               });
             }
           : undefined
       }
-      title={tool.fields.name}
-      category={tool.fields.category?.at(0)?.fields.name}
+      title={tool.name}
+      category={tool.name}
       tags={[
-        ...(tool.fields.link
+        ...(tool.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(tool.fields.link),
-                url: tool.fields.link,
+                text: getHostname(tool.link),
+                url: tool.link,
               },
             ]
           : []),
       ]}
-      description={tool.fields.description}
+      description={tool.description}
+      likes={tool.likes}
       showType
     />
   );

@@ -20,69 +20,67 @@ export const BookCard = ({ book }: Props) => {
   return (
     <Card
       resourceId={book.id}
+      resourceType={book.type}
       variant="oak"
-      type="Book"
+      displayType="Book"
       onTypeClick={
         inContext
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'book' ? 'all' : 'book',
+                filterType: filteredType === 'BOOK' ? 'ALL' : 'BOOK',
               });
             }
           : undefined
       }
-      title={book.fields.title}
+      title={book.title}
       metaInfos={[
-        ...(book.fields.authors
+        ...(book.authors
           ? [
               {
-                text: book.fields.authors
-                  .map((author) => author?.fields.name)
-                  .join(', '),
+                text: book.authors.map((author) => author.name).join(', '),
                 icon: UilBookReader,
               },
             ]
           : []),
-        ...(book.fields['publishing-date']
+        ...(book.publishingDate
           ? [
               {
-                text: new Date(
-                  book.fields['publishing-date']
-                ).toLocaleDateString('en'),
+                text: new Date(book.publishingDate).toLocaleDateString('en'),
                 icon: UilCalendarAlt,
               },
             ]
           : []),
-        ...(book.fields.publisher
+        ...(book.publisher
           ? [
               {
-                text: book.fields.publisher,
+                text: book.publisher,
                 icon: UilBooks,
               },
             ]
           : []),
-        ...(book.fields.isbn
+        ...(book.isbn
           ? [
               {
-                text: book.fields.isbn,
+                text: book.isbn,
                 icon: UilQrcodeScan,
               },
             ]
           : []),
       ]}
-      category={book.fields.category?.at(0)?.fields.name}
+      category={book.category?.name}
       tags={[
-        ...(book.fields.link
+        ...(book.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(book.fields.link),
-                url: book.fields.link,
+                text: getHostname(book.link),
+                url: book.link,
               },
             ]
           : []),
       ]}
+      likes={book.likes}
       showType
     />
   );

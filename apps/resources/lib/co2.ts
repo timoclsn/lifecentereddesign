@@ -4,7 +4,7 @@ import { fetcher } from './fetcher';
 const env = z.string().parse(process.env.NODE_ENV);
 
 const demoResult = {
-  co2: 0.04,
+  co2: 0.11,
   cleanerThan: 96,
 };
 
@@ -12,7 +12,7 @@ export type CO2 = typeof demoResult;
 
 const wccSchema = z.object({
   url: z.string().url(),
-  green: z.boolean(),
+  green: z.union([z.boolean(), z.string()]),
   bytes: z.number(),
   cleanerThan: z.number(),
   statistics: z.object({

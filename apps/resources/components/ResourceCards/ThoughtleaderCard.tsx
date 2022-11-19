@@ -1,5 +1,5 @@
 import { UilBriefcaseAlt, UilLinkAlt } from '@iconscout/react-unicons';
-import { Thoughtleader } from '../../lib/content';
+import { Thoughtleader } from 'lib/content';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
 import { useResources } from '../Resources';
@@ -14,44 +14,46 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
   return (
     <Card
       resourceId={thoughtleader.id}
+      resourceType={thoughtleader.type}
       variant="evening"
-      type="Thoughtleader"
+      displayType="Thoughtleader"
       onTypeClick={
         inContext
           ? () => {
               dispatch({
                 type: 'FILTER',
                 filterType:
-                  filteredType === 'thoughtleader' ? 'all' : 'thoughtleader',
+                  filteredType === 'THOUGHTLEADER' ? 'ALL' : 'THOUGHTLEADER',
               });
             }
           : undefined
       }
-      title={thoughtleader.fields.name}
+      title={thoughtleader.name}
       metaInfos={[
-        ...(thoughtleader.fields['job-description']
+        ...(thoughtleader.jobDescription
           ? [
               {
-                text: thoughtleader.fields['job-description'],
+                text: thoughtleader.jobDescription,
                 icon: UilBriefcaseAlt,
               },
             ]
           : []),
       ]}
-      {...(thoughtleader.fields.category && {
-        category: thoughtleader.fields.category?.at(0)?.fields.name,
+      {...(thoughtleader.category && {
+        category: thoughtleader.category.name,
       })}
       tags={[
-        ...(thoughtleader.fields.link
+        ...(thoughtleader.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(thoughtleader.fields.link),
-                url: thoughtleader.fields.link,
+                text: getHostname(thoughtleader.link),
+                url: thoughtleader.link,
               },
             ]
           : []),
       ]}
+      likes={thoughtleader.likes}
       showType
     />
   );

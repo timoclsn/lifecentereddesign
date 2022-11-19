@@ -14,32 +14,34 @@ export const MagazineCard = ({ magazine }: Props) => {
   return (
     <Card
       resourceId={magazine.id}
+      resourceType={magazine.type}
       variant="sky"
-      type="Magazine"
+      displayType="Magazine"
       onTypeClick={
         inContext
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'magazine' ? 'all' : 'magazine',
+                filterType: filteredType === 'MAGAZINE' ? 'ALL' : 'MAGAZINE',
               });
             }
           : undefined
       }
-      title={magazine.fields.name}
-      category={magazine.fields.category?.at(0)?.fields.name}
+      title={magazine.name}
+      category={magazine.category?.name}
       tags={[
-        ...(magazine.fields.link
+        ...(magazine.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(magazine.fields.link),
-                url: magazine.fields.link,
+                text: getHostname(magazine.link),
+                url: magazine.link,
               },
             ]
           : []),
       ]}
-      description={magazine.fields.description}
+      description={magazine.description}
+      likes={magazine.likes}
       showType
     />
   );
