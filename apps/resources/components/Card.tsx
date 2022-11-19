@@ -56,10 +56,7 @@ export const Card = ({
             if (!oldData) return oldData;
 
             return oldData.map((data) => {
-              if (
-                data.id === newData.id &&
-                data.categoryId === newData.categoryId
-              ) {
+              if (data.id === newData.id && data.type === newData.type) {
                 return { ...data, likes: newData.likes };
               }
               return data;
