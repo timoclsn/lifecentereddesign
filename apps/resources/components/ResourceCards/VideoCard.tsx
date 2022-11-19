@@ -34,7 +34,7 @@ export const VideoCard = ({ video }: Props) => {
       }
       title={video.title}
       metaInfos={[
-        ...(video.creators
+        ...(video.creators.length
           ? [
               {
                 text: video.creators.map((creator) => creator.name).join(', '),

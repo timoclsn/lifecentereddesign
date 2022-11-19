@@ -30,7 +30,7 @@ export const NewsletterCard = ({ newsletter }: Props) => {
       }
       title={newsletter.name}
       metaInfos={[
-        ...(newsletter.authors
+        ...(newsletter.authors.length
           ? [
               {
                 text: newsletter.authors

@@ -29,7 +29,7 @@ export const SlideCard = ({ slide }: Props) => {
       }
       title={slide.title}
       metaInfos={[
-        ...(slide.authors
+        ...(slide.authors.length
           ? [
               {
                 text: slide.authors.map((author) => author.name).join(', '),

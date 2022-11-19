@@ -29,18 +29,18 @@ export const PodcastCard = ({ podcast }: Props) => {
       }
       title={podcast.title}
       metaInfos={[
-        ...(podcast.hostsPlain
+        ...(podcast.hosts.length
           ? [
               {
-                text: podcast.hostsPlain,
+                text: podcast.hosts.map((host) => host.name).join(', '),
                 icon: UilGrin,
               },
             ]
           : []),
-        ...(podcast.hosts
+        ...(podcast.hostsPlain
           ? [
               {
-                text: podcast.hosts.map((host) => host.name).join(', '),
+                text: podcast.hostsPlain,
                 icon: UilGrin,
               },
             ]

@@ -35,7 +35,7 @@ export const BookCard = ({ book }: Props) => {
       }
       title={book.title}
       metaInfos={[
-        ...(book.authors
+        ...(book.authors.length
           ? [
               {
                 text: book.authors.map((author) => author.name).join(', '),

@@ -34,7 +34,7 @@ export const ArticleCard = ({ article }: Props) => {
       }
       title={article.title}
       metaInfos={[
-        ...(article.authors
+        ...(article.authors.length
           ? [
               {
                 text: article.authors.map((author) => author?.name).join(', '),
