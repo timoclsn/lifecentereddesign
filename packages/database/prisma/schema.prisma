@@ -9,12 +9,6 @@ generator client {
   previewFeatures = ["referentialIntegrity"]
 }
 
-// Legacy
-model ResourceMeta {
-  id    String @id @db.VarChar(255)
-  likes Int    @default(0)
-}
-
 // Metadata
 model Topic {
   id   Int    @id @default(autoincrement())
