@@ -42,29 +42,25 @@ export const Card = ({
   likes,
 }: Props) => {
   const utils = trpc.useContext();
-  const mutation = trpc.resources.like.useMutation();
+  const mutation = trpc.resources.like.useMutation({
+    onMutate: ({ id, type }) => {
+      const oldData = utils.resources.get.getData();
+      const newData = oldData?.map((data) => {
+        if (data.id === id && data.type === type) {
+          return { ...data, likes: data.likes + 1 };
+        }
+        return data;
+      });
+      utils.resources.get.setData(undefined, newData);
+      return { oldData };
+    },
+    onError: (error, { id, type }, context) => {
+      utils.resources.get.setData(undefined, context?.oldData);
+    },
+  });
 
   const likeResource = () => {
-    mutation.mutate(
-      {
-        id: resourceId,
-        type: resourceType,
-      },
-      {
-        onSuccess: (newData) => {
-          utils.resources.get.setData(undefined, (oldData) => {
-            if (!oldData) return oldData;
-
-            return oldData.map((data) => {
-              if (data.id === newData.id && data.type === newData.type) {
-                return { ...data, likes: newData.likes };
-              }
-              return data;
-            });
-          });
-        },
-      }
-    );
+    mutation.mutate({ id: resourceId, type: resourceType });
   };
 
   const getType = () => {
