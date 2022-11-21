@@ -54,6 +54,13 @@ export const Card = ({
       utils.resources.get.setData(undefined, newData);
       return { oldData };
     },
+    onSuccess: (data) => {
+      splitbee.track('Like resource', {
+        type: data.type,
+        // @ts-ignore
+        name: data.name ? data.name : data.title,
+      });
+    },
     onError: (error, { id, type }, context) => {
       utils.resources.get.setData(undefined, context?.oldData);
     },

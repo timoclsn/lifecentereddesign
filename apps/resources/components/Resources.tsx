@@ -123,16 +123,22 @@ type Action =
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'FILTER':
+      splitbee.track('Filter resources', action.filterType);
       return {
         ...state,
         filteredType: action.filterType,
       };
     case 'SHOW_MORE':
+      splitbee.track(
+        'Show more resources',
+        state.itemsCount + action.itemsCount
+      );
       return {
         ...state,
         itemsCount: state.itemsCount + action.itemsCount,
       };
     case 'SORT':
+      splitbee.track('Sort resources', action.sortBy);
       return {
         ...state,
         sort: action.sortBy,
