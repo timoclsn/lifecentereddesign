@@ -1,5 +1,10 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { UilAngleDown, UilArrowDown, UilCheck } from '@iconscout/react-unicons';
+import {
+  UilAngleDown,
+  UilArrowDown,
+  UilCheck,
+  UilSearch,
+} from '@iconscout/react-unicons';
 import {
   Button,
   Select,
@@ -13,9 +18,11 @@ import {
   SelectValue,
   SelectViewport,
 } from 'design-system';
+import { matchSorter } from 'match-sorter';
 import {
   createContext,
   Dispatch,
+  startTransition,
   useContext,
   useEffect,
   useReducer,
@@ -106,6 +113,8 @@ interface State {
   itemsCount: number;
   sort: Sort;
   inContext: boolean;
+  searchInput: string;
+  searchQuery: string;
 }
 
 const initalState: State = {
@@ -113,13 +122,17 @@ const initalState: State = {
   itemsCount: 12,
   sort: 'title',
   inContext: false,
+  searchInput: '',
+  searchQuery: '',
 };
 
 type Action =
   | { type: 'FILTER'; filterType: Filter }
   | { type: 'SHOW_MORE'; itemsCount: number }
   | { type: 'SORT'; sortBy: Sort }
-  | { type: 'IN_CONTEXT' };
+  | { type: 'IN_CONTEXT' }
+  | { type: 'TYPE_SEARCH'; value: string }
+  | { type: 'SEARCH' };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -150,6 +163,16 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         inContext: true,
       };
+    case 'TYPE_SEARCH':
+      return {
+        ...state,
+        searchInput: action.value,
+      };
+    case 'SEARCH':
+      return {
+        ...state,
+        searchQuery: state.searchInput,
+      };
     default:
       throw new Error('Unknown action type');
   }
@@ -172,7 +195,14 @@ interface Props {
 export const Resources = ({ initialSort = 'title', filter }: Props) => {
   initalState.sort = initialSort;
   const [state, dispatch] = useReducer(reducer, initalState);
-  const { filteredType, itemsCount, sort, inContext } = state;
+  const {
+    filteredType,
+    itemsCount,
+    sort,
+    inContext,
+    searchInput,
+    searchQuery,
+  } = state;
 
   const [listRef] = useAutoAnimate<HTMLUListElement>();
   const buttonsRef = useRef<Map<string, HTMLLIElement> | null>(null);
@@ -203,10 +233,27 @@ export const Resources = ({ initialSort = 'title', filter }: Props) => {
     return 0;
   });
 
+  const searchedResources = matchSorter(sortedResources, searchQuery, {
+    keys: [
+      'title',
+      'name',
+      'authors.*.name',
+      'authorsPlain',
+      'description',
+      'creators.*.name',
+      'creatorsPlain',
+      'hosts.*.name',
+      'hostsPlain',
+      'podcast.*.title',
+      'podcastPlain',
+      'guests.*.name',
+    ],
+  });
+
   const filteredResources =
     filteredType === 'all'
-      ? sortedResources
-      : sortedResources.filter((resource) => resource.type === filteredType);
+      ? searchedResources
+      : searchedResources.filter((resource) => resource.type === filteredType);
   const resourcesToDisplay = filteredResources.slice(0, itemsCount);
   const showShowMoreBtn = filteredResources.length > itemsCount;
 
@@ -277,7 +324,28 @@ export const Resources = ({ initialSort = 'title', filter }: Props) => {
               </li>
             ))}
           </ul>
-          <div className="flex flex-col sm:flex-row gap-6 justify-end">
+          <div className="flex flex-col sm:flex-row gap-6 justify-end items-center">
+            <div className="relative flex items-center">
+              <input
+                placeholder="Name, Description…"
+                value={searchInput}
+                onChange={(e) => {
+                  dispatch({
+                    type: 'TYPE_SEARCH',
+                    value: e.target.value,
+                  });
+                  startTransition(() => {
+                    dispatch({
+                      type: 'SEARCH',
+                    });
+                  });
+                }}
+                className="rounded-full bg-transparent ring-2 ring-text-primary px-4 py-2 outline-none focus-visible:ring"
+              />
+              <div className="absolute top-0 right-0 flex h-full items-center justify-center px-4">
+                <UilSearch className="opacity-60" size="16" />
+              </div>
+            </div>
             {/* Filter select */}
             <div className="flex gap-4 sm:gap-6 sm:hidden">
               <span className="whitespace-nowrap text-text-secondary">

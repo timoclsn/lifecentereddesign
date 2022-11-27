@@ -87,6 +87,7 @@ importers:
       eslint: 8.28.0
       eslint-config-custom: workspace:*
       globby: 13.1.2
+      match-sorter: 6.3.1
       next: 13.0.5
       next-contentlayer: 0.2.9
       next-superjson-plugin: 0.4.9
@@ -117,6 +118,7 @@ importers:
       contentlayer: 0.2.9
       database: link:../../packages/database
       design-system: link:../../packages/design-system
+      match-sorter: 6.3.1
       next: 13.0.5_biqbaboplfbrettd7655fr4n2y
       next-contentlayer: 0.2.9_7iuvftg57tblwyxclfkwku5xo4
       next-superjson-plugin: 0.4.9_o7ninycgoz2lf73je52p7wq4ja
@@ -3814,6 +3816,13 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
+  /match-sorter/6.3.1:
+    resolution: {integrity: sha512-mxybbo3pPNuA+ZuCUhm5bwNkXrJTbsk5VWbR5wiwz/GC6LIiegBGn2w3O08UG/jdbYLinw51fSQ5xNU1U3MgBw==}
+    dependencies:
+      '@babel/runtime': 7.20.1
+      remove-accents: 0.4.2
+    dev: false
+
   /mdast-util-definitions/5.1.1:
     resolution: {integrity: sha512-rQ+Gv7mHttxHOBx2dkF4HWTg+EE+UR78ptQWDylzPKaQuVGdG4HIoY3SrS/pCp80nZ04greFvXbVFHT+uf0JVQ==}
     dependencies:
@@ -5005,6 +5014,10 @@ packages:
       '@types/mdast': 3.0.10
       mdast-util-to-hast: 12.2.4
       unified: 10.1.2
+    dev: false
+
+  /remove-accents/0.4.2:
+    resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
     dev: false
 
   /repeat-string/1.6.1:
