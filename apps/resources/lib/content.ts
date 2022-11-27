@@ -2,7 +2,7 @@ import { prisma } from './prisma';
 
 export type Book = Awaited<ReturnType<typeof getBooks>>[number];
 
-const getBooks = ({ from, till }: Filter) => {
+const getBooks = ({ from, till }: QueryFilter) => {
   return prisma.book.findMany({
     include: {
       authors: true,
@@ -22,7 +22,7 @@ const getBooks = ({ from, till }: Filter) => {
 
 export type Article = Awaited<ReturnType<typeof getArticles>>[number];
 
-const getArticles = ({ from, till }: Filter) => {
+const getArticles = ({ from, till }: QueryFilter) => {
   return prisma.article.findMany({
     include: {
       authors: true,
@@ -42,7 +42,7 @@ const getArticles = ({ from, till }: Filter) => {
 
 export type Thoughtleader = Awaited<ReturnType<typeof getThoghleaders>>[number];
 
-const getThoghleaders = ({ from, till }: Filter) => {
+const getThoghleaders = ({ from, till }: QueryFilter) => {
   return prisma.thoughtleader.findMany({
     include: {
       category: true,
@@ -63,7 +63,7 @@ export type PodcastEpisode = Awaited<
   ReturnType<typeof getPodcastEpisodes>
 >[number];
 
-const getPodcastEpisodes = ({ from, till }: Filter) => {
+const getPodcastEpisodes = ({ from, till }: QueryFilter) => {
   return prisma.podcastEpisode.findMany({
     include: {
       guests: true,
@@ -84,7 +84,7 @@ const getPodcastEpisodes = ({ from, till }: Filter) => {
 
 export type Podcast = Awaited<ReturnType<typeof getPodcasts>>[number];
 
-const getPodcasts = ({ from, till }: Filter) => {
+const getPodcasts = ({ from, till }: QueryFilter) => {
   return prisma.podcast.findMany({
     include: {
       hosts: true,
@@ -104,7 +104,7 @@ const getPodcasts = ({ from, till }: Filter) => {
 
 export type Directory = Awaited<ReturnType<typeof getDirectories>>[number];
 
-const getDirectories = ({ from, till }: Filter) => {
+const getDirectories = ({ from, till }: QueryFilter) => {
   return prisma.directory.findMany({
     include: {
       category: true,
@@ -123,7 +123,7 @@ const getDirectories = ({ from, till }: Filter) => {
 
 export type Video = Awaited<ReturnType<typeof getVideos>>[number];
 
-const getVideos = ({ from, till }: Filter) => {
+const getVideos = ({ from, till }: QueryFilter) => {
   return prisma.video.findMany({
     include: {
       creators: true,
@@ -143,7 +143,7 @@ const getVideos = ({ from, till }: Filter) => {
 
 export type Tool = Awaited<ReturnType<typeof getTools>>[number];
 
-const getTools = ({ from, till }: Filter) => {
+const getTools = ({ from, till }: QueryFilter) => {
   return prisma.tool.findMany({
     include: {
       category: true,
@@ -162,7 +162,7 @@ const getTools = ({ from, till }: Filter) => {
 
 export type Community = Awaited<ReturnType<typeof getCommunities>>[number];
 
-const getCommunities = ({ from, till }: Filter) => {
+const getCommunities = ({ from, till }: QueryFilter) => {
   return prisma.community.findMany({
     include: {
       category: true,
@@ -181,7 +181,7 @@ const getCommunities = ({ from, till }: Filter) => {
 
 export type Course = Awaited<ReturnType<typeof getCourses>>[number];
 
-const getCourses = ({ from, till }: Filter) => {
+const getCourses = ({ from, till }: QueryFilter) => {
   return prisma.course.findMany({
     include: {
       category: true,
@@ -200,7 +200,7 @@ const getCourses = ({ from, till }: Filter) => {
 
 export type Example = Awaited<ReturnType<typeof getExamples>>[number];
 
-const getExamples = ({ from, till }: Filter) => {
+const getExamples = ({ from, till }: QueryFilter) => {
   return prisma.example.findMany({
     include: {
       category: true,
@@ -219,7 +219,7 @@ const getExamples = ({ from, till }: Filter) => {
 
 export type Agency = Awaited<ReturnType<typeof getAgencies>>[number];
 
-const getAgencies = ({ from, till }: Filter) => {
+const getAgencies = ({ from, till }: QueryFilter) => {
   return prisma.agency.findMany({
     include: {
       category: true,
@@ -238,7 +238,7 @@ const getAgencies = ({ from, till }: Filter) => {
 
 export type Slide = Awaited<ReturnType<typeof getSlides>>[number];
 
-const getSlides = ({ from, till }: Filter) => {
+const getSlides = ({ from, till }: QueryFilter) => {
   return prisma.slide.findMany({
     include: {
       authors: true,
@@ -258,7 +258,7 @@ const getSlides = ({ from, till }: Filter) => {
 
 export type Magazine = Awaited<ReturnType<typeof getMagazines>>[number];
 
-const getMagazines = ({ from, till }: Filter) => {
+const getMagazines = ({ from, till }: QueryFilter) => {
   return prisma.magazine.findMany({
     include: {
       category: true,
@@ -277,7 +277,7 @@ const getMagazines = ({ from, till }: Filter) => {
 
 export type Newsletter = Awaited<ReturnType<typeof getNewsletters>>[number];
 
-const getNewsletters = ({ from, till }: Filter) => {
+const getNewsletters = ({ from, till }: QueryFilter) => {
   return prisma.newsletter.findMany({
     include: {
       authors: true,
@@ -296,14 +296,17 @@ const getNewsletters = ({ from, till }: Filter) => {
 };
 
 export type Resources = Awaited<ReturnType<typeof getAllResources>>;
-export type ContentType = Resources[0]['type'];
+export type Resource = Resources[number];
+export type ContentType = Resource['type'];
 
-export interface Filter {
+export interface QueryFilter {
   from?: Date;
   till?: Date;
+  limit?: number;
+  sort?: 'date' | 'title' | 'likes';
 }
 
-export const getAllResources = async (filter: Filter) => {
+export const getAllResources = async (filter: QueryFilter) => {
   const resources = await Promise.all([
     getBooks(filter),
     getThoghleaders(filter),
@@ -322,177 +325,47 @@ export const getAllResources = async (filter: Filter) => {
     getNewsletters(filter),
   ]);
 
-  return resources.flat();
+  return resources
+    .flat()
+    .sort((a, b) => {
+      if (filter.sort === 'date') {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      } else if (filter.sort === 'title') {
+        const itemA = 'title' in a ? a.title : a.name;
+        const itemB = 'title' in b ? b.title : b.name;
+        return itemA.localeCompare(itemB);
+      } else if (filter.sort === 'likes') {
+        return b.likes - a.likes;
+      }
+      return 0;
+    })
+    .slice(0, filter.limit);
 };
 
 export const likeResource = async (id: number, type: ContentType) => {
-  switch (type) {
-    case 'AGENCY':
-      return await prisma.agency.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    case 'ARTICLE':
-      return await prisma.article.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    case 'BOOK':
-      return await prisma.book.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    case 'COMMUNITY':
-      return await prisma.community.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    case 'COURSE':
-      return await prisma.course.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    case 'DIRECTORY':
-      return await prisma.directory.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    case 'EXAMPLE':
-      return await prisma.example.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    case 'MAGAZINE':
-      return await prisma.magazine.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    case 'NEWSLETTER':
-      return await prisma.newsletter.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    case 'PODCAST':
-      return await prisma.podcast.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    case 'PODCASTEPISODE':
-      return await prisma.podcastEpisode.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    case 'SLIDE':
-      return await prisma.slide.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    case 'THOUGHTLEADER':
-      return await prisma.thoughtleader.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    case 'TOOL':
-      return await prisma.tool.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    case 'VIDEO':
-      return await prisma.video.update({
-        where: {
-          id: id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    default:
-      throw new Error('Unknown ContentType');
-  }
+  // @ts-ignore
+  return (await prisma[type].update({
+    where: {
+      id: id,
+    },
+    data: {
+      likes: {
+        increment: 1,
+      },
+    },
+  })) as Resource;
+};
+
+export const getResourceLikes = async (id: number, type: ContentType) => {
+  // @ts-ignore
+  return (await prisma[type].findUnique({
+    where: {
+      id: id,
+    },
+    select: {
+      likes: true,
+    },
+  })) as { likes: number };
 };

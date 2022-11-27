@@ -28,7 +28,7 @@ export const BookCard = ({ book }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'BOOK' ? 'ALL' : 'BOOK',
+                filterType: filteredType === 'book' ? 'all' : 'book',
               });
             }
           : undefined
@@ -80,7 +80,6 @@ export const BookCard = ({ book }: Props) => {
             ]
           : []),
       ]}
-      likes={book.likes}
       showType
     />
   );

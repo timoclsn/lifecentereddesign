@@ -52,28 +52,28 @@ model Category {
 }
 
 enum Type {
-  THOUGHTLEADER
-  ARTICLE
-  BOOK
-  PODCAST
-  PODCASTEPISODE
-  DIRECTORY
-  VIDEO
-  TOOL
-  COMMUNITY
-  COURSE
-  EXAMPLE
-  AGENCY
-  SLIDE
-  MAGAZINE
-  NEWSLETTER
+  thoughtleader
+  article
+  book
+  podcast
+  podcastEpisode
+  directory
+  video
+  tool
+  community
+  course
+  example
+  agency
+  slide
+  magazine
+  newsletter
 }
 
 // Resources
 model Thoughtleader {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(THOUGHTLEADER)
+  type      Type     @default(thoughtleader)
   name      String   @db.VarChar(255)
   likes     Int      @default(0)
 
@@ -94,7 +94,7 @@ model Thoughtleader {
 model Article {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(ARTICLE)
+  type      Type     @default(article)
   likes     Int      @default(0)
 
   title        String          @db.VarChar(255)
@@ -112,7 +112,7 @@ model Article {
 model Book {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(BOOK)
+  type      Type     @default(book)
   likes     Int      @default(0)
 
   title String @db.VarChar(255)
@@ -131,7 +131,7 @@ model Book {
 model Podcast {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(PODCAST)
+  type      Type     @default(podcast)
   likes     Int      @default(0)
 
   title      String          @db.VarChar(255)
@@ -149,7 +149,7 @@ model Podcast {
 model PodcastEpisode {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(PODCASTEPISODE)
+  type      Type     @default(podcastEpisode)
   likes     Int      @default(0)
 
   title        String          @db.VarChar(255)
@@ -169,7 +169,7 @@ model PodcastEpisode {
 model Directory {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(DIRECTORY)
+  type      Type     @default(directory)
   likes     Int      @default(0)
 
   name        String  @db.VarChar(255)
@@ -184,7 +184,7 @@ model Directory {
 model Video {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(VIDEO)
+  type      Type     @default(video)
   likes     Int      @default(0)
 
   title         String          @db.VarChar(255)
@@ -202,7 +202,7 @@ model Video {
 model Tool {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(TOOL)
+  type      Type     @default(tool)
   likes     Int      @default(0)
 
   name        String  @db.VarChar(255)
@@ -217,7 +217,7 @@ model Tool {
 model Community {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(COMMUNITY)
+  type      Type     @default(community)
   likes     Int      @default(0)
 
   name        String  @db.VarChar(255)
@@ -232,7 +232,7 @@ model Community {
 model Course {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(COURSE)
+  type      Type     @default(course)
   likes     Int      @default(0)
 
   name        String  @db.VarChar(255)
@@ -247,7 +247,7 @@ model Course {
 model Example {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(EXAMPLE)
+  type      Type     @default(example)
   likes     Int      @default(0)
 
   name        String  @db.VarChar(255)
@@ -262,7 +262,7 @@ model Example {
 model Agency {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(AGENCY)
+  type      Type     @default(agency)
   likes     Int      @default(0)
 
   name        String  @db.VarChar(255)
@@ -277,7 +277,7 @@ model Agency {
 model Slide {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(SLIDE)
+  type      Type     @default(slide)
   likes     Int      @default(0)
 
   title        String          @db.VarChar(255)
@@ -295,7 +295,7 @@ model Slide {
 model Magazine {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(MAGAZINE)
+  type      Type     @default(magazine)
   likes     Int      @default(0)
 
   name        String  @db.VarChar(255)
@@ -310,7 +310,7 @@ model Magazine {
 model Newsletter {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  type      Type     @default(NEWSLETTER)
+  type      Type     @default(newsletter)
   likes     Int      @default(0)
 
   name         String          @db.VarChar(255)

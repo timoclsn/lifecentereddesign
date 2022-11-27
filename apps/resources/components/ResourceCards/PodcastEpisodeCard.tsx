@@ -29,7 +29,7 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
               dispatch({
                 type: 'FILTER',
                 filterType:
-                  filteredType === 'PODCASTEPISODE' ? 'ALL' : 'PODCASTEPISODE',
+                  filteredType === 'podcastEpisode' ? 'all' : 'podcastEpisode',
               });
             }
           : undefined
@@ -91,7 +91,6 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
             ]
           : []),
       ]}
-      likes={podcastEpisode.likes}
       showType
     />
   );

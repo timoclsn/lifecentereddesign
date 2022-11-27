@@ -22,7 +22,7 @@ export const SlideCard = ({ slide }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'SLIDE' ? 'ALL' : 'SLIDE',
+                filterType: filteredType === 'slide' ? 'all' : 'slide',
               });
             }
           : undefined
@@ -58,7 +58,6 @@ export const SlideCard = ({ slide }: Props) => {
             ]
           : []),
       ]}
-      likes={slide.likes}
       showType
     />
   );

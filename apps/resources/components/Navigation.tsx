@@ -15,17 +15,17 @@ export function Navigation() {
           </Link>
         </li>
         <li>
-          <Link
-            href="/about"
-            className={`text-text-secondary hover:underline${
-              pathname.includes('/about') ? ' underline' : ''
-            }`}
-          >
+          <Link href="/#about" className="hover:underline text-text-secondary ">
             <Text>About</Text>
           </Link>
         </li>
         <li>
-          <Link href="/#resources" className="hover:underline">
+          <Link
+            href="/resources"
+            className={`hover:underline${
+              pathname.includes('/resources') ? ' underline' : ''
+            }`}
+          >
             <Text weight="bold">Resources</Text>
           </Link>
         </li>

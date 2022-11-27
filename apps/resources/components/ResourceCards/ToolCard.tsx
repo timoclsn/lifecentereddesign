@@ -22,7 +22,7 @@ export const ToolCard = ({ tool }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'TOOL' ? 'ALL' : 'TOOL',
+                filterType: filteredType === 'tool' ? 'all' : 'tool',
               });
             }
           : undefined
@@ -41,7 +41,6 @@ export const ToolCard = ({ tool }: Props) => {
           : []),
       ]}
       description={tool.description}
-      likes={tool.likes}
       showType
     />
   );

@@ -1,28 +1,25 @@
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import { About } from 'components/About';
+import { allPages } from 'contentlayer/generated';
 import { getCO2Consumtion } from 'lib/co2';
 import { InferGetStaticPropsType } from 'next';
 import { appRouter } from 'server/routers/_app';
 import superjson from 'superjson';
-import { trpc } from 'utils/trpc';
 import { Header } from '../components/Header/Header';
 import { Layout } from '../components/Layout';
 import { NewResources } from '../components/NewResources/NewResources';
 import { Newsletter } from '../components/Newsletter/Newsletter';
-import { Resources } from '../components/Resources';
 
 export default function Home({
   co2Consumption,
+  content,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { data: resources } = trpc.resources.get.useQuery(undefined, {
-    enabled: false,
-  });
-
   return (
     <Layout co2Consumption={co2Consumption}>
       <Header />
-      {resources && <NewResources resources={resources} />}
+      <NewResources />
       <Newsletter />
-      {resources && <Resources resources={resources} />}
+      <About content={content} />
     </Layout>
   );
 }
@@ -30,16 +27,22 @@ export default function Home({
 export const getStaticProps = async () => {
   const co2Consumption = await getCO2Consumtion('lifecentereddesign.net');
 
+  const content = allPages.find((page) => page.title === 'About');
+  if (!content) {
+    throw new Error('About content not found');
+  }
+
   const ssg = createProxySSGHelpers({
     router: appRouter,
     ctx: {},
     transformer: superjson,
   });
 
-  await ssg.resources.get.prefetch();
+  await ssg.resources.list.prefetch({ sort: 'date', limit: 10 });
 
   return {
     props: {
+      content,
       trpcState: ssg.dehydrate(),
       co2Consumption,
     },

@@ -34,35 +34,35 @@ import { VideoCard } from './ResourceCards/VideoCard';
 
 export const getCardComponent = (resource: Resources[0]) => {
   switch (resource.type) {
-    case 'THOUGHTLEADER':
+    case 'thoughtleader':
       return <ThoughtleaderCard thoughtleader={resource as Thoughtleader} />;
-    case 'BOOK':
+    case 'book':
       return <BookCard book={resource as Book} />;
-    case 'ARTICLE':
+    case 'article':
       return <ArticleCard article={resource as Article} />;
-    case 'COURSE':
+    case 'course':
       return <CourseCard course={resource as Course} />;
-    case 'PODCAST':
+    case 'podcast':
       return <PodcastCard podcast={resource as Podcast} />;
-    case 'PODCASTEPISODE':
+    case 'podcastEpisode':
       return <PodcastEpisodeCard podcastEpisode={resource as PodcastEpisode} />;
-    case 'VIDEO':
+    case 'video':
       return <VideoCard video={resource as Video} />;
-    case 'TOOL':
+    case 'tool':
       return <ToolCard tool={resource as Tool} />;
-    case 'DIRECTORY':
+    case 'directory':
       return <DirectoryCard directory={resource as Directory} />;
-    case 'COMMUNITY':
+    case 'community':
       return <CommunityCard community={resource as Community} />;
-    case 'EXAMPLE':
+    case 'example':
       return <ExampleCard example={resource as Example} />;
-    case 'AGENCY':
+    case 'agency':
       return <AgencyCard agency={resource as Agency} />;
-    case 'SLIDE':
+    case 'slide':
       return <SlideCard slide={resource as Slide} />;
-    case 'MAGAZINE':
+    case 'magazine':
       return <MagazineCard magazine={resource as Magazine} />;
-    case 'NEWSLETTER':
+    case 'newsletter':
       return <NewsletterCard newsletter={resource as Newsletter} />;
     default:
       throw new Error('Unknown resource type');

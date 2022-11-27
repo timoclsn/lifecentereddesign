@@ -27,7 +27,7 @@ export const ArticleCard = ({ article }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'ARTICLE' ? 'ALL' : 'ARTICLE',
+                filterType: filteredType === 'article' ? 'all' : 'article',
               });
             }
           : undefined
@@ -79,7 +79,6 @@ export const ArticleCard = ({ article }: Props) => {
             ]
           : []),
       ]}
-      likes={article.likes}
       showType
     />
   );

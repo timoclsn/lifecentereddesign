@@ -4,12 +4,11 @@ import { Layout } from 'components/Layout';
 import { Heading } from 'design-system';
 import { IncomingMessage, ServerResponse } from 'http';
 import { getCO2Consumtion } from 'lib/co2';
-import { Filter } from 'lib/content';
+import { QueryFilter } from 'lib/content';
 import { InferGetServerSidePropsType } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { appRouter } from 'server/routers/_app';
 import superjson from 'superjson';
-import { trpc } from 'utils/trpc';
 import { z } from 'zod';
 import { Resources } from '../components/Resources';
 
@@ -18,10 +17,6 @@ const ResourcesPage = ({
   title,
   filter,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { data: resources } = trpc.resources.get.useQuery(filter, {
-    enabled: false,
-  });
-
   return (
     <Layout title="Resources" slug="about" co2Consumption={co2Consumption}>
       <div>
@@ -30,7 +25,7 @@ const ResourcesPage = ({
             {title}
           </Heading>
         )}
-        {resources && <Resources resources={resources} initialSort="date" />}
+        <Resources initialSort="date" filter={filter} />
       </div>
     </Layout>
   );
@@ -55,7 +50,7 @@ export const getServerSideProps = async ({
 
   const { title, from, till } = query;
 
-  const filter: Filter = {};
+  const filter: QueryFilter = {};
 
   if (from && !Array.isArray(from)) {
     const parsedFrom = z.date().safeParse(new Date(from));
@@ -71,11 +66,11 @@ export const getServerSideProps = async ({
     }
   }
 
-  await ssg.resources.get.prefetch(filter);
+  await ssg.resources.list.prefetch(filter);
 
   res.setHeader(
     'Cache-Control',
-    'public, s-maxage=60, stale-while-revalidate=31536000'
+    'public, s-maxage=3600, stale-while-revalidate'
   );
 
   return {

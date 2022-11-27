@@ -27,7 +27,7 @@ export const VideoCard = ({ video }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'VIDEO' ? 'ALL' : 'VIDEO',
+                filterType: filteredType === 'video' ? 'all' : 'video',
               });
             }
           : undefined
@@ -79,7 +79,6 @@ export const VideoCard = ({ video }: Props) => {
             ]
           : []),
       ]}
-      likes={video.likes}
       showType
     />
   );
