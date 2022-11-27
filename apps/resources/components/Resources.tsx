@@ -220,20 +220,7 @@ export const Resources = ({ initialSort = 'title', filter }: Props) => {
     dispatch({ type: 'IN_CONTEXT' });
   }
 
-  const sortedResources = resources.sort((a, b) => {
-    if (sort === 'date') {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    } else if (sort === 'title') {
-      const itemA = 'title' in a ? a.title : a.name;
-      const itemB = 'title' in b ? b.title : b.name;
-      return itemA.localeCompare(itemB);
-    } else if (sort === 'likes') {
-      return b.likes - a.likes;
-    }
-    return 0;
-  });
-
-  const searchedResources = matchSorter(sortedResources, searchQuery, {
+  const searchedResources = matchSorter(resources, searchQuery, {
     keys: [
       'title',
       'name',
@@ -250,10 +237,23 @@ export const Resources = ({ initialSort = 'title', filter }: Props) => {
     ],
   });
 
+  const sortedResources = searchedResources.sort((a, b) => {
+    if (sort === 'date') {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    } else if (sort === 'title') {
+      const itemA = 'title' in a ? a.title : a.name;
+      const itemB = 'title' in b ? b.title : b.name;
+      return itemA.localeCompare(itemB);
+    } else if (sort === 'likes') {
+      return b.likes - a.likes;
+    }
+    return 0;
+  });
+
   const filteredResources =
     filteredType === 'all'
-      ? searchedResources
-      : searchedResources.filter((resource) => resource.type === filteredType);
+      ? sortedResources
+      : sortedResources.filter((resource) => resource.type === filteredType);
   const resourcesToDisplay = filteredResources.slice(0, itemsCount);
   const showShowMoreBtn = filteredResources.length > itemsCount;
 
