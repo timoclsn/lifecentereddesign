@@ -31,7 +31,7 @@ export function ProfileCard({
 }: Props) {
   return (
     <Card variant={variant}>
-      <div className="flex items-start gap-6">
+      <div className="flex flex-col sm:flex-row items-start gap-6">
         <Image
           src={image}
           alt={`Portrait image of ${name}`}
