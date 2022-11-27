@@ -6,7 +6,7 @@ export function Footer() {
     <footer className="mt-auto flex justify-between gap-4 py-10 px-6 text-text-secondary sm:gap-10 sm:px-8 xl:px-10">
       <ul className="flex flex-col gap-4 sm:flex-row sm:gap-10">
         <li className="hover:underline">
-          <Link href="/about">
+          <Link href="/#about">
             <Text>About</Text>
           </Link>
         </li>
