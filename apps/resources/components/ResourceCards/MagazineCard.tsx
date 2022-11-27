@@ -22,7 +22,7 @@ export const MagazineCard = ({ magazine }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'MAGAZINE' ? 'ALL' : 'MAGAZINE',
+                filterType: filteredType === 'magazine' ? 'all' : 'magazine',
               });
             }
           : undefined
@@ -41,7 +41,6 @@ export const MagazineCard = ({ magazine }: Props) => {
           : []),
       ]}
       description={magazine.description}
-      likes={magazine.likes}
       showType
     />
   );

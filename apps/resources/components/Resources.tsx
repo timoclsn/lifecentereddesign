@@ -21,7 +21,8 @@ import {
   useReducer,
   useRef,
 } from 'react';
-import { ContentType, Resources as TResources } from '../lib/content';
+import { trpc } from 'utils/trpc';
+import { ContentType, QueryFilter } from '../lib/content';
 import { useOnScreen } from './useOnScreen';
 import { getCardComponent } from './utils';
 
@@ -33,71 +34,71 @@ type FilterList = Array<{
 const filterList: FilterList = [
   {
     text: 'All Resources',
-    type: 'ALL',
+    type: 'all',
   },
   {
     text: 'Thoughtleaders',
-    type: 'THOUGHTLEADER',
+    type: 'thoughtleader',
   },
   {
     text: 'Books',
-    type: 'BOOK',
+    type: 'book',
   },
   {
     text: 'Articles',
-    type: 'ARTICLE',
+    type: 'article',
   },
   {
     text: 'Courses',
-    type: 'COURSE',
+    type: 'course',
   },
   {
     text: 'Podcasts',
-    type: 'PODCAST',
+    type: 'podcast',
   },
   {
     text: 'Podcast Episodes',
-    type: 'PODCASTEPISODE',
+    type: 'podcastEpisode',
   },
   {
     text: 'Videos',
-    type: 'VIDEO',
+    type: 'video',
   },
   {
     text: 'Tools',
-    type: 'TOOL',
+    type: 'tool',
   },
   {
     text: 'Directories',
-    type: 'DIRECTORY',
+    type: 'directory',
   },
   {
     text: 'Communities',
-    type: 'COMMUNITY',
+    type: 'community',
   },
   {
     text: 'Examples',
-    type: 'EXAMPLE',
+    type: 'example',
   },
   {
     text: 'Agencies',
-    type: 'AGENCY',
+    type: 'agency',
   },
   {
     text: 'Slides',
-    type: 'SLIDE',
+    type: 'slide',
   },
   {
     text: 'Magazines',
-    type: 'MAGAZINE',
+    type: 'magazine',
   },
   {
     text: 'Newsletters',
-    type: 'NEWSLETTER',
+    type: 'newsletter',
   },
 ];
 
-type Filter = ContentType | 'ALL';
+type Filter = ContentType | 'all';
 type Sort = 'date' | 'title' | 'likes';
 
 interface State {
@@ -108,7 +109,7 @@ interface State {
 }
 
 const initalState: State = {
-  filteredType: 'ALL',
+  filteredType: 'all',
   itemsCount: 12,
   sort: 'title',
   inContext: false,
@@ -164,19 +165,25 @@ const ResourcesContext = createContext<{
 export const useResources = () => useContext(ResourcesContext);
 
 interface Props {
-  resources: TResources;
+  filter: QueryFilter;
   initialSort?: Sort;
 }
 
-export const Resources = ({ resources, initialSort = 'title' }: Props) => {
+export const Resources = ({ initialSort = 'title', filter }: Props) => {
   initalState.sort = initialSort;
   const [state, dispatch] = useReducer(reducer, initalState);
   const { filteredType, itemsCount, sort, inContext } = state;
+
   const [listRef] = useAutoAnimate<HTMLUListElement>();
   const buttonsRef = useRef<Map<string, HTMLLIElement> | null>(null);
   const filterBtnsRef = useRef<HTMLDivElement>(null);
-
   const isFilterVisible = useOnScreen(filterBtnsRef);
+
+  const { data } = trpc.resources.list.useQuery(filter, {
+    enabled: false,
+  });
+
+  const resources = data || [];
 
   // Flag so componets can check if they are rendered in context
   if (!inContext) {
@@ -197,7 +204,7 @@ export const Resources = ({ resources, initialSort = 'title' }: Props) => {
   });
 
   const filteredResources =
-    filteredType === 'ALL'
+    filteredType === 'all'
       ? sortedResources
       : sortedResources.filter((resource) => resource.type === filteredType);
   const resourcesToDisplay = filteredResources.slice(0, itemsCount);

@@ -1,20 +1,19 @@
 import { Heading } from 'design-system';
-import { Resources } from 'lib/content';
 import Image from 'next/image';
+import { trpc } from 'utils/trpc';
 import { getCardComponent } from '../utils';
 import groundImg from './ground.jpg';
 
-interface Props {
-  resources: Resources;
-}
+export const NewResources = () => {
+  const { data } = trpc.resources.list.useQuery(
+    {
+      sort: 'date',
+      limit: 10,
+    },
+    { enabled: false }
+  );
 
-export const NewResources = ({ resources }: Props) => {
-  const newResources = resources
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
-    .slice(0, 10);
+  const resources = data || [];
 
   return (
     <section id="new-resources" className="ml-[calc(50%-50vw)] w-screen">
@@ -27,7 +26,7 @@ export const NewResources = ({ resources }: Props) => {
           alt="Image of desert ground."
           className="hidden rounded-4xl sm:block flex-none snap-center"
         />
-        {newResources.map((resource) => {
+        {resources.map((resource) => {
           const component = getCardComponent(resource);
           return (
             <li

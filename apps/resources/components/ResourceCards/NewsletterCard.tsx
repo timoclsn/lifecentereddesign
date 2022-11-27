@@ -23,7 +23,7 @@ export const NewsletterCard = ({ newsletter }: Props) => {
               dispatch({
                 type: 'FILTER',
                 filterType:
-                  filteredType === 'NEWSLETTER' ? 'ALL' : 'NEWSLETTER',
+                  filteredType === 'newsletter' ? 'all' : 'newsletter',
               });
             }
           : undefined
@@ -62,7 +62,6 @@ export const NewsletterCard = ({ newsletter }: Props) => {
           : []),
       ]}
       description={newsletter.description}
-      likes={newsletter.likes}
       showType
     />
   );

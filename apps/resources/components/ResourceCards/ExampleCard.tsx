@@ -22,7 +22,7 @@ export const ExampleCard = ({ example }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'EXAMPLE' ? 'ALL' : 'EXAMPLE',
+                filterType: filteredType === 'example' ? 'all' : 'example',
               });
             }
           : undefined
@@ -41,7 +41,6 @@ export const ExampleCard = ({ example }: Props) => {
           : []),
       ]}
       description={example.description}
-      likes={example.likes}
       showType
     />
   );

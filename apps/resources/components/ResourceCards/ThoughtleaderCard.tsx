@@ -23,7 +23,7 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
               dispatch({
                 type: 'FILTER',
                 filterType:
-                  filteredType === 'THOUGHTLEADER' ? 'ALL' : 'THOUGHTLEADER',
+                  filteredType === 'thoughtleader' ? 'all' : 'thoughtleader',
               });
             }
           : undefined
@@ -53,7 +53,6 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
             ]
           : []),
       ]}
-      likes={thoughtleader.likes}
       showType
     />
   );

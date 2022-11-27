@@ -22,7 +22,7 @@ export const CommunityCard = ({ community }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER',
-                filterType: filteredType === 'COMMUNITY' ? 'ALL' : 'COMMUNITY',
+                filterType: filteredType === 'community' ? 'all' : 'community',
               });
             }
           : undefined
@@ -41,7 +41,6 @@ export const CommunityCard = ({ community }: Props) => {
           : []),
       ]}
       description={community.description}
-      likes={community.likes}
       showType
     />
   );

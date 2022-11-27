@@ -1,6 +1,11 @@
 import { UilHeart } from '@iconscout/react-unicons';
-import { CardProps, Heading, Tag, Text } from 'design-system';
-import { Card as CardPrimitive } from 'design-system';
+import {
+  Card as CardPrimitive,
+  CardProps,
+  Heading,
+  Tag,
+  Text,
+} from 'design-system';
 import { ContentType } from 'lib/content';
 import { trpc } from 'utils/trpc';
 
@@ -24,7 +29,6 @@ interface Props {
     url: string;
   }>;
   description?: string | null;
-  likes: number;
 }
 
 export const Card = ({
@@ -39,19 +43,34 @@ export const Card = ({
   category,
   tags,
   description,
-  likes,
 }: Props) => {
   const utils = trpc.useContext();
+
+  const { data, isLoading } = trpc.resources.likes.useQuery(
+    {
+      id: resourceId,
+      type: resourceType,
+    },
+    {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
   const mutation = trpc.resources.like.useMutation({
-    onMutate: ({ id, type }) => {
-      const oldData = utils.resources.get.getData();
-      const newData = oldData?.map((data) => {
-        if (data.id === id && data.type === type) {
-          return { ...data, likes: data.likes + 1 };
-        }
-        return data;
-      });
-      utils.resources.get.setData(undefined, newData);
+    onMutate: (input) => {
+      utils.resources.likes.cancel(input);
+
+      const oldData = utils.resources.likes.getData(input);
+      if (!oldData) return;
+
+      const newData = {
+        likes: oldData.likes + 1,
+      };
+
+      utils.resources.likes.setData(input, newData);
+
       return { oldData };
     },
     onSuccess: (data) => {
@@ -61,8 +80,14 @@ export const Card = ({
         name: data.name ? data.name : data.title,
       });
     },
-    onError: (error, { id, type }, context) => {
-      utils.resources.get.setData(undefined, context?.oldData);
+    onError: (err, input, context) => {
+      utils.resources.likes.setData(input, context?.oldData);
+    },
+    onSettled: () => {
+      utils.resources.likes.invalidate({
+        id: resourceId,
+        type: resourceType,
+      });
     },
   });
 
@@ -96,9 +121,10 @@ export const Card = ({
           <div>{showType && getType()}</div>
           <button
             onClick={likeResource}
-            className="flex gap-2 group transition-transform ease"
+            disabled={isLoading}
+            className="flex gap-2 group transition-transform ease disabled:opacity-80"
           >
-            {likes}
+            {data ? data.likes : '…'}
             <UilHeart className="group-hover:scale-110" />
           </button>
         </div>
