@@ -1,5 +1,5 @@
 import { UilBriefcaseAlt, UilLinkAlt } from '@iconscout/react-unicons';
-import { Thoughtleader } from 'lib/content';
+import { Thoughtleader } from 'lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
 import { useResources } from '../Resources';

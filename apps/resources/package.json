@@ -22,7 +22,6 @@
     "@trpc/next": "10.2.0",
     "@trpc/react-query": "10.2.0",
     "@trpc/server": "10.2.0",
-    "airtable": "0.11.5",
     "class-variance-authority": "0.3.0",
     "contentlayer": "0.2.9",
     "database": "workspace:*",

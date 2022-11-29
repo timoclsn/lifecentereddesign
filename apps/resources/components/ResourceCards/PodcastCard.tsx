@@ -1,5 +1,5 @@
 import { UilGrin, UilLinkAlt } from '@iconscout/react-unicons';
-import { Podcast } from '../../lib/content';
+import { Podcast } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
 import { useResources } from '../Resources';

@@ -5,7 +5,7 @@ import {
   UilCalendarAlt,
   UilClockThree,
 } from '@iconscout/react-unicons';
-import { PodcastEpisode } from '../../lib/content';
+import { PodcastEpisode } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
 import { useResources } from '../Resources';

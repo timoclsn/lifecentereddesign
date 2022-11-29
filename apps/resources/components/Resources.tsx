@@ -29,7 +29,7 @@ import {
   useRef,
 } from 'react';
 import { trpc } from 'utils/trpc';
-import { ContentType, QueryFilter } from '../lib/content';
+import { ContentType, QueryFilter } from '../lib/resources';
 import { useOnScreen } from './useOnScreen';
 import { getCardComponent } from './utils';
 
