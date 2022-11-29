@@ -1,24 +1,8 @@
-import { getAllResources, getResourceLikes, likeResource } from 'lib/content';
+import { getResourceLikes, getResources, likeResource, resourceTypes } from 'lib/resources';
 import { publicProcedure, router } from 'server/trpc';
 import { z } from 'zod';
 
-const typeSchema = z.enum([
-  'thoughtleader',
-  'article',
-  'book',
-  'podcast',
-  'podcastEpisode',
-  'directory',
-  'video',
-  'tool',
-  'community',
-  'course',
-  'example',
-  'agency',
-  'slide',
-  'magazine',
-  'newsletter',
-]);
+const typeSchema = z.enum(resourceTypes);
 
 export const resourcesRouter = router({
   list: publicProcedure
@@ -33,7 +17,7 @@ export const resourcesRouter = router({
         .optional()
     )
     .query(({ input }) => {
-      return getAllResources({
+      return getResources({
         from: input?.from,
         till: input?.till,
         sort: input?.sort,

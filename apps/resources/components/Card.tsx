@@ -6,7 +6,7 @@ import {
   Tag,
   Text,
 } from 'design-system';
-import { ContentType } from 'lib/content';
+import { ContentType } from 'lib/resources';
 import { trpc } from 'utils/trpc';
 
 interface Props {
@@ -73,11 +73,10 @@ export const Card = ({
 
       return { oldData };
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       splitbee.track('Like resource', {
-        type: data.type,
-        // @ts-ignore
-        name: data.name ? data.name : data.title,
+        type: resourceType,
+        name: title,
       });
     },
     onError: (err, input, context) => {

@@ -4,7 +4,7 @@ import { Layout } from 'components/Layout';
 import { Heading } from 'design-system';
 import { IncomingMessage, ServerResponse } from 'http';
 import { getCO2Consumtion } from 'lib/co2';
-import { QueryFilter } from 'lib/content';
+import { QueryFilter } from 'lib/resources';
 import { InferGetServerSidePropsType } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { appRouter } from 'server/routers/_app';

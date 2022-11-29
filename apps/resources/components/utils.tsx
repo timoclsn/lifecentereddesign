@@ -15,7 +15,7 @@ import {
   Thoughtleader,
   Tool,
   Video,
-} from 'lib/content';
+} from 'lib/resources';
 import { AgencyCard } from './ResourceCards/AgencyCard';
 import { ArticleCard } from './ResourceCards/ArticleCard';
 import { BookCard } from './ResourceCards/BookCard';
