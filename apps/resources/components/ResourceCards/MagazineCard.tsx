@@ -1,5 +1,5 @@
 import { UilLinkAlt } from '@iconscout/react-unicons';
-import { Magazine } from '../../lib/content';
+import { Magazine } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
 import { useResources } from '../Resources';

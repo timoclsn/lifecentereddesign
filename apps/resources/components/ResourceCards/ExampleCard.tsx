@@ -1,5 +1,5 @@
 import { UilLinkAlt } from '@iconscout/react-unicons';
-import { Example } from 'lib/content';
+import { Example } from 'lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
 import { useResources } from '../Resources';

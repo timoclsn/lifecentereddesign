@@ -1,5 +1,5 @@
 import { UilBookReader, UilLinkAlt } from '@iconscout/react-unicons';
-import { Newsletter } from '../../lib/content';
+import { Newsletter } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
 import { useResources } from '../Resources';
