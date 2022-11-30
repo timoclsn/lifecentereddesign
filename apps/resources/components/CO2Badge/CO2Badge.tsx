@@ -23,10 +23,10 @@ export function CO2Badge({ co2Consumption }: Props) {
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay
-          className={`fixed inset-0 bg-text-primary opacity-20 ${styles.overlay}`}
+          className={`fixed inset-0 bg-text-primary opacity-20 z-20 ${styles.overlay}`}
         />
         <Dialog.Content
-          className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-3xl bg-lime p-10 w-[90vw] max-w-xl max-h-[85vh] overflow-y-auto ${styles.content}`}
+          className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-3xl bg-lime p-10 w-[90vw] max-w-xl max-h-[85vh] overflow-y-auto z-20 ${styles.content}`}
         >
           <div className="mb-4">
             <Dialog.Close className="focus:outline-none hover:opacity-80">

@@ -1,20 +1,14 @@
 import { Heading } from 'design-system';
+import { Resources } from 'lib/resources';
 import Image from 'next/image';
-import { trpc } from 'utils/trpc';
 import { getCardComponent } from '../utils';
 import groundImg from './ground.jpg';
 
-export const NewResources = () => {
-  const { data } = trpc.resources.list.useQuery(
-    {
-      sort: 'date',
-      limit: 10,
-    },
-    { enabled: false }
-  );
+interface Props {
+  resources: Resources;
+}
 
-  const resources = data || [];
-
+export const NewResources = ({ resources }: Props) => {
   return (
     <section id="new-resources" className="ml-[calc(50%-50vw)] w-screen">
       <Heading level="2" className="text-white mb-10 px-6 sm:px-8 xl:px-10">
