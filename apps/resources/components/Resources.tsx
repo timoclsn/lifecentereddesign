@@ -2,6 +2,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { UilAngleDown, UilArrowDown, UilCheck } from '@iconscout/react-unicons';
 import {
   Button,
+  Heading,
   Select,
   SelectContent,
   SelectIcon,
@@ -13,6 +14,7 @@ import {
   SelectValue,
   SelectViewport,
 } from 'design-system';
+import { useRouter } from 'next/router';
 import {
   createContext,
   Dispatch,
@@ -21,8 +23,7 @@ import {
   useReducer,
   useRef,
 } from 'react';
-import { trpc } from 'utils/trpc';
-import { ContentType, QueryFilter } from '../lib/resources';
+import { ContentType, Resources as ResourcesType } from '../lib/resources';
 import { useOnScreen } from './useOnScreen';
 import { getCardComponent } from './utils';
 
@@ -165,11 +166,11 @@ const ResourcesContext = createContext<{
 export const useResources = () => useContext(ResourcesContext);
 
 interface Props {
-  filter: QueryFilter;
+  resources: ResourcesType;
   initialSort?: Sort;
 }
 
-export const Resources = ({ initialSort = 'title', filter }: Props) => {
+export const Resources = ({ initialSort = 'title', resources }: Props) => {
   initalState.sort = initialSort;
   const [state, dispatch] = useReducer(reducer, initalState);
   const { filteredType, itemsCount, sort, inContext } = state;
@@ -179,17 +180,17 @@ export const Resources = ({ initialSort = 'title', filter }: Props) => {
   const filterBtnsRef = useRef<HTMLDivElement>(null);
   const isFilterVisible = useOnScreen(filterBtnsRef);
 
-  const { data } = trpc.resources.list.useQuery(filter, {
-    enabled: false,
-  });
-
-  const resources = data || [];
+  const { query } = useRouter();
+  const { title, from, till } = query;
+  const fromParsed = Array.isArray(from) ? from[0] : from;
+  const tillParsed = Array.isArray(till) ? till.at(0) : till;
 
   // Flag so componets can check if they are rendered in context
   if (!inContext) {
     dispatch({ type: 'IN_CONTEXT' });
   }
 
+  // Sort
   const sortedResources = resources.sort((a, b) => {
     if (sort === 'date') {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -203,12 +204,30 @@ export const Resources = ({ initialSort = 'title', filter }: Props) => {
     return 0;
   });
 
-  const filteredResources =
+  // Filter by type
+  const filteredTypeResources =
     filteredType === 'all'
       ? sortedResources
       : sortedResources.filter((resource) => resource.type === filteredType);
-  const resourcesToDisplay = filteredResources.slice(0, itemsCount);
-  const showShowMoreBtn = filteredResources.length > itemsCount;
+
+  // Filter from
+  const filteredFromResources = fromParsed
+    ? filteredTypeResources.filter(
+        (resource) =>
+          resource.createdAt.getTime() > new Date(fromParsed).getTime()
+      )
+    : filteredTypeResources;
+
+  // Filter till
+  const filteredTillResources = tillParsed
+    ? filteredFromResources.filter(
+        (resource) =>
+          resource.createdAt.getTime() < new Date(tillParsed).getTime()
+      )
+    : filteredFromResources;
+
+  const resourcesToDisplay = filteredTillResources.slice(0, itemsCount);
+  const showShowMoreBtn = filteredTypeResources.length > itemsCount;
 
   useEffect(() => {
     if (isFilterVisible) {
@@ -248,6 +267,7 @@ export const Resources = ({ initialSort = 'title', filter }: Props) => {
   return (
     <ResourcesContext.Provider value={{ state, dispatch }}>
       <section id="resources" className="flex flex-col gap-10">
+        {title && <Heading level="2">{title}</Heading>}
         <div
           className="sticky top-0 bg-bg-primary py-4 z-10"
           ref={filterBtnsRef}
