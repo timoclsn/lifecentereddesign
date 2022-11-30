@@ -70,7 +70,7 @@ export const getServerSideProps = async ({
 
   res.setHeader(
     'Cache-Control',
-    'public, s-maxage=3600, stale-while-revalidate'
+    'public, s-maxage=3600, stale-while-revalidate=86400'
   );
 
   return {
