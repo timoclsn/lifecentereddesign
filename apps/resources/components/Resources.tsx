@@ -346,7 +346,7 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
             ))}
           </ul>
           <div className="flex flex-col sm:flex-row gap-6 justify-end items-center">
-            <div className="relative flex items-center">
+            <div className="flex items-center gap-2 rounded-full bg-transparent ring-2 ring-text-primary px-4 py-2 outline-none focus-within:ring">
               <input
                 placeholder="Name, Description…"
                 value={searchInput}
@@ -361,11 +361,9 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
                     });
                   });
                 }}
-                className="rounded-full bg-transparent ring-2 ring-text-primary px-4 py-2 outline-none focus-visible:ring"
+                className="bg-transparent outline-none"
               />
-              <div className="absolute top-0 right-0 flex h-full items-center justify-center px-4">
-                <UilSearch className="opacity-60" size="16" />
-              </div>
+              <UilSearch className="opacity-60" size="16" />
             </div>
             {/* Filter select */}
             <div className="flex gap-4 sm:gap-6 sm:hidden">
