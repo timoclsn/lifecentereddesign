@@ -346,7 +346,7 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
             ))}
           </ul>
           <div className="flex flex-col sm:flex-row gap-6 justify-end items-center">
-            <div className="flex items-center gap-2 rounded-full bg-transparent ring-2 ring-text-primary px-4 py-2 outline-none focus-within:ring">
+            <div className="flex items-center gap-2 rounded-full bg-transparent ring-2 ring-text-secondary px-4 py-1 outline-none focus-within:ring-text-primary">
               <input
                 placeholder="Name, Description…"
                 value={searchInput}
