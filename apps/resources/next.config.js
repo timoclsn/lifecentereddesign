@@ -6,9 +6,9 @@ const config = {
   images: {
     formats: ['image/avif', 'image/webp'],
   },
+  transpilePackages: ['design-system'],
   experimental: {
     scrollRestoration: true,
-    transpilePackages: ['design-system'],
     swcPlugins: [
       [
         'next-superjson-plugin',
