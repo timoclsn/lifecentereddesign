@@ -1,5 +1,10 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { UilAngleDown, UilArrowDown, UilCheck } from '@iconscout/react-unicons';
+import {
+  UilAngleDown,
+  UilArrowDown,
+  UilCheck,
+  UilSearch,
+} from '@iconscout/react-unicons';
 import {
   Button,
   Heading,
@@ -14,10 +19,12 @@ import {
   SelectValue,
   SelectViewport,
 } from 'design-system';
+import { matchSorter } from 'match-sorter';
 import { useRouter } from 'next/router';
 import {
   createContext,
   Dispatch,
+  startTransition,
   useContext,
   useEffect,
   useReducer,
@@ -107,6 +114,8 @@ interface State {
   itemsCount: number;
   sort: Sort;
   inContext: boolean;
+  searchInput: string;
+  searchQuery: string;
 }
 
 const initalState: State = {
@@ -114,13 +123,17 @@ const initalState: State = {
   itemsCount: 12,
   sort: 'title',
   inContext: false,
+  searchInput: '',
+  searchQuery: '',
 };
 
 type Action =
   | { type: 'FILTER'; filterType: Filter }
   | { type: 'SHOW_MORE'; itemsCount: number }
   | { type: 'SORT'; sortBy: Sort }
-  | { type: 'IN_CONTEXT' };
+  | { type: 'IN_CONTEXT' }
+  | { type: 'TYPE_SEARCH'; value: string }
+  | { type: 'SEARCH' };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -151,6 +164,16 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         inContext: true,
       };
+    case 'TYPE_SEARCH':
+      return {
+        ...state,
+        searchInput: action.value,
+      };
+    case 'SEARCH':
+      return {
+        ...state,
+        searchQuery: state.searchInput,
+      };
     default:
       throw new Error('Unknown action type');
   }
@@ -173,7 +196,14 @@ interface Props {
 export const Resources = ({ initialSort = 'title', resources }: Props) => {
   initalState.sort = initialSort;
   const [state, dispatch] = useReducer(reducer, initalState);
-  const { filteredType, itemsCount, sort, inContext } = state;
+  const {
+    filteredType,
+    itemsCount,
+    sort,
+    inContext,
+    searchInput,
+    searchQuery,
+  } = state;
 
   const [listRef] = useAutoAnimate<HTMLUListElement>();
   const buttonsRef = useRef<Map<string, HTMLLIElement> | null>(null);
@@ -190,8 +220,26 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
     dispatch({ type: 'IN_CONTEXT' });
   }
 
+  // Search
+  const searchedResources = matchSorter(resources, searchQuery, {
+    keys: [
+      'title',
+      'name',
+      'authors.*.name',
+      'authorsPlain',
+      'description',
+      'creators.*.name',
+      'creatorsPlain',
+      'hosts.*.name',
+      'hostsPlain',
+      'podcast.*.title',
+      'podcastPlain',
+      'guests.*.name',
+    ],
+  });
+
   // Sort
-  const sortedResources = resources.sort((a, b) => {
+  const sortedResources = searchedResources.sort((a, b) => {
     if (sort === 'date') {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     } else if (sort === 'title') {
@@ -297,7 +345,26 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
               </li>
             ))}
           </ul>
-          <div className="flex flex-col sm:flex-row gap-6 justify-end">
+          <div className="flex flex-col sm:flex-row gap-6 justify-end items-center">
+            <div className="flex items-center gap-2 rounded-full bg-transparent ring-2 ring-text-secondary px-4 py-1 outline-none focus-within:ring-text-primary">
+              <input
+                placeholder="Name, Description…"
+                value={searchInput}
+                onChange={(e) => {
+                  dispatch({
+                    type: 'TYPE_SEARCH',
+                    value: e.target.value,
+                  });
+                  startTransition(() => {
+                    dispatch({
+                      type: 'SEARCH',
+                    });
+                  });
+                }}
+                className="bg-transparent outline-none"
+              />
+              <UilSearch className="opacity-60" size="16" />
+            </div>
             {/* Filter select */}
             <div className="flex gap-4 sm:gap-6 sm:hidden">
               <span className="whitespace-nowrap text-text-secondary">
