@@ -24,7 +24,7 @@ export const NewResources = ({ resources }: Props) => {
           const component = getCardComponent(resource);
           return (
             <li
-              key={resource.id}
+              key={`${resource.type}-${resource.id}`}
               className="w-[330px] flex-none sm:w-[600px] snap-center"
             >
               {component}
