@@ -5,8 +5,7 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+  provider = "prisma-client-js"
 }
 
 // Metadata
@@ -80,6 +79,7 @@ model Thoughtleader {
   categoryId     Int?
   link           String? @db.VarChar(255)
   jobDescription String? @db.VarChar(255)
+  note           String? @db.Text
 
   category        Category?        @relation(fields: [categoryId], references: [id])
   articles        Article[]
@@ -89,6 +89,8 @@ model Thoughtleader {
   videos          Video[]
   slides          Slide[]
   newsletters     Newsletter[]
+
+  @@index([categoryId])
 }
 
 model Article {
@@ -104,9 +106,13 @@ model Article {
   datePlain    String?         @db.VarChar(255)
   duration     String?         @db.VarChar(255)
   link         String?         @db.VarChar(255)
-  categoryId   Int?
-  category     Category?       @relation(fields: [categoryId], references: [id])
-  topics       Topic[]
+  note         String?         @db.Text
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+
+  @@index([categoryId])
 }
 
 model Book {
@@ -123,9 +129,13 @@ model Book {
   publisher      String?         @db.VarChar(255)
   isbn           String?         @db.VarChar(255)
   link           String?         @db.VarChar(255)
-  categoryId     Int?
-  category       Category?       @relation(fields: [categoryId], references: [id])
-  topics         Topic[]
+  note           String?         @db.Text
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+
+  @@index([categoryId])
 }
 
 model Podcast {
@@ -138,12 +148,15 @@ model Podcast {
   hosts      Thoughtleader[]
   hostsPlain String?         @db.VarChar(255)
   link       String?         @db.VarChar(255)
+  note       String?         @db.Text
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
   topics     Topic[]
 
   podcastEpisodes PodcastEpisode[]
+
+  @@index([categoryId])
 }
 
 model PodcastEpisode {
@@ -160,10 +173,14 @@ model PodcastEpisode {
   date         DateTime?
   duration     String?
   link         String?         @db.VarChar(255)
+  note         String?         @db.Text
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
   topics     Topic[]
+
+  @@index([podcastId])
+  @@index([categoryId])
 }
 
 model Directory {
@@ -175,10 +192,13 @@ model Directory {
   name        String  @db.VarChar(255)
   description String? @db.VarChar(255)
   link        String? @db.VarChar(255)
+  note        String? @db.Text
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
   topics     Topic[]
+
+  @@index([categoryId])
 }
 
 model Video {
@@ -193,10 +213,13 @@ model Video {
   date          DateTime?
   duration      String?
   link          String?         @db.VarChar(255)
+  note          String?         @db.Text
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
   topics     Topic[]
+
+  @@index([categoryId])
 }
 
 model Tool {
@@ -208,10 +231,13 @@ model Tool {
   name        String  @db.VarChar(255)
   description String? @db.VarChar(255)
   link        String? @db.VarChar(255)
+  note        String? @db.Text
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
   topics     Topic[]
+
+  @@index([categoryId])
 }
 
 model Community {
@@ -223,10 +249,13 @@ model Community {
   name        String  @db.VarChar(255)
   description String? @db.VarChar(255)
   link        String? @db.VarChar(255)
+  note        String? @db.Text
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
   topics     Topic[]
+
+  @@index([categoryId])
 }
 
 model Course {
@@ -238,10 +267,13 @@ model Course {
   name        String  @db.VarChar(255)
   description String? @db.VarChar(255)
   link        String? @db.VarChar(255)
+  note        String? @db.Text
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
   topics     Topic[]
+
+  @@index([categoryId])
 }
 
 model Example {
@@ -253,10 +285,13 @@ model Example {
   name        String  @db.VarChar(255)
   description String? @db.VarChar(255)
   link        String? @db.VarChar(255)
+  note        String? @db.Text
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
   topics     Topic[]
+
+  @@index([categoryId])
 }
 
 model Agency {
@@ -268,10 +303,13 @@ model Agency {
   name        String  @db.VarChar(255)
   description String? @db.VarChar(255)
   link        String? @db.VarChar(255)
+  note        String? @db.Text
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
   topics     Topic[]
+
+  @@index([categoryId])
 }
 
 model Slide {
@@ -286,10 +324,13 @@ model Slide {
   date         DateTime?
   datePlain    String?         @db.VarChar(255)
   link         String?         @db.VarChar(255)
+  note         String?         @db.Text
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
   topics     Topic[]
+
+  @@index([categoryId])
 }
 
 model Magazine {
@@ -301,10 +342,13 @@ model Magazine {
   name        String  @db.VarChar(255)
   description String? @db.VarChar(255)
   link        String? @db.VarChar(255)
+  note        String? @db.Text
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
   topics     Topic[]
+
+  @@index([categoryId])
 }
 
 model Newsletter {
@@ -319,8 +363,11 @@ model Newsletter {
   description  String?         @db.VarChar(255)
   frequency    String?         @db.VarChar(255)
   link         String?         @db.VarChar(255)
+  note         String?         @db.Text
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
   topics     Topic[]
+
+  @@index([categoryId])
 }
