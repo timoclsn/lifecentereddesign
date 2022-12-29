@@ -275,7 +275,7 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
     : filteredFromResources;
 
   const resourcesToDisplay = filteredTillResources.slice(0, itemsCount);
-  const showShowMoreBtn = filteredTypeResources.length > itemsCount;
+  const showShowMoreBtn = filteredTillResources.length > itemsCount;
 
   useEffect(() => {
     if (isFilterVisible) {
