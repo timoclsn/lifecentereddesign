@@ -15,7 +15,7 @@ interface Props {
 
 export const VideoCard = ({ video }: Props) => {
   const { dispatch, state } = useResources();
-  const { inContext, filteredType } = state;
+  const { inContext } = state;
   return (
     <Card
       resourceId={video.id}
@@ -26,8 +26,18 @@ export const VideoCard = ({ video }: Props) => {
         inContext
           ? () => {
               dispatch({
-                type: 'FILTER',
-                filterType: filteredType === 'video' ? 'all' : 'video',
+                type: 'FILTER_BY_TYPE',
+                typeIs: 'video',
+              });
+            }
+          : undefined
+      }
+      onCategoryClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER_BY_CATEGORY',
+                category: video.category?.name,
               });
             }
           : undefined

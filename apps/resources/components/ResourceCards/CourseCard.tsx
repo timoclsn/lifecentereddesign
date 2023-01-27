@@ -10,7 +10,7 @@ interface Props {
 
 export const CourseCard = ({ course }: Props) => {
   const { dispatch, state } = useResources();
-  const { inContext, filteredType } = state;
+  const { inContext } = state;
   return (
     <Card
       resourceId={course.id}
@@ -21,8 +21,18 @@ export const CourseCard = ({ course }: Props) => {
         inContext
           ? () => {
               dispatch({
-                type: 'FILTER',
-                filterType: filteredType === 'course' ? 'all' : 'course',
+                type: 'FILTER_BY_TYPE',
+                typeIs: 'course',
+              });
+            }
+          : undefined
+      }
+      onCategoryClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER_BY_CATEGORY',
+                category: course.category?.name,
               });
             }
           : undefined

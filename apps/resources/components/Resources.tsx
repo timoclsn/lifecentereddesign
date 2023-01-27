@@ -30,18 +30,23 @@ import {
   useReducer,
   useRef,
 } from 'react';
-import { ContentType, Resources as ResourcesType } from '../lib/resources';
+import {
+  Categories,
+  Category,
+  ContentType,
+  Resources as ResourcesType,
+} from '../lib/resources';
 import { useOnScreen } from './useOnScreen';
 import { getCardComponent } from './utils';
 
-type FilterList = Array<{
+type TypeFilterList = Array<{
   text: string;
-  type: Filter;
+  type: TypeFilter;
 }>;
 
-const filterList: FilterList = [
+const typeFilterList: TypeFilterList = [
   {
-    text: 'All Resources',
+    text: 'All',
     type: 'all',
   },
   {
@@ -106,11 +111,13 @@ const filterList: FilterList = [
   },
 ];
 
-type Filter = ContentType | 'all';
+type TypeFilter = ContentType | 'all';
+type CategoryFilter = Category['name'] | 'all' | undefined;
 type Sort = 'date' | 'title' | 'likes';
 
 interface State {
-  filteredType: Filter;
+  filteredByType: TypeFilter;
+  filteredByCategory: CategoryFilter;
   itemsCount: number;
   sort: Sort;
   inContext: boolean;
@@ -119,7 +126,8 @@ interface State {
 }
 
 const initalState: State = {
-  filteredType: 'all',
+  filteredByType: 'all',
+  filteredByCategory: 'all',
   itemsCount: 12,
   sort: 'title',
   inContext: false,
@@ -128,7 +136,8 @@ const initalState: State = {
 };
 
 type Action =
-  | { type: 'FILTER'; filterType: Filter }
+  | { type: 'FILTER_BY_TYPE'; typeIs: TypeFilter }
+  | { type: 'FILTER_BY_CATEGORY'; category: CategoryFilter }
   | { type: 'SHOW_MORE'; itemsCount: number }
   | { type: 'SORT'; sortBy: Sort }
   | { type: 'IN_CONTEXT' }
@@ -137,13 +146,27 @@ type Action =
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case 'FILTER':
-      splitbee.track('Filter resources', {
-        type: action.filterType,
+    case 'FILTER_BY_TYPE':
+      const filteredByType =
+        action.typeIs === state.filteredByType ? 'all' : action.typeIs;
+      splitbee.track('Filter resources by type', {
+        type: filteredByType,
       });
       return {
         ...state,
-        filteredType: action.filterType,
+        filteredByType,
+      };
+    case 'FILTER_BY_CATEGORY':
+      const filteredByCategory =
+        !action.category || action.category === state.filteredByCategory
+          ? 'all'
+          : action.category;
+      splitbee.track('Filter resources by category', {
+        type: filteredByCategory,
+      });
+      return {
+        ...state,
+        filteredByCategory,
       };
     case 'SHOW_MORE':
       splitbee.track('Show more resources', {
@@ -186,18 +209,25 @@ const ResourcesContext = createContext<{
   state: initalState,
   dispatch: () => null,
 });
+
 export const useResources = () => useContext(ResourcesContext);
 
 interface Props {
   resources: ResourcesType;
+  categories: Categories;
   initialSort?: Sort;
 }
 
-export const Resources = ({ initialSort = 'title', resources }: Props) => {
+export const Resources = ({
+  initialSort = 'title',
+  resources,
+  categories,
+}: Props) => {
   initalState.sort = initialSort;
   const [state, dispatch] = useReducer(reducer, initalState);
   const {
-    filteredType,
+    filteredByType,
+    filteredByCategory,
     itemsCount,
     sort,
     inContext,
@@ -253,18 +283,26 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
   });
 
   // Filter by type
-  const filteredTypeResources =
-    filteredType === 'all'
+  const filteredByTypeResources =
+    filteredByType === 'all'
       ? sortedResources
-      : sortedResources.filter((resource) => resource.type === filteredType);
+      : sortedResources.filter((resource) => resource.type === filteredByType);
+
+  // Filter by category
+  const filteredByCategoryResources =
+    filteredByCategory === 'all'
+      ? filteredByTypeResources
+      : filteredByTypeResources.filter(
+          (resource) => resource.category?.name === filteredByCategory
+        );
 
   // Filter from
   const filteredFromResources = fromParsed
-    ? filteredTypeResources.filter(
+    ? filteredByCategoryResources.filter(
         (resource) =>
           resource.createdAt.getTime() > new Date(fromParsed).getTime()
       )
-    : filteredTypeResources;
+    : filteredByCategoryResources;
 
   // Filter till
   const filteredTillResources = tillParsed
@@ -279,9 +317,9 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
 
   useEffect(() => {
     if (isFilterVisible) {
-      scrollToButton(state.filteredType);
+      scrollToButton(state.filteredByType);
     }
-  }, [state.filteredType]);
+  }, [state.filteredByType]);
 
   const scrollToButton = (itemId: string) => {
     const map = getMap();
@@ -306,8 +344,11 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
     dispatch({ type: 'SHOW_MORE', itemsCount: 12 });
   };
 
-  const filterResources = (type: Filter) =>
-    dispatch({ type: 'FILTER', filterType: type });
+  const filterResourcesByType = (type: TypeFilter) =>
+    dispatch({ type: 'FILTER_BY_TYPE', typeIs: type });
+
+  const filterResourcesByCategory = (category: CategoryFilter) =>
+    dispatch({ type: 'FILTER_BY_CATEGORY', category: category });
 
   const sortResources = (value: Sort) =>
     dispatch({ type: 'SORT', sortBy: value });
@@ -321,7 +362,7 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
           ref={filterBtnsRef}
         >
           <ul className="items-center overflow-x-auto hidden sm:flex mb-4">
-            {filterList.map((filter, idx) => (
+            {typeFilterList.map((filter, idx) => (
               <li
                 key={idx}
                 ref={(node) => {
@@ -335,9 +376,9 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
               >
                 <Button
                   variant="text"
-                  selected={filteredType === filter.type}
+                  selected={filteredByType === filter.type}
                   onClick={() => {
-                    filterResources(filter.type);
+                    filterResourcesByType(filter.type);
                   }}
                 >
                   {filter.text}
@@ -345,7 +386,7 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
               </li>
             ))}
           </ul>
-          <div className="flex flex-col sm:flex-row gap-6 justify-end items-center">
+          <div className="flex flex-col sm:flex-row gap-6 justify-end items-center flex-wrap">
             <div className="flex items-center gap-2 rounded-full bg-transparent ring-2 ring-text-secondary px-4 py-1 outline-none focus-within:ring-text-primary">
               <input
                 placeholder="Name, Description…"
@@ -365,18 +406,21 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
               />
               <UilSearch className="opacity-60" size="16" />
             </div>
-            {/* Filter select */}
+
+            {/* Filter by type select */}
             <div className="flex gap-4 sm:gap-6 sm:hidden">
               <span className="whitespace-nowrap text-text-secondary">
-                Filtered by:
+                Type:
               </span>
               <Select
                 defaultValue={undefined}
-                value={filteredType}
-                onValueChange={(type: Filter) => filterResources(type)}
+                value={filteredByType}
+                onValueChange={(type: TypeFilter) =>
+                  filterResourcesByType(type)
+                }
               >
                 <SelectTrigger>
-                  <SelectValue aria-label={sort} />
+                  <SelectValue />
                   <SelectIcon>
                     <UilAngleDown />
                   </SelectIcon>
@@ -385,12 +429,54 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
                 <SelectPortal>
                   <SelectContent>
                     <SelectViewport>
-                      {filterList.map((filter, idx) => (
+                      {typeFilterList.map((filter, idx) => (
                         <SelectItem key={idx} value={filter.type}>
                           <SelectItemIndicator>
                             <UilCheck />
                           </SelectItemIndicator>
                           <SelectItemText>{filter.text}</SelectItemText>
+                        </SelectItem>
+                      ))}
+                    </SelectViewport>
+                  </SelectContent>
+                </SelectPortal>
+              </Select>
+            </div>
+
+            {/* Filter by category select */}
+            <div className="flex gap-4 sm:gap-6">
+              <span className="whitespace-nowrap text-text-secondary">
+                Category:
+              </span>
+              <Select
+                defaultValue={undefined}
+                value={filteredByCategory}
+                onValueChange={(category: CategoryFilter) =>
+                  filterResourcesByCategory(category)
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                  <SelectIcon>
+                    <UilAngleDown />
+                  </SelectIcon>
+                </SelectTrigger>
+
+                <SelectPortal>
+                  <SelectContent>
+                    <SelectViewport>
+                      <SelectItem key="all" value="all">
+                        <SelectItemIndicator>
+                          <UilCheck />
+                        </SelectItemIndicator>
+                        <SelectItemText>All</SelectItemText>
+                      </SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.name}>
+                          <SelectItemIndicator>
+                            <UilCheck />
+                          </SelectItemIndicator>
+                          <SelectItemText>{category.name}</SelectItemText>
                         </SelectItem>
                       ))}
                     </SelectViewport>
@@ -410,7 +496,7 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
                 onValueChange={(value: Sort) => sortResources(value)}
               >
                 <SelectTrigger>
-                  <SelectValue aria-label={sort} />
+                  <SelectValue />
                   <SelectIcon>
                     <UilAngleDown />
                   </SelectIcon>
@@ -445,17 +531,23 @@ export const Resources = ({ initialSort = 'title', resources }: Props) => {
           </div>
         </div>
         <div className="flex flex-col gap-6">
-          <ul
-            className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden"
-            ref={listRef}
-          >
-            {resourcesToDisplay.map((resource) => {
-              const component = getCardComponent(resource);
-              return (
-                <li key={`${resource.type}-${resource.id}`}>{component}</li>
-              );
-            })}
-          </ul>
+          {resourcesToDisplay.length > 0 ? (
+            <ul
+              className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden"
+              ref={listRef}
+            >
+              {resourcesToDisplay.map((resource) => {
+                const component = getCardComponent(resource);
+                return (
+                  <li key={`${resource.type}-${resource.id}`}>{component}</li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="flex justify-center items-center py-16">
+              <Heading level="3">No resources found…</Heading>
+            </div>
+          )}
         </div>
         {showShowMoreBtn && (
           <div className="flex justify-center">

@@ -10,7 +10,7 @@ interface Props {
 
 export const DirectoryCard = ({ directory }: Props) => {
   const { dispatch, state } = useResources();
-  const { inContext, filteredType } = state;
+  const { inContext } = state;
   return (
     <Card
       resourceId={directory.id}
@@ -21,8 +21,18 @@ export const DirectoryCard = ({ directory }: Props) => {
         inContext
           ? () => {
               dispatch({
-                type: 'FILTER',
-                filterType: filteredType === 'directory' ? 'all' : 'directory',
+                type: 'FILTER_BY_TYPE',
+                typeIs: 'directory',
+              });
+            }
+          : undefined
+      }
+      onCategoryClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER_BY_CATEGORY',
+                category: directory.category?.name,
               });
             }
           : undefined

@@ -16,7 +16,7 @@ interface Props {
 
 export const BookCard = ({ book }: Props) => {
   const { dispatch, state } = useResources();
-  const { inContext, filteredType } = state;
+  const { inContext } = state;
   return (
     <Card
       resourceId={book.id}
@@ -27,8 +27,18 @@ export const BookCard = ({ book }: Props) => {
         inContext
           ? () => {
               dispatch({
-                type: 'FILTER',
-                filterType: filteredType === 'book' ? 'all' : 'book',
+                type: 'FILTER_BY_TYPE',
+                typeIs: 'book',
+              });
+            }
+          : undefined
+      }
+      onCategoryClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER_BY_CATEGORY',
+                category: book.category?.name,
               });
             }
           : undefined

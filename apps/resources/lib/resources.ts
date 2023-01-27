@@ -21,103 +21,118 @@ export const resourceTypes = [
 
 export type Thoughtleader = Prisma.ThoughtleaderGetPayload<{
   include: {
-    category: true,
-  }
-}>
+    category: true;
+  };
+}>;
 
 export type Article = Prisma.ArticleGetPayload<{
   include: {
-    category: true,
-    authors: true,
-  }
-}>
+    category: true;
+    authors: true;
+  };
+}>;
 
 export type Book = Prisma.BookGetPayload<{
   include: {
-    category: true,
-    authors: true,
-  }
+    category: true;
+    authors: true;
+  };
 }>;
 
 export type Podcast = Prisma.PodcastGetPayload<{
   include: {
-    category: true,
-    hosts: true,
-  }
-}>
+    category: true;
+    hosts: true;
+  };
+}>;
 
 export type PodcastEpisode = Prisma.PodcastEpisodeGetPayload<{
   include: {
-    category: true,
-    guests: true,
-    podcast: true,
-  }
+    category: true;
+    guests: true;
+    podcast: true;
+  };
 }>;
 
 export type Directory = Prisma.DirectoryGetPayload<{
   include: {
-    category: true,
-  }
+    category: true;
+  };
 }>;
 
 export type Video = Prisma.VideoGetPayload<{
   include: {
-    category: true,
-    creators: true,
-  }
+    category: true;
+    creators: true;
+  };
 }>;
 
 export type Tool = Prisma.ToolGetPayload<{
   include: {
-    category: true,
-  }
+    category: true;
+  };
 }>;
 
 export type Community = Prisma.CommunityGetPayload<{
   include: {
-    category: true,
-  }
+    category: true;
+  };
 }>;
 
 export type Course = Prisma.CourseGetPayload<{
   include: {
-    category: true,
-  }
+    category: true;
+  };
 }>;
 
 export type Example = Prisma.ExampleGetPayload<{
   include: {
-    category: true,
-  }
+    category: true;
+  };
 }>;
 
 export type Agency = Prisma.AgencyGetPayload<{
   include: {
-    category: true,
-  }
+    category: true;
+  };
 }>;
 
 export type Slide = Prisma.SlideGetPayload<{
   include: {
-    category: true,
-    authors: true,
-  }
+    category: true;
+    authors: true;
+  };
 }>;
 
 export type Magazine = Prisma.MagazineGetPayload<{
   include: {
-    category: true,
-  }
+    category: true;
+  };
 }>;
 
 export type Newsletter = Prisma.NewsletterGetPayload<{
   include: {
-    category: true,
-    authors: true,
-  }
+    category: true;
+    authors: true;
+  };
 }>;
 
-export type Resource = Thoughtleader | Article | Book | Podcast | PodcastEpisode | Video | Directory | Tool | Community | Course | Example | Agency | Slide | Magazine | Newsletter;
+export type Resource =
+  | Thoughtleader
+  | Article
+  | Book
+  | Podcast
+  | PodcastEpisode
+  | Video
+  | Directory
+  | Tool
+  | Community
+  | Course
+  | Example
+  | Agency
+  | Slide
+  | Magazine
+  | Newsletter;
 export type Resources = Array<Resource>;
 export type ContentType = Resource['type'];
 
@@ -128,7 +143,12 @@ export interface QueryFilter {
   sort?: 'date' | 'title' | 'likes';
 }
 
-export const getResources = async ({ from, till, limit, sort }: QueryFilter) => {
+export const getResources = async ({
+  from,
+  till,
+  limit,
+  sort,
+}: QueryFilter = {}) => {
   const dbPromises = resourceTypes.map((type) => {
     // @ts-ignore
     return prisma[type].findMany({
@@ -217,4 +237,15 @@ export const likeResource = async (id: number, type: ContentType) => {
       likes: true,
     },
   })) as { likes: number };
+};
+
+export type Category = Prisma.CategoryGetPayload<{}>;
+export type Categories = Array<Category>;
+
+export const getCategories = async () => {
+  return await prisma.category.findMany({
+    orderBy: {
+      name: 'asc',
+    }
+  });
 };
