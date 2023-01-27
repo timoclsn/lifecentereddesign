@@ -10,7 +10,7 @@ interface Props {
 
 export const SlideCard = ({ slide }: Props) => {
   const { dispatch, state } = useResources();
-  const { inContext, filteredType } = state;
+  const { inContext } = state;
   return (
     <Card
       resourceId={slide.id}
@@ -21,8 +21,18 @@ export const SlideCard = ({ slide }: Props) => {
         inContext
           ? () => {
               dispatch({
-                type: 'FILTER',
-                filterType: filteredType === 'slide' ? 'all' : 'slide',
+                type: 'FILTER_BY_TYPE',
+                typeIs: 'slide',
+              });
+            }
+          : undefined
+      }
+      onCategoryClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER_BY_CATEGORY',
+                category: slide.category?.name,
               });
             }
           : undefined

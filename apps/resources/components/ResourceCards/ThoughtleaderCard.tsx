@@ -10,7 +10,7 @@ interface Props {
 
 export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
   const { dispatch, state } = useResources();
-  const { inContext, filteredType } = state;
+  const { inContext } = state;
   return (
     <Card
       resourceId={thoughtleader.id}
@@ -21,9 +21,18 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
         inContext
           ? () => {
               dispatch({
-                type: 'FILTER',
-                filterType:
-                  filteredType === 'thoughtleader' ? 'all' : 'thoughtleader',
+                type: 'FILTER_BY_TYPE',
+                typeIs: 'thoughtleader',
+              });
+            }
+          : undefined
+      }
+      onCategoryClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER_BY_CATEGORY',
+                category: thoughtleader.category?.name,
               });
             }
           : undefined
@@ -39,9 +48,7 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
             ]
           : []),
       ]}
-      {...(thoughtleader.category && {
-        category: thoughtleader.category.name,
-      })}
+      category={thoughtleader.category?.name}
       tags={[
         ...(thoughtleader.link
           ? [

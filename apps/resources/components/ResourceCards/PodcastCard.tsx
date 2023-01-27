@@ -10,7 +10,7 @@ interface Props {
 
 export const PodcastCard = ({ podcast }: Props) => {
   const { dispatch, state } = useResources();
-  const { inContext, filteredType } = state;
+  const { inContext } = state;
   return (
     <Card
       resourceId={podcast.id}
@@ -21,8 +21,18 @@ export const PodcastCard = ({ podcast }: Props) => {
         inContext
           ? () => {
               dispatch({
-                type: 'FILTER',
-                filterType: filteredType === 'podcast' ? 'all' : 'podcast',
+                type: 'FILTER_BY_TYPE',
+                typeIs: 'podcast',
+              });
+            }
+          : undefined
+      }
+      onCategoryClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER_BY_CATEGORY',
+                category: podcast.category?.name,
               });
             }
           : undefined

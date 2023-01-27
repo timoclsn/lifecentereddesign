@@ -10,7 +10,7 @@ interface Props {
 
 export const CommunityCard = ({ community }: Props) => {
   const { dispatch, state } = useResources();
-  const { inContext, filteredType } = state;
+  const { inContext } = state;
   return (
     <Card
       resourceId={community.id}
@@ -21,8 +21,18 @@ export const CommunityCard = ({ community }: Props) => {
         inContext
           ? () => {
               dispatch({
-                type: 'FILTER',
-                filterType: filteredType === 'community' ? 'all' : 'community',
+                type: 'FILTER_BY_TYPE',
+                typeIs: 'community',
+              });
+            }
+          : undefined
+      }
+      onCategoryClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER_BY_CATEGORY',
+                category: community.category?.name,
               });
             }
           : undefined

@@ -15,6 +15,7 @@ interface Props {
   variant: CardProps['variant'];
   displayType: string;
   onTypeClick?: () => void;
+  onCategoryClick?: () => void;
   title: string;
   showType?: boolean;
   metaInfos?: Array<{
@@ -38,6 +39,7 @@ export const Card = ({
   variant,
   displayType,
   onTypeClick,
+  onCategoryClick,
   title,
   metaInfos,
   category,
@@ -103,12 +105,21 @@ export const Card = ({
       );
     }
 
-    return (
-      <div>
-        <Tag variant="outline">{displayType}</Tag>
-      </div>
-    );
+    return <Tag variant="outline">{displayType}</Tag>;
   };
+
+  const getCategory = () => {
+    if (!!onCategoryClick) {
+      return (
+        <button onClick={onCategoryClick} className="hover:opacity-80">
+          <Tag variant="light">{category}</Tag>
+        </button>
+      );
+    }
+
+    return <Tag variant="light">{category}</Tag>;
+  };
+
   return (
     <CardPrimitive
       variant={variant}
@@ -177,7 +188,7 @@ export const Card = ({
           category ? 'justify-between' : 'justify-end'
         }`}
       >
-        {category && <Tag variant="light">{category}</Tag>}
+        {category && getCategory()}
         {tags && tags.length > 0 && (
           <ul className="flex gap-8">
             {tags.map((tag, idx) => (

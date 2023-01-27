@@ -10,7 +10,7 @@ interface Props {
 
 export const ToolCard = ({ tool }: Props) => {
   const { dispatch, state } = useResources();
-  const { inContext, filteredType } = state;
+  const { inContext } = state;
   return (
     <Card
       resourceId={tool.id}
@@ -21,14 +21,24 @@ export const ToolCard = ({ tool }: Props) => {
         inContext
           ? () => {
               dispatch({
-                type: 'FILTER',
-                filterType: filteredType === 'tool' ? 'all' : 'tool',
+                type: 'FILTER_BY_TYPE',
+                typeIs: 'tool',
+              });
+            }
+          : undefined
+      }
+      onCategoryClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER_BY_CATEGORY',
+                category: tool.category?.name,
               });
             }
           : undefined
       }
       title={tool.name}
-      category={tool.name}
+      category={tool.category?.name}
       tags={[
         ...(tool.link
           ? [

@@ -10,7 +10,7 @@ interface Props {
 
 export const AgencyCard = ({ agency }: Props) => {
   const { dispatch, state } = useResources();
-  const { inContext, filteredType } = state;
+  const { inContext } = state;
   return (
     <Card
       resourceId={agency.id}
@@ -21,8 +21,18 @@ export const AgencyCard = ({ agency }: Props) => {
         inContext
           ? () => {
               dispatch({
-                type: 'FILTER',
-                filterType: filteredType === 'agency' ? 'all' : 'agency',
+                type: 'FILTER_BY_TYPE',
+                typeIs: 'agency',
+              });
+            }
+          : undefined
+      }
+      onCategoryClick={
+        inContext
+          ? () => {
+              dispatch({
+                type: 'FILTER_BY_CATEGORY',
+                category: agency.category?.name,
               });
             }
           : undefined
