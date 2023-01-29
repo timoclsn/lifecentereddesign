@@ -2,7 +2,6 @@ import { Container } from 'design-system';
 import { CO2 } from 'lib/co2';
 import Script from 'next/script';
 import type { ReactNode } from 'react';
-import { Suspense } from 'react';
 import { CO2Badge } from './CO2Badge/CO2Badge';
 import { Favicons } from './Favicons';
 import { Footer } from './Footer';
@@ -43,20 +42,22 @@ export function Layout({
         previewImage={pagePreviewImage}
       />
       <Favicons />
-      <Suspense fallback={null}>
-        {co2Consumption && (
-          <div className="flex justify-center">
-            <CO2Badge co2Consumption={co2Consumption} />
-          </div>
-        )}
-        <div className="space-y-20 sm:space-y-40">
+      <div className="min-h-screen space-y-20 sm:space-y-40 flex flex-col">
+        <div>
+          {co2Consumption && (
+            <div className="flex justify-center">
+              <CO2Badge co2Consumption={co2Consumption} />
+            </div>
+          )}
           <Navigation />
-          <Container inset>
-            <main className="space-y-10 sm:space-y-40">{children}</main>
-          </Container>
-          <Footer />
         </div>
-      </Suspense>
+        <main className="flex-1">
+          <Container inset className="space-y-10 sm:space-y-40">
+            {children}
+          </Container>
+        </main>
+        <Footer />
+      </div>
     </>
   );
 }

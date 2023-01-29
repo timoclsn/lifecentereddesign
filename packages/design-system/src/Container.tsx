@@ -1,15 +1,21 @@
-import { cx } from 'class-variance-authority';
+import { cva, VariantProps } from 'class-variance-authority';
 import { ReactNode } from 'react';
 
-interface Props {
+const containerVariants = cva('mx-auto max-w-screen-2xl w-full', {
+  variants: {
+    inset: {
+      true: 'px-6 sm:px-8',
+    },
+  },
+});
+
+interface Props extends VariantProps<typeof containerVariants> {
   children: ReactNode;
-  inset?: boolean;
+  className?: string;
 }
 
-export const Container = ({ children, inset }: Props) => {
-  const styles = cx([
-    'mx-auto max-w-screen-2xl w-full',
-    inset ? 'px-6 sm:px-8' : '',
-  ]);
-  return <div className={styles}>{children}</div>;
+export const Container = ({ children, inset, className }: Props) => {
+  return (
+    <div className={containerVariants({ inset, className })}>{children}</div>
+  );
 };
