@@ -7,6 +7,8 @@ import {
   Text,
 } from 'design-system';
 import { ContentType } from 'lib/resources';
+import Link from 'next/link';
+import { ReactNode } from 'react';
 import { trpc } from 'utils/trpc';
 
 interface Props {
@@ -96,28 +98,43 @@ export const Card = ({
     mutation.mutate({ id: resourceId, type: resourceType });
   };
 
-  const getType = () => {
+  const getTitle = (title: ReactNode) => {
+    const resourceLink = tags?.at(0)?.url;
+    if (resourceLink) {
+      return (
+        <Link
+          href={resourceLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:opacity-80"
+        >
+          {title}
+        </Link>
+      );
+    }
+    return title;
+  };
+
+  const getType = (type: ReactNode) => {
     if (!!onTypeClick) {
       return (
         <button onClick={onTypeClick} className="hover:opacity-80">
-          <Tag variant="outline">{displayType}</Tag>
+          {type}
         </button>
       );
     }
-
-    return <Tag variant="outline">{displayType}</Tag>;
+    return type;
   };
 
-  const getCategory = () => {
+  const getCategory = (category: ReactNode) => {
     if (!!onCategoryClick) {
       return (
         <button onClick={onCategoryClick} className="hover:opacity-80">
-          <Tag variant="light">{category}</Tag>
+          {category}
         </button>
       );
     }
-
-    return <Tag variant="light">{category}</Tag>;
+    return category;
   };
 
   return (
@@ -128,7 +145,9 @@ export const Card = ({
       <div className="flex flex-1 flex-col items-start gap-9">
         {/* Type */}
         <div className="flex justify-between w-full">
-          <div>{showType && getType()}</div>
+          <div>
+            {showType && getType(<Tag variant="outline">{displayType}</Tag>)}
+          </div>
           <button
             onClick={likeResource}
             disabled={isLoading}
@@ -141,13 +160,15 @@ export const Card = ({
 
         <div className="flex flex-col items-start gap-4">
           {/* Title */}
-          <Heading
-            level="3"
-            title={title}
-            className="line-clamp-2 sm:line-clamp-none"
-          >
-            {title}
-          </Heading>
+          {getTitle(
+            <Heading
+              level="3"
+              title={title}
+              className="line-clamp-2 sm:line-clamp-none"
+            >
+              {title}
+            </Heading>
+          )}
 
           {/* Meta infos */}
           {metaInfos && (
@@ -188,7 +209,7 @@ export const Card = ({
           category ? 'justify-between' : 'justify-end'
         }`}
       >
-        {category && getCategory()}
+        {category && getCategory(<Tag variant="light">{category}</Tag>)}
         {tags && tags.length > 0 && (
           <ul className="flex gap-8">
             {tags.map((tag, idx) => (
