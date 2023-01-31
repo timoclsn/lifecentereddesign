@@ -27,6 +27,7 @@ model Topic {
   slides          Slide[]
   magazines       Magazine[]
   newsletters     Newsletter[]
+  papers          Paper[]
 }
 
 model Category {
@@ -48,6 +49,7 @@ model Category {
   magazines       Magazine[]
   newsletters     Newsletter[]
   thoughtleaders  Thoughtleader[]
+  papers          Paper[]
 }
 
 enum Type {
@@ -66,6 +68,7 @@ enum Type {
   slide
   magazine
   newsletter
+  paper
 }
 
 // Resources
@@ -89,6 +92,7 @@ model Thoughtleader {
   videos          Video[]
   slides          Slide[]
   newsletters     Newsletter[]
+  papers          Paper[]
 
   @@index([categoryId])
 }
@@ -362,6 +366,28 @@ model Newsletter {
   authorsPlain String?         @db.VarChar(255)
   description  String?         @db.VarChar(255)
   frequency    String?         @db.VarChar(255)
+  link         String?         @db.VarChar(255)
+  note         String?         @db.Text
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+
+  @@index([categoryId])
+}
+
+model Paper {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(paper)
+  likes     Int      @default(0)
+
+  title        String          @db.VarChar(255)
+  authors      Thoughtleader[]
+  authorsPlain String?         @db.VarChar(255)
+  date         DateTime?
+  datePlain    String?         @db.VarChar(255)
+  journal      String?         @db.VarChar(255)
   link         String?         @db.VarChar(255)
   note         String?         @db.Text
 
