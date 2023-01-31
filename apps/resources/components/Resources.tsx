@@ -254,8 +254,8 @@ export const Resources = ({
     dispatch({ type: 'IN_CONTEXT' });
   }
 
-  // Search
-  const searchedResources = matchSorter(resources, searchQuery, {
+  const processedResources = matchSorter(resources, searchQuery, {
+    // Search
     keys: [
       'title',
       'name',
@@ -270,54 +270,47 @@ export const Resources = ({
       'podcastPlain',
       'guests.*.name',
     ],
-  });
-
-  // Sort
-  const sortedResources = searchedResources.sort((a, b) => {
-    if (sort === 'date') {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    } else if (sort === 'title') {
-      const itemA = 'title' in a ? a.title : a.name;
-      const itemB = 'title' in b ? b.title : b.name;
-      return itemA.localeCompare(itemB);
-    } else if (sort === 'likes') {
-      return b.likes - a.likes;
-    }
-    return 0;
-  });
-
-  // Filter by type
-  const filteredByTypeResources =
-    filteredByType === 'all'
-      ? sortedResources
-      : sortedResources.filter((resource) => resource.type === filteredByType);
-
-  // Filter by category
-  const filteredByCategoryResources =
-    filteredByCategory === 'all'
-      ? filteredByTypeResources
-      : filteredByTypeResources.filter(
-          (resource) => resource.category?.name === filteredByCategory
+  })
+    // Sort
+    .sort((a, b) => {
+      // Don't sort manually when searching
+      if (searchQuery) return 0;
+      if (sort === 'date') {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
+      } else if (sort === 'title') {
+        const itemA = 'title' in a ? a.title : a.name;
+        const itemB = 'title' in b ? b.title : b.name;
+        return itemA.localeCompare(itemB);
+      } else if (sort === 'likes') {
+        return b.likes - a.likes;
+      }
+      return 0;
+    })
+    // Filter by type
+    .filter((resource) => {
+      if (filteredByType === 'all') return true;
+      return resource.type === filteredByType;
+    })
+    // Filter by category
+    .filter((resource) => {
+      if (filteredByCategory === 'all') return true;
+      return resource.category?.name === filteredByCategory;
+    })
+    // Filter from
+    .filter((resource) => {
+      if (!fromParsed) return true;
+      return resource.createdAt.getTime() > new Date(fromParsed).getTime();
+    })
+    // Filter till
+    .filter((resource) => {
+      if (!tillParsed) return true;
+      return resource.createdAt.getTime() < new Date(tillParsed).getTime();
+    });
 
-  // Filter from
-  const filteredFromResources = fromParsed
-    ? filteredByCategoryResources.filter(
-        (resource) =>
-          resource.createdAt.getTime() > new Date(fromParsed).getTime()
-      )
-    : filteredByCategoryResources;
-
-  // Filter till
-  const filteredTillResources = tillParsed
-    ? filteredFromResources.filter(
-        (resource) =>
-          resource.createdAt.getTime() < new Date(tillParsed).getTime()
-      )
-    : filteredFromResources;
-
-  const resourcesToDisplay = filteredTillResources.slice(0, itemsCount);
-  const showShowMoreBtn = filteredTillResources.length > itemsCount;
+  const resourcesToDisplay = processedResources.slice(0, itemsCount);
+  const showShowMoreBtn = processedResources.length > itemsCount;
 
   useEffect(() => {
     if (isFilterVisible) {
