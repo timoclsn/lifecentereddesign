@@ -17,6 +17,7 @@ export const resourceTypes = [
   'slide',
   'magazine',
   'newsletter',
+  'paper',
 ] as const;
 
 export type Thoughtleader = Prisma.ThoughtleaderGetPayload<{
@@ -117,6 +118,13 @@ export type Newsletter = Prisma.NewsletterGetPayload<{
   };
 }>;
 
+export type Paper = Prisma.PaperGetPayload<{
+  include: {
+    category: true;
+    authors: true;
+  };
+}>;
+
 export type Resource =
   | Thoughtleader
   | Article
@@ -132,7 +140,8 @@ export type Resource =
   | Agency
   | Slide
   | Magazine
-  | Newsletter;
+  | Newsletter
+  | Paper;
 export type Resources = Array<Resource>;
 export type ContentType = Resource['type'];
 
@@ -150,7 +159,7 @@ export const getResources = async ({
   sort,
 }: QueryFilter = {}) => {
   const dbPromises = resourceTypes.map((type) => {
-    // @ts-ignore
+    // @ts-expect-error: Dynamic table access doesn't work on type level
     return prisma[type].findMany({
       include: {
         category: true,
@@ -176,14 +185,17 @@ export const getResources = async ({
         ...(type === 'newsletter' && {
           authors: true,
         }),
+        ...(type === 'paper' && {
+          authors: true,
+        }),
       },
       where: {
         createdAt:
           from && till
             ? {
-              gte: from,
-              lte: till,
-            }
+                gte: from,
+                lte: till,
+              }
             : undefined,
       },
     }) as Promise<Resource>;
@@ -211,7 +223,7 @@ export const getResources = async ({
 };
 
 export const getResourceLikes = async (id: number, type: ContentType) => {
-  // @ts-ignore
+  // @ts-expect-error: Dynamic table access doesn't work on type level
   return (await prisma[type].findUnique({
     where: {
       id: id,
@@ -223,7 +235,7 @@ export const getResourceLikes = async (id: number, type: ContentType) => {
 };
 
 export const likeResource = async (id: number, type: ContentType) => {
-  // @ts-ignore
+  // @ts-expect-error: Dynamic table access doesn't work on type level
   return (await prisma[type].update({
     where: {
       id: id,
@@ -246,6 +258,6 @@ export const getCategories = async () => {
   return await prisma.category.findMany({
     orderBy: {
       name: 'asc',
-    }
+    },
   });
 };
