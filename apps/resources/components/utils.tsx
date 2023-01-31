@@ -8,6 +8,7 @@ import {
   Example,
   Magazine,
   Newsletter,
+  Paper,
   Podcast,
   PodcastEpisode,
   Resources,
@@ -25,6 +26,7 @@ import { DirectoryCard } from './ResourceCards/DirectoryCard';
 import { ExampleCard } from './ResourceCards/ExampleCard';
 import { MagazineCard } from './ResourceCards/MagazineCard';
 import { NewsletterCard } from './ResourceCards/NewsletterCard';
+import { PaperCard } from './ResourceCards/PaperCard';
 import { PodcastCard } from './ResourceCards/PodcastCard';
 import { PodcastEpisodeCard } from './ResourceCards/PodcastEpisodeCard';
 import { SlideCard } from './ResourceCards/SlideCard';
@@ -64,6 +66,8 @@ export const getCardComponent = (resource: Resources[0]) => {
       return <MagazineCard magazine={resource as Magazine} />;
     case 'newsletter':
       return <NewsletterCard newsletter={resource as Newsletter} />;
+    case 'paper':
+      return <PaperCard paper={resource as Paper} />;
     default:
       throw new Error('Unknown resource type');
   }

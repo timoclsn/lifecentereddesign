@@ -109,6 +109,10 @@ const typeFilterList: TypeFilterList = [
     text: 'Newsletters',
     type: 'newsletter',
   },
+  {
+    text: 'Papers',
+    type: 'paper',
+  },
 ];
 
 type TypeFilter = ContentType | 'all';
