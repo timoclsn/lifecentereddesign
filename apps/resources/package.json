@@ -8,7 +8,8 @@
     "postbuild": "node ./scripts/generate-sitemap.mjs",
     "start": "next start  -p 3000",
     "lint": "next lint",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "content": "contentlayer build"
   },
   "dependencies": {
     "@fontsource/dm-sans": "4.5.9",
