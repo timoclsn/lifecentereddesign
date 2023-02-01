@@ -10,6 +10,7 @@ const variants = {
   sky: 'bg-sky',
   stone: 'bg-stone',
   morning: 'bg-morning',
+  primary: 'bg-primary-main-bg',
 } as const;
 
 export interface CardProps {
