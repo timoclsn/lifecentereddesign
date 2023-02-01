@@ -1,3 +1,4 @@
+export * from './Bleed';
 export * from './Button';
 export * from './Card';
 export * from './Container';

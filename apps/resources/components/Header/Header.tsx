@@ -1,4 +1,4 @@
-import { Button, Heading, Text } from 'design-system';
+import { Bleed, Button, Heading, Text } from 'design-system';
 import Image from 'next/image';
 import earthImg from './earth.jpg';
 
@@ -17,17 +17,22 @@ export function Header() {
       <Button size="large" href="/resources" variant="contained">
         Discover resources
       </Button>
-      <div className="relative ml-[calc(50%-50vw)] mt-24 flex h-[200px] w-screen overflow-hidden bg-[#1A2539] md:h-[380px]">
-        <Image
-          src={earthImg}
-          alt="Image of the earth from space."
-          placeholder="blur"
-          priority
-          className="absolute left-0 right-0 top-0 mx-auto w-[900px]"
-        />
-        <div className="absolute left-0 h-full w-1/3 bg-gradient-to-r from-[#070C10] via-[#070C10] md:w-1/2 2xl:w-3/5" />
-        <div className="absolute right-0 h-full w-1/3 bg-gradient-to-l from-[#070C10] via-[#070C10] md:w-1/2 2xl:w-3/5" />
-      </div>
+      <Bleed>
+        <div className="h-[200px] md:h-[380px] bg-[#070C10] mt-24 flex justify-center">
+          <div className="w-[900px] relative">
+            <Image
+              src={earthImg}
+              alt="Image of the earth from space."
+              placeholder="blur"
+              priority
+              sizes="100vw"
+              className="absolute inset-0 object-cover object-top w-full h-full"
+            />
+            <div className="absolute left-0 top-0 w-1/4 bg-gradient-to-r from-[#070C10] to-[#070C10]/0 h-full" />
+            <div className="absolute right-0 top-0 w-1/4 bg-gradient-to-l from-[#070C10] to-[#070C10]/0 h-full" />
+          </div>
+        </div>
+      </Bleed>
     </section>
   );
 }
