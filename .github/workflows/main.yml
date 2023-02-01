@@ -55,5 +55,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate prisma type
+        working-directory: ./packages/database
+        run: pnpx prisma generate
+
+      - name: Generate content types
+        working-directory: ./apps/resources
+        run: pnpx contentlayer build
+
       - name: Type check
         run: pnpm typecheck
