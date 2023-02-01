@@ -1,6 +1,8 @@
-import { Heading } from 'design-system';
+import { UilArrowRight } from '@iconscout/react-unicons';
+import { Card, Heading, Text } from 'design-system';
 import { Resources } from 'lib/resources';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getCardComponent } from '../utils';
 import groundImg from './ground.jpg';
 
@@ -31,6 +33,19 @@ export const NewResources = ({ resources }: Props) => {
             </li>
           );
         })}
+        <li className="snap-center rounded-4xl flex-none">
+          <Link href="/resources" className="block h-full hover:opacity-80">
+            <Card
+              variant="primary"
+              className="h-full flex items-center justify-center"
+            >
+              <div className="text-primary-contrast-text flex items-center justify-center gap-2 [&>svg]:h-[25px] [&>svg]:w-[25px]">
+                <UilArrowRight />
+                <Text size="large">All Resources</Text>
+              </div>
+            </Card>
+          </Link>
+        </li>
       </ul>
     </section>
   );
