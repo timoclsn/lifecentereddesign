@@ -57,11 +57,11 @@ jobs:
 
       - name: Generate prisma type
         working-directory: ./packages/database
-        run: pnpx prisma generate
+        run: pnpm db:generate
 
       - name: Generate content types
         working-directory: ./apps/resources
-        run: pnpx contentlayer build
+        run: pnpm content
 
       - name: Type check
         run: pnpm typecheck
