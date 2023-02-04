@@ -53,6 +53,7 @@ importers:
       superjson: 1.12.2
       tailwind-config: workspace:*
       tailwindcss: 3.2.4
+      tailwindcss-animate: ^1.0.5
       tsconfig: workspace:*
       typescript: 4.9.4
       zod: 3.20.2
@@ -96,6 +97,7 @@ importers:
       postcss: 8.4.21
       tailwind-config: link:../../packages/tailwind-config
       tailwindcss: 3.2.4_postcss@8.4.21
+      tailwindcss-animate: 1.0.5_tailwindcss@3.2.4
       tsconfig: link:../../packages/tsconfig
       typescript: 4.9.4
 
@@ -5541,6 +5543,14 @@ packages:
       '@pkgr/utils': 2.3.1
       tslib: 2.4.1
     dev: false
+
+  /tailwindcss-animate/1.0.5_tailwindcss@3.2.4:
+    resolution: {integrity: sha512-UU3qrOJ4lFQABY+MVADmBm+0KW3xZyhMdRvejwtXqYOL7YjHYxmuREFAZdmVG5LPe5E9CAst846SLC4j5I3dcw==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || insiders'
+    dependencies:
+      tailwindcss: 3.2.4_postcss@8.4.21
+    dev: true
 
   /tailwindcss/3.2.4_postcss@8.4.21:
     resolution: {integrity: sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==}
