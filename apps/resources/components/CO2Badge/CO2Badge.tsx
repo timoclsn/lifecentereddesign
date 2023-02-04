@@ -12,19 +12,18 @@ interface Props {
 export function CO2Badge({ co2Consumption }: Props) {
   return (
     <Dialog.Root modal>
-      <Dialog.Trigger
-        className={`rounded-b-lg flex items-center gap-1 bg-lime px-4 py-2 font-bold ${styles.trigger}`}
-      >
-        <RiLeafLine size={22} />
+      <Dialog.Trigger className="rounded-b-lg flex items-center gap-1 bg-lime px-4 py-2 font-bold group">
+        <RiLeafLine
+          size={22}
+          className="group-hover:scale-110 transition-transform"
+        />
         <Text>
           <span className="font-bold">{co2Consumption.co2} g</span> of CO
           <sub>2</sub>
         </Text>
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay
-          className={`fixed inset-0 bg-text-primary opacity-20 z-20 ${styles.overlay}`}
-        />
+        <Dialog.Overlay className="fixed inset-0 bg-text-primary opacity-20 z-20 animate-in fade-in" />
         <Dialog.Content
           className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-3xl bg-lime p-10 w-[90vw] max-w-xl max-h-[85vh] overflow-y-auto z-20 ${styles.content}`}
         >

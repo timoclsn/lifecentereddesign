@@ -52,6 +52,7 @@
     "postcss": "8.4.21",
     "tailwind-config": "workspace:*",
     "tailwindcss": "3.2.4",
+    "tailwindcss-animate": "^1.0.5",
     "tsconfig": "workspace:*",
     "typescript": "4.9.4"
   }
