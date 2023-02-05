@@ -313,22 +313,22 @@ export const Resources = ({
   const showShowMoreBtn = processedResources.length > itemsCount;
 
   useEffect(() => {
+    const scrollToButton = (itemId: string) => {
+      const map = getMap();
+      const node = map.get(itemId);
+      if (node) {
+        node.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'nearest',
+        });
+      }
+    };
+
     if (isFilterVisible) {
       scrollToButton(state.filteredByType);
     }
-  }, [state.filteredByType]);
-
-  const scrollToButton = (itemId: string) => {
-    const map = getMap();
-    const node = map.get(itemId);
-    if (node) {
-      node.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'nearest',
-      });
-    }
-  };
+  }, [isFilterVisible, state.filteredByType]);
 
   const getMap = () => {
     if (!buttonsRef.current) {

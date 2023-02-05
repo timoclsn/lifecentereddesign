@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { fetcher } from './fetcher';
 
+// eslint-disable-next-line turbo/no-undeclared-env-vars
 const env = z.string().parse(process.env.NODE_ENV);
 
 const demoResult = {
