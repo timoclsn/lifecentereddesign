@@ -40,6 +40,16 @@ const validationSchema = z.object({
 });
 
 export const Newsletter = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    setFocus,
+  } = useForm<ValidationSchema>({
+    resolver: zodResolver(validationSchema),
+  });
+
   const mutation = trpc.newsletter.subscribe.useMutation({
     onSuccess: () => {
       reset();
@@ -52,21 +62,13 @@ export const Newsletter = () => {
       setFocus('email', { shouldSelect: true });
     },
   });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setFocus,
-  } = useForm<ValidationSchema>({
-    resolver: zodResolver(validationSchema),
-  });
 
   const onSubmit: SubmitHandler<ValidationSchema> = ({ email }) => {
     mutation.mutate({
       email,
     });
   };
+
   return (
     <Bleed>
       <section className="relative overflow-hidden bg-[#EDF4EE]">
@@ -117,8 +119,8 @@ export const Newsletter = () => {
               </Button>
             </form>
             {(mutation.isError || mutation.isSuccess) && (
-              <div className="absolute left-0 bottom-10 w-full flex justify-center mt-20 animate-in slide-in-from-bottom-full duration-150 ease-in-out fade-in">
-                <Container inset>
+              <div className="absolute left-0 bottom-10 w-full mt-20 animate-in slide-in-from-bottom-full duration-150 ease-in-out fade-in">
+                <Container inset className="flex flex-col items-center">
                   {mutation.isError && (
                     <InfoBox variant="error" icon={<UilExclamationTriangle />}>
                       {mutation.error.message}
