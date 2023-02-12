@@ -87,7 +87,7 @@ export const Newsletter = () => {
               signup page, where you will find further information.
             </Text>
             <form
-              className="w-full flex justify-center items-center gap-x-8 gap-y-12 flex-wrap"
+              className="w-full flex justify-center items-center gap-x-8 gap-y-12 flex-wrap mb-28"
               onSubmit={handleSubmit(onSubmit)}
             >
               <div className="relative">
@@ -117,19 +117,21 @@ export const Newsletter = () => {
               </Button>
             </form>
             {(mutation.isError || mutation.isSuccess) && (
-              <div className="flex justify-center mt-20 animate-in slide-in-from-bottom-full duration-150 ease-in-out fade-in">
-                {mutation.isError && (
-                  <InfoBox variant="error" icon={<UilExclamationTriangle />}>
-                    {mutation.error.message}
-                  </InfoBox>
-                )}
-                {mutation.isSuccess && (
-                  <InfoBox variant="success" icon={<UilCheckCircle />}>
-                    Almost finished... We need to confirm your email address. To
-                    complete the subscription process, please click the link in
-                    the email we just sent you.
-                  </InfoBox>
-                )}
+              <div className="absolute left-0 bottom-10 w-full flex justify-center mt-20 animate-in slide-in-from-bottom-full duration-150 ease-in-out fade-in">
+                <Container inset>
+                  {mutation.isError && (
+                    <InfoBox variant="error" icon={<UilExclamationTriangle />}>
+                      {mutation.error.message}
+                    </InfoBox>
+                  )}
+                  {mutation.isSuccess && (
+                    <InfoBox variant="success" icon={<UilCheckCircle />}>
+                      Almost finished... We need to confirm your email address.
+                      To complete the subscription process, please click the
+                      link in the email we just sent you.
+                    </InfoBox>
+                  )}
+                </Container>
               </div>
             )}
           </Container>
