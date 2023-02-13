@@ -1,4 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   UilCheckCircle,
   UilEnvelopeAlt,
@@ -14,8 +13,9 @@ import {
   InfoBox,
   Text,
 } from 'design-system';
+import { useZodForm } from 'hooks/useZodForm';
 import Image from 'next/image';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler } from 'react-hook-form';
 import { trpc } from 'utils/trpc';
 import { z } from 'zod';
 import forestImg from './forest.jpg';
@@ -32,8 +32,8 @@ const inputVariants = cva(
   }
 );
 
-type ValidationSchema = z.infer<typeof validationSchema>;
-const validationSchema = z.object({
+type NewsletterFormSchema = z.infer<typeof newsletterFormSchema>;
+export const newsletterFormSchema = z.object({
   email: z.string().min(1, { message: 'Email is required' }).email({
     message: 'Must be a valid email',
   }),
@@ -46,8 +46,8 @@ export const Newsletter = () => {
     formState: { errors },
     reset,
     setFocus,
-  } = useForm<ValidationSchema>({
-    resolver: zodResolver(validationSchema),
+  } = useZodForm({
+    schema: newsletterFormSchema,
   });
 
   const mutation = trpc.newsletter.subscribe.useMutation({
@@ -63,7 +63,7 @@ export const Newsletter = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<ValidationSchema> = ({ email }) => {
+  const onSubmit: SubmitHandler<NewsletterFormSchema> = ({ email }) => {
     mutation.mutate({
       email,
     });

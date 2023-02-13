@@ -1,4 +1,5 @@
 import { TRPCError } from '@trpc/server';
+import { newsletterFormSchema } from 'components/Newsletter/Newsletter';
 import { publicProcedure, router } from 'server/trpc';
 import { z } from 'zod';
 
@@ -18,11 +19,7 @@ const url = `https://${apiServer}.api.mailchimp.com/3.0/lists/${audienceId}/memb
 
 export const newsletterRouter = router({
   subscribe: publicProcedure
-    .input(
-      z.object({
-        email: z.string().email(),
-      })
-    )
+    .input(newsletterFormSchema)
     .mutation(async ({ input }) => {
       const { email } = input;
 
@@ -31,7 +28,7 @@ export const newsletterRouter = router({
         status: 'pending',
       };
 
-      const res = await fetch(url, {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -40,7 +37,8 @@ export const newsletterRouter = router({
         body: JSON.stringify(data),
       });
 
-      if (!res.ok) {
+      if (!response.ok) {
+        console.log(response);
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message:
