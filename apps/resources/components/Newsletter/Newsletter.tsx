@@ -22,7 +22,7 @@ import { z } from 'zod';
 import forestImg from './forest.jpg';
 
 const inputVariants = cva(
-  'px-10 py-6 text-2xl text-text-secondary bg-ghost-main-dark-bg focus-visible:outline-none',
+  'px-10 py-6 text-2xl text-text-secondary bg-ghost-main-dark-bg focus-visible:outline-none md:w-[600px]',
   {
     variants: {
       error: {
