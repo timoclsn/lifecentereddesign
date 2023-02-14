@@ -15,6 +15,7 @@ import {
 } from 'design-system';
 import { useZodForm } from 'hooks/useZodForm';
 import Image from 'next/image';
+import Link from 'next/link';
 import { SubmitHandler } from 'react-hook-form';
 import { trpc } from 'utils/trpc';
 import { z } from 'zod';
@@ -26,7 +27,7 @@ const inputVariants = cva(
     variants: {
       error: {
         true: 'ring-2 ring-red-700',
-        false: 'focus-visible:ring-2 focus-visible:ring-primary-main-bg',
+        false: 'focus-visible:ring-2 focus-visible:ring-ghost-contrast-text',
       },
     },
   }
@@ -34,8 +35,8 @@ const inputVariants = cva(
 
 type NewsletterFormSchema = z.infer<typeof newsletterFormSchema>;
 export const newsletterFormSchema = z.object({
-  email: z.string().min(1, { message: 'Email is required' }).email({
-    message: 'Must be a valid email',
+  email: z.string().min(1, { message: 'Email address is required' }).email({
+    message: 'Must be a valid email address',
   }),
 });
 
@@ -83,10 +84,9 @@ export const Newsletter = () => {
               Newsletter
             </Heading>
             <Text as="p" size="large" className="mb-16 text-text-secondary">
-              Signup for our Newsletter to get all the new resources and other
+              Sign up for our Newsletter to get all the new resources and other
               Life-centered Design related news delivered to your inbox once a
-              month. Clicking the button or input field will bring you to the
-              signup page, where you will find further information.
+              month.
             </Text>
             <form
               className="w-full flex justify-center items-center gap-x-8 gap-y-12 flex-wrap mb-28"
@@ -115,9 +115,21 @@ export const Newsletter = () => {
                 ) : (
                   <UilEnvelopeAlt />
                 )}
-                Newsletter Signup
+                Subscribe
               </Button>
             </form>
+            <Text as="p" size="small" className="mb-16 text-text-secondary">
+              By subscribing to our newsletter you also give us your consent
+              that we analyze, track and store the opening- and click-rates to
+              optimize our newsletter and services. You can unsubscribe at any
+              time by clicking the link in the footer of our emails. We use the
+              newsletter provider Mailchimp. For detailed information about our
+              privacy practices, please visit our{' '}
+              <Link href="/privacy" className="underline hover:opacity-80">
+                privacy policy
+              </Link>
+              .
+            </Text>
             {(mutation.isError || mutation.isSuccess) && (
               <div className="absolute left-0 bottom-10 w-full mt-20 animate-in slide-in-from-bottom-full duration-150 ease-in-out fade-in">
                 <Container inset className="flex flex-col items-center">

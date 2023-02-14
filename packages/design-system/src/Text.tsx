@@ -18,6 +18,7 @@ const validElements = [
 ] as const;
 
 const sizes = {
+  small: 'text-sm',
   medium: 'text-base',
   large: 'text-2xl',
 } as const;
@@ -29,7 +30,7 @@ const weights = {
 
 interface Props {
   children: ReactNode;
-  as?: typeof validElements[number];
+  as?: (typeof validElements)[number];
   size?: keyof typeof sizes;
   weight?: keyof typeof weights;
   className?: string;
