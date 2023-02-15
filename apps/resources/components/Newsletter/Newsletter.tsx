@@ -127,7 +127,7 @@ export const Newsletter = () => {
                 <InfoBox
                   variant="success"
                   icon={<UilCheckCircle />}
-                  className="animate-in zoom-in-0 duration-150 ease-in-out fade-in mb-6"
+                  className="animate-in zoom-in-0 duration-150 ease-in-out fade-in mb-8"
                 >
                   Almost finished... We need to confirm your email address. To
                   complete the subscription process, please click the link in
@@ -138,7 +138,7 @@ export const Newsletter = () => {
                 <InfoBox
                   variant="error"
                   icon={<UilExclamationTriangle />}
-                  className="animate-in zoom-in-50 duration-150 ease-in-out fade-in mb-6"
+                  className="animate-in zoom-in-50 duration-150 ease-in-out fade-in mb-8"
                 >
                   {mutation.error.message}
                 </InfoBox>
