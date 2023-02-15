@@ -1,17 +1,24 @@
 import { cx } from 'class-variance-authority';
-import { ReactNode } from 'react';
+import { ElementType, ReactNode } from 'react';
 
 interface Props {
+  as?: ElementType;
   children: ReactNode;
   url: string;
   external?: boolean;
   className?: string;
 }
 
-export const Link = ({ children, url, external, className }: Props) => {
-  const styles = cx(['underline hover:opacity-80', className]);
+export const Link = ({
+  as: Element = 'a',
+  children,
+  url,
+  external,
+  className,
+}: Props) => {
+  const styles = cx('underline hover:opacity-80', className);
   return (
-    <a
+    <Element
       href={url}
       {...(external
         ? {
@@ -22,6 +29,6 @@ export const Link = ({ children, url, external, className }: Props) => {
       className={styles}
     >
       {children}
-    </a>
+    </Element>
   );
 };

@@ -1,20 +1,23 @@
-import { cx } from 'class-variance-authority';
+import { cva, VariantProps } from 'class-variance-authority';
 import { ReactNode } from 'react';
 
 const validElements = ['h1', 'h2', 'h3', 'h4', 'span'] as const;
-type ValidElements = typeof validElements[number];
+type ValidElements = (typeof validElements)[number];
 
-const levels = {
-  '1': 'text-3xl sm:text-7xl',
-  '2': 'text-4xl',
-  '3': 'text-xl sm:text-3xl',
-  '4': 'text-2xl',
-} as const;
+const styles = cva('font-serif font-bold', {
+  variants: {
+    level: {
+      '1': 'text-3xl sm:text-7xl',
+      '2': 'text-4xl',
+      '3': 'text-xl sm:text-3xl',
+      '4': 'text-2xl',
+    },
+  },
+});
 
-interface Props {
+interface Props extends VariantProps<typeof styles> {
   children: ReactNode;
   as?: ValidElements;
-  level?: keyof typeof levels;
   title?: string;
   className?: string;
 }
@@ -27,9 +30,8 @@ export const Heading = ({
   className,
 }: Props) => {
   const Element = as ? as : (`h${level}` as ValidElements);
-  const styles = cx(['font-serif font-bold', levels[level], className]);
   return (
-    <Element title={title} className={styles}>
+    <Element title={title} className={styles({ level, className })}>
       {children}
     </Element>
   );

@@ -1,7 +1,7 @@
 import { cva, VariantProps } from 'class-variance-authority';
 import { ReactNode } from 'react';
 
-const infoBoxVariants = cva(
+const styles = cva(
   'px-6 py-4 text-white flex gap-2 [&_svg]:h-[20px] [&_svg]:w-[20px]',
   {
     variants: {
@@ -13,7 +13,7 @@ const infoBoxVariants = cva(
   }
 );
 
-interface Props extends VariantProps<typeof infoBoxVariants> {
+interface Props extends VariantProps<typeof styles> {
   children: ReactNode;
   icon?: ReactNode;
   className?: string;
@@ -21,7 +21,7 @@ interface Props extends VariantProps<typeof infoBoxVariants> {
 
 export const InfoBox = ({ children, icon, className, variant }: Props) => {
   return (
-    <div className={infoBoxVariants({ variant, className })}>
+    <div className={styles({ variant, className })}>
       {icon && (
         <div className="flex-none flex justify-center mt-0.5">{icon}</div>
       )}

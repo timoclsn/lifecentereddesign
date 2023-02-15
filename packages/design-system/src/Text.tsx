@@ -1,4 +1,4 @@
-import { cx } from 'class-variance-authority';
+import { cva, VariantProps } from 'class-variance-authority';
 import { ReactNode } from 'react';
 
 const validElements = [
@@ -17,22 +17,23 @@ const validElements = [
   'label',
 ] as const;
 
-const sizes = {
-  small: 'text-sm',
-  medium: 'text-base',
-  large: 'text-2xl',
-} as const;
+const styles = cva('font-sans', {
+  variants: {
+    size: {
+      small: 'text-sm',
+      medium: 'text-base',
+      large: 'text-2xl',
+    },
+    weight: {
+      normal: 'font-normal',
+      bold: 'font-bold',
+    },
+  },
+});
 
-const weights = {
-  normal: 'font-normal',
-  bold: 'font-bold',
-} as const;
-
-interface Props {
+interface Props extends VariantProps<typeof styles> {
   children: ReactNode;
   as?: (typeof validElements)[number];
-  size?: keyof typeof sizes;
-  weight?: keyof typeof weights;
   className?: string;
 }
 
@@ -43,6 +44,9 @@ export const Text = ({
   weight = 'normal',
   className,
 }: Props) => {
-  const styles = cx(['font-sans', sizes[size], weights[weight], className]);
-  return <Element className={styles}>{children}</Element>;
+  return (
+    <Element className={styles({ size, weight, className })}>
+      {children}
+    </Element>
+  );
 };
