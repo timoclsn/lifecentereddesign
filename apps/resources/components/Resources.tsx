@@ -36,7 +36,7 @@ import {
   ContentType,
   Resources as ResourcesType,
 } from '../lib/resources';
-import { useOnScreen } from './useOnScreen';
+import { useOnScreen } from '../hooks/useOnScreen';
 import { getCardComponent } from './utils';
 
 type TypeFilterList = Array<{
