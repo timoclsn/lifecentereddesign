@@ -45,7 +45,7 @@ export const newsletterRouter = router({
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message:
-            "There was an error subscribing to the newsletter. Send me an email at katharina@katharinaclasen.de and I'll add you to the list.",
+            "There was an error subscribing to the newsletter. Send us an email at hello@lifecentereddesign.net and we'll add you to the list.",
         });
       }
     }),
