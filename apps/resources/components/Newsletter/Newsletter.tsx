@@ -104,7 +104,7 @@ export const Newsletter = () => {
         <Image
           src={forestImg}
           alt="Image of a foggy forest."
-          className="absolute inset-0 h-full w-full object-cover object-top"
+          className="absolute inset-0 h-full w-full object-cover object-center"
         />
         <div className="relative py-28">
           <Container inset>
@@ -119,7 +119,7 @@ export const Newsletter = () => {
 
             {/* Form */}
             <form
-              className="w-full max-w-4xl mx-auto flex flex-col items-start gap-10"
+              className="w-full max-w-prose mx-auto flex flex-col items-start gap-10"
               onSubmit={handleSubmit(onSubmit)}
             >
               {/* Email input */}
@@ -204,7 +204,11 @@ export const Newsletter = () => {
               )}
 
               {/* Info text */}
-              <Text as="p" size="small" className="text-text-secondary mx-auto">
+              <Text
+                as="p"
+                size="small"
+                className="text-text-secondary mx-auto mb-40"
+              >
                 By subscribing to our newsletter you also give us your consent
                 that we analyze, track and store the opening- and click-rates to
                 optimize our newsletter and services. You can unsubscribe at any
