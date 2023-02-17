@@ -10,7 +10,7 @@ Am Backhaus 12
 Germany
 
 +49 176 44484593  
-katharina@katharinaclasen.de
+hello@lifecentereddesign.net
 
 ## Disclaimer
 
