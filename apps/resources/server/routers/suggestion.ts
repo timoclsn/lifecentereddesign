@@ -52,7 +52,7 @@ export const suggestionRouter = router({
       };
 
       try {
-        transporter.sendMail(mailData);
+        await transporter.sendMail(mailData);
       } catch (e) {
         console.log(e);
         throw new TRPCError({
