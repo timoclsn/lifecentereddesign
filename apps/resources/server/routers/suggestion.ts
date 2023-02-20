@@ -4,14 +4,16 @@ import { publicProcedure, router } from 'server/trpc';
 import { z } from 'zod';
 
 const envSchema = z.object({
-  SUGGESTION_MAIL_SMTP: z.string(),
-  SUGGESTION_MAIL_ACCOUNT: z.string(),
+  SUGGESTION_MAIL_HOST: z.string(),
+  SUGGESTION_MAIL_PORT: z.coerce.number(),
+  SUGGESTION_MAIL_USER: z.string(),
   SUGGESTION_MAIL_PASSWORD: z.string(),
 });
 
 const {
-  SUGGESTION_MAIL_SMTP,
-  SUGGESTION_MAIL_ACCOUNT,
+  SUGGESTION_MAIL_HOST,
+  SUGGESTION_MAIL_PORT,
+  SUGGESTION_MAIL_USER,
   SUGGESTION_MAIL_PASSWORD,
 } = envSchema.parse(process.env);
 
@@ -19,36 +21,30 @@ export const suggestionRouter = router({
   add: publicProcedure
     .input(
       z.object({
-        title: z.string(),
-        description: z.string(),
-        url: z.string().url(),
+        link: z.string().url(),
+        message: z.string().optional(),
       })
     )
     .mutation(async ({ input }) => {
-      const { title, description, url } = input;
-
-      const text = `
-        Title: ${title}
-        Description: ${description}
-        URL: ${url}
-      `;
+      const { link, message } = input;
 
       const transporter = nodemailer.createTransport({
-        port: 465,
-        host: SUGGESTION_MAIL_SMTP,
+        port: SUGGESTION_MAIL_PORT,
+        host: SUGGESTION_MAIL_HOST,
         auth: {
-          user: SUGGESTION_MAIL_ACCOUNT,
+          user: SUGGESTION_MAIL_USER,
           pass: SUGGESTION_MAIL_PASSWORD,
         },
         secure: true,
       });
 
       const mailData = {
-        from: 'Website Resource Suggestion Form',
+        from: 'Resource Suggestion Form',
         to: 'hello@lifecentereddesign.net',
-        subject: `New Resource Suggestion From Website Form`,
-        text,
-        html: `<div>${text}</div>`,
+        subject: 'Resource Suggestion',
+        text: `Link: ${link}\n Message: ${
+          message ? message : 'No message provided'
+        }`,
       };
 
       try {
