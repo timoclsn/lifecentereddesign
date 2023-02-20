@@ -31,10 +31,10 @@ export const suggestionRouter = router({
       });
 
       const mailData = {
-        from: 'Resource Suggestion Form',
+        from: 'suggestion@lifecentereddesign.net',
         to: 'hello@lifecentereddesign.net',
         subject: 'Resource Suggestion',
-        text: `Link: ${link}\n Message: ${
+        text: `Link: ${link}\nMessage: ${
           message ? message : 'No message provided'
         }`,
       };
