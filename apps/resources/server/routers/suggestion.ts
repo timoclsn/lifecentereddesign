@@ -38,7 +38,7 @@ export const suggestionRouter = router({
       try {
         await transporter.sendMail(mailData);
       } catch (e) {
-        console.log(e);
+        console.error(e);
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message:
