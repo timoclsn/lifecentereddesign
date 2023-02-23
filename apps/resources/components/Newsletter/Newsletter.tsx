@@ -108,7 +108,7 @@ export const Newsletter = () => {
         />
         <div className="relative py-28">
           <Container inset>
-            <Heading level="2" className="text-primary">
+            <Heading level="2" className="text-primary mb-6">
               Newsletter
             </Heading>
             <Text as="p" size="large" className="mb-16 text-text-secondary">

@@ -1,4 +1,5 @@
 import { TRPCError } from '@trpc/server';
+import { suggestionFormSchema } from 'components/Suggestion';
 import nodemailer from 'nodemailer';
 import { publicProcedure, router } from 'server/trpc';
 import { z } from 'zod';
@@ -10,13 +11,8 @@ const envSchema = z.object({
 const { SUGGESTION_MAIL_PASSWORD } = envSchema.parse(process.env);
 
 export const suggestionRouter = router({
-  add: publicProcedure
-    .input(
-      z.object({
-        link: z.string().url(),
-        message: z.string().optional(),
-      })
-    )
+  submit: publicProcedure
+    .input(suggestionFormSchema)
     .mutation(async ({ input }) => {
       const { link, message } = input;
 
