@@ -7,6 +7,7 @@ const styles = cva(
     variants: {
       variant: {
         contained: null,
+        outline: null,
         text: null,
       },
       size: {
@@ -28,10 +29,16 @@ const styles = cva(
           'text-primary-contrast-text bg-primary-main-bg hover:bg-primary-hover-bg disabled:bg-primary-disabled-bg',
       },
       {
+        variant: 'outline',
+        color: 'primary',
+        class:
+          'text-primary-main-text ring-2 ring-primary-main-bg ring-inset hover:text-primary-hover-text hover:ring-primary-hover-bg',
+      },
+      {
         variant: 'text',
         color: 'primary',
         class:
-          'text-primary-main-texthover:text-primary-hover-text hover:bg-primary-ghost-bgdisabled:text-primary-disabled-text disabled:bg-transparent',
+          'text-primary-main-text hover:text-primary-hover-text hover:bg-primary-ghost-bg disabled:text-primary-disabled-text disabled:bg-transparent',
       },
     ],
   }
