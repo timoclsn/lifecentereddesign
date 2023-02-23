@@ -32,7 +32,7 @@ const styles = cva(
         variant: 'outline',
         color: 'primary',
         class:
-          'text-primary-main-text ring-2 ring-primary-main-bg ring-inset hover:text-primary-hover-text hover:ring-primary-hover-bg',
+          'text-primary-main-text ring-2 ring-primary-main-bg ring-inset hover:opacity-70',
       },
       {
         variant: 'text',
