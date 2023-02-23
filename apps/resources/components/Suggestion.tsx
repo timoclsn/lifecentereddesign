@@ -4,33 +4,12 @@ import {
   UilExclamationTriangle,
   UilSpinnerAlt,
 } from '@iconscout/react-unicons';
-import { cva } from 'class-variance-authority';
-import {
-  Bleed,
-  Button,
-  Container,
-  Heading,
-  InfoBox,
-  Text,
-} from 'design-system';
+import { Button, Heading, InfoBox, Text } from 'design-system';
 import { useZodForm } from 'hooks/useZodForm';
-import Image from 'next/image';
 import { SubmitHandler } from 'react-hook-form';
 import { trpc } from 'utils/trpc';
 import { z } from 'zod';
-import forestImg from './Newsletter/forest.jpg';
-
-const inputStyles = cva(
-  'px-10 py-6 text-2xl text-text-secondary bg-ghost-main-dark-bg outline-none w-full ring-inset',
-  {
-    variants: {
-      error: {
-        true: 'ring-2 ring-red-700',
-        false: 'focus-visible:ring-2 focus-visible:ring-ghost-contrast-text',
-      },
-    },
-  }
-);
+import { ForrestSection, inputStyles } from './ForrestSection/ForrestSection';
 
 type SuggestionFormSchema = z.infer<typeof suggestionFormSchema>;
 export const suggestionFormSchema = z.object({
@@ -72,105 +51,91 @@ export const Suggestion = () => {
   };
 
   return (
-    <Bleed>
-      <section
-        id="suggestion"
-        className="relative overflow-hidden bg-[#EDF4EE]"
+    <ForrestSection id="suggestion">
+      <Heading level="2" className="text-primary mb-6">
+        Suggest Resource
+      </Heading>
+      <Text as="p" size="large" className="mb-16 text-text-secondary">
+        Surely there are a lot more great life-centered design resources out
+        there. Help us discover and share them all. If we are missing something
+        just submit the resource and we&apos;ll get it on the site as soon as
+        possible.
+      </Text>
+
+      {/* Form */}
+      <form
+        className="w-full max-w-prose mx-auto flex flex-col items-start gap-10"
+        onSubmit={handleSubmit(onSubmit)}
       >
-        <Image
-          src={forestImg}
-          alt="Image of a foggy forest."
-          className="absolute inset-0 h-full w-full object-cover object-center"
-        />
-        <div className="relative py-28">
-          <Container inset>
-            <Heading level="2" className="text-primary mb-6">
-              Suggest resource
-            </Heading>
-            <Text as="p" size="large" className="mb-16 text-text-secondary">
-              Surely there are a lot more great life-centered design resources
-              out there. Help us discover and share them all. If we are missing
-              something just submit the resource and we&apos;ll get it on the
-              site as soon as possible.
-            </Text>
-
-            {/* Form */}
-            <form
-              className="w-full max-w-prose mx-auto flex flex-col items-start gap-10"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              {/* Link input */}
-              <div className="relative w-full">
-                <label htmlFor="link" className="sr-only">
-                  Resource link
-                </label>
-                <input
-                  id="link"
-                  type="url"
-                  placeholder="Link to resource"
-                  className={inputStyles({ error: !!errors.link })}
-                  {...register('link')}
-                />
-                {errors.link && (
-                  <p className="absolute left-0 bottom-0 -mb-6 text-red-700 text-sm">
-                    {errors.link.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Message input */}
-              <div className="relative w-full">
-                <label htmlFor="link" className="sr-only">
-                  Optional message
-                </label>
-                <textarea
-                  id="message"
-                  placeholder="Optional message about the resource"
-                  rows={6}
-                  className={inputStyles({ error: !!errors.message })}
-                  {...register('message')}
-                />
-                {errors.message && (
-                  <p className="absolute left-0 bottom-0 -mb-6 text-red-700 text-sm">
-                    {errors.message.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Submit button */}
-              <Button type="submit" size="large">
-                {mutation.isLoading ? (
-                  <UilSpinnerAlt className="animate-spin" />
-                ) : (
-                  <UilEnvelopeAlt />
-                )}
-                Submit
-              </Button>
-
-              {/* Server error */}
-              {mutation.isSuccess && (
-                <InfoBox
-                  variant="success"
-                  icon={<UilCheckCircle />}
-                  className="animate-in zoom-in-0 duration-150 ease-in-out fade-in"
-                >
-                  Thanks for your contribution! We&apos;ll get the resource on
-                  the site as soon as possible.
-                </InfoBox>
-              )}
-              {mutation.isError && (
-                <InfoBox
-                  variant="error"
-                  icon={<UilExclamationTriangle />}
-                  className="animate-in zoom-in-50 duration-150 ease-in-out fade-in"
-                >
-                  {mutation.error.message}
-                </InfoBox>
-              )}
-            </form>
-          </Container>
+        {/* Link input */}
+        <div className="relative w-full">
+          <label htmlFor="link" className="sr-only">
+            Resource link
+          </label>
+          <input
+            id="link"
+            type="url"
+            placeholder="Link to resource"
+            className={inputStyles({ error: !!errors.link })}
+            {...register('link')}
+          />
+          {errors.link && (
+            <p className="absolute left-0 bottom-0 -mb-6 text-red-700 text-sm">
+              {errors.link.message}
+            </p>
+          )}
         </div>
-      </section>
-    </Bleed>
+
+        {/* Message input */}
+        <div className="relative w-full">
+          <label htmlFor="link" className="sr-only">
+            Optional message
+          </label>
+          <textarea
+            id="message"
+            placeholder="Optional message about the resource"
+            rows={6}
+            className={inputStyles({ error: !!errors.message })}
+            {...register('message')}
+          />
+          {errors.message && (
+            <p className="absolute left-0 bottom-0 -mb-6 text-red-700 text-sm">
+              {errors.message.message}
+            </p>
+          )}
+        </div>
+
+        {/* Submit button */}
+        <Button type="submit" size="large">
+          {mutation.isLoading ? (
+            <UilSpinnerAlt className="animate-spin" />
+          ) : (
+            <UilEnvelopeAlt />
+          )}
+          Submit
+        </Button>
+
+        {/* Server messages */}
+        {mutation.isSuccess && (
+          <InfoBox
+            variant="success"
+            icon={<UilCheckCircle />}
+            className="animate-in zoom-in-0 duration-150 ease-in-out fade-in"
+          >
+            Thanks for your contribution! We&apos;ll get the resource on the
+            site as soon as possible.
+          </InfoBox>
+        )}
+        {mutation.isError && (
+          <InfoBox
+            variant="error"
+            icon={<UilExclamationTriangle />}
+            className="animate-in zoom-in-50 duration-150 ease-in-out fade-in"
+          >
+            {mutation.error.message}
+          </InfoBox>
+        )}
+      </form>
+    </ForrestSection>
   );
 };
