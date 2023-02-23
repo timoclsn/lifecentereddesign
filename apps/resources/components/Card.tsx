@@ -154,7 +154,7 @@ export const Card = ({
             className="flex gap-2 group transition-transform ease disabled:opacity-80"
           >
             {data ? data.likes : '…'}
-            <UilHeart className="group-hover:scale-110" />
+            <UilHeart className="group-hover:scale-110 group-active:scale-90" />
           </button>
         </div>
 
