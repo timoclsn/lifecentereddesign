@@ -56,10 +56,10 @@ export const Suggestion = () => {
         Suggest Resource
       </Heading>
       <Text as="p" size="large" className="mb-16 text-text-secondary">
-        Surely there are a lot more great life-centered design resources out
-        there. Help us discover and share them all. If we are missing something
-        just submit the resource and we&apos;ll get it on the site as soon as
-        possible.
+        Surely there are a lot more great Life-centered Design resources out
+        there. Help us discover and share them all! If we are missing something,
+        just submit the resource and we&apos;ll review it and get it on the site
+        as soon as possible.
       </Text>
 
       {/* Form */}
