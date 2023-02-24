@@ -14,9 +14,14 @@ export function Header() {
         design more responsible, sustainable, ethical and all in all more
         meaningful products, systems, and services.
       </Text>
-      <Button size="large" href="/resources" variant="contained">
-        Discover resources
-      </Button>
+      <div className="flex items-center gap-4 flex-wrap">
+        <Button size="large" href="/resources" variant="contained">
+          Discover resources
+        </Button>
+        <Button size="large" href="/resources#suggestion" variant="outline">
+          Suggest resource
+        </Button>
+      </div>
       <Bleed>
         <div className="h-[200px] md:h-[380px] bg-[#070C10] mt-24 flex justify-center">
           <div className="w-[900px] relative">

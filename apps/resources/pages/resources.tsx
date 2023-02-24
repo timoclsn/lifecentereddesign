@@ -1,4 +1,5 @@
 import { Layout } from 'components/Layout';
+import { Suggestion } from 'components/Suggestion';
 import { getCO2Consumtion } from 'lib/co2';
 import { getResources, getCategories } from 'lib/resources';
 import { InferGetStaticPropsType } from 'next';
@@ -16,6 +17,7 @@ const ResourcesPage = ({
         resources={resources}
         categories={categories}
       />
+      <Suggestion />
     </Layout>
   );
 };

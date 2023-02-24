@@ -1,6 +1,6 @@
 import mailchimp from '@mailchimp/mailchimp_marketing';
 import { TRPCError } from '@trpc/server';
-import { newsletterFormSchema } from 'components/Newsletter/Newsletter';
+import { newsletterFormSchema } from 'components/Newsletter';
 import { publicProcedure, router } from 'server/trpc';
 import { z } from 'zod';
 
@@ -41,7 +41,7 @@ export const newsletterRouter = router({
           ],
         });
       } catch (e) {
-        console.log(e);
+        console.error(e);
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message:

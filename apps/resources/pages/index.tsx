@@ -6,7 +6,7 @@ import { InferGetStaticPropsType } from 'next';
 import { Header } from '../components/Header/Header';
 import { Layout } from '../components/Layout';
 import { NewResources } from '../components/NewResources/NewResources';
-import { Newsletter } from '../components/Newsletter/Newsletter';
+import { Newsletter } from '../components/Newsletter';
 
 export default function Home({
   co2Consumption,
