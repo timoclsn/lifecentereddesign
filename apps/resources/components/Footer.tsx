@@ -11,11 +11,7 @@ export function Footer() {
           </Link>
         </li>
         <li className="hover:underline">
-          <Link
-            href="http://eepurl.com/htoWRr"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <Link href="/#newsletter">
             <Text>Newsletter</Text>
           </Link>
         </li>
