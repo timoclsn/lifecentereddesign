@@ -69,6 +69,6 @@ export const getCardComponent = (resource: Resources[0]) => {
     case 'paper':
       return <PaperCard paper={resource as Paper} />;
     default:
-      throw new Error('Unknown resource type');
+      throw new Error(`Unknown resource type: ${resource.type}`);
   }
 };
