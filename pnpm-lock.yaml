@@ -111,12 +111,12 @@ importers:
 
   packages/database:
     specifiers:
-      '@prisma/client': 4.11.0
-      prisma: 4.11.0
+      '@prisma/client': 4.12.0-dev.4
+      prisma: 4.12.0-dev.4
     dependencies:
-      '@prisma/client': 4.11.0_prisma@4.11.0
+      '@prisma/client': 4.12.0-dev.4_prisma@4.12.0-dev.4
     devDependencies:
-      prisma: 4.11.0
+      prisma: 4.12.0-dev.4
 
   packages/design-system:
     specifiers:
@@ -1122,8 +1122,8 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@prisma/client/4.11.0_prisma@4.11.0:
-    resolution: {integrity: sha512-0INHYkQIqgAjrt7NzhYpeDQi8x3Nvylc2uDngKyFDDj1tTRQ4uV1HnVmd1sQEraeVAN63SOK0dgCKQHlvjL0KA==}
+  /@prisma/client/4.12.0-dev.4_prisma@4.12.0-dev.4:
+    resolution: {integrity: sha512-hhIFrampdvGlcbqDUNfRrampxh7yaEikh0I7Ea+k5IsJrmmjed2ryMNaRppEGSuRs88NiEKc6I3hW+/KYoFB7w==}
     engines: {node: '>=14.17'}
     requiresBuild: true
     peerDependencies:
@@ -1132,16 +1132,16 @@ packages:
       prisma:
         optional: true
     dependencies:
-      '@prisma/engines-version': 4.11.0-57.8fde8fef4033376662cad983758335009d522acb
-      prisma: 4.11.0
+      '@prisma/engines-version': 4.12.0-7.7a20cf1a4beb0a867a024f8c5bb3f1e48d184b3a
+      prisma: 4.12.0-dev.4
     dev: false
 
-  /@prisma/engines-version/4.11.0-57.8fde8fef4033376662cad983758335009d522acb:
-    resolution: {integrity: sha512-3Vd8Qq06d5xD8Ch5WauWcUUrsVPdMC6Ge8ILji8RFfyhUpqon6qSyGM0apvr1O8n8qH8cKkEFqRPsYjuz5r83g==}
+  /@prisma/engines-version/4.12.0-7.7a20cf1a4beb0a867a024f8c5bb3f1e48d184b3a:
+    resolution: {integrity: sha512-omDRnTzVwtnrREoDx6wSCgMzNleXrpihcIpzd3VgNpTbqqnrh3su8piCMW++/zt3BfsaS/wlGODLODe1k5dGRQ==}
     dev: false
 
-  /@prisma/engines/4.11.0:
-    resolution: {integrity: sha512-0AEBi2HXGV02cf6ASsBPhfsVIbVSDC9nbQed4iiY5eHttW9ZtMxHThuKZE1pnESbr8HRdgmFSa/Kn4OSNYuibg==}
+  /@prisma/engines/4.12.0-dev.4:
+    resolution: {integrity: sha512-+Hi9bt153+8GHtsnfYaatcSGjO3fmvimdjgGVNvwj9Tl/kcNlJVp3XDnf+lid6EuDmP6VndKoylnD/h7jmu7Rg==}
     requiresBuild: true
 
   /@protobufjs/aspromise/1.1.2:
@@ -5298,13 +5298,13 @@ packages:
     hasBin: true
     dev: false
 
-  /prisma/4.11.0:
-    resolution: {integrity: sha512-4zZmBXssPUEiX+GeL0MUq/Yyie4ltiKmGu7jCJFnYMamNrrulTBc+D+QwAQSJ01tyzeGHlD13kOnqPwRipnlNw==}
+  /prisma/4.12.0-dev.4:
+    resolution: {integrity: sha512-dmbPjKgQ7kghHE8Kkdhg3BYG1kcDHaErXfJ9kTeZvd+QnGomKSldkfXywS5sA1XV/72WXbbd+I2nw2t8mpAmsA==}
     engines: {node: '>=14.17'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      '@prisma/engines': 4.11.0
+      '@prisma/engines': 4.12.0-dev.4
 
   /process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}

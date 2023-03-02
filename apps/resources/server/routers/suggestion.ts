@@ -14,7 +14,7 @@ export const suggestionRouter = router({
   submit: publicProcedure
     .input(suggestionFormSchema)
     .mutation(async ({ input }) => {
-      const { link, message } = input;
+      const { link, message, name } = input;
 
       const transporter = nodemailer.createTransport({
         port: 465,
@@ -32,7 +32,7 @@ export const suggestionRouter = router({
         subject: 'Resource Suggestion',
         text: `Link: ${link}\nMessage: ${
           message ? message : 'No message provided'
-        }`,
+        }\nName: ${name ? name : 'No name provided'}`,
       };
 
       try {

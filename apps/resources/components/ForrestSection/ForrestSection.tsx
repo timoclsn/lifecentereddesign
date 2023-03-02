@@ -28,6 +28,9 @@ export const checkboxStyles = cva(
   }
 );
 
+export const errorStyles =
+  'absolute left-0 bottom-0 -mb-6 text-red-700 text-sm slide-in-from-top-full duration-100 ease-in-out fade-in animate-in';
+
 interface Props {
   children: ReactNode;
   id?: string;
