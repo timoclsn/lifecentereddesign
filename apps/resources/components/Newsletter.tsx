@@ -8,6 +8,7 @@ import {
 import * as Checkbox from '@radix-ui/react-checkbox';
 import {
   checkboxStyles,
+  errorStyles,
   ForrestSection,
   inputStyles,
 } from 'components/ForrestSection/ForrestSection';
@@ -93,9 +94,7 @@ export const Newsletter = () => {
             {...register('email')}
           />
           {errors.email && (
-            <p className="absolute left-0 bottom-0 -mb-6 text-red-700 text-sm">
-              {errors.email.message}
-            </p>
+            <p className={errorStyles}>{errors.email.message}</p>
           )}
         </div>
 
@@ -123,9 +122,7 @@ export const Newsletter = () => {
             Yes, I want to receive the newsletter
           </label>
           {errors.consens && (
-            <p className="absolute left-0 bottom-0 -mb-6 text-red-700 text-sm">
-              {errors.consens.message}
-            </p>
+            <p className={errorStyles}>{errors.consens.message}</p>
           )}
         </div>
 
