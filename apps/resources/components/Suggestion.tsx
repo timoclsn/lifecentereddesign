@@ -9,7 +9,11 @@ import { useZodForm } from 'hooks/useZodForm';
 import { SubmitHandler } from 'react-hook-form';
 import { trpc } from 'utils/trpc';
 import { z } from 'zod';
-import { ForrestSection, inputStyles } from './ForrestSection/ForrestSection';
+import {
+  errorStyles,
+  ForrestSection,
+  inputStyles,
+} from './ForrestSection/ForrestSection';
 
 type SuggestionFormSchema = z.infer<typeof suggestionFormSchema>;
 export const suggestionFormSchema = z.object({
@@ -17,6 +21,7 @@ export const suggestionFormSchema = z.object({
     message: 'Must be a valid URL',
   }),
   message: z.string().optional(),
+  name: z.string().optional(),
 });
 
 export const Suggestion = () => {
@@ -79,11 +84,22 @@ export const Suggestion = () => {
             className={inputStyles({ error: !!errors.link })}
             {...register('link')}
           />
-          {errors.link && (
-            <p className="absolute left-0 bottom-0 -mb-6 text-red-700 text-sm">
-              {errors.link.message}
-            </p>
-          )}
+          {errors.link && <p className={errorStyles}>{errors.link.message}</p>}
+        </div>
+
+        {/* Name input */}
+        <div className="relative w-full">
+          <label htmlFor="link" className="sr-only">
+            Optional Name
+          </label>
+          <input
+            id="name"
+            type="text"
+            placeholder="Your name for attribution (optional)"
+            className={inputStyles({ error: !!errors.name })}
+            {...register('name')}
+          />
+          {errors.name && <p className={errorStyles}>{errors.name.message}</p>}
         </div>
 
         {/* Message input */}
@@ -93,15 +109,13 @@ export const Suggestion = () => {
           </label>
           <textarea
             id="message"
-            placeholder="Optional message about the resource"
+            placeholder="Message about the resource (optional)"
             rows={6}
             className={inputStyles({ error: !!errors.message })}
             {...register('message')}
           />
           {errors.message && (
-            <p className="absolute left-0 bottom-0 -mb-6 text-red-700 text-sm">
-              {errors.message.message}
-            </p>
+            <p className={errorStyles}>{errors.message.message}</p>
           )}
         </div>
 
