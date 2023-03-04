@@ -1,4 +1,5 @@
 import { UilHeart } from '@iconscout/react-unicons';
+import { cva } from 'class-variance-authority';
 import {
   Card as CardPrimitive,
   CardProps,
@@ -10,6 +11,14 @@ import { ContentType } from 'lib/resources';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { trpc } from 'utils/trpc';
+
+const heartVariants = cva('group-hover:scale-110 group-active:scale-90', {
+  variants: {
+    loading: {
+      true: 'animate-pulse',
+    },
+  },
+});
 
 interface Props {
   resourceId: number;
@@ -153,8 +162,12 @@ export const Card = ({
             disabled={isLoading}
             className="flex gap-2 group transition-transform ease disabled:opacity-80"
           >
-            {data ? data.likes : '…'}
-            <UilHeart className="group-hover:scale-110 group-active:scale-90" />
+            {data && (
+              <div className="animate-in slide-in-from-right-full duration-100 fade-in ease-in">
+                {data.likes}
+              </div>
+            )}
+            <UilHeart className={heartVariants({ loading: isLoading })} />
           </button>
         </div>
 
