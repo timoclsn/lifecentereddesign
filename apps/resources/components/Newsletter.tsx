@@ -45,7 +45,11 @@ export const Newsletter = () => {
 
   const mutation = trpc.newsletter.subscribe.useMutation({
     onSuccess: () => {
-      reset();
+      reset({
+        email: '',
+        // @ts-expect-error
+        consens: false,
+      });
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur();
       }

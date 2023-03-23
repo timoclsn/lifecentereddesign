@@ -1,4 +1,3 @@
-import mailchimp from '@mailchimp/mailchimp_marketing';
 import { TRPCError } from '@trpc/server';
 import { newsletterFormSchema } from 'components/Newsletter';
 import { publicProcedure, router } from 'server/trpc';
@@ -18,9 +17,18 @@ const {
   MAILCHIMP_MARKETING_PERMISSION_ID: marketingPermissionId,
 } = envSchema.parse(process.env);
 
-mailchimp.setConfig({
-  apiKey: apiKey,
-  server: apiServer,
+const url = `https://${apiServer}.api.mailchimp.com/3.0/lists/${audienceId}/members`;
+
+const apiErrorSchema = z.object({
+  title: z.string(),
+  status: z.number(),
+  detail: z.string(),
+  instance: z.string(),
+});
+
+const errorSchema = z.object({
+  name: z.string(),
+  message: z.string(),
 });
 
 export const newsletterRouter = router({
@@ -29,19 +37,47 @@ export const newsletterRouter = router({
     .mutation(async ({ input }) => {
       const { email, consens } = input;
 
+      const data = {
+        email_address: email,
+        status: 'pending',
+        marketing_permissions: [
+          {
+            marketing_permission_id: marketingPermissionId,
+            enabled: consens,
+          },
+        ],
+      };
+
       try {
-        await mailchimp.lists.addListMember(audienceId, {
-          email_address: email,
-          status: 'pending',
-          marketing_permissions: [
-            {
-              marketing_permission_id: marketingPermissionId,
-              enabled: consens,
-            },
-          ],
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `api_key ${apiKey}`,
+          },
+          body: JSON.stringify(data),
         });
+
+        if (!response.ok) {
+          const responseJson = await response.json();
+          const error = apiErrorSchema.parse(responseJson);
+
+          if (error.title === 'Member Exists') {
+            throw new Error(error.title);
+          }
+
+          throw new Error();
+        }
       } catch (e) {
-        console.error(e);
+        const error = errorSchema.parse(e);
+
+        if (error.message === 'Member Exists') {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: `${email} is already subscribed to our newsletter.`,
+          });
+        }
+
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message:
