@@ -113,6 +113,10 @@ const typeFilterList: TypeFilterList = [
     text: 'Papers',
     type: 'paper',
   },
+  {
+    text: 'Social Media Profiles',
+    type: 'socialMediaProfile',
+  },
 ];
 
 type TypeFilter = ContentType | 'all';
@@ -269,6 +273,7 @@ export const Resources = ({
       'podcast.*.title',
       'podcastPlain',
       'guests.*.name',
+      'handle',
     ],
   })
     // Sort
