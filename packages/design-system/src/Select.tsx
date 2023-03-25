@@ -18,7 +18,7 @@ export const SelectTrigger = forwardRef<
   ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
 >(({ className, ...props }, ref) => {
   const styles = cx(
-    'flex items-center gap-1 font-bold outline-none text-left',
+    'flex items-center gap-1 font-bold outline-none text-left disabled:opacity-50',
     className
   );
   return <SelectPrimitive.Trigger className={styles} {...props} ref={ref} />;

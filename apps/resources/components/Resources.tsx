@@ -497,7 +497,7 @@ export const Resources = ({
                 value={sort}
                 onValueChange={(value: Sort) => sortResources(value)}
               >
-                <SelectTrigger>
+                <SelectTrigger disabled={!!searchQuery}>
                   <SelectValue />
                   <SelectIcon>
                     <UilAngleDown />
