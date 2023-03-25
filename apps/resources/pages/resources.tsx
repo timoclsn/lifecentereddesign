@@ -11,7 +11,7 @@ const ResourcesPage = ({
   categories,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layout title="Resources" slug="about" co2Consumption={co2Consumption}>
+    <Layout title="Resources" slug="resources" co2Consumption={co2Consumption}>
       <Resources
         initialSort="date"
         resources={resources}
