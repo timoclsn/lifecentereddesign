@@ -18,6 +18,7 @@ export const resourceTypes = [
   'magazine',
   'newsletter',
   'paper',
+  'socialMediaProfile',
 ] as const;
 
 export type Thoughtleader = Prisma.ThoughtleaderGetPayload<{
@@ -125,6 +126,12 @@ export type Paper = Prisma.PaperGetPayload<{
   };
 }>;
 
+export type SocialMediaProfile = Prisma.SocialMediaProfileGetPayload<{
+  include: {
+    category: true;
+  };
+}>;
+
 export type Resource =
   | Thoughtleader
   | Article
@@ -141,7 +148,9 @@ export type Resource =
   | Slide
   | Magazine
   | Newsletter
-  | Paper;
+  | Paper
+  | SocialMediaProfile;
+
 export type Resources = Array<Resource>;
 export type ContentType = Resource['type'];
 
