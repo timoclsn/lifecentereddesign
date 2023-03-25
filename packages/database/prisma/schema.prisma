@@ -13,43 +13,45 @@ model Topic {
   id   Int    @id @default(autoincrement())
   name String @db.VarChar(255)
 
-  articles        Article[]
-  books           Book[]
-  podcasts        Podcast[]
-  podcastEpisodes PodcastEpisode[]
-  directories     Directory[]
-  videos          Video[]
-  tools           Tool[]
-  communities     Community[]
-  courses         Course[]
-  examples        Example[]
-  agencies        Agency[]
-  slides          Slide[]
-  magazines       Magazine[]
-  newsletters     Newsletter[]
-  papers          Paper[]
+  articles            Article[]
+  books               Book[]
+  podcasts            Podcast[]
+  podcastEpisodes     PodcastEpisode[]
+  directories         Directory[]
+  videos              Video[]
+  tools               Tool[]
+  communities         Community[]
+  courses             Course[]
+  examples            Example[]
+  agencies            Agency[]
+  slides              Slide[]
+  magazines           Magazine[]
+  newsletters         Newsletter[]
+  papers              Paper[]
+  socialMediaProfiles SocialMediaProfile[]
 }
 
 model Category {
   id   Int    @id @default(autoincrement())
   name String @db.VarChar(255)
 
-  articles        Article[]
-  books           Book[]
-  podcasts        Podcast[]
-  podcastEpisodes PodcastEpisode[]
-  directories     Directory[]
-  videos          Video[]
-  tools           Tool[]
-  communities     Community[]
-  courses         Course[]
-  examples        Example[]
-  agencies        Agency[]
-  slide           Slide[]
-  magazines       Magazine[]
-  newsletters     Newsletter[]
-  thoughtleaders  Thoughtleader[]
-  papers          Paper[]
+  articles            Article[]
+  books               Book[]
+  podcasts            Podcast[]
+  podcastEpisodes     PodcastEpisode[]
+  directories         Directory[]
+  videos              Video[]
+  tools               Tool[]
+  communities         Community[]
+  courses             Course[]
+  examples            Example[]
+  agencies            Agency[]
+  slide               Slide[]
+  magazines           Magazine[]
+  newsletters         Newsletter[]
+  thoughtleaders      Thoughtleader[]
+  papers              Paper[]
+  socialMediaProfiles SocialMediaProfile[]
 }
 
 enum Type {
@@ -69,6 +71,7 @@ enum Type {
   magazine
   newsletter
   paper
+  socialMediaProfile
 }
 
 // Resources
@@ -390,6 +393,25 @@ model Paper {
   journal      String?         @db.VarChar(255)
   link         String?         @db.VarChar(255)
   note         String?         @db.Text
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+
+  @@index([categoryId])
+}
+
+model SocialMediaProfile {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(socialMediaProfile)
+  likes     Int      @default(0)
+
+  name        String  @db.VarChar(255)
+  handle      String? @db.VarChar(255)
+  description String? @db.VarChar(255)
+  link        String? @db.VarChar(255)
+  note        String? @db.Text
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
