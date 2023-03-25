@@ -29,6 +29,7 @@ model Topic {
   newsletters         Newsletter[]
   papers              Paper[]
   socialMediaProfiles SocialMediaProfile[]
+  Thoughtleaders      Thoughtleader[]
 }
 
 model Category {
@@ -82,12 +83,14 @@ model Thoughtleader {
   name      String   @db.VarChar(255)
   likes     Int      @default(0)
 
-  categoryId     Int?
   link           String? @db.VarChar(255)
   jobDescription String? @db.VarChar(255)
   note           String? @db.Text
 
-  category        Category?        @relation(fields: [categoryId], references: [id])
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+
   articles        Article[]
   books           Book[]
   podcasts        Podcast[]
