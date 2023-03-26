@@ -33,7 +33,7 @@ export const getStaticProps = async () => {
       resources,
       categories,
     },
-    revalidate: 3600, // 1h in seconds
+    revalidate: 60, // 1m in seconds
   };
 };
 
