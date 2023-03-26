@@ -44,84 +44,90 @@ type TypeFilterList = Array<{
   type: TypeFilter;
 }>;
 
-const typeFilterList: TypeFilterList = [
-  {
-    text: 'All',
-    type: 'all',
-  },
-  {
-    text: 'Thoughtleaders',
-    type: 'thoughtleader',
-  },
-  {
-    text: 'Books',
-    type: 'book',
-  },
-  {
-    text: 'Articles',
-    type: 'article',
-  },
-  {
-    text: 'Courses',
-    type: 'course',
-  },
-  {
-    text: 'Podcasts',
-    type: 'podcast',
-  },
-  {
-    text: 'Podcast Episodes',
-    type: 'podcastEpisode',
-  },
-  {
-    text: 'Videos',
-    type: 'video',
-  },
-  {
-    text: 'Tools',
-    type: 'tool',
-  },
-  {
-    text: 'Directories',
-    type: 'directory',
-  },
-  {
-    text: 'Communities',
-    type: 'community',
-  },
-  {
-    text: 'Examples',
-    type: 'example',
-  },
-  {
-    text: 'Agencies',
-    type: 'agency',
-  },
-  {
-    text: 'Slides',
-    type: 'slide',
-  },
-  {
-    text: 'Magazines',
-    type: 'magazine',
-  },
-  {
-    text: 'Newsletters',
-    type: 'newsletter',
-  },
-  {
-    text: 'Papers',
-    type: 'paper',
-  },
-  {
-    text: 'Social Media Profiles',
-    type: 'socialMediaProfile',
-  },
-  {
-    text: 'Reports',
-    type: 'report',
-  },
-];
+const typeFilterList = (
+  [
+    {
+      text: 'All',
+      type: 'all',
+    },
+    {
+      text: 'Thoughtleaders',
+      type: 'thoughtleader',
+    },
+    {
+      text: 'Books',
+      type: 'book',
+    },
+    {
+      text: 'Articles',
+      type: 'article',
+    },
+    {
+      text: 'Courses',
+      type: 'course',
+    },
+    {
+      text: 'Podcasts',
+      type: 'podcast',
+    },
+    {
+      text: 'Podcast Episodes',
+      type: 'podcastEpisode',
+    },
+    {
+      text: 'Videos',
+      type: 'video',
+    },
+    {
+      text: 'Tools',
+      type: 'tool',
+    },
+    {
+      text: 'Directories',
+      type: 'directory',
+    },
+    {
+      text: 'Communities',
+      type: 'community',
+    },
+    {
+      text: 'Examples',
+      type: 'example',
+    },
+    {
+      text: 'Agencies',
+      type: 'agency',
+    },
+    {
+      text: 'Slides',
+      type: 'slide',
+    },
+    {
+      text: 'Magazines',
+      type: 'magazine',
+    },
+    {
+      text: 'Newsletters',
+      type: 'newsletter',
+    },
+    {
+      text: 'Papers',
+      type: 'paper',
+    },
+    {
+      text: 'Social Media Profiles',
+      type: 'socialMediaProfile',
+    },
+    {
+      text: 'Reports',
+      type: 'report',
+    },
+  ] as TypeFilterList
+).sort((a, b) => {
+  if (a.text === 'All') return -1;
+  if (b.text === 'All') return 1;
+  return a.text.localeCompare(b.text);
+});
 
 type TypeFilter = ContentType | 'all';
 type CategoryFilter = Category['name'] | 'all' | undefined;
@@ -368,34 +374,29 @@ export const Resources = ({
           ref={filterBtnsRef}
         >
           <ul className="items-center overflow-x-auto hidden sm:flex mb-4">
-            {typeFilterList
-              .sort((a, b) => {
-                if (a.text === 'All') return -1;
-                return a.text.localeCompare(b.text);
-              })
-              .map((filter, idx) => (
-                <li
-                  key={idx}
-                  ref={(node) => {
-                    const map = getMap();
-                    if (node) {
-                      map.set(filter.type, node);
-                    } else {
-                      map.delete(filter.type);
-                    }
+            {typeFilterList.map((filter, idx) => (
+              <li
+                key={idx}
+                ref={(node) => {
+                  const map = getMap();
+                  if (node) {
+                    map.set(filter.type, node);
+                  } else {
+                    map.delete(filter.type);
+                  }
+                }}
+              >
+                <Button
+                  variant="text"
+                  selected={filteredByType === filter.type}
+                  onClick={() => {
+                    filterResourcesByType(filter.type);
                   }}
                 >
-                  <Button
-                    variant="text"
-                    selected={filteredByType === filter.type}
-                    onClick={() => {
-                      filterResourcesByType(filter.type);
-                    }}
-                  >
-                    {filter.text}
-                  </Button>
-                </li>
-              ))}
+                  {filter.text}
+                </Button>
+              </li>
+            ))}
           </ul>
           <div className="flex flex-col sm:flex-row gap-6 justify-end items-center flex-wrap">
             <div className="flex items-center gap-2 rounded-full bg-transparent ring-2 ring-text-secondary px-4 py-1 outline-none focus-within:ring-text-primary">
