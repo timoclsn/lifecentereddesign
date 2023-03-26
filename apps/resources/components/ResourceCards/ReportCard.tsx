@@ -1,33 +1,33 @@
 import {
   UilBookReader,
   UilCalendarAlt,
+  UilClockThree,
   UilLinkAlt,
-  UilNewspaper,
 } from '@iconscout/react-unicons';
-import { Paper } from '../../lib/resources';
+import { Report } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
 import { useResources } from '../Resources';
 
 interface Props {
-  paper: Paper;
+  report: Report;
 }
 
-export const PaperCard = ({ paper }: Props) => {
+export const ReportCard = ({ report }: Props) => {
   const { dispatch, state } = useResources();
   const { inContext } = state;
   return (
     <Card
-      resourceId={paper.id}
-      resourceType={paper.type}
-      variant="forest"
-      displayType="Paper"
+      resourceId={report.id}
+      resourceType={report.type}
+      variant="oak"
+      displayType="Report"
       onTypeClick={
         inContext
           ? () => {
               dispatch({
                 type: 'FILTER_BY_TYPE',
-                typeIs: 'paper',
+                typeIs: 'report',
               });
             }
           : undefined
@@ -37,66 +37,59 @@ export const PaperCard = ({ paper }: Props) => {
           ? () => {
               dispatch({
                 type: 'FILTER_BY_CATEGORY',
-                category: paper.category?.name,
+                category: report.category?.name,
               });
             }
           : undefined
       }
-      title={paper.title}
+      title={report.title}
       metaInfos={[
-        ...(paper.authors.length
+        ...(report.authors.length
           ? [
               {
-                text: paper.authors.map((author) => author?.name).join(', '),
+                text: report.authors.map((author) => author?.name).join(', '),
                 icon: UilBookReader,
               },
             ]
           : []),
-        ...(paper.authorsPlain
+        ...(report.authorsPlain
           ? [
               {
-                text: paper.authorsPlain,
+                text: report.authorsPlain,
                 icon: UilBookReader,
               },
             ]
           : []),
-        ...(paper.date
+        ...(report.date
           ? [
               {
-                text: new Date(paper.date).toLocaleDateString('en'),
+                text: new Date(report.date).toLocaleDateString('en'),
                 icon: UilCalendarAlt,
               },
             ]
           : []),
-        ...(paper.datePlain
+        ...(report.datePlain
           ? [
               {
-                text: paper.datePlain,
+                text: report.datePlain,
                 icon: UilCalendarAlt,
-              },
-            ]
-          : []),
-        ...(paper.journal
-          ? [
-              {
-                text: paper.journal,
-                icon: UilNewspaper,
               },
             ]
           : []),
       ]}
-      category={paper.category?.name}
+      category={report.category?.name}
       tags={[
-        ...(paper.link
+        ...(report.link
           ? [
               {
                 icon: UilLinkAlt,
-                text: getHostname(paper.link),
-                url: paper.link,
+                text: getHostname(report.link),
+                url: report.link,
               },
             ]
           : []),
       ]}
+      description={report.description}
       showType
     />
   );

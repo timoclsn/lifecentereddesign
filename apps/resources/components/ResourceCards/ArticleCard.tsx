@@ -68,6 +68,14 @@ export const ArticleCard = ({ article }: Props) => {
               },
             ]
           : []),
+        ...(article.datePlain
+          ? [
+              {
+                text: article.datePlain,
+                icon: UilCalendarAlt,
+              },
+            ]
+          : []),
         ...(article.duration
           ? [
               {

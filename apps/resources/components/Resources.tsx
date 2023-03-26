@@ -117,6 +117,10 @@ const typeFilterList: TypeFilterList = [
     text: 'Social Media Profiles',
     type: 'socialMediaProfile',
   },
+  {
+    text: 'Reports',
+    type: 'report',
+  },
 ];
 
 type TypeFilter = ContentType | 'all';
@@ -364,29 +368,34 @@ export const Resources = ({
           ref={filterBtnsRef}
         >
           <ul className="items-center overflow-x-auto hidden sm:flex mb-4">
-            {typeFilterList.map((filter, idx) => (
-              <li
-                key={idx}
-                ref={(node) => {
-                  const map = getMap();
-                  if (node) {
-                    map.set(filter.type, node);
-                  } else {
-                    map.delete(filter.type);
-                  }
-                }}
-              >
-                <Button
-                  variant="text"
-                  selected={filteredByType === filter.type}
-                  onClick={() => {
-                    filterResourcesByType(filter.type);
+            {typeFilterList
+              .sort((a, b) => {
+                if (a.text === 'All') return -1;
+                return a.text.localeCompare(b.text);
+              })
+              .map((filter, idx) => (
+                <li
+                  key={idx}
+                  ref={(node) => {
+                    const map = getMap();
+                    if (node) {
+                      map.set(filter.type, node);
+                    } else {
+                      map.delete(filter.type);
+                    }
                   }}
                 >
-                  {filter.text}
-                </Button>
-              </li>
-            ))}
+                  <Button
+                    variant="text"
+                    selected={filteredByType === filter.type}
+                    onClick={() => {
+                      filterResourcesByType(filter.type);
+                    }}
+                  >
+                    {filter.text}
+                  </Button>
+                </li>
+              ))}
           </ul>
           <div className="flex flex-col sm:flex-row gap-6 justify-end items-center flex-wrap">
             <div className="flex items-center gap-2 rounded-full bg-transparent ring-2 ring-text-secondary px-4 py-1 outline-none focus-within:ring-text-primary">
