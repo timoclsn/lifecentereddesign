@@ -117,6 +117,10 @@ const typeFilterList: TypeFilterList = [
     text: 'Social Media Profiles',
     type: 'socialMediaProfile',
   },
+  {
+    text: 'Reports',
+    type: 'report',
+  },
 ];
 
 type TypeFilter = ContentType | 'all';

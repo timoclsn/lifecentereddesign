@@ -11,6 +11,7 @@ import {
   Paper,
   Podcast,
   PodcastEpisode,
+  Report,
   Resources,
   Slide,
   SocialMediaProfile,
@@ -30,6 +31,7 @@ import { NewsletterCard } from './ResourceCards/NewsletterCard';
 import { PaperCard } from './ResourceCards/PaperCard';
 import { PodcastCard } from './ResourceCards/PodcastCard';
 import { PodcastEpisodeCard } from './ResourceCards/PodcastEpisodeCard';
+import { ReportCard } from './ResourceCards/ReportCard';
 import { SlideCard } from './ResourceCards/SlideCard';
 import { SocialMediaProfileCard } from './ResourceCards/SocialMediaProfileCard';
 import { ThoughtleaderCard } from './ResourceCards/ThoughtleaderCard';
@@ -76,6 +78,8 @@ export const getCardComponent = (resource: Resources[0]) => {
           socielaMediaProfile={resource as SocialMediaProfile}
         />
       );
+    case 'report':
+      return <ReportCard report={resource as Report} />;
     default:
       throw new Error(`Unknown resource type: ${resource.type}`);
   }

@@ -29,7 +29,8 @@ model Topic {
   newsletters         Newsletter[]
   papers              Paper[]
   socialMediaProfiles SocialMediaProfile[]
-  Thoughtleaders      Thoughtleader[]
+  thoughtleaders      Thoughtleader[]
+  reports             Report[]
 }
 
 model Category {
@@ -53,6 +54,7 @@ model Category {
   thoughtleaders      Thoughtleader[]
   papers              Paper[]
   socialMediaProfiles SocialMediaProfile[]
+  reports             Report[]
 }
 
 enum Type {
@@ -73,6 +75,7 @@ enum Type {
   newsletter
   paper
   socialMediaProfile
+  report
 }
 
 // Resources
@@ -99,6 +102,7 @@ model Thoughtleader {
   slides          Slide[]
   newsletters     Newsletter[]
   papers          Paper[]
+  report          Report[]
 
   @@index([categoryId])
 }
@@ -415,6 +419,28 @@ model SocialMediaProfile {
   description String? @db.VarChar(255)
   link        String? @db.VarChar(255)
   note        String? @db.Text
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  topics     Topic[]
+
+  @@index([categoryId])
+}
+
+model Report {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  type      Type     @default(report)
+  likes     Int      @default(0)
+
+  title        String          @db.VarChar(255)
+  authors      Thoughtleader[]
+  authorsPlain String?         @db.VarChar(255)
+  date         DateTime?
+  datePlain    String?         @db.VarChar(255)
+  description  String?         @db.VarChar(255)
+  link         String?         @db.VarChar(255)
+  note         String?         @db.Text
 
   categoryId Int?
   category   Category? @relation(fields: [categoryId], references: [id])
