@@ -68,6 +68,14 @@ export const PaperCard = ({ paper }: Props) => {
               },
             ]
           : []),
+        ...(paper.datePlain
+          ? [
+              {
+                text: paper.datePlain,
+                icon: UilCalendarAlt,
+              },
+            ]
+          : []),
         ...(paper.journal
           ? [
               {

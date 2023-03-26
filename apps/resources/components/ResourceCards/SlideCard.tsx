@@ -1,4 +1,8 @@
-import { UilBookReader, UilLinkAlt } from '@iconscout/react-unicons';
+import {
+  UilBookReader,
+  UilCalendarAlt,
+  UilLinkAlt,
+} from '@iconscout/react-unicons';
 import { Slide } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
@@ -52,6 +56,22 @@ export const SlideCard = ({ slide }: Props) => {
               {
                 text: slide.authorsPlain,
                 icon: UilBookReader,
+              },
+            ]
+          : []),
+        ...(slide.date
+          ? [
+              {
+                text: new Date(slide.date).toLocaleDateString('en'),
+                icon: UilCalendarAlt,
+              },
+            ]
+          : []),
+        ...(slide.datePlain
+          ? [
+              {
+                text: slide.datePlain,
+                icon: UilCalendarAlt,
               },
             ]
           : []),
