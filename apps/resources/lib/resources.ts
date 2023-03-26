@@ -207,7 +207,7 @@ export const getResources = async ({
           authors: true,
         }),
         ...(type === 'report' && {
-          reports: true,
+          authors: true,
         }),
       },
       where: {
