@@ -51,6 +51,7 @@ export const ExampleCard = ({ example }: Props) => {
           : []),
       ]}
       description={example.description}
+      suggestion={example.suggestion}
       showType
     />
   );

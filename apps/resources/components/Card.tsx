@@ -1,4 +1,4 @@
-import { UilHeart } from '@iconscout/react-unicons';
+import { UilHeart, UilUsersAlt } from '@iconscout/react-unicons';
 import { cva } from 'class-variance-authority';
 import {
   Card as CardPrimitive,
@@ -6,6 +6,7 @@ import {
   Heading,
   Tag,
   Text,
+  Tooltip,
 } from 'design-system';
 import { ContentType } from 'lib/resources';
 import Link from 'next/link';
@@ -41,6 +42,7 @@ interface Props {
     url: string;
   }>;
   description?: string | null;
+  suggestion?: boolean;
 }
 
 export const Card = ({
@@ -56,6 +58,7 @@ export const Card = ({
   category,
   tags,
   description,
+  suggestion = false,
 }: Props) => {
   const utils = trpc.useContext();
 
@@ -152,15 +155,26 @@ export const Card = ({
       className="flex h-full w-full flex-col gap-8 sm:gap-24"
     >
       <div className="flex flex-1 flex-col items-start gap-9">
-        {/* Type */}
-        <div className="flex justify-between w-full">
-          <div>
+        <div className="flex justify-between w-full relative">
+          <div className="flex items-center gap-2">
+            {/* Type */}
             {showType && getType(<Tag variant="outline">{displayType}</Tag>)}
+
+            {/* User suggestion? */}
+            {suggestion && (
+              <Tooltip content="Resource suggested by a user ❤️">
+                <div>
+                  <UilUsersAlt />
+                </div>
+              </Tooltip>
+            )}
           </div>
+
+          {/* Likes */}
           <button
             onClick={likeResource}
             disabled={isLoading}
-            className="flex gap-2 group transition-transform ease disabled:opacity-80"
+            className="flex gap-2 group transition-transform ease disabled:opacity-80 items-center justify-center"
           >
             {data && (
               <div className="animate-in slide-in-from-right-full duration-100 fade-in ease-in">

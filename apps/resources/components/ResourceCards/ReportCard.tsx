@@ -90,6 +90,7 @@ export const ReportCard = ({ report }: Props) => {
           : []),
       ]}
       description={report.description}
+      suggestion={report.suggestion}
       showType
     />
   );

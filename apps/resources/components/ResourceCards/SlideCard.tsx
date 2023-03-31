@@ -88,6 +88,7 @@ export const SlideCard = ({ slide }: Props) => {
             ]
           : []),
       ]}
+      suggestion={slide.suggestion}
       showType
     />
   );

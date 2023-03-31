@@ -8,3 +8,4 @@ export * from './Link';
 export * from './Select';
 export * from './Tag';
 export * from './Text';
+export * from './Tooltip';

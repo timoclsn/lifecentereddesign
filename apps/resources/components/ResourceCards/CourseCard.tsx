@@ -51,6 +51,7 @@ export const CourseCard = ({ course }: Props) => {
           : []),
       ]}
       description={course.description}
+      suggestion={course.suggestion}
       showType
     />
   );

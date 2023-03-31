@@ -68,6 +68,7 @@ export const PodcastCard = ({ podcast }: Props) => {
             ]
           : []),
       ]}
+      suggestion={podcast.suggestion}
       showType
     />
   );

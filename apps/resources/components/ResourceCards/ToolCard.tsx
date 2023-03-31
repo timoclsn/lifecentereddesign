@@ -51,6 +51,7 @@ export const ToolCard = ({ tool }: Props) => {
           : []),
       ]}
       description={tool.description}
+      suggestion={tool.suggestion}
       showType
     />
   );
