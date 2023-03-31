@@ -9,7 +9,7 @@ interface Props {
 export const Tooltip = ({ children, content }: Props) => {
   return (
     <TooltipPrimitive.Provider>
-      <TooltipPrimitive.Root>
+      <TooltipPrimitive.Root delayDuration={0}>
         <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
           <TooltipPrimitive.Content
