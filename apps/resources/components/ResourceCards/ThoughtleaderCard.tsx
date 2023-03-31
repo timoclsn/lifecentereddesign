@@ -60,6 +60,7 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
             ]
           : []),
       ]}
+      suggestion={thoughtleader.suggestion}
       showType
     />
   );

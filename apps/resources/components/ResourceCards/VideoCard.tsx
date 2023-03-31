@@ -89,6 +89,7 @@ export const VideoCard = ({ video }: Props) => {
             ]
           : []),
       ]}
+      suggestion={video.suggestion}
       showType
     />
   );

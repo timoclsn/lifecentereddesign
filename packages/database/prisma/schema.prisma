@@ -80,11 +80,12 @@ enum Type {
 
 // Resources
 model Thoughtleader {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(thoughtleader)
-  name      String   @db.VarChar(255)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(thoughtleader)
+  name       String   @db.VarChar(255)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   link           String? @db.VarChar(255)
   jobDescription String? @db.VarChar(255)
@@ -108,10 +109,11 @@ model Thoughtleader {
 }
 
 model Article {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(article)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(article)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   title        String          @db.VarChar(255)
   authors      Thoughtleader[]
@@ -130,10 +132,11 @@ model Article {
 }
 
 model Book {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(book)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(book)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   title String @db.VarChar(255)
 
@@ -153,10 +156,11 @@ model Book {
 }
 
 model Podcast {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(podcast)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(podcast)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   title      String          @db.VarChar(255)
   hosts      Thoughtleader[]
@@ -174,10 +178,11 @@ model Podcast {
 }
 
 model PodcastEpisode {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(podcastEpisode)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(podcastEpisode)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   title        String          @db.VarChar(255)
   podcastId    Int?
@@ -198,10 +203,11 @@ model PodcastEpisode {
 }
 
 model Directory {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(directory)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(directory)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   name        String  @db.VarChar(255)
   description String? @db.VarChar(255)
@@ -216,10 +222,11 @@ model Directory {
 }
 
 model Video {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(video)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(video)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   title         String          @db.VarChar(255)
   creators      Thoughtleader[]
@@ -237,10 +244,11 @@ model Video {
 }
 
 model Tool {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(tool)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(tool)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   name        String  @db.VarChar(255)
   description String? @db.VarChar(255)
@@ -255,10 +263,11 @@ model Tool {
 }
 
 model Community {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(community)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(community)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   name        String  @db.VarChar(255)
   description String? @db.VarChar(255)
@@ -273,10 +282,11 @@ model Community {
 }
 
 model Course {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(course)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(course)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   name        String  @db.VarChar(255)
   description String? @db.VarChar(255)
@@ -291,10 +301,11 @@ model Course {
 }
 
 model Example {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(example)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(example)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   name        String  @db.VarChar(255)
   description String? @db.VarChar(255)
@@ -309,10 +320,11 @@ model Example {
 }
 
 model Agency {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(agency)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(agency)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   name        String  @db.VarChar(255)
   description String? @db.VarChar(255)
@@ -327,10 +339,11 @@ model Agency {
 }
 
 model Slide {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(slide)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(slide)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   title        String          @db.VarChar(255)
   authors      Thoughtleader[]
@@ -348,10 +361,11 @@ model Slide {
 }
 
 model Magazine {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(magazine)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(magazine)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   name        String  @db.VarChar(255)
   description String? @db.VarChar(255)
@@ -366,10 +380,11 @@ model Magazine {
 }
 
 model Newsletter {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(newsletter)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(newsletter)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   name         String          @db.VarChar(255)
   authors      Thoughtleader[]
@@ -387,10 +402,11 @@ model Newsletter {
 }
 
 model Paper {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(paper)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(paper)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   title        String          @db.VarChar(255)
   authors      Thoughtleader[]
@@ -409,10 +425,11 @@ model Paper {
 }
 
 model SocialMediaProfile {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(socialMediaProfile)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(socialMediaProfile)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   name        String  @db.VarChar(255)
   handle      String? @db.VarChar(255)
@@ -428,10 +445,11 @@ model SocialMediaProfile {
 }
 
 model Report {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  type      Type     @default(report)
-  likes     Int      @default(0)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  type       Type     @default(report)
+  likes      Int      @default(0)
+  suggestion Boolean  @default(false)
 
   title        String          @db.VarChar(255)
   authors      Thoughtleader[]

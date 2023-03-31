@@ -97,6 +97,7 @@ export const PaperCard = ({ paper }: Props) => {
             ]
           : []),
       ]}
+      suggestion={paper.suggestion}
       showType
     />
   );

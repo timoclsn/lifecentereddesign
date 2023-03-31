@@ -52,6 +52,7 @@ export const CommunityCard = ({ community }: Props) => {
       ]}
       description={community.description}
       showType
+      suggestion={community.suggestion}
     />
   );
 };

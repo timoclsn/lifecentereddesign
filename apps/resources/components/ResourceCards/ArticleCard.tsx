@@ -97,6 +97,7 @@ export const ArticleCard = ({ article }: Props) => {
             ]
           : []),
       ]}
+      suggestion={article.suggestion}
       showType
     />
   );

@@ -90,6 +90,7 @@ export const BookCard = ({ book }: Props) => {
             ]
           : []),
       ]}
+      suggestion={book.suggestion}
       showType
     />
   );

@@ -51,6 +51,7 @@ export const AgencyCard = ({ agency }: Props) => {
           : []),
       ]}
       description={agency.description}
+      suggestion={agency.suggestion}
       showType
     />
   );
