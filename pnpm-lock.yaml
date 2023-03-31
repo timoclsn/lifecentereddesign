@@ -124,6 +124,8 @@ importers:
       eslint: 8.37.0
       eslint-config-custom: workspace:*
       react: 18.2.0
+      tailwind-config: workspace:*
+      tailwindcss: 3.3.1
       tsconfig: workspace:*
       typescript: 5.0.2
     dependencies:
@@ -137,6 +139,8 @@ importers:
       eslint: 8.37.0
       eslint-config-custom: link:../eslint-config-custom
       react: 18.2.0
+      tailwind-config: link:../tailwind-config
+      tailwindcss: 3.3.1
       typescript: 5.0.2
 
   packages/eslint-config-custom:
@@ -5942,6 +5946,39 @@ packages:
     resolution: {integrity: sha512-UU3qrOJ4lFQABY+MVADmBm+0KW3xZyhMdRvejwtXqYOL7YjHYxmuREFAZdmVG5LPe5E9CAst846SLC4j5I3dcw==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
+    dev: true
+
+  /tailwindcss/3.3.1:
+    resolution: {integrity: sha512-Vkiouc41d4CEq0ujXl6oiGFQ7bA3WEhUZdTgXAhtKxSy49OmKs8rEfQmupsfF0IGW8fv2iQkp1EVUuapCFrZ9g==}
+    engines: {node: '>=12.13.0'}
+    hasBin: true
+    dependencies:
+      arg: 5.0.2
+      chokidar: 3.5.3
+      color-name: 1.1.4
+      didyoumean: 1.2.2
+      dlv: 1.1.3
+      fast-glob: 3.2.12
+      glob-parent: 6.0.2
+      is-glob: 4.0.3
+      jiti: 1.18.2
+      lilconfig: 2.0.6
+      micromatch: 4.0.5
+      normalize-path: 3.0.0
+      object-hash: 3.0.0
+      picocolors: 1.0.0
+      postcss: 8.4.21
+      postcss-import: 14.1.0_postcss@8.4.21
+      postcss-js: 4.0.1_postcss@8.4.21
+      postcss-load-config: 3.1.4_postcss@8.4.21
+      postcss-nested: 6.0.0_postcss@8.4.21
+      postcss-selector-parser: 6.0.11
+      postcss-value-parser: 4.2.0
+      quick-lru: 5.1.1
+      resolve: 1.22.1
+      sucrase: 3.31.0
+    transitivePeerDependencies:
+      - ts-node
     dev: true
 
   /tailwindcss/3.3.1_postcss@8.4.21:
