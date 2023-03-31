@@ -9,14 +9,7 @@ const config = {
   transpilePackages: ['design-system'],
   experimental: {
     scrollRestoration: true,
-    swcPlugins: [
-      [
-        'next-superjson-plugin',
-        {
-          excluded: [],
-        },
-      ],
-    ],
+    swcPlugins: [['next-superjson-plugin', {}]],
   },
   async rewrites() {
     return [

@@ -9,16 +9,16 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@radix-ui/react-select": "1.2.0",
+    "@radix-ui/react-select": "1.2.1",
     "class-variance-authority": "0.4.0",
     "tsconfig": "workspace:*"
   },
   "devDependencies": {
-    "@types/react": "18.0.28",
+    "@types/react": "18.0.31",
     "@types/react-dom": "18.0.11",
-    "eslint": "8.35.0",
+    "eslint": "8.37.0",
     "eslint-config-custom": "workspace:*",
     "react": "18.2.0",
-    "typescript": "4.9.5"
+    "typescript": "5.0.2"
   }
 }

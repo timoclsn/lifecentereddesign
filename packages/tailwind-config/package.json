@@ -4,7 +4,6 @@
   "private": true,
   "main": "index.js",
   "devDependencies": {
-    "@tailwindcss/line-clamp": "0.4.2",
     "@tailwindcss/typography": "0.5.9",
     "tailwindcss-animate": "^1.0.5"
   }
