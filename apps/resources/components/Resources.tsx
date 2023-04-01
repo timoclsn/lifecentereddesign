@@ -18,25 +18,26 @@ import {
   SelectTrigger,
   SelectValue,
   SelectViewport,
+  Text,
 } from 'design-system';
 import { matchSorter } from 'match-sorter';
 import { useRouter } from 'next/router';
 import {
-  createContext,
   Dispatch,
+  createContext,
   startTransition,
   useContext,
   useEffect,
   useReducer,
   useRef,
 } from 'react';
+import { useOnScreen } from '../hooks/useOnScreen';
 import {
   Categories,
   Category,
   ContentType,
   Resources as ResourcesType,
 } from '../lib/resources';
-import { useOnScreen } from '../hooks/useOnScreen';
 import { getCardComponent } from './utils';
 
 type TypeFilterList = Array<{
@@ -368,12 +369,20 @@ export const Resources = ({
   return (
     <ResourcesContext.Provider value={{ state, dispatch }}>
       <section id="resources" className="flex flex-col gap-10">
-        {title && <Heading level="2">{title}</Heading>}
+        <div>
+          <Heading level="1" className="max-w-3x mb-8">
+            {title ? title : 'Resources'}
+          </Heading>
+          <Text as="p" size="large" className="text-text-secondary max-w-5xl">
+            Have fun browsing all our resources on Life-centered Design and
+            related topics:
+          </Text>
+        </div>
         <div
-          className="sticky top-0 bg-bg-primary py-4 z-10"
+          className="bg-bg-primary sticky top-0 z-10 py-4"
           ref={filterBtnsRef}
         >
-          <ul className="items-center overflow-x-auto hidden sm:flex mb-4">
+          <ul className="mb-4 hidden items-center overflow-x-auto sm:flex">
             {typeFilterList.map((filter, idx) => (
               <li
                 key={idx}
@@ -398,8 +407,8 @@ export const Resources = ({
               </li>
             ))}
           </ul>
-          <div className="flex flex-col sm:flex-row gap-6 justify-end items-center flex-wrap">
-            <div className="flex items-center gap-2 rounded-full bg-transparent ring-2 ring-text-secondary px-4 py-1 outline-none focus-within:ring-text-primary">
+          <div className="flex flex-col flex-wrap items-center justify-end gap-6 sm:flex-row">
+            <div className="ring-text-secondary focus-within:ring-text-primary flex items-center gap-2 rounded-full bg-transparent px-4 py-1 outline-none ring-2">
               <input
                 placeholder="Name, Description…"
                 value={searchInput}
@@ -420,8 +429,8 @@ export const Resources = ({
             </div>
 
             {/* Filter by type select */}
-            <div className="flex gap-4 sm:gap-6 sm:hidden">
-              <span className="whitespace-nowrap text-text-secondary">
+            <div className="flex gap-4 sm:hidden sm:gap-6">
+              <span className="text-text-secondary whitespace-nowrap">
                 Type:
               </span>
               <Select
@@ -457,7 +466,7 @@ export const Resources = ({
 
             {/* Filter by category select */}
             <div className="flex gap-4 sm:gap-6">
-              <span className="whitespace-nowrap text-text-secondary">
+              <span className="text-text-secondary whitespace-nowrap">
                 Category:
               </span>
               <Select
@@ -499,7 +508,7 @@ export const Resources = ({
 
             {/* Sort select */}
             <div className="flex gap-4 sm:gap-6">
-              <span className="whitespace-nowrap text-text-secondary">
+              <span className="text-text-secondary whitespace-nowrap">
                 Sorted by:
               </span>
               <Select
@@ -545,7 +554,7 @@ export const Resources = ({
         <div className="flex flex-col gap-6">
           {resourcesToDisplay.length > 0 ? (
             <ul
-              className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden"
+              className="grid grid-cols-1 gap-4 overflow-hidden md:grid-cols-2"
               ref={listRef}
             >
               {resourcesToDisplay.map((resource) => {
@@ -556,7 +565,7 @@ export const Resources = ({
               })}
             </ul>
           ) : (
-            <div className="flex justify-center items-center py-16">
+            <div className="flex items-center justify-center py-16">
               <Heading level="3">No resources found…</Heading>
             </div>
           )}
