@@ -126,8 +126,8 @@ const typeFilterList = (
 });
 
 type TypeFilter = ContentType | 'all';
-type CategoryFilter = Category['name'] | 'all';
-type TopicFilter = Topic['name'] | 'all';
+type CategoryFilter = Category['name'] | 'all' | undefined;
+type TopicFilter = Topic['name'] | 'all' | undefined;
 type Sort = 'date' | 'title' | 'likes';
 
 interface State {
