@@ -5,7 +5,9 @@ import {
   ComponentPropsWithoutRef,
   ElementRef,
   forwardRef,
+  useId,
 } from 'react';
+import { Label } from '@radix-ui/react-label';
 
 export const Select = ({
   ...props
@@ -15,13 +17,31 @@ export const Select = ({
 
 export const SelectTrigger = forwardRef<
   ElementRef<typeof SelectPrimitive.Trigger>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, ...props }, ref) => {
-  const styles = cx(
-    'flex items-center gap-1 font-bold outline-none text-left disabled:opacity-50',
-    className
+  ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
+    label: string;
+  }
+>(({ className, disabled, label, ...props }, ref) => {
+  const id = useId();
+  return (
+    <div className="relative min-w-[80px] flex-1 sm:max-w-[240px]">
+      <Label
+        htmlFor={id}
+        className="bg-bg-primary text-text-secondary absolute -top-1.5 left-5 px-1 text-xs leading-none"
+      >
+        {!disabled && label}
+      </Label>
+      <SelectPrimitive.Trigger
+        id={id}
+        disabled={disabled}
+        className={cx(
+          'border-ghost-main-dark-bg focus-visible:border-text-secondary flex w-full items-center justify-between rounded-full border-2 px-2 py-1 text-left text-lg font-bold leading-none outline-none disabled:opacity-50 sm:gap-1 sm:px-6 [&>span]:truncate [&>span]:whitespace-nowrap',
+          className
+        )}
+        {...props}
+        ref={ref}
+      />
+    </div>
   );
-  return <SelectPrimitive.Trigger className={styles} {...props} ref={ref} />;
 });
 
 SelectTrigger.displayName = 'SelectTrigger';
@@ -37,8 +57,13 @@ export const SelectIcon = forwardRef<
   ElementRef<typeof SelectPrimitive.Icon>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Icon>
 >(({ className, ...props }, ref) => {
-  const styles = cx('text-text-secondary', className);
-  return <SelectPrimitive.Icon className={styles} {...props} ref={ref} />;
+  return (
+    <SelectPrimitive.Icon
+      className={cx('text-text-secondary flex-none', className)}
+      {...props}
+      ref={ref}
+    />
+  );
 });
 
 SelectIcon.displayName = 'SelectIcon';

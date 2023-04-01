@@ -1,10 +1,5 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import {
-  UilAngleDown,
-  UilArrowDown,
-  UilCheck,
-  UilSearch,
-} from '@iconscout/react-unicons';
+import { UilArrowDown, UilCheck, UilSearch } from '@iconscout/react-unicons';
 import {
   Button,
   Heading,
@@ -27,16 +22,16 @@ import {
   createContext,
   startTransition,
   useContext,
-  useEffect,
   useReducer,
   useRef,
 } from 'react';
-import { useOnScreen } from '../hooks/useOnScreen';
 import {
   Categories,
   Category,
   ContentType,
   Resources as ResourcesType,
+  Topic,
+  Topics,
 } from '../lib/resources';
 import { getCardComponent } from './utils';
 
@@ -131,12 +126,14 @@ const typeFilterList = (
 });
 
 type TypeFilter = ContentType | 'all';
-type CategoryFilter = Category['name'] | 'all' | undefined;
+type CategoryFilter = Category['name'] | 'all';
+type TopicFilter = Topic['name'] | 'all';
 type Sort = 'date' | 'title' | 'likes';
 
 interface State {
   filteredByType: TypeFilter;
   filteredByCategory: CategoryFilter;
+  filteredByTopic: TopicFilter;
   itemsCount: number;
   sort: Sort;
   inContext: boolean;
@@ -147,6 +144,7 @@ interface State {
 const initalState: State = {
   filteredByType: 'all',
   filteredByCategory: 'all',
+  filteredByTopic: 'all',
   itemsCount: 12,
   sort: 'title',
   inContext: false,
@@ -157,6 +155,7 @@ const initalState: State = {
 type Action =
   | { type: 'FILTER_BY_TYPE'; typeIs: TypeFilter }
   | { type: 'FILTER_BY_CATEGORY'; category: CategoryFilter }
+  | { type: 'FILTER_BY_TOPIC'; topic: TopicFilter }
   | { type: 'SHOW_MORE'; itemsCount: number }
   | { type: 'SORT'; sortBy: Sort }
   | { type: 'IN_CONTEXT' }
@@ -181,11 +180,23 @@ const reducer = (state: State, action: Action): State => {
           ? 'all'
           : action.category;
       splitbee.track('Filter resources by category', {
-        type: filteredByCategory,
+        category: filteredByCategory,
       });
       return {
         ...state,
         filteredByCategory,
+      };
+    case 'FILTER_BY_TOPIC':
+      const filteredByTopic =
+        !action.topic || action.topic === state.filteredByTopic
+          ? 'all'
+          : action.topic;
+      splitbee.track('Filter resources by topic', {
+        topic: filteredByTopic,
+      });
+      return {
+        ...state,
+        filteredByTopic,
       };
     case 'SHOW_MORE':
       splitbee.track('Show more resources', {
@@ -234,6 +245,7 @@ export const useResources = () => useContext(ResourcesContext);
 interface Props {
   resources: ResourcesType;
   categories: Categories;
+  topics: Topics;
   initialSort?: Sort;
 }
 
@@ -241,12 +253,14 @@ export const Resources = ({
   initialSort = 'title',
   resources,
   categories,
+  topics,
 }: Props) => {
   initalState.sort = initialSort;
   const [state, dispatch] = useReducer(reducer, initalState);
   const {
     filteredByType,
     filteredByCategory,
+    filteredByTopic,
     itemsCount,
     sort,
     inContext,
@@ -256,8 +270,6 @@ export const Resources = ({
 
   const [listRef] = useAutoAnimate<HTMLUListElement>();
   const buttonsRef = useRef<Map<string, HTMLLIElement> | null>(null);
-  const filterBtnsRef = useRef<HTMLDivElement>(null);
-  const isFilterVisible = useOnScreen(filterBtnsRef);
 
   const { query } = useRouter();
   const { title, from, till } = query;
@@ -314,6 +326,11 @@ export const Resources = ({
       if (filteredByCategory === 'all') return true;
       return resource.category?.name === filteredByCategory;
     })
+    // Filter by topic
+    .filter((resource) => {
+      if (filteredByTopic === 'all') return true;
+      return resource.topics.some((topic) => topic.name === filteredByTopic);
+    })
     // Filter from
     .filter((resource) => {
       if (!fromParsed) return true;
@@ -328,31 +345,6 @@ export const Resources = ({
   const resourcesToDisplay = processedResources.slice(0, itemsCount);
   const showShowMoreBtn = processedResources.length > itemsCount;
 
-  useEffect(() => {
-    const scrollToButton = (itemId: string) => {
-      const map = getMap();
-      const node = map.get(itemId);
-      if (node) {
-        node.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'nearest',
-        });
-      }
-    };
-
-    if (isFilterVisible) {
-      scrollToButton(state.filteredByType);
-    }
-  }, [isFilterVisible, state.filteredByType]);
-
-  const getMap = () => {
-    if (!buttonsRef.current) {
-      buttonsRef.current = new Map();
-    }
-    return buttonsRef.current;
-  };
-
   const showMore = () => {
     dispatch({ type: 'SHOW_MORE', itemsCount: 12 });
   };
@@ -362,6 +354,9 @@ export const Resources = ({
 
   const filterResourcesByCategory = (category: CategoryFilter) =>
     dispatch({ type: 'FILTER_BY_CATEGORY', category: category });
+
+  const filterResourcesByTopic = (topic: TopicFilter) =>
+    dispatch({ type: 'FILTER_BY_TOPIC', topic: topic });
 
   const sortResources = (value: Sort) =>
     dispatch({ type: 'SORT', sortBy: value });
@@ -378,39 +373,119 @@ export const Resources = ({
             related topics:
           </Text>
         </div>
-        <div
-          className="bg-bg-primary sticky top-0 z-10 py-4"
-          ref={filterBtnsRef}
-        >
-          <ul className="mb-4 hidden items-center overflow-x-auto sm:flex">
-            {typeFilterList.map((filter, idx) => (
-              <li
-                key={idx}
-                ref={(node) => {
-                  const map = getMap();
-                  if (node) {
-                    map.set(filter.type, node);
-                  } else {
-                    map.delete(filter.type);
-                  }
-                }}
-              >
-                <Button
-                  variant="text"
-                  selected={filteredByType === filter.type}
-                  onClick={() => {
-                    filterResourcesByType(filter.type);
-                  }}
-                >
-                  {filter.text}
-                </Button>
-              </li>
-            ))}
-          </ul>
-          <div className="flex flex-col flex-wrap items-center justify-end gap-6 sm:flex-row">
-            <div className="ring-text-secondary focus-within:ring-text-primary flex items-center gap-2 rounded-full bg-transparent px-4 py-1 outline-none ring-2">
+
+        <div className="bg-bg-primary sticky top-0 z-10 flex flex-wrap justify-between gap-3 py-4 sm:py-6">
+          <div className="flex flex-1 gap-3 sm:w-auto sm:flex-nowrap">
+            {/* Filter by type select */}
+            <Select
+              defaultValue={undefined}
+              value={filteredByType}
+              onValueChange={(type: TypeFilter) => filterResourcesByType(type)}
+            >
+              <SelectTrigger label="Type">
+                <SelectValue />
+                <SelectIcon>
+                  <UilArrowDown />
+                </SelectIcon>
+              </SelectTrigger>
+
+              <SelectPortal>
+                <SelectContent>
+                  <SelectViewport>
+                    {typeFilterList.map((filter, idx) => (
+                      <SelectItem key={idx} value={filter.type}>
+                        <SelectItemIndicator>
+                          <UilCheck />
+                        </SelectItemIndicator>
+                        <SelectItemText>{filter.text}</SelectItemText>
+                      </SelectItem>
+                    ))}
+                  </SelectViewport>
+                </SelectContent>
+              </SelectPortal>
+            </Select>
+
+            {/* Filter by category select */}
+            <Select
+              defaultValue={undefined}
+              value={filteredByCategory}
+              onValueChange={(category: CategoryFilter) =>
+                filterResourcesByCategory(category)
+              }
+            >
+              <SelectTrigger label="Category">
+                <SelectValue />
+                <SelectIcon>
+                  <UilArrowDown />
+                </SelectIcon>
+              </SelectTrigger>
+
+              <SelectPortal>
+                <SelectContent>
+                  <SelectViewport>
+                    <SelectItem key="all" value="all">
+                      <SelectItemIndicator>
+                        <UilCheck />
+                      </SelectItemIndicator>
+                      <SelectItemText>All</SelectItemText>
+                    </SelectItem>
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.name}>
+                        <SelectItemIndicator>
+                          <UilCheck />
+                        </SelectItemIndicator>
+                        <SelectItemText>{category.name}</SelectItemText>
+                      </SelectItem>
+                    ))}
+                  </SelectViewport>
+                </SelectContent>
+              </SelectPortal>
+            </Select>
+
+            {/* Filter by topic select */}
+            <Select
+              defaultValue={undefined}
+              value={filteredByTopic}
+              onValueChange={(topic: TopicFilter) =>
+                filterResourcesByTopic(topic)
+              }
+            >
+              <SelectTrigger label="Topic">
+                <SelectValue />
+                <SelectIcon>
+                  <UilArrowDown />
+                </SelectIcon>
+              </SelectTrigger>
+
+              <SelectPortal>
+                <SelectContent>
+                  <SelectViewport>
+                    <SelectItem key="all" value="all">
+                      <SelectItemIndicator>
+                        <UilCheck />
+                      </SelectItemIndicator>
+                      <SelectItemText>All</SelectItemText>
+                    </SelectItem>
+                    {topics.map((topic) => (
+                      <SelectItem key={topic.id} value={topic.name}>
+                        <SelectItemIndicator>
+                          <UilCheck />
+                        </SelectItemIndicator>
+                        <SelectItemText>{topic.name}</SelectItemText>
+                      </SelectItem>
+                    ))}
+                  </SelectViewport>
+                </SelectContent>
+              </SelectPortal>
+            </Select>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            {/* Search */}
+            <div className="bg-primary-ghost-bg text-text-secondary focus-within:ring-text-secondary flex min-w-[100px] flex-1 items-center gap-2 px-4 py-1 outline-none ring-inset focus-within:ring-2 sm:max-w-[240px]">
+              <UilSearch className="flex-none opacity-60" size="16" />
               <input
-                placeholder="Name, Description…"
+                placeholder="Search"
                 value={searchInput}
                 onChange={(e) => {
                   dispatch({
@@ -423,132 +498,48 @@ export const Resources = ({
                     });
                   });
                 }}
-                className="bg-transparent outline-none"
+                className="w-full bg-transparent outline-none"
               />
-              <UilSearch className="opacity-60" size="16" />
-            </div>
-
-            {/* Filter by type select */}
-            <div className="flex gap-4 sm:hidden sm:gap-6">
-              <span className="text-text-secondary whitespace-nowrap">
-                Type:
-              </span>
-              <Select
-                defaultValue={undefined}
-                value={filteredByType}
-                onValueChange={(type: TypeFilter) =>
-                  filterResourcesByType(type)
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                  <SelectIcon>
-                    <UilAngleDown />
-                  </SelectIcon>
-                </SelectTrigger>
-
-                <SelectPortal>
-                  <SelectContent>
-                    <SelectViewport>
-                      {typeFilterList.map((filter, idx) => (
-                        <SelectItem key={idx} value={filter.type}>
-                          <SelectItemIndicator>
-                            <UilCheck />
-                          </SelectItemIndicator>
-                          <SelectItemText>{filter.text}</SelectItemText>
-                        </SelectItem>
-                      ))}
-                    </SelectViewport>
-                  </SelectContent>
-                </SelectPortal>
-              </Select>
-            </div>
-
-            {/* Filter by category select */}
-            <div className="flex gap-4 sm:gap-6">
-              <span className="text-text-secondary whitespace-nowrap">
-                Category:
-              </span>
-              <Select
-                defaultValue={undefined}
-                value={filteredByCategory}
-                onValueChange={(category: CategoryFilter) =>
-                  filterResourcesByCategory(category)
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                  <SelectIcon>
-                    <UilAngleDown />
-                  </SelectIcon>
-                </SelectTrigger>
-
-                <SelectPortal>
-                  <SelectContent>
-                    <SelectViewport>
-                      <SelectItem key="all" value="all">
-                        <SelectItemIndicator>
-                          <UilCheck />
-                        </SelectItemIndicator>
-                        <SelectItemText>All</SelectItemText>
-                      </SelectItem>
-                      {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.name}>
-                          <SelectItemIndicator>
-                            <UilCheck />
-                          </SelectItemIndicator>
-                          <SelectItemText>{category.name}</SelectItemText>
-                        </SelectItem>
-                      ))}
-                    </SelectViewport>
-                  </SelectContent>
-                </SelectPortal>
-              </Select>
             </div>
 
             {/* Sort select */}
-            <div className="flex gap-4 sm:gap-6">
-              <span className="text-text-secondary whitespace-nowrap">
-                Sorted by:
-              </span>
-              <Select
-                defaultValue="date"
-                value={sort}
-                onValueChange={(value: Sort) => sortResources(value)}
-              >
-                <SelectTrigger disabled={!!searchQuery}>
-                  <SelectValue />
-                  <SelectIcon>
-                    <UilAngleDown />
-                  </SelectIcon>
-                </SelectTrigger>
+            <Select
+              defaultValue="date"
+              value={sort}
+              onValueChange={(value: Sort) => sortResources(value)}
+            >
+              <SelectTrigger disabled={!!searchQuery} label="Sort">
+                <SelectValue />
+                <SelectIcon>
+                  <UilArrowDown />
+                </SelectIcon>
+              </SelectTrigger>
 
-                <SelectPortal>
-                  <SelectContent>
-                    <SelectViewport>
-                      <SelectItem value="date">
-                        <SelectItemIndicator>
-                          <UilCheck />
-                        </SelectItemIndicator>
-                        <SelectItemText>Date added</SelectItemText>
-                      </SelectItem>
-                      <SelectItem value="title">
-                        <SelectItemIndicator>
-                          <UilCheck />
-                        </SelectItemIndicator>
-                        <SelectItemText>Title</SelectItemText>
-                      </SelectItem>
-                      <SelectItem value="likes">
-                        <SelectItemIndicator>
-                          <UilCheck />
-                        </SelectItemIndicator>
-                        <SelectItemText>Likes</SelectItemText>
-                      </SelectItem>
-                    </SelectViewport>
-                  </SelectContent>
-                </SelectPortal>
-              </Select>
-            </div>
+              <SelectPortal>
+                <SelectContent>
+                  <SelectViewport>
+                    <SelectItem value="date">
+                      <SelectItemIndicator>
+                        <UilCheck />
+                      </SelectItemIndicator>
+                      <SelectItemText>Date added</SelectItemText>
+                    </SelectItem>
+                    <SelectItem value="title">
+                      <SelectItemIndicator>
+                        <UilCheck />
+                      </SelectItemIndicator>
+                      <SelectItemText>Title</SelectItemText>
+                    </SelectItem>
+                    <SelectItem value="likes">
+                      <SelectItemIndicator>
+                        <UilCheck />
+                      </SelectItemIndicator>
+                      <SelectItemText>Likes</SelectItemText>
+                    </SelectItem>
+                  </SelectViewport>
+                </SelectContent>
+              </SelectPortal>
+            </Select>
           </div>
         </div>
         <div className="flex flex-col gap-6">
