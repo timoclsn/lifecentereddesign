@@ -512,8 +512,11 @@ export const Resources = ({
               })}
             </ul>
           ) : (
-            <div className="flex items-center justify-center py-16">
+            <div className="flex flex-col items-center justify-center gap-10 py-16">
               <Heading level="3">No resources found…</Heading>
+              <Button variant="outline" onClick={clearAll}>
+                Clear Filters
+              </Button>
             </div>
           )}
         </div>
