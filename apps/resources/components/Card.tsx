@@ -155,14 +155,14 @@ export const Card = ({
       className="flex h-full w-full flex-col gap-8 sm:gap-24"
     >
       <div className="flex flex-1 flex-col items-start gap-9">
-        <div className="flex justify-between w-full relative">
+        <div className="relative flex w-full justify-between">
           <div className="flex items-center gap-2">
             {/* Type */}
             {showType && getType(<Tag variant="outline">{displayType}</Tag>)}
 
             {/* User suggestion? */}
             {suggestion && (
-              <Tooltip content="Resource suggested by a user ❤️">
+              <Tooltip content="Resource suggested by the community ❤️">
                 <div>
                   <UilUsersAlt />
                 </div>
@@ -174,10 +174,10 @@ export const Card = ({
           <button
             onClick={likeResource}
             disabled={isLoading}
-            className="flex gap-2 group transition-transform ease disabled:opacity-80 items-center justify-center"
+            className="ease group flex items-center justify-center gap-2 transition-transform disabled:opacity-80"
           >
             {data && (
-              <div className="animate-in slide-in-from-right-full duration-100 fade-in ease-in">
+              <div className="animate-in slide-in-from-right-full fade-in duration-100 ease-in">
                 {data.likes}
               </div>
             )}
@@ -199,7 +199,7 @@ export const Card = ({
 
           {/* Meta infos */}
           {metaInfos && (
-            <ul className="-mt-1 flex flex-wrap gap-x-2 gap-y-1 text-text-secondary sm:gap-y-3 sm:gap-x-8">
+            <ul className="text-text-secondary -mt-1 flex flex-wrap gap-x-2 gap-y-1 sm:gap-x-8 sm:gap-y-3">
               {metaInfos.map((metaInfo, idx) => {
                 const Element = metaInfo.url ? 'a' : 'span';
                 return (

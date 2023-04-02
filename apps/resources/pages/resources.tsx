@@ -1,7 +1,7 @@
 import { Layout } from 'components/Layout';
 import { Suggestion } from 'components/Suggestion';
 import { getCO2Consumtion } from 'lib/co2';
-import { getResources, getCategories } from 'lib/resources';
+import { getResources, getCategories, getTopics } from 'lib/resources';
 import { InferGetStaticPropsType } from 'next';
 import { Resources } from '../components/Resources';
 
@@ -9,6 +9,7 @@ const ResourcesPage = ({
   co2Consumption,
   resources,
   categories,
+  topics,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Layout title="Resources" slug="resources" co2Consumption={co2Consumption}>
@@ -16,6 +17,7 @@ const ResourcesPage = ({
         initialSort="date"
         resources={resources}
         categories={categories}
+        topics={topics}
       />
       <Suggestion />
     </Layout>
@@ -26,12 +28,14 @@ export const getStaticProps = async () => {
   const co2Consumption = await getCO2Consumtion('lifecentereddesign.net');
   const resources = await getResources();
   const categories = await getCategories();
+  const topics = await getTopics();
 
   return {
     props: {
       co2Consumption,
       resources,
       categories,
+      topics,
     },
     revalidate: 60, // 1m in seconds
   };
