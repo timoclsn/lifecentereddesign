@@ -116,6 +116,7 @@ importers:
 
   packages/design-system:
     specifiers:
+      '@iconscout/react-unicons': 2.0.2
       '@radix-ui/react-label': ^2.0.1
       '@radix-ui/react-select': 1.2.1
       '@radix-ui/react-tooltip': ^1.0.5
@@ -130,6 +131,7 @@ importers:
       tsconfig: workspace:*
       typescript: 5.0.2
     dependencies:
+      '@iconscout/react-unicons': 2.0.2_react@18.2.0
       '@radix-ui/react-label': 2.0.1_react@18.2.0
       '@radix-ui/react-select': 1.2.1_o2wclmlv6kymw75psj4clbbe6a
       '@radix-ui/react-tooltip': 1.0.5_o2wclmlv6kymw75psj4clbbe6a

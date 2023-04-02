@@ -1,20 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { UilArrowDown, UilCheck, UilSearch } from '@iconscout/react-unicons';
-import {
-  Button,
-  Heading,
-  Select,
-  SelectContent,
-  SelectIcon,
-  SelectItem,
-  SelectItemIndicator,
-  SelectItemText,
-  SelectPortal,
-  SelectTrigger,
-  SelectValue,
-  SelectViewport,
-  Text,
-} from 'design-system';
+import { UilArrowDown, UilSearch } from '@iconscout/react-unicons';
+import { Button, Heading, Select, Text } from 'design-system';
 import { matchSorter } from 'match-sorter';
 import { useRouter } from 'next/router';
 import {
@@ -23,7 +9,6 @@ import {
   startTransition,
   useContext,
   useReducer,
-  useRef,
 } from 'react';
 import {
   Categories,
@@ -269,7 +254,6 @@ export const Resources = ({
   } = state;
 
   const [listRef] = useAutoAnimate<HTMLUListElement>();
-  const buttonsRef = useRef<Map<string, HTMLLIElement> | null>(null);
 
   const { query } = useRouter();
   const { title, from, till } = query;
@@ -382,27 +366,14 @@ export const Resources = ({
               value={filteredByType}
               onValueChange={(type: TypeFilter) => filterResourcesByType(type)}
             >
-              <SelectTrigger label="Type">
-                <SelectValue />
-                <SelectIcon>
-                  <UilArrowDown />
-                </SelectIcon>
-              </SelectTrigger>
-
-              <SelectPortal>
-                <SelectContent>
-                  <SelectViewport>
-                    {typeFilterList.map((filter, idx) => (
-                      <SelectItem key={idx} value={filter.type}>
-                        <SelectItemIndicator>
-                          <UilCheck />
-                        </SelectItemIndicator>
-                        <SelectItemText>{filter.text}</SelectItemText>
-                      </SelectItem>
-                    ))}
-                  </SelectViewport>
-                </SelectContent>
-              </SelectPortal>
+              <Select.FilterTrigger label="Type" />
+              <Select.Content>
+                {typeFilterList.map((type, idx) => (
+                  <Select.Item key={idx} value={type.type}>
+                    {type.text}
+                  </Select.Item>
+                ))}
+              </Select.Content>
             </Select>
 
             {/* Filter by category select */}
@@ -413,33 +384,17 @@ export const Resources = ({
                 filterResourcesByCategory(category)
               }
             >
-              <SelectTrigger label="Category">
-                <SelectValue />
-                <SelectIcon>
-                  <UilArrowDown />
-                </SelectIcon>
-              </SelectTrigger>
-
-              <SelectPortal>
-                <SelectContent>
-                  <SelectViewport>
-                    <SelectItem key="all" value="all">
-                      <SelectItemIndicator>
-                        <UilCheck />
-                      </SelectItemIndicator>
-                      <SelectItemText>All</SelectItemText>
-                    </SelectItem>
-                    {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.name}>
-                        <SelectItemIndicator>
-                          <UilCheck />
-                        </SelectItemIndicator>
-                        <SelectItemText>{category.name}</SelectItemText>
-                      </SelectItem>
-                    ))}
-                  </SelectViewport>
-                </SelectContent>
-              </SelectPortal>
+              <Select.FilterTrigger label="Category" />
+              <Select.Content>
+                <Select.Item key="all" value="all">
+                  All
+                </Select.Item>
+                {categories.map((category) => (
+                  <Select.Item key={category.id} value={category.name}>
+                    {category.name}
+                  </Select.Item>
+                ))}
+              </Select.Content>
             </Select>
 
             {/* Filter by topic select */}
@@ -450,33 +405,17 @@ export const Resources = ({
                 filterResourcesByTopic(topic)
               }
             >
-              <SelectTrigger label="Topic">
-                <SelectValue />
-                <SelectIcon>
-                  <UilArrowDown />
-                </SelectIcon>
-              </SelectTrigger>
-
-              <SelectPortal>
-                <SelectContent>
-                  <SelectViewport>
-                    <SelectItem key="all" value="all">
-                      <SelectItemIndicator>
-                        <UilCheck />
-                      </SelectItemIndicator>
-                      <SelectItemText>All</SelectItemText>
-                    </SelectItem>
-                    {topics.map((topic) => (
-                      <SelectItem key={topic.id} value={topic.name}>
-                        <SelectItemIndicator>
-                          <UilCheck />
-                        </SelectItemIndicator>
-                        <SelectItemText>{topic.name}</SelectItemText>
-                      </SelectItem>
-                    ))}
-                  </SelectViewport>
-                </SelectContent>
-              </SelectPortal>
+              <Select.FilterTrigger label="Topic" />
+              <Select.Content>
+                <Select.Item key="all" value="all">
+                  All
+                </Select.Item>
+                {topics.map((topic) => (
+                  <Select.Item key={topic.id} value={topic.name}>
+                    {topic.name}
+                  </Select.Item>
+                ))}
+              </Select.Content>
             </Select>
           </div>
 
@@ -508,37 +447,12 @@ export const Resources = ({
               value={sort}
               onValueChange={(value: Sort) => sortResources(value)}
             >
-              <SelectTrigger disabled={!!searchQuery} label="Sort">
-                <SelectValue />
-                <SelectIcon>
-                  <UilArrowDown />
-                </SelectIcon>
-              </SelectTrigger>
-
-              <SelectPortal>
-                <SelectContent>
-                  <SelectViewport>
-                    <SelectItem value="date">
-                      <SelectItemIndicator>
-                        <UilCheck />
-                      </SelectItemIndicator>
-                      <SelectItemText>Date added</SelectItemText>
-                    </SelectItem>
-                    <SelectItem value="title">
-                      <SelectItemIndicator>
-                        <UilCheck />
-                      </SelectItemIndicator>
-                      <SelectItemText>Title</SelectItemText>
-                    </SelectItem>
-                    <SelectItem value="likes">
-                      <SelectItemIndicator>
-                        <UilCheck />
-                      </SelectItemIndicator>
-                      <SelectItemText>Likes</SelectItemText>
-                    </SelectItem>
-                  </SelectViewport>
-                </SelectContent>
-              </SelectPortal>
+              <Select.SortTrigger />
+              <Select.Content>
+                <Select.Item value="date">Date added</Select.Item>
+                <Select.Item value="title">Title</Select.Item>
+                <Select.Item value="likes">Likes</Select.Item>
+              </Select.Content>
             </Select>
           </div>
         </div>

@@ -1,3 +1,11 @@
+import {
+  UilAngleDown,
+  UilArrowDown,
+  UilArrowUp,
+  UilCheck,
+  UilSortAmountDown,
+} from '@iconscout/react-unicons';
+import { Label } from '@radix-ui/react-label';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { cx } from 'class-variance-authority';
 import {
@@ -7,7 +15,6 @@ import {
   forwardRef,
   useId,
 } from 'react';
-import { Label } from '@radix-ui/react-label';
 
 export const Select = ({
   ...props
@@ -15,12 +22,12 @@ export const Select = ({
   <SelectPrimitive.Root {...props} />
 );
 
-export const SelectTrigger = forwardRef<
+Select.FilterTrigger = forwardRef<
   ElementRef<typeof SelectPrimitive.Trigger>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
     label: string;
   }
->(({ className, disabled, label, ...props }, ref) => {
+>(function SelectFilterTrigger({ className, disabled, label, ...props }, ref) {
   const id = useId();
   return (
     <div className="relative min-w-[80px] flex-1 sm:max-w-[240px]">
@@ -39,95 +46,92 @@ export const SelectTrigger = forwardRef<
         )}
         {...props}
         ref={ref}
-      />
+      >
+        <SelectPrimitive.Value />
+        <SelectPrimitive.Icon className="text-text-secondary flex-none">
+          <UilArrowDown />
+        </SelectPrimitive.Icon>
+      </SelectPrimitive.Trigger>
     </div>
   );
 });
 
-SelectTrigger.displayName = 'SelectTrigger';
-
-export const SelectValue = forwardRef<
-  ElementRef<typeof SelectPrimitive.Value>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.Value>
->(({ ...props }, ref) => <SelectPrimitive.Value {...props} ref={ref} />);
-
-SelectValue.displayName = 'SelectValue';
-
-export const SelectIcon = forwardRef<
-  ElementRef<typeof SelectPrimitive.Icon>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.Icon>
->(({ className, ...props }, ref) => {
+Select.SortTrigger = forwardRef<
+  ElementRef<typeof SelectPrimitive.Trigger>,
+  ComponentPropsWithoutRef<typeof SelectPrimitive.SelectTrigger>
+>(function SelectSortTrigger({ className, disabled, ...props }, ref) {
+  const id = useId();
   return (
-    <SelectPrimitive.Icon
-      className={cx('text-text-secondary flex-none', className)}
-      {...props}
-      ref={ref}
-    />
+    <div className="flex flex-1 items-center">
+      <Label htmlFor={id}>
+        <span className="sr-only">Sort by:</span>
+      </Label>
+      <SelectPrimitive.Trigger
+        id={id}
+        className={cx(
+          'flex h-full items-center gap-1 outline-none focus-visible:underline',
+          className
+        )}
+        {...props}
+        ref={ref}
+      >
+        <UilSortAmountDown className="text-text-secondary" />
+        <SelectPrimitive.Value />
+        <SelectPrimitive.Icon className="text-text-secondary flex-none">
+          <UilAngleDown />
+        </SelectPrimitive.Icon>
+      </SelectPrimitive.Trigger>
+    </div>
   );
 });
 
-SelectIcon.displayName = 'SelectIcon';
-
-export const SelectPortal = ({
-  ...props
-}: ComponentProps<typeof SelectPrimitive.Portal>) => (
-  <SelectPrimitive.Portal {...props} />
-);
-
-export const SelectContent = forwardRef<
+Select.Content = forwardRef<
   ElementRef<typeof SelectPrimitive.Content>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ className, ...props }, ref) => {
-  const styles = cx(
-    'rounded-2xl bg-primary-main-bg px-4 py-6 text-primary-contrast-text z-20 animate-in fade-in-75 zoom-in-90 duration-100 ease-out',
-    className
+>(function SelectContent({ children, className, ...props }, ref) {
+  return (
+    <SelectPrimitive.Portal>
+      <SelectPrimitive.Content
+        className={cx(
+          'bg-primary-main-bg text-primary-contrast-text animate-in fade-in-75 zoom-in-90 z-20 rounded-2xl px-4 py-6 duration-100 ease-out',
+          className
+        )}
+        {...props}
+        ref={ref}
+      >
+        <SelectPrimitive.ScrollUpButton className="flex cursor-default items-center justify-center">
+          <UilArrowUp />
+        </SelectPrimitive.ScrollUpButton>
+        <SelectPrimitive.Viewport className="flex flex-col gap-1">
+          {children}
+        </SelectPrimitive.Viewport>
+        <SelectPrimitive.ScrollDownButton className="flex cursor-default items-center justify-center">
+          <UilArrowDown />
+        </SelectPrimitive.ScrollDownButton>
+      </SelectPrimitive.Content>
+    </SelectPrimitive.Portal>
   );
-  return <SelectPrimitive.Content className={styles} {...props} ref={ref} />;
 });
 
-SelectContent.displayName = 'SelectContent';
-
-export const SelectViewport = forwardRef<
-  ElementRef<typeof SelectPrimitive.Viewport>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.Viewport>
->(({ className, ...props }, ref) => {
-  const styles = cx('flex flex-col gap-1', className);
-  return <SelectPrimitive.Viewport className={styles} {...props} ref={ref} />;
-});
-
-SelectViewport.displayName = 'SelectViewport';
-
-export const SelectItem = forwardRef<
+Select.Item = forwardRef<
   ElementRef<typeof SelectPrimitive.Item>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
->(({ className, ...props }, ref) => {
-  const styles = cx(
-    'cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg',
-    className
-  );
-  return <SelectPrimitive.Item className={styles} {...props} ref={ref} />;
-});
-
-SelectItem.displayName = 'SelectItem';
-
-export const SelectItemIndicator = forwardRef<
-  ElementRef<typeof SelectPrimitive.ItemIndicator>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.ItemIndicator>
->(({ className, ...props }, ref) => {
-  const styles = cx('absolute left-1 w-[25px]', className);
+>(function SelectItem({ children, className, ...props }, ref) {
   return (
-    <SelectPrimitive.ItemIndicator className={styles} {...props} ref={ref} />
+    <SelectPrimitive.Item
+      className={cx(
+        'hover:bg-primary-contrast-text hover:text-primary-main-bg focus-visible:bg-primary-contrast-text focus-visible:text-primary-main-bg cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none',
+        className
+      )}
+      {...props}
+      ref={ref}
+    >
+      <SelectPrimitive.ItemIndicator className="absolute left-1 w-[25px]">
+        <UilCheck />
+      </SelectPrimitive.ItemIndicator>
+      <SelectPrimitive.ItemText className="whitespace-nowrap">
+        {children}
+      </SelectPrimitive.ItemText>
+    </SelectPrimitive.Item>
   );
 });
-
-SelectItemIndicator.displayName = 'SelectItemIndicator';
-
-export const SelectItemText = forwardRef<
-  ElementRef<typeof SelectPrimitive.ItemText>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.ItemText>
->(({ className, ...props }, ref) => {
-  const styles = cx('whitespace-nowrap', className);
-  return <SelectPrimitive.ItemText className={styles} {...props} ref={ref} />;
-});
-
-SelectItemText.displayName = 'SelectItemText';
