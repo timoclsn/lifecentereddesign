@@ -1,6 +1,10 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { UilArrowDown, UilSearch } from '@iconscout/react-unicons';
-import { Button, Heading, Select, Text } from 'design-system';
+import {
+  UilArrowDown,
+  UilSearch,
+  UilTimesCircle,
+} from '@iconscout/react-unicons';
+import { Button, Heading, Select, Text, Tooltip } from 'design-system';
 import { matchSorter } from 'match-sorter';
 import { useRouter } from 'next/router';
 import {
@@ -9,6 +13,7 @@ import {
   startTransition,
   useContext,
   useReducer,
+  useRef,
 } from 'react';
 import {
   Categories,
@@ -131,7 +136,7 @@ const initalState: State = {
   filteredByCategory: 'all',
   filteredByTopic: 'all',
   itemsCount: 12,
-  sort: 'title',
+  sort: 'date',
   inContext: false,
   searchInput: '',
   searchQuery: '',
@@ -145,77 +150,8 @@ type Action =
   | { type: 'SORT'; sortBy: Sort }
   | { type: 'IN_CONTEXT' }
   | { type: 'TYPE_SEARCH'; value: string }
-  | { type: 'SEARCH' };
-
-const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case 'FILTER_BY_TYPE':
-      const filteredByType =
-        action.typeIs === state.filteredByType ? 'all' : action.typeIs;
-      splitbee.track('Filter resources by type', {
-        type: filteredByType,
-      });
-      return {
-        ...state,
-        filteredByType,
-      };
-    case 'FILTER_BY_CATEGORY':
-      const filteredByCategory =
-        !action.category || action.category === state.filteredByCategory
-          ? 'all'
-          : action.category;
-      splitbee.track('Filter resources by category', {
-        category: filteredByCategory,
-      });
-      return {
-        ...state,
-        filteredByCategory,
-      };
-    case 'FILTER_BY_TOPIC':
-      const filteredByTopic =
-        !action.topic || action.topic === state.filteredByTopic
-          ? 'all'
-          : action.topic;
-      splitbee.track('Filter resources by topic', {
-        topic: filteredByTopic,
-      });
-      return {
-        ...state,
-        filteredByTopic,
-      };
-    case 'SHOW_MORE':
-      splitbee.track('Show more resources', {
-        count: state.itemsCount + action.itemsCount,
-      });
-      return {
-        ...state,
-        itemsCount: state.itemsCount + action.itemsCount,
-      };
-    case 'SORT':
-      splitbee.track('Sort resources', { by: action.sortBy });
-      return {
-        ...state,
-        sort: action.sortBy,
-      };
-    case 'IN_CONTEXT':
-      return {
-        ...state,
-        inContext: true,
-      };
-    case 'TYPE_SEARCH':
-      return {
-        ...state,
-        searchInput: action.value,
-      };
-    case 'SEARCH':
-      return {
-        ...state,
-        searchQuery: state.searchInput,
-      };
-    default:
-      throw new Error('Unknown action type');
-  }
-};
+  | { type: 'SEARCH' }
+  | { type: 'CLEAR_ALL' };
 
 const ResourcesContext = createContext<{
   state: State;
@@ -241,7 +177,95 @@ export const Resources = ({
   topics,
 }: Props) => {
   initalState.sort = initialSort;
+
+  const resourcesTopRef = useRef<HTMLDivElement>(null);
+  const [listRef] = useAutoAnimate<HTMLUListElement>();
+
+  const scrollToTop = () => {
+    resourcesTopRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const reducer = (state: State, action: Action): State => {
+    switch (action.type) {
+      case 'FILTER_BY_TYPE':
+        const filteredByType =
+          action.typeIs === state.filteredByType ? 'all' : action.typeIs;
+        scrollToTop();
+        splitbee.track('Filter resources by type', {
+          type: filteredByType,
+        });
+        return {
+          ...state,
+          filteredByType,
+        };
+      case 'FILTER_BY_CATEGORY':
+        const filteredByCategory =
+          !action.category || action.category === state.filteredByCategory
+            ? 'all'
+            : action.category;
+        scrollToTop();
+        splitbee.track('Filter resources by category', {
+          category: filteredByCategory,
+        });
+        return {
+          ...state,
+          filteredByCategory,
+        };
+      case 'FILTER_BY_TOPIC':
+        const filteredByTopic =
+          !action.topic || action.topic === state.filteredByTopic
+            ? 'all'
+            : action.topic;
+        scrollToTop();
+        splitbee.track('Filter resources by topic', {
+          topic: filteredByTopic,
+        });
+        return {
+          ...state,
+          filteredByTopic,
+        };
+      case 'SHOW_MORE':
+        splitbee.track('Show more resources', {
+          count: state.itemsCount + action.itemsCount,
+        });
+        return {
+          ...state,
+          itemsCount: state.itemsCount + action.itemsCount,
+        };
+      case 'SORT':
+        splitbee.track('Sort resources', { by: action.sortBy });
+        return {
+          ...state,
+          sort: action.sortBy,
+        };
+      case 'IN_CONTEXT':
+        return {
+          ...state,
+          inContext: true,
+        };
+      case 'TYPE_SEARCH':
+        return {
+          ...state,
+          searchInput: action.value,
+        };
+      case 'SEARCH':
+        scrollToTop();
+        return {
+          ...state,
+          searchQuery: state.searchInput,
+        };
+      case 'CLEAR_ALL':
+        scrollToTop();
+        return {
+          ...initalState,
+        };
+      default:
+        throw new Error('Unknown action type');
+    }
+  };
+
   const [state, dispatch] = useReducer(reducer, initalState);
+
   const {
     filteredByType,
     filteredByCategory,
@@ -253,7 +277,12 @@ export const Resources = ({
     searchQuery,
   } = state;
 
-  const [listRef] = useAutoAnimate<HTMLUListElement>();
+  const isFiltered =
+    filteredByType !== initalState.filteredByType ||
+    filteredByCategory !== initalState.filteredByCategory ||
+    filteredByTopic !== initalState.filteredByTopic ||
+    searchQuery !== initalState.searchQuery ||
+    sort !== initalState.sort;
 
   const { query } = useRouter();
   const { title, from, till } = query;
@@ -329,9 +358,7 @@ export const Resources = ({
   const resourcesToDisplay = processedResources.slice(0, itemsCount);
   const showShowMoreBtn = processedResources.length > itemsCount;
 
-  const showMore = () => {
-    dispatch({ type: 'SHOW_MORE', itemsCount: 12 });
-  };
+  const showMore = () => dispatch({ type: 'SHOW_MORE', itemsCount: 12 });
 
   const filterResourcesByType = (type: TypeFilter) =>
     dispatch({ type: 'FILTER_BY_TYPE', typeIs: type });
@@ -344,6 +371,8 @@ export const Resources = ({
 
   const sortResources = (value: Sort) =>
     dispatch({ type: 'SORT', sortBy: value });
+
+  const clearAll = () => dispatch({ type: 'CLEAR_ALL' });
 
   return (
     <ResourcesContext.Provider value={{ state, dispatch }}>
@@ -437,7 +466,7 @@ export const Resources = ({
                     });
                   });
                 }}
-                className="w-full bg-transparent outline-none"
+                className="text-text-primary w-full bg-transparent outline-none"
               />
             </div>
 
@@ -447,16 +476,29 @@ export const Resources = ({
               value={sort}
               onValueChange={(value: Sort) => sortResources(value)}
             >
-              <Select.SortTrigger />
+              <Select.SortTrigger disabled={searchQuery !== ''} />
               <Select.Content>
                 <Select.Item value="date">Date added</Select.Item>
                 <Select.Item value="title">Title</Select.Item>
                 <Select.Item value="likes">Likes</Select.Item>
               </Select.Content>
             </Select>
+
+            {isFiltered && (
+              <Tooltip content="Clear all filter" delayDuration={500}>
+                <button
+                  onClick={clearAll}
+                  className="ease transition-transform hover:scale-110 active:scale-90"
+                >
+                  <UilTimesCircle />
+                  <span className="sr-only">Clear filters</span>
+                </button>
+              </Tooltip>
+            )}
           </div>
         </div>
         <div className="flex flex-col gap-6">
+          <div ref={resourcesTopRef} className="scroll-m-20" />
           {resourcesToDisplay.length > 0 ? (
             <ul
               className="grid grid-cols-1 gap-4 overflow-hidden md:grid-cols-2"

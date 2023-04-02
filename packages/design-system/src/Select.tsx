@@ -30,7 +30,7 @@ Select.FilterTrigger = forwardRef<
 >(function SelectFilterTrigger({ className, disabled, label, ...props }, ref) {
   const id = useId();
   return (
-    <div className="relative min-w-[80px] flex-1 sm:max-w-[240px]">
+    <div className="relative min-w-[0px] flex-1 sm:max-w-[240px]">
       <Label
         htmlFor={id}
         className="bg-bg-primary text-text-secondary absolute -top-1.5 left-5 px-1 text-xs leading-none"
@@ -59,17 +59,17 @@ Select.FilterTrigger = forwardRef<
 Select.SortTrigger = forwardRef<
   ElementRef<typeof SelectPrimitive.Trigger>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.SelectTrigger>
->(function SelectSortTrigger({ className, disabled, ...props }, ref) {
+>(function SelectSortTrigger({ className, ...props }, ref) {
   const id = useId();
   return (
-    <div className="flex flex-1 items-center">
+    <div className="flex items-center">
       <Label htmlFor={id}>
         <span className="sr-only">Sort by:</span>
       </Label>
       <SelectPrimitive.Trigger
         id={id}
         className={cx(
-          'flex h-full items-center gap-1 outline-none focus-visible:underline',
+          'flex h-full items-center gap-1 outline-none focus-visible:underline disabled:opacity-50 [&>span]:truncate [&>span]:whitespace-nowrap',
           className
         )}
         {...props}
