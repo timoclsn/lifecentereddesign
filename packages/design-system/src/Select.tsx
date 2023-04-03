@@ -41,7 +41,7 @@ Select.FilterTrigger = forwardRef<
         id={id}
         disabled={disabled}
         className={cx(
-          'border-ghost-main-dark-bg focus-visible:border-text-secondary flex w-full items-center justify-between rounded-full border-2 px-2 py-1 text-left text-lg font-bold leading-none outline-none disabled:opacity-50 sm:gap-1 sm:px-6 [&>span]:truncate [&>span]:whitespace-nowrap',
+          'border-ghost-main-dark-bg focus-visible:border-text-secondary flex w-full items-center justify-between rounded-full border-2 px-2 py-2 text-left text-lg font-bold leading-none outline-none disabled:opacity-50 sm:gap-1 sm:px-6 [&>span]:truncate [&>span]:whitespace-nowrap',
           className
         )}
         {...props}

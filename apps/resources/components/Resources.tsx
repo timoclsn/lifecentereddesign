@@ -386,148 +386,151 @@ export const Resources = ({
             related topics:
           </Text>
         </div>
+        <div>
+          <div className="bg-bg-primary sticky top-0 z-10 flex flex-wrap justify-between gap-3 py-4 sm:py-6">
+            <div className="flex flex-1 gap-3 sm:w-auto sm:flex-nowrap">
+              {/* Filter by type select */}
+              <Select
+                defaultValue={undefined}
+                value={filteredByType}
+                onValueChange={(type: TypeFilter) =>
+                  filterResourcesByType(type)
+                }
+              >
+                <Select.FilterTrigger label="Type" />
+                <Select.Content>
+                  {typeFilterList.map((type, idx) => (
+                    <Select.Item key={idx} value={type.type}>
+                      {type.text}
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select>
 
-        <div className="bg-bg-primary sticky top-0 z-10 flex flex-wrap justify-between gap-3 py-4 sm:py-6">
-          <div className="flex flex-1 gap-3 sm:w-auto sm:flex-nowrap">
-            {/* Filter by type select */}
-            <Select
-              defaultValue={undefined}
-              value={filteredByType}
-              onValueChange={(type: TypeFilter) => filterResourcesByType(type)}
-            >
-              <Select.FilterTrigger label="Type" />
-              <Select.Content>
-                {typeFilterList.map((type, idx) => (
-                  <Select.Item key={idx} value={type.type}>
-                    {type.text}
+              {/* Filter by category select */}
+              <Select
+                defaultValue={undefined}
+                value={filteredByCategory}
+                onValueChange={(category: CategoryFilter) =>
+                  filterResourcesByCategory(category)
+                }
+              >
+                <Select.FilterTrigger label="Category" />
+                <Select.Content>
+                  <Select.Item key="all" value="all">
+                    All
                   </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
+                  {categories.map((category) => (
+                    <Select.Item key={category.id} value={category.name}>
+                      {category.name}
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select>
 
-            {/* Filter by category select */}
-            <Select
-              defaultValue={undefined}
-              value={filteredByCategory}
-              onValueChange={(category: CategoryFilter) =>
-                filterResourcesByCategory(category)
-              }
-            >
-              <Select.FilterTrigger label="Category" />
-              <Select.Content>
-                <Select.Item key="all" value="all">
-                  All
-                </Select.Item>
-                {categories.map((category) => (
-                  <Select.Item key={category.id} value={category.name}>
-                    {category.name}
+              {/* Filter by topic select */}
+              <Select
+                defaultValue={undefined}
+                value={filteredByTopic}
+                onValueChange={(topic: TopicFilter) =>
+                  filterResourcesByTopic(topic)
+                }
+              >
+                <Select.FilterTrigger label="Topic" />
+                <Select.Content>
+                  <Select.Item key="all" value="all">
+                    All
                   </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
-
-            {/* Filter by topic select */}
-            <Select
-              defaultValue={undefined}
-              value={filteredByTopic}
-              onValueChange={(topic: TopicFilter) =>
-                filterResourcesByTopic(topic)
-              }
-            >
-              <Select.FilterTrigger label="Topic" />
-              <Select.Content>
-                <Select.Item key="all" value="all">
-                  All
-                </Select.Item>
-                {topics.map((topic) => (
-                  <Select.Item key={topic.id} value={topic.name}>
-                    {topic.name}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            {/* Search */}
-            <div className="bg-primary-ghost-bg text-text-secondary focus-within:ring-text-secondary flex min-w-[100px] flex-1 items-center gap-2 px-4 py-1 outline-none ring-inset focus-within:ring-2 sm:max-w-[240px]">
-              <UilSearch className="flex-none opacity-60" size="16" />
-              <input
-                placeholder="Search"
-                value={searchInput}
-                onChange={(e) => {
-                  dispatch({
-                    type: 'TYPE_SEARCH',
-                    value: e.target.value,
-                  });
-                  startTransition(() => {
-                    dispatch({
-                      type: 'SEARCH',
-                    });
-                  });
-                }}
-                className="text-text-primary w-full bg-transparent outline-none"
-              />
+                  {topics.map((topic) => (
+                    <Select.Item key={topic.id} value={topic.name}>
+                      {topic.name}
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select>
             </div>
 
-            {/* Sort select */}
-            <Select
-              defaultValue="date"
-              value={sort}
-              onValueChange={(value: Sort) => sortResources(value)}
-            >
-              <Select.SortTrigger disabled={searchQuery !== ''} />
-              <Select.Content>
-                <Select.Item value="date">Date added</Select.Item>
-                <Select.Item value="title">Title</Select.Item>
-                <Select.Item value="likes">Likes</Select.Item>
-              </Select.Content>
-            </Select>
+            <div className="flex flex-wrap gap-3">
+              {/* Search */}
+              <div className="bg-primary-ghost-bg text-text-secondary focus-within:ring-text-secondary flex min-w-[100px] flex-1 items-center gap-2 px-4 py-1 outline-none ring-inset focus-within:ring-2 sm:max-w-[240px]">
+                <UilSearch className="flex-none opacity-60" size="16" />
+                <input
+                  placeholder="Search"
+                  value={searchInput}
+                  onChange={(e) => {
+                    dispatch({
+                      type: 'TYPE_SEARCH',
+                      value: e.target.value,
+                    });
+                    startTransition(() => {
+                      dispatch({
+                        type: 'SEARCH',
+                      });
+                    });
+                  }}
+                  className="text-text-primary w-full bg-transparent outline-none"
+                />
+              </div>
 
-            {isFiltered && (
-              <Tooltip content="Clear all filter" delayDuration={500}>
-                <button
-                  onClick={clearAll}
-                  className="ease transition-transform hover:scale-110 active:scale-90"
-                >
-                  <UilTimesCircle />
-                  <span className="sr-only">Clear filters</span>
-                </button>
-              </Tooltip>
+              {/* Sort select */}
+              <Select
+                defaultValue="date"
+                value={sort}
+                onValueChange={(value: Sort) => sortResources(value)}
+              >
+                <Select.SortTrigger disabled={searchQuery !== ''} />
+                <Select.Content>
+                  <Select.Item value="date">Date added</Select.Item>
+                  <Select.Item value="title">Title</Select.Item>
+                  <Select.Item value="likes">Likes</Select.Item>
+                </Select.Content>
+              </Select>
+
+              {isFiltered && (
+                <Tooltip content="Clear all filter" delayDuration={500}>
+                  <button
+                    onClick={clearAll}
+                    className="ease transition-transform hover:scale-110 active:scale-90"
+                  >
+                    <UilTimesCircle />
+                    <span className="sr-only">Clear filters</span>
+                  </button>
+                </Tooltip>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col gap-6">
+            <div ref={resourcesTopRef} className="scroll-m-20" />
+            {resourcesToDisplay.length > 0 ? (
+              <ul
+                className="grid grid-cols-1 gap-4 overflow-hidden md:grid-cols-2"
+                ref={listRef}
+              >
+                {resourcesToDisplay.map((resource) => {
+                  const component = getCardComponent(resource);
+                  return (
+                    <li key={`${resource.type}-${resource.id}`}>{component}</li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <div className="flex flex-col items-center justify-center gap-10 py-16">
+                <Heading level="3">No resources found…</Heading>
+                <Button variant="outline" onClick={clearAll}>
+                  Clear Filters
+                </Button>
+              </div>
             )}
           </div>
-        </div>
-        <div className="flex flex-col gap-6">
-          <div ref={resourcesTopRef} className="scroll-m-20" />
-          {resourcesToDisplay.length > 0 ? (
-            <ul
-              className="grid grid-cols-1 gap-4 overflow-hidden md:grid-cols-2"
-              ref={listRef}
-            >
-              {resourcesToDisplay.map((resource) => {
-                const component = getCardComponent(resource);
-                return (
-                  <li key={`${resource.type}-${resource.id}`}>{component}</li>
-                );
-              })}
-            </ul>
-          ) : (
-            <div className="flex flex-col items-center justify-center gap-10 py-16">
-              <Heading level="3">No resources found…</Heading>
-              <Button variant="outline" onClick={clearAll}>
-                Clear Filters
+          {showShowMoreBtn && (
+            <div className="mt-10 flex justify-center">
+              <Button size="large" onClick={() => showMore()}>
+                <UilArrowDown />
+                Show More
               </Button>
             </div>
           )}
         </div>
-        {showShowMoreBtn && (
-          <div className="flex justify-center">
-            <Button size="large" onClick={() => showMore()}>
-              <UilArrowDown />
-              Show More
-            </Button>
-          </div>
-        )}
       </section>
     </ResourcesContext.Provider>
   );
