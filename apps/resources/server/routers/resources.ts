@@ -1,5 +1,12 @@
-import { getResourceLikes, getResources, likeResource, resourceTypes } from 'lib/resources';
-import { publicProcedure, router } from 'server/trpc';
+import {
+  getResourceNewLikes,
+  getResourceOldLikesCount,
+  getResources,
+  likeResource,
+  resourceTypes,
+  unlikeResource,
+} from 'lib/resources';
+import { protectedProcedure, publicProcedure, router } from 'server/trpc';
 import { z } from 'zod';
 
 const typeSchema = z.enum(resourceTypes);
@@ -24,16 +31,31 @@ export const resourcesRouter = router({
         limit: input?.limit,
       });
     }),
-  like: publicProcedure
+  like: protectedProcedure
     .input(
       z.object({
         id: z.number(),
         type: typeSchema,
       })
     )
-    .mutation(({ input }) => {
+    .mutation(({ input, ctx }) => {
       const { id, type } = input;
-      return likeResource(id, type);
+      const { userId } = ctx.auth;
+
+      likeResource(userId, id, type);
+    }),
+  unlike: protectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        type: typeSchema,
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      const { id, type } = input;
+      const { userId } = ctx.auth;
+
+      unlikeResource(userId, id, type);
     }),
   likes: publicProcedure
     .input(
@@ -42,8 +64,20 @@ export const resourcesRouter = router({
         type: typeSchema,
       })
     )
-    .query(({ input }) => {
+    .query(async ({ input, ctx }) => {
       const { id, type } = input;
-      return getResourceLikes(id, type);
+      const { userId } = ctx.auth;
+
+      const [oldLikesCount, newLikes] = await Promise.all([
+        getResourceOldLikesCount(id, type),
+        getResourceNewLikes(id, type),
+      ]);
+
+      const newLikesCount = newLikes.length;
+
+      return {
+        count: oldLikesCount + newLikesCount,
+        liked: newLikes.some((like) => like.userId === userId),
+      };
     }),
 });

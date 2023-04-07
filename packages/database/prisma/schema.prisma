@@ -78,6 +78,20 @@ enum Type {
   report
 }
 
+model Like {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  userId     String
+  type       Type
+  resourceId Int
+
+  @@unique([userId, type, resourceId])
+  @@index([userId])
+  @@index([type])
+  @@index([resourceId])
+}
+
 // Resources
 model Thoughtleader {
   id         Int      @id @default(autoincrement())
