@@ -1,17 +1,10 @@
 import { Bleed, Button, Heading, Text } from 'design-system';
 import Image from 'next/image';
 import earthImg from './earth.jpg';
-import { SignInButton, SignOutButton, useAuth } from '@clerk/nextjs';
-import { trpc } from 'utils/trpc';
 
 export function Header() {
-  const { userId } = useAuth();
-  const { data } = trpc.user.greet.useQuery();
   return (
     <section>
-      {userId && <SignOutButton />}
-      {!userId && <SignInButton />}
-      {userId && data && <div>{data}</div>}
       <Heading level="1" className="mb-8 max-w-3xl font-normal">
         <span className="font-bold">Life-centered design</span> related
         resources
