@@ -67,7 +67,7 @@ export const Card = ({
   description,
   suggestion = false,
 }: Props) => {
-  const { userId } = useAuth();
+  const { isSignedIn } = useAuth();
   const utils = trpc.useContext();
   const input = { id: resourceId, type: resourceType };
 
@@ -201,7 +201,7 @@ export const Card = ({
           {/* Likes */}
           <button
             onClick={likesData?.liked ? unlikeResource : likeResource}
-            disabled={likesIsLoading || !userId}
+            disabled={likesIsLoading || !isSignedIn}
             className="ease group flex items-center justify-center gap-2 transition-transform disabled:opacity-80"
           >
             {likesData && (
@@ -211,7 +211,7 @@ export const Card = ({
             )}
             <Tooltip
               content={
-                !!userId
+                isSignedIn
                   ? likesData?.liked
                     ? 'Remove resource from your favourites'
                     : 'Like resource to show support and mark as favourites'
@@ -224,7 +224,7 @@ export const Card = ({
                   className={heartVariants({
                     loading: likesIsLoading,
                     liked: likesData?.liked,
-                    interactive: !!userId,
+                    interactive: isSignedIn,
                   })}
                 />
               </div>
