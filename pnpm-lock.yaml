@@ -25,6 +25,7 @@ importers:
       '@radix-ui/react-checkbox': ^1.0.3
       '@radix-ui/react-dialog': 1.0.3
       '@radix-ui/react-select': 1.2.1
+      '@radix-ui/react-toggle': ^1.0.2
       '@tanstack/react-query': 4.28.0
       '@trpc/client': 10.18.0
       '@trpc/next': 10.18.0
@@ -70,6 +71,7 @@ importers:
       '@radix-ui/react-checkbox': 1.0.3_biqbaboplfbrettd7655fr4n2y
       '@radix-ui/react-dialog': 1.0.3_6ayuu6vm2uqggsikytom4xssc4
       '@radix-ui/react-select': 1.2.1_6ayuu6vm2uqggsikytom4xssc4
+      '@radix-ui/react-toggle': 1.0.2_biqbaboplfbrettd7655fr4n2y
       '@tanstack/react-query': 4.28.0_biqbaboplfbrettd7655fr4n2y
       '@trpc/client': 10.18.0_@trpc+server@10.18.0
       '@trpc/next': 10.18.0_efrapftgmmktm6pafmlfkcotmm
@@ -1715,6 +1717,20 @@ packages:
       '@babel/runtime': 7.21.0
       '@radix-ui/react-compose-refs': 1.0.0_react@18.2.0
       react: 18.2.0
+    dev: false
+
+  /@radix-ui/react-toggle/1.0.2_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-1MhVrHjgdmYDBgBpmOB0sjK096gFrVqUocsHNapkOTkZIxOwjpGxnW9e24CjQQX9D/c57dI6E8zAAdeAeIdY8g==}
+    peerDependencies:
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    dependencies:
+      '@babel/runtime': 7.21.0
+      '@radix-ui/primitive': 1.0.0
+      '@radix-ui/react-primitive': 1.0.2_biqbaboplfbrettd7655fr4n2y
+      '@radix-ui/react-use-controllable-state': 1.0.0_react@18.2.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@radix-ui/react-tooltip/1.0.5_o2wclmlv6kymw75psj4clbbe6a:

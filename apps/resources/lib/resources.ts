@@ -333,6 +333,18 @@ export const unlikeResource = async (
   });
 };
 
+export const getLikedResources = async (userId: string) => {
+  return await prisma.like.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      resourceId: true,
+      type: true,
+    },
+  });
+};
+
 export type Category = Prisma.CategoryGetPayload<{}>;
 export type Categories = Array<Category>;
 

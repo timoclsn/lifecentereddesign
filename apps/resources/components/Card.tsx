@@ -89,6 +89,7 @@ export const Card = ({
       return { oldData };
     },
     onSuccess: () => {
+      utils.resources.liked.invalidate();
       splitbee.track('Like resource', {
         type: resourceType,
         name: title,
@@ -117,6 +118,7 @@ export const Card = ({
       return { oldData };
     },
     onSuccess: () => {
+      utils.resources.liked.invalidate();
       splitbee.track('Un-like resource', {
         type: resourceType,
         name: title,

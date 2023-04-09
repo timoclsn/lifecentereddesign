@@ -1,4 +1,5 @@
 import {
+  getLikedResources,
   getResourceNewLikes,
   getResourceOldLikesCount,
   getResources,
@@ -80,4 +81,8 @@ export const resourcesRouter = router({
         liked: newLikes.some((like) => like.userId === userId),
       };
     }),
+  liked: protectedProcedure.query(({ ctx }) => {
+    const { userId } = ctx.auth;
+    return getLikedResources(userId);
+  }),
 });

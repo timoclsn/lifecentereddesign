@@ -1,9 +1,13 @@
+import { useAuth } from '@clerk/nextjs';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import {
   UilArrowDown,
+  UilHeart,
   UilSearch,
   UilTimesCircle,
 } from '@iconscout/react-unicons';
+import * as Toggle from '@radix-ui/react-toggle';
+import { cva } from 'class-variance-authority';
 import { Button, Heading, Select, Text, Tooltip } from 'design-system';
 import { matchSorter } from 'match-sorter';
 import { useRouter } from 'next/router';
@@ -15,6 +19,7 @@ import {
   useReducer,
   useRef,
 } from 'react';
+import { trpc } from 'utils/trpc';
 import {
   Categories,
   Category,
@@ -24,6 +29,18 @@ import {
   Topics,
 } from '../lib/resources';
 import { getCardComponent } from './utils';
+
+const filterByLikesBtnVaraints = cva(
+  'flex items-center justify-center ease transition-transform hover:scale-110 active:scale-90',
+  {
+    variants: {
+      active: {
+        true: 'text-red-700',
+        false: 'text-text-primary',
+      },
+    },
+  }
+);
 
 type TypeFilterList = Array<{
   text: string;
@@ -124,6 +141,7 @@ interface State {
   filteredByType: TypeFilter;
   filteredByCategory: CategoryFilter;
   filteredByTopic: TopicFilter;
+  filterByLikes: boolean;
   itemsCount: number;
   sort: Sort;
   inContext: boolean;
@@ -135,6 +153,7 @@ const initalState: State = {
   filteredByType: 'all',
   filteredByCategory: 'all',
   filteredByTopic: 'all',
+  filterByLikes: false,
   itemsCount: 12,
   sort: 'date',
   inContext: false,
@@ -146,6 +165,7 @@ type Action =
   | { type: 'FILTER_BY_TYPE'; typeIs: TypeFilter }
   | { type: 'FILTER_BY_CATEGORY'; category: CategoryFilter }
   | { type: 'FILTER_BY_TOPIC'; topic: TopicFilter }
+  | { type: 'TOGGLE_FILTER_BY_LIKES' }
   | { type: 'SHOW_MORE'; itemsCount: number }
   | { type: 'SORT'; sortBy: Sort }
   | { type: 'IN_CONTEXT' }
@@ -177,6 +197,11 @@ export const Resources = ({
   topics,
 }: Props) => {
   initalState.sort = initialSort;
+
+  const { isSignedIn } = useAuth();
+  const { data: likedResources } = trpc.resources.liked.useQuery(undefined, {
+    enabled: !!isSignedIn,
+  });
 
   const resourcesTopRef = useRef<HTMLDivElement>(null);
   const [listRef] = useAutoAnimate<HTMLUListElement>();
@@ -224,6 +249,13 @@ export const Resources = ({
           ...state,
           filteredByTopic,
         };
+      case 'TOGGLE_FILTER_BY_LIKES':
+        scrollToTop();
+        splitbee.track('Toggle filter resources by likes');
+        return {
+          ...state,
+          filterByLikes: !state.filterByLikes,
+        };
       case 'SHOW_MORE':
         splitbee.track('Show more resources', {
           count: state.itemsCount + action.itemsCount,
@@ -270,6 +302,7 @@ export const Resources = ({
     filteredByType,
     filteredByCategory,
     filteredByTopic,
+    filterByLikes,
     itemsCount,
     sort,
     inContext,
@@ -281,6 +314,7 @@ export const Resources = ({
     filteredByType !== initalState.filteredByType ||
     filteredByCategory !== initalState.filteredByCategory ||
     filteredByTopic !== initalState.filteredByTopic ||
+    filterByLikes !== initalState.filterByLikes ||
     searchQuery !== initalState.searchQuery ||
     sort !== initalState.sort;
 
@@ -343,6 +377,17 @@ export const Resources = ({
     .filter((resource) => {
       if (filteredByTopic === 'all') return true;
       return resource.topics.some((topic) => topic.name === filteredByTopic);
+    })
+    // Filter by likes
+    .filter((resource) => {
+      if (!filterByLikes || !likedResources || likedResources.length === 0) {
+        return true;
+      }
+      return likedResources.some(
+        (likedResources) =>
+          likedResources.resourceId === resource.id &&
+          likedResources.type === resource.type
+      );
     })
     // Filter from
     .filter((resource) => {
@@ -451,6 +496,29 @@ export const Resources = ({
             </div>
 
             <div className="flex flex-wrap gap-3">
+              {likedResources && likedResources.length > 0 && (
+                <Tooltip
+                  content={
+                    filterByLikes
+                      ? 'Show all resources'
+                      : 'Only show liked resources'
+                  }
+                  delayDuration={500}
+                >
+                  <Toggle.Root
+                    aria-label="Filter by likes"
+                    className={filterByLikesBtnVaraints({
+                      active: filterByLikes,
+                    })}
+                    onPressedChange={() =>
+                      dispatch({ type: 'TOGGLE_FILTER_BY_LIKES' })
+                    }
+                  >
+                    <UilHeart />
+                  </Toggle.Root>
+                </Tooltip>
+              )}
+
               {/* Search */}
               <div className="bg-primary-ghost-bg text-text-secondary focus-within:ring-text-secondary flex min-w-[100px] flex-1 items-center gap-2 px-4 py-1 outline-none ring-inset focus-within:ring-2 sm:max-w-[240px]">
                 <UilSearch className="flex-none opacity-60" size="16" />
@@ -486,17 +554,16 @@ export const Resources = ({
                 </Select.Content>
               </Select>
 
-              {isFiltered && (
-                <Tooltip content="Clear all filter" delayDuration={500}>
-                  <button
-                    onClick={clearAll}
-                    className="ease transition-transform hover:scale-110 active:scale-90"
-                  >
-                    <UilTimesCircle />
-                    <span className="sr-only">Clear filters</span>
-                  </button>
-                </Tooltip>
-              )}
+              <Tooltip content="Clear all filter" delayDuration={500}>
+                <button
+                  disabled={!isFiltered}
+                  onClick={clearAll}
+                  className="ease transition-transform hover:scale-110 active:scale-90 disabled:scale-100 disabled:opacity-50"
+                >
+                  <UilTimesCircle />
+                  <span className="sr-only">Clear filters</span>
+                </button>
+              </Tooltip>
             </div>
           </div>
           <div className="flex flex-col gap-6">
