@@ -24,8 +24,8 @@ export const resourcesRouter = router({
         })
         .optional()
     )
-    .query(({ input }) => {
-      return getResources({
+    .query(async ({ input }) => {
+      return await getResources({
         from: input?.from,
         till: input?.till,
         sort: input?.sort,
@@ -39,11 +39,11 @@ export const resourcesRouter = router({
         type: typeSchema,
       })
     )
-    .mutation(({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
       const { id, type } = input;
       const { userId } = ctx.auth;
 
-      likeResource(userId, id, type);
+      await likeResource(userId, id, type);
     }),
   unlike: protectedProcedure
     .input(
@@ -52,11 +52,11 @@ export const resourcesRouter = router({
         type: typeSchema,
       })
     )
-    .mutation(({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
       const { id, type } = input;
       const { userId } = ctx.auth;
 
-      unlikeResource(userId, id, type);
+      await unlikeResource(userId, id, type);
     }),
   likes: publicProcedure
     .input(
@@ -81,8 +81,8 @@ export const resourcesRouter = router({
         liked: newLikes.some((like) => like.userId === userId),
       };
     }),
-  liked: protectedProcedure.query(({ ctx }) => {
+  liked: protectedProcedure.query(async ({ ctx }) => {
     const { userId } = ctx.auth;
-    return getLikedResources(userId);
+    return await getLikedResources(userId);
   }),
 });
