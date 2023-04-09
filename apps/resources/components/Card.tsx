@@ -76,6 +76,7 @@ export const Card = ({
 
   const likeMutation = trpc.resources.like.useMutation({
     onMutate: () => {
+      console.log('like');
       utils.resources.likes.cancel(input);
 
       const oldData = utils.resources.likes.getData(input);
@@ -98,13 +99,11 @@ export const Card = ({
     onError: (err, input, context) => {
       utils.resources.likes.setData(input, context?.oldData);
     },
-    onSettled: () => {
-      utils.resources.likes.invalidate(input);
-    },
   });
 
   const unlikeMutation = trpc.resources.unlike.useMutation({
     onMutate: () => {
+      console.log('unlike');
       utils.resources.likes.cancel(input);
 
       const oldData = utils.resources.likes.getData(input);
@@ -126,9 +125,6 @@ export const Card = ({
     },
     onError: (err, input, context) => {
       utils.resources.likes.setData(input, context?.oldData);
-    },
-    onSettled: () => {
-      utils.resources.likes.invalidate(input);
     },
   });
 
