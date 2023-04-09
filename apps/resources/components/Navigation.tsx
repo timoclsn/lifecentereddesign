@@ -39,7 +39,15 @@ export function Navigation() {
         </li>
         <li>
           <SignedIn>
-            <UserButton />
+            <UserButton
+              userProfileMode="navigation"
+              userProfileUrl="/profile"
+              appearance={{
+                variables: {
+                  colorPrimary: '#101b2c',
+                },
+              }}
+            />
           </SignedIn>
           <SignedOut>
             <SignInButton>
