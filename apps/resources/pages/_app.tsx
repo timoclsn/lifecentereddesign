@@ -11,7 +11,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ClerkProvider {...pageProps}>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </ClerkProvider>
   );
 }
