@@ -1,4 +1,4 @@
-import { UserButton, useAuth } from '@clerk/nextjs';
+import { SignInButton, UserButton, useAuth } from '@clerk/nextjs';
 import { UilSpinnerAlt } from '@iconscout/react-unicons';
 import { Button, Heading, Text } from 'design-system';
 import Link from 'next/link';
@@ -43,9 +43,11 @@ export function Navigation() {
         <li>
           {!isLoaded && <UilSpinnerAlt className="mx-8 animate-spin" />}
           {isLoaded && !isSignedIn && (
-            <Button as={Link} variant="outline" size="small" href="/sign-in">
-              Sign in
-            </Button>
+            <SignInButton>
+              <Button variant="outline" size="small">
+                Sign in
+              </Button>
+            </SignInButton>
           )}
           {isLoaded && isSignedIn && (
             <UserButton
