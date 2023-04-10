@@ -48,6 +48,10 @@ These data will not be combined with data from other sources.
 
 The basis for data processing is Art. 6 (1) (f) DSGVO, which allows the processing of data to fulfill a contract or for measures preliminary to a contract.
 
+### Login
+
+This website provides an optional login functionality to use personalized features such as liking and saving resources. When you register for an account we collect and store your email address. We are using [Clerk](https://clerk.com/) as a secure and GDPR-compliant authentication provider. By registering your IP address is shared with Clerk and your email address is securely saved with clerk. You can also opt-in to use social login providers such as Google, GitHub, and Discord. When doing so your IP address is shared with those providers.
+
 ### Newsletter
 
 We offer to subscribe to updates and information through our newsletter. We will only send you these updates and information through our newsletter with your consent (Art. 6 (1) (a) DSGVO) or based onlegal permission. In case that the content of the newsletter is described further with the signup form, this description is the basis of the consent given when signing up through that form.
@@ -72,8 +76,7 @@ As a newsletter provider, we use the marketing platform „Mailchimp“ – Rock
 
 To best protect your privacy we set up our analytics tools to only store anonymized data. The tools we use are:
 
-- [Vercel Analytics](https://vercel.com/analytics) to evaluate the website performance (like loading times)
-- [Splitbee Analytics](https://splitbee.io) to track page visits (e.g.: How many visitors were there? What devices were used? Were did the visitors come from? Which pages did they visit?) Wie viele Besucher:innen? Mit welchen Geräten? Woher kommen die Besucher:innen? Welche Seiten haben sie besucht?). If you want to see what data is visualized there you can have a look at our public analytics dashboard.
+- [Splitbee Analytics](https://splitbee.io) to track page visits (e.g.: How many visitors were there? What devices were used? Were did the visitors come from? Which pages did they visit?).
 
 ## Rights of the individual
 
