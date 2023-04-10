@@ -5,13 +5,9 @@ import {
   UserProfile,
 } from '@clerk/nextjs';
 import { Layout } from 'components/Layout';
-import { getCO2Consumtion } from 'lib/co2';
-import { InferGetStaticPropsType } from 'next';
 
-const ProfilePage = ({
-  co2Consumption,
-}: InferGetStaticPropsType<typeof getStaticProps>) => (
-  <Layout title="Profile" slug="profile" co2Consumption={co2Consumption}>
+const ProfilePage = () => (
+  <Layout title="Profile" slug="profile">
     <section className="flex items-center justify-center">
       <SignedIn>
         <UserProfile
@@ -28,15 +24,5 @@ const ProfilePage = ({
     </section>
   </Layout>
 );
-
-export const getStaticProps = async () => {
-  const co2Consumption = await getCO2Consumtion('lifecentereddesign.net');
-
-  return {
-    props: {
-      co2Consumption,
-    },
-  };
-};
 
 export default ProfilePage;

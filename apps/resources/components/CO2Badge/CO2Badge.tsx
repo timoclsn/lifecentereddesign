@@ -2,14 +2,11 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { Heading, Link, Text } from 'design-system';
 import { FiArrowRight, FiX } from 'react-icons/fi';
 import { RiLeafLine } from 'react-icons/ri';
-import type { CO2 } from '../../lib/co2';
+import { demoResult } from '../../lib/co2';
 import styles from './CO2Badge.module.css';
 
-interface Props {
-  co2Consumption: CO2;
-}
-
-export function CO2Badge({ co2Consumption }: Props) {
+export function CO2Badge() {
+  const co2Consumption = demoResult;
   return (
     <Dialog.Root modal>
       <Dialog.Trigger className="bg-lime group flex items-center gap-1 rounded-b-lg px-4 py-2 font-bold">
