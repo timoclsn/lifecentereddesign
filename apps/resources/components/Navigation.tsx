@@ -1,10 +1,12 @@
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { UserButton, useAuth } from '@clerk/nextjs';
+import { UilSpinnerAlt } from '@iconscout/react-unicons';
 import { Button, Heading, Text } from 'design-system';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 export function Navigation() {
   const { pathname } = useRouter();
+  const { isSignedIn, isLoaded } = useAuth();
   return (
     <header className="flex flex-wrap items-center justify-between gap-x-10 gap-y-4 px-6 py-6 sm:px-8 xl:px-10">
       <div className="font-serif text-2xl font-bold">
@@ -39,7 +41,13 @@ export function Navigation() {
           </Link>
         </li>
         <li>
-          <SignedIn>
+          {!isLoaded && <UilSpinnerAlt className="mx-8 animate-spin" />}
+          {isLoaded && !isSignedIn && (
+            <Button as={Link} variant="outline" size="small" href="/sign-in">
+              Sign in
+            </Button>
+          )}
+          {isLoaded && isSignedIn && (
             <UserButton
               userProfileMode="navigation"
               userProfileUrl="/profile"
@@ -49,12 +57,7 @@ export function Navigation() {
                 },
               }}
             />
-          </SignedIn>
-          <SignedOut>
-            <SignInButton>
-              <Button variant="outline">Sign in</Button>
-            </SignInButton>
-          </SignedOut>
+          )}
         </li>
       </ul>
     </header>

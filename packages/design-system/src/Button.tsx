@@ -1,8 +1,8 @@
 import { cva, VariantProps } from 'class-variance-authority';
-import { ReactNode } from 'react';
+import { ElementType, ReactNode } from 'react';
 
 const styles = cva(
-  'inline-flex items-center justify-center gap-2 leading-none px-6 py-4 whitespace-nowrap',
+  'inline-flex items-center justify-center gap-2 leading-none whitespace-nowrap disabled:opacity-50',
   {
     variants: {
       variant: {
@@ -11,8 +11,11 @@ const styles = cva(
         text: null,
       },
       size: {
-        medium: 'text-base leading-6 [&>svg]:w-[20px] [&>svg]:h-[20px]',
-        large: 'text-2xlleading-8[&>svg]:w-[25px][&>svg]:h-[25px]',
+        small:
+          'text-base leading-6 [&>svg]:w-[16px] [&>svg]:h-[16px] px-4 py-2',
+        medium:
+          'text-base leading-6 [&>svg]:w-[20px] [&>svg]:h-[20px] px-6 py-4',
+        large: 'text-2xlleading-8[&>svg]:w-[25px][&>svg]:h-[25px] px-6 py-4',
       },
       color: {
         primary: null,
@@ -46,6 +49,7 @@ const styles = cva(
 
 export interface ButtonProps extends VariantProps<typeof styles> {
   children: ReactNode;
+  as?: ElementType;
   type?: 'button' | 'submit' | 'reset';
   onClick?: () => void;
   disabled?: boolean;
@@ -56,6 +60,7 @@ export interface ButtonProps extends VariantProps<typeof styles> {
 
 export function Button({
   children,
+  as,
   variant = 'contained',
   color = 'primary',
   size = 'medium',
@@ -67,7 +72,7 @@ export function Button({
   selected,
   className,
 }: ButtonProps) {
-  const Element = href ? 'a' : 'button';
+  const Element = as ? as : href ? 'a' : 'button';
   return (
     <Element
       className={styles({ variant, size, color, selected, className })}
