@@ -1,3 +1,4 @@
+import { useUser } from '@clerk/nextjs';
 import {
   UilCheck,
   UilCheckCircle,
@@ -15,6 +16,7 @@ import {
 import { Button, Heading, InfoBox, Link, Text } from 'design-system';
 import { useZodForm } from 'hooks/useZodForm';
 import NextLink from 'next/link';
+import { useEffect } from 'react';
 import { Controller, SubmitHandler } from 'react-hook-form';
 import { trpc } from 'utils/trpc';
 import { z } from 'zod';
@@ -32,6 +34,7 @@ export const newsletterFormSchema = z.object({
 });
 
 export const Newsletter = () => {
+  const { user } = useUser();
   const {
     register,
     handleSubmit,
@@ -39,9 +42,22 @@ export const Newsletter = () => {
     reset,
     setFocus,
     control,
+    setValue,
+    formState: { dirtyFields },
   } = useZodForm({
     schema: newsletterFormSchema,
   });
+
+  const userEmail = user?.emailAddresses[0].emailAddress;
+
+  useEffect(() => {
+    if (userEmail && !dirtyFields.email) {
+      setValue('email', userEmail);
+    }
+    if (!userEmail) {
+      setValue('email', '');
+    }
+  }, [dirtyFields.email, userEmail, setValue]);
 
   const mutation = trpc.newsletter.subscribe.useMutation({
     onSuccess: () => {
@@ -75,14 +91,14 @@ export const Newsletter = () => {
       <Heading level="2" className="text-primary mb-6">
         Newsletter
       </Heading>
-      <Text as="p" size="large" className="mb-16 text-text-secondary">
+      <Text as="p" size="large" className="text-text-secondary mb-16">
         Sign up for our Newsletter to get all the new resources and other
         Life-centered Design related news delivered to your inbox once a month.
       </Text>
 
       {/* Form */}
       <form
-        className="w-full max-w-prose mx-auto flex flex-col items-start gap-10"
+        className="mx-auto flex w-full max-w-prose flex-col items-start gap-10"
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* Email input */}
@@ -103,7 +119,7 @@ export const Newsletter = () => {
         </div>
 
         {/* Consens checkbox */}
-        <div className="relative flex gap-3 items-center">
+        <div className="relative flex items-center gap-3">
           <Controller
             name="consens"
             control={control}
@@ -145,7 +161,7 @@ export const Newsletter = () => {
           <InfoBox
             variant="success"
             icon={<UilCheckCircle />}
-            className="animate-in zoom-in-0 duration-150 ease-in-out fade-in"
+            className="animate-in zoom-in-0 fade-in duration-150 ease-in-out"
           >
             Almost finished... We need to confirm your email address. To
             complete the subscription process, please click the link in the
@@ -156,7 +172,7 @@ export const Newsletter = () => {
           <InfoBox
             variant="error"
             icon={<UilExclamationTriangle />}
-            className="animate-in zoom-in-50 duration-150 ease-in-out fade-in"
+            className="animate-in zoom-in-50 fade-in duration-150 ease-in-out"
           >
             {mutation.error.message}
           </InfoBox>
