@@ -35,6 +35,10 @@ const ProfilePage = () => {
               appearance={{
                 variables: {
                   colorPrimary: '#101b2c',
+                  borderRadius: 'none',
+                },
+                elements: {
+                  card: 'shadow-none',
                 },
               }}
             />

@@ -21,10 +21,12 @@ const SignInPage = () => (
             },
             variables: {
               colorPrimary: '#101b2c',
+              borderRadius: 'none',
             },
             elements: {
               headerTitle: 'hidden',
               headerSubtitle: 'hidden',
+              card: 'shadow-none',
             },
           }}
         />
