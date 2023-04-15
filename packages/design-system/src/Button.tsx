@@ -19,6 +19,7 @@ const styles = cva(
       },
       color: {
         primary: null,
+        danger: null,
       },
       selected: {
         true: 'text-primary-hover-text bg-primary-ghost-bg',
@@ -42,6 +43,23 @@ const styles = cva(
         color: 'primary',
         class:
           'text-primary-main-text hover:text-primary-hover-text hover:bg-primary-ghost-bg disabled:text-primary-disabled-text disabled:bg-transparent',
+      },
+      {
+        variant: 'contained',
+        color: 'danger',
+        class:
+          'text-primary-contrast-text bg-red-700 hover:bg-red-600 disabled:opacity-50',
+      },
+      {
+        variant: 'outline',
+        color: 'danger',
+        class:
+          'text-primary-main-text ring-2 ring-red-700 ring-inset hover:opacity-70',
+      },
+      {
+        variant: 'text',
+        color: 'danger',
+        class: 'text-red-700 hover:text-red-600 disabled:opacity-50',
       },
     ],
   }

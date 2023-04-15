@@ -365,3 +365,11 @@ export const getTopics = async () => {
     },
   });
 };
+
+export const deleteUserData = async (userId: string) => {
+  await prisma.like.deleteMany({
+    where: {
+      userId,
+    },
+  });
+};

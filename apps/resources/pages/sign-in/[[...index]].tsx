@@ -9,6 +9,11 @@ const SignInPage = () => (
         routing="path"
         signUpUrl="/sign-up"
         appearance={{
+          layout: {
+            privacyPageUrl: '/privacy',
+            socialButtonsPlacement: 'bottom',
+            socialButtonsVariant: 'blockButton',
+          },
           variables: {
             colorPrimary: '#101b2c',
           },

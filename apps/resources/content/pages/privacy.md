@@ -52,8 +52,6 @@ The basis for data processing is Art. 6 (1) (f) DSGVO, which allows the processi
 
 This website provides an optional login functionality to use personalized features such as liking and saving resources. When you register for an account we collect and store your email address. We are using [Clerk](https://clerk.com/) as a secure and GDPR-compliant authentication provider. By registering your IP address is shared with Clerk and your email address is securely saved with clerk. You can also opt-in to use social login providers such as Google, GitHub, and Discord. When doing so your IP address is shared with those providers.
 
-Unfortunately, Clerk doesn't offer a way to delete your account on your own at the moment. If you want your account to be deleted please send us an email (from the email address linked with that account – for identification purposes) at hello@lifecentereddesign.net and we will delete it manually.
-
 ### Newsletter
 
 We offer to subscribe to updates and information through our newsletter. We will only send you these updates and information through our newsletter with your consent (Art. 6 (1) (a) DSGVO) or based onlegal permission. In case that the content of the newsletter is described further with the signup form, this description is the basis of the consent given when signing up through that form.
