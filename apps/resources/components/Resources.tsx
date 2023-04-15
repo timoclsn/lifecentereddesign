@@ -423,7 +423,7 @@ export const Resources = ({
     <ResourcesContext.Provider value={{ state, dispatch }}>
       <section id="resources" className="flex flex-col gap-10">
         <div>
-          <Heading level="1" className="max-w-3x mb-8">
+          <Heading level="1" className="mb-8 max-w-3xl">
             {title ? title : 'Resources'}
           </Heading>
           <Text as="p" size="large" className="text-text-secondary max-w-5xl">

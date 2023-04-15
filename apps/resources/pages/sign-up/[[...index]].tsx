@@ -5,7 +5,7 @@ import { Heading, Link, Text } from 'design-system';
 const SignUpPage = () => (
   <Layout title="Sign up" slug="sign-up">
     <section>
-      <Heading level="1" className="max-w-3x mb-8">
+      <Heading level="1" className="mb-8 max-w-3xl">
         Sign up
       </Heading>
       <Text as="p" size="large" className="text-text-secondary mb-20 max-w-5xl">
