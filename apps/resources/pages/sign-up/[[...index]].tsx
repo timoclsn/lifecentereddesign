@@ -4,15 +4,15 @@ import { Heading, Link, Text } from 'design-system';
 
 const SignUpPage = () => (
   <Layout title="Sign up" slug="sign-up">
-    <section>
-      <Heading level="1" className="mb-8 max-w-3xl">
+    <section className="mx-auto max-w-lg">
+      <Heading level="1" className="mb-8">
         Sign up
       </Heading>
-      <Text as="p" size="large" className="text-text-secondary mb-20 max-w-5xl">
+      <Text as="p" size="large" className="text-text-secondary mb-12">
         Sign up for an account to be able to use personalized features like
-        liking resources…
+        liking resources and more.
       </Text>
-      <div className="flex flex-col items-center justify-center gap-20">
+      <div className="flex items-center justify-center">
         <SignUp
           path="/sign-up"
           routing="path"
@@ -26,17 +26,17 @@ const SignUpPage = () => (
             variables: {
               colorPrimary: '#101b2c',
             },
+            elements: {
+              headerTitle: 'hidden',
+              headerSubtitle: 'hidden',
+            },
           }}
         />
-        <Text
-          as="p"
-          size="medium"
-          className="text-text-secondary mb-20 max-w-md"
-        >
-          With your registration you declare to have read and to agree with our{' '}
-          <Link url="/privacy">privacy policy</Link>.
-        </Text>
       </div>
+      <Text as="p" size="medium" className="text-text-secondary mt-8">
+        With your registration you declare to have read and to agree with our{' '}
+        <Link url="/privacy">privacy policy</Link>.
+      </Text>
     </section>
   </Layout>
 );
