@@ -12,7 +12,7 @@ import {
   UilTimesCircle,
 } from '@iconscout/react-unicons';
 import { Layout } from 'components/Layout';
-import { Button, InfoBox } from 'design-system';
+import { Button, Heading, InfoBox } from 'design-system';
 import { trpc } from 'utils/trpc';
 
 const ProfilePage = () => {
@@ -28,9 +28,12 @@ const ProfilePage = () => {
 
   return (
     <Layout title="Profile" slug="profile">
-      <section className="flex items-center justify-center">
+      <section className="mx-auto max-w-4xl">
+        <Heading level="1" className="mb-8">
+          Profile
+        </Heading>
         <SignedIn>
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col items-center justify-center gap-10">
             <UserProfile
               appearance={{
                 variables: {
