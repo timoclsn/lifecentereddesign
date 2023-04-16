@@ -217,7 +217,7 @@ export const Card = ({
                 isSignedIn
                   ? likesData?.liked
                     ? 'Remove resource from your favourites'
-                    : 'Like resource to show support and mark as favourites'
+                    : 'Like resource to show support and mark as favourite'
                   : 'Sign-in to like resource and show your support.'
               }
               delayDuration={500}
