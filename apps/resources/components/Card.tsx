@@ -23,6 +23,9 @@ const heartVariants = cva(null, {
     loading: {
       true: 'animate-pulse',
     },
+    active: {
+      true: 'text-red-700',
+    },
   },
 });
 
@@ -225,6 +228,7 @@ export const Card = ({
                     className={heartVariants({
                       loading: likesIsLoading,
                       interactive: isSignedIn,
+                      active: likesData.liked,
                     })}
                   />
                 ) : (
