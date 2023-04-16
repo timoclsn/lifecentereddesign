@@ -50,7 +50,35 @@ The basis for data processing is Art. 6 (1) (f) DSGVO, which allows the processi
 
 ### Login
 
-This website provides an optional login functionality to use personalized features such as liking and saving resources. When you register for an account we collect and store your email address. We are using [Clerk](https://clerk.com/) as a secure and GDPR-compliant authentication provider. By registering your IP address is shared with Clerk and your email address is securely saved with clerk. You can also opt-in to use social login providers such as Google, GitHub, and Discord. When doing so your IP address is shared with those providers.
+This website provides an optional login functionality to use personalized features such as liking and saving resources.
+
+#### Collection of Personal Data
+
+When you create an account on our website, we collect your email address. We do not collect any other personal data from you. Your email address is necessary to provide you with the login functionality on our website.
+
+#### Use of Personal Data
+
+We use your email address solely to provide you with the login functionality on our website. We may also use your email address to communicate with you about your account, such as to reset your password or to notify you of any changes to our terms of service or privacy policy.
+
+#### Disclosure of Personal Data
+
+We do not share your email address with any third parties.
+
+#### Data Retention
+
+We will retain your email address until you delete your account. If you delete your account, we will delete your email address from our records.
+
+#### User Rights
+
+You have the right to manage your information on the profile page of our website. You can update your email address or delete your account at any time. If you delete your account, all of your personal data will be deleted from our records.
+
+#### Cookies
+
+We use cookies to provide you with the login functionality on our website. Cookies are small text files that are stored on your device when you use our website. We use cookies to keep you logged in to your account. You can choose to disable cookies in your browser settings, but this may affect your ability to use our website.
+
+#### Data Security
+
+We take the security of your personal data seriously. We use [Clerk](clerk.com) as our authentication provider, and all authentication data is saved securely by Clerk. We also take measures to protect your email address from unauthorized access, disclosure, or misuse. By registering your IP address is shared with Clerk. You can also use social login providers such as Google, GitHub, and Discord. When doing so your IP address may be shared with those providers.
 
 ### Newsletter
 
