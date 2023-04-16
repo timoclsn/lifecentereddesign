@@ -7,7 +7,6 @@ import {
   UilTimesCircle,
 } from '@iconscout/react-unicons';
 import * as Toggle from '@radix-ui/react-toggle';
-import { cva } from 'class-variance-authority';
 import { Button, Heading, Select, Text, Tooltip } from 'design-system';
 import { matchSorter } from 'match-sorter';
 import { useRouter } from 'next/router';
@@ -28,19 +27,8 @@ import {
   Topic,
   Topics,
 } from '../lib/resources';
+import { SolidHeart } from './Icons/SolidHeart';
 import { getCardComponent } from './utils';
-
-const filterByLikesBtnVaraints = cva(
-  'flex items-center justify-center ease transition-transform hover:scale-110 active:scale-90',
-  {
-    variants: {
-      active: {
-        true: 'text-red-700',
-        false: 'text-text-primary',
-      },
-    },
-  }
-);
 
 type TypeFilterList = Array<{
   text: string;
@@ -507,14 +495,12 @@ export const Resources = ({
                 >
                   <Toggle.Root
                     aria-label="Filter by likes"
-                    className={filterByLikesBtnVaraints({
-                      active: filterByLikes,
-                    })}
+                    className="ease text-text-primary flex items-center justify-center transition-transform hover:scale-110 active:scale-90"
                     onPressedChange={() =>
                       dispatch({ type: 'TOGGLE_FILTER_BY_LIKES' })
                     }
                   >
-                    <UilHeart />
+                    {filterByLikes ? <SolidHeart /> : <UilHeart />}
                   </Toggle.Root>
                 </Tooltip>
               )}

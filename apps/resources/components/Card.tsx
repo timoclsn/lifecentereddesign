@@ -13,17 +13,15 @@ import { ContentType } from 'lib/resources';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { trpc } from 'utils/trpc';
+import { SolidHeart } from './Icons/SolidHeart';
 
 const heartVariants = cva(null, {
   variants: {
     interactive: {
-      true: 'group-hover:scale-110 group-active:scale-90',
+      true: 'group-hover:scale-110 group-active:scale-90 transition-transform ease',
     },
     loading: {
       true: 'animate-pulse',
-    },
-    liked: {
-      true: 'text-red-700',
     },
   },
 });
@@ -204,10 +202,10 @@ export const Card = ({
           <button
             onClick={likesData?.liked ? unlikeResource : likeResource}
             disabled={likesIsLoading || !isSignedIn}
-            className="ease group flex items-center justify-center gap-2 transition-transform disabled:opacity-80"
+            className="ease group flex items-center justify-center gap-2 disabled:opacity-80"
           >
             {likesData && (
-              <div className="animate-in slide-in-from-right-full fade-in duration-100 ease-in">
+              <div className="animate-in slide-in-from-right-full fade-in transition-transform duration-100 ease-in">
                 {likesData.count}
               </div>
             )}
@@ -222,13 +220,21 @@ export const Card = ({
               delayDuration={500}
             >
               <div>
-                <UilHeart
-                  className={heartVariants({
-                    loading: likesIsLoading,
-                    liked: likesData?.liked,
-                    interactive: isSignedIn,
-                  })}
-                />
+                {likesData?.liked ? (
+                  <SolidHeart
+                    className={heartVariants({
+                      loading: likesIsLoading,
+                      interactive: isSignedIn,
+                    })}
+                  />
+                ) : (
+                  <UilHeart
+                    className={heartVariants({
+                      loading: likesIsLoading,
+                      interactive: isSignedIn,
+                    })}
+                  />
+                )}
               </div>
             </Tooltip>
           </button>
