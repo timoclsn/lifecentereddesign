@@ -1,6 +1,7 @@
 import { Bleed, Button, Heading, Text } from 'design-system';
 import Image from 'next/image';
 import earthImg from './earth.jpg';
+import Link from 'next/link';
 
 export function Header() {
   return (
@@ -15,10 +16,15 @@ export function Header() {
         meaningful products, systems, and services.
       </Text>
       <div className="flex flex-wrap items-center gap-4">
-        <Button size="large" href="/resources" variant="contained">
+        <Button as={Link} size="large" href="/resources" variant="contained">
           Discover resources
         </Button>
-        <Button size="large" href="/resources#suggestion" variant="outline">
+        <Button
+          as={Link}
+          size="large"
+          href="/resources#suggestion"
+          variant="outline"
+        >
           Suggest resource
         </Button>
       </div>
