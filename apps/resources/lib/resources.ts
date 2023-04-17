@@ -194,7 +194,7 @@ export const getResources = async ({
   limit,
   sort,
 }: QueryFilter = {}) => {
-  const dbPromises = resourceTypes.map((type) => {
+  const resourcePromises = resourceTypes.map((type) => {
     // @ts-expect-error: Dynamic table access doesn't work on type level
     return prisma[type].findMany({
       include: {
@@ -238,12 +238,27 @@ export const getResources = async ({
               }
             : undefined,
       },
-    }) as Promise<Resource>;
+    }) as Promise<Array<Resource>>;
   });
 
-  const resources = await Promise.all(dbPromises);
+  const resources = await Promise.all(resourcePromises);
 
-  return resources
+  const enhancedResourcesPromises = resources.flat().map(async (resource) => {
+    const newLikesCount = await prisma.like.count({
+      where: {
+        resourceId: resource.id,
+        type: resource.type,
+      },
+    });
+    return {
+      ...resource,
+      likes: resource.likes + newLikesCount,
+    };
+  });
+
+  const enhancedResources = await Promise.all(enhancedResourcesPromises);
+
+  return enhancedResources
     .flat()
     .sort((a, b) => {
       if (sort === 'date') {
@@ -262,9 +277,12 @@ export const getResources = async ({
     .slice(0, limit);
 };
 
-export const getResourceLikes = async (id: number, type: ContentType) => {
+export const getResourceOldLikesCount = async (
+  id: number,
+  type: ContentType
+) => {
   // @ts-expect-error: Dynamic table access doesn't work on type level
-  return (await prisma[type].findUnique({
+  const data = (await prisma[type].findUnique({
     where: {
       id: id,
     },
@@ -272,23 +290,59 @@ export const getResourceLikes = async (id: number, type: ContentType) => {
       likes: true,
     },
   })) as { likes: number };
+
+  return data.likes;
 };
 
-export const likeResource = async (id: number, type: ContentType) => {
-  // @ts-expect-error: Dynamic table access doesn't work on type level
-  return (await prisma[type].update({
+export const getResourceNewLikes = async (id: number, type: ContentType) => {
+  return await prisma.like.findMany({
     where: {
-      id: id,
+      resourceId: id,
+      type,
     },
+  });
+};
+
+export const likeResource = async (
+  userId: string,
+  id: number,
+  type: ContentType
+) => {
+  await prisma.like.create({
     data: {
-      likes: {
-        increment: 1,
+      userId,
+      type,
+      resourceId: id,
+    },
+  });
+};
+
+export const unlikeResource = async (
+  userId: string,
+  id: number,
+  type: ContentType
+) => {
+  await prisma.like.delete({
+    where: {
+      userId_type_resourceId: {
+        userId,
+        type,
+        resourceId: id,
       },
     },
-    select: {
-      likes: true,
+  });
+};
+
+export const getLikedResources = async (userId: string) => {
+  return await prisma.like.findMany({
+    where: {
+      userId,
     },
-  })) as { likes: number };
+    select: {
+      resourceId: true,
+      type: true,
+    },
+  });
 };
 
 export type Category = Prisma.CategoryGetPayload<{}>;
@@ -308,6 +362,14 @@ export const getTopics = async () => {
   return await prisma.topic.findMany({
     orderBy: {
       name: 'asc',
+    },
+  });
+};
+
+export const deleteUserData = async (userId: string) => {
+  await prisma.like.deleteMany({
+    where: {
+      userId,
     },
   });
 };

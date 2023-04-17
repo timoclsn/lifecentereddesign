@@ -1,6 +1,5 @@
 import { About } from 'components/About';
 import { allPages } from 'contentlayer/generated';
-import { getCO2Consumtion } from 'lib/co2';
 import { getResources } from 'lib/resources';
 import { InferGetStaticPropsType } from 'next';
 import { Header } from '../components/Header/Header';
@@ -9,12 +8,11 @@ import { NewResources } from '../components/NewResources/NewResources';
 import { Newsletter } from '../components/Newsletter';
 
 export default function Home({
-  co2Consumption,
   content,
   resources,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <Layout co2Consumption={co2Consumption}>
+    <Layout>
       <Header />
       <NewResources resources={resources} />
       <Newsletter />
@@ -24,8 +22,6 @@ export default function Home({
 }
 
 export const getStaticProps = async () => {
-  const co2Consumption = await getCO2Consumtion('lifecentereddesign.net');
-
   const content = allPages.find((page) => page.title === 'About');
   if (!content) {
     throw new Error('About content not found');
@@ -36,7 +32,6 @@ export const getStaticProps = async () => {
   return {
     props: {
       content,
-      co2Consumption,
       resources,
     },
     revalidate: 60, // 1m in seconds

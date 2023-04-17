@@ -14,6 +14,8 @@ import {
   ForrestSection,
   inputStyles,
 } from './ForrestSection/ForrestSection';
+import { useUser } from '@clerk/nextjs';
+import { useEffect } from 'react';
 
 type SuggestionFormSchema = z.infer<typeof suggestionFormSchema>;
 export const suggestionFormSchema = z.object({
@@ -25,15 +27,38 @@ export const suggestionFormSchema = z.object({
 });
 
 export const Suggestion = () => {
+  const { user } = useUser();
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
     setFocus,
+    setValue,
+    formState: { dirtyFields },
   } = useZodForm({
     schema: suggestionFormSchema,
   });
+
+  let name = '';
+  const userName = user?.fullName;
+  const userEmail = user?.emailAddresses[0].emailAddress;
+
+  if (userName && userEmail) {
+    name = `${userName} (${userEmail})`;
+  } else {
+    name = userName || userEmail || '';
+  }
+
+  useEffect(() => {
+    if (name && !dirtyFields.name) {
+      setValue('name', name);
+    }
+    if (!name) {
+      setValue('name', '');
+    }
+    name;
+  }, [dirtyFields.name, name, setValue]);
 
   const mutation = trpc.suggestion.submit.useMutation({
     onSuccess: () => {
@@ -48,10 +73,15 @@ export const Suggestion = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<SuggestionFormSchema> = ({ link, message }) => {
+  const onSubmit: SubmitHandler<SuggestionFormSchema> = ({
+    link,
+    message,
+    name,
+  }) => {
     mutation.mutate({
       link,
       message,
+      name: userEmail || name,
     });
   };
 
@@ -60,7 +90,7 @@ export const Suggestion = () => {
       <Heading level="2" className="text-primary mb-6">
         Suggest Resource
       </Heading>
-      <Text as="p" size="large" className="mb-16 text-text-secondary">
+      <Text as="p" size="large" className="text-text-secondary mb-16">
         Surely there are a lot more great Life-centered Design resources out
         there. Help us discover and share them all! If we are missing something,
         just submit the resource and we&apos;ll review it and get it on the site
@@ -69,7 +99,7 @@ export const Suggestion = () => {
 
       {/* Form */}
       <form
-        className="w-full max-w-prose mx-auto flex flex-col items-start gap-10"
+        className="mx-auto flex w-full max-w-prose flex-col items-start gap-10"
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* Link input */}
@@ -134,7 +164,7 @@ export const Suggestion = () => {
           <InfoBox
             variant="success"
             icon={<UilCheckCircle />}
-            className="animate-in zoom-in-0 duration-150 ease-in-out fade-in"
+            className="animate-in zoom-in-0 fade-in duration-150 ease-in-out"
           >
             Thanks for your contribution! We&apos;ll get the resource on the
             site as soon as possible.
@@ -144,7 +174,7 @@ export const Suggestion = () => {
           <InfoBox
             variant="error"
             icon={<UilExclamationTriangle />}
-            className="animate-in zoom-in-50 duration-150 ease-in-out fade-in"
+            className="animate-in zoom-in-50 fade-in duration-150 ease-in-out"
           >
             {mutation.error.message}
           </InfoBox>

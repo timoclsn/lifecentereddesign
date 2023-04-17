@@ -1,3 +1,4 @@
+import { useAuth } from '@clerk/nextjs';
 import { UilHeart, UilUsersAlt } from '@iconscout/react-unicons';
 import { cva } from 'class-variance-authority';
 import {
@@ -12,11 +13,18 @@ import { ContentType } from 'lib/resources';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { trpc } from 'utils/trpc';
+import { SolidHeart } from './Icons/SolidHeart';
 
-const heartVariants = cva('group-hover:scale-110 group-active:scale-90', {
+const heartVariants = cva(null, {
   variants: {
+    interactive: {
+      true: 'group-hover:scale-110 group-active:scale-90 transition-transform ease',
+    },
     loading: {
       true: 'animate-pulse',
+    },
+    active: {
+      true: 'text-red-700',
     },
   },
 });
@@ -60,36 +68,29 @@ export const Card = ({
   description,
   suggestion = false,
 }: Props) => {
+  const { isSignedIn } = useAuth();
   const utils = trpc.useContext();
+  const input = { id: resourceId, type: resourceType };
 
-  const { data, isLoading } = trpc.resources.likes.useQuery(
-    {
-      id: resourceId,
-      type: resourceType,
-    },
-    {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    }
-  );
+  const { data: likesData, isLoading: likesIsLoading } =
+    trpc.resources.likes.useQuery(input);
 
-  const mutation = trpc.resources.like.useMutation({
-    onMutate: (input) => {
+  const likeMutation = trpc.resources.like.useMutation({
+    onMutate: () => {
       utils.resources.likes.cancel(input);
 
       const oldData = utils.resources.likes.getData(input);
       if (!oldData) return;
 
-      const newData = {
-        likes: oldData.likes + 1,
-      };
-
-      utils.resources.likes.setData(input, newData);
+      utils.resources.likes.setData(input, {
+        count: oldData.count + 1,
+        liked: true,
+      });
 
       return { oldData };
     },
     onSuccess: () => {
+      utils.resources.liked.invalidate();
       splitbee.track('Like resource', {
         type: resourceType,
         name: title,
@@ -99,15 +100,45 @@ export const Card = ({
       utils.resources.likes.setData(input, context?.oldData);
     },
     onSettled: () => {
-      utils.resources.likes.invalidate({
-        id: resourceId,
-        type: resourceType,
+      utils.resources.likes.invalidate(input);
+    },
+  });
+
+  const unlikeMutation = trpc.resources.unlike.useMutation({
+    onMutate: () => {
+      utils.resources.likes.cancel(input);
+
+      const oldData = utils.resources.likes.getData(input);
+      if (!oldData) return;
+
+      utils.resources.likes.setData(input, {
+        count: oldData.count - 1,
+        liked: false,
       });
+
+      return { oldData };
+    },
+    onSuccess: () => {
+      utils.resources.liked.invalidate();
+      splitbee.track('Un-like resource', {
+        type: resourceType,
+        name: title,
+      });
+    },
+    onError: (err, input, context) => {
+      utils.resources.likes.setData(input, context?.oldData);
+    },
+    onSettled: () => {
+      utils.resources.likes.invalidate(input);
     },
   });
 
   const likeResource = () => {
-    mutation.mutate({ id: resourceId, type: resourceType });
+    likeMutation.mutate(input);
+  };
+
+  const unlikeResource = () => {
+    unlikeMutation.mutate(input);
   };
 
   const getTitle = (title: ReactNode) => {
@@ -172,16 +203,44 @@ export const Card = ({
 
           {/* Likes */}
           <button
-            onClick={likeResource}
-            disabled={isLoading}
-            className="ease group flex items-center justify-center gap-2 transition-transform disabled:opacity-80"
+            onClick={likesData?.liked ? unlikeResource : likeResource}
+            disabled={likesIsLoading || !isSignedIn}
+            className="ease group flex items-center justify-center gap-2 disabled:opacity-80"
           >
-            {data && (
-              <div className="animate-in slide-in-from-right-full fade-in duration-100 ease-in">
-                {data.likes}
+            {likesData && (
+              <div className="animate-in slide-in-from-right-full fade-in transition-transform duration-100 ease-in">
+                {likesData.count}
               </div>
             )}
-            <UilHeart className={heartVariants({ loading: isLoading })} />
+            <Tooltip
+              content={
+                isSignedIn
+                  ? likesData?.liked
+                    ? 'Remove resource from your favourites'
+                    : 'Like resource to show support and mark as favourite'
+                  : 'Sign-in to like resource and show your support.'
+              }
+              delayDuration={500}
+            >
+              <div>
+                {likesData?.liked ? (
+                  <SolidHeart
+                    className={heartVariants({
+                      loading: likesIsLoading,
+                      interactive: isSignedIn,
+                      active: likesData.liked,
+                    })}
+                  />
+                ) : (
+                  <UilHeart
+                    className={heartVariants({
+                      loading: likesIsLoading,
+                      interactive: isSignedIn,
+                    })}
+                  />
+                )}
+              </div>
+            </Tooltip>
           </button>
         </div>
 

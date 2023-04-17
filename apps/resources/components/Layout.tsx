@@ -1,5 +1,4 @@
 import { Container } from 'design-system';
-import { CO2 } from 'lib/co2';
 import Script from 'next/script';
 import type { ReactNode } from 'react';
 import { CO2Badge } from './CO2Badge/CO2Badge';
@@ -14,7 +13,6 @@ interface Props {
   description?: string;
   slug?: string;
   previewImage?: string;
-  co2Consumption?: CO2;
 }
 
 export function Layout({
@@ -23,7 +21,6 @@ export function Layout({
   description,
   slug,
   previewImage,
-  co2Consumption,
 }: Props) {
   const defaultTitle = 'Life Centered Design.Net';
   const pageTitle = !title ? defaultTitle : `${title}  |  ${defaultTitle}`;
@@ -42,13 +39,11 @@ export function Layout({
         previewImage={pagePreviewImage}
       />
       <Favicons />
-      <div className="min-h-screen space-y-20 sm:space-y-40 flex flex-col">
+      <div className="flex min-h-screen flex-col space-y-20 sm:space-y-40">
         <div>
-          {co2Consumption && (
-            <div className="flex justify-center">
-              <CO2Badge co2Consumption={co2Consumption} />
-            </div>
-          )}
+          <div className="flex justify-center">
+            <CO2Badge />
+          </div>
           <Navigation />
         </div>
         <main className="flex-1">

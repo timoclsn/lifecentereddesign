@@ -1,23 +1,27 @@
-import { Heading, Text } from 'design-system';
+import { SignInButton, UserButton, useAuth } from '@clerk/nextjs';
+import { UilSpinnerAlt } from '@iconscout/react-unicons';
+import { Button, Heading, Text } from 'design-system';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 export function Navigation() {
   const { pathname } = useRouter();
+  const { isSignedIn, isLoaded } = useAuth();
   return (
-    <header className="flex items-center justify-between py-6 px-6 sm:px-8 xl:px-10">
-      <ul className="flex w-full items-baseline gap-10">
-        <li className="flex-1 font-serif text-2xl font-bold">
-          <Link href="/">
-            <Heading
-              as="span"
-              level="4"
-              className="hover:text-text-secondary transition-colors"
-            >
-              Life Centered Design.Net
-            </Heading>
-          </Link>
-        </li>
+    <header className="flex flex-wrap items-center justify-between gap-x-10 gap-y-4 px-6 py-6 sm:px-8 xl:px-10">
+      <div className="font-serif text-2xl font-bold">
+        <Link href="/">
+          <Heading
+            as="span"
+            level="4"
+            className="hover:text-text-secondary whitespace-nowrap transition-colors"
+          >
+            Life Centered Design.Net
+          </Heading>
+        </Link>
+      </div>
+
+      <ul className="flex items-center gap-10">
         <li>
           <Link
             href="/#about"
@@ -35,6 +39,27 @@ export function Navigation() {
               Resources
             </Text>
           </Link>
+        </li>
+        <li>
+          {!isLoaded && <UilSpinnerAlt className="mx-8 animate-spin" />}
+          {isLoaded && !isSignedIn && (
+            <SignInButton>
+              <Button variant="outline" size="small">
+                Sign in
+              </Button>
+            </SignInButton>
+          )}
+          {isLoaded && isSignedIn && (
+            <UserButton
+              userProfileMode="navigation"
+              userProfileUrl="/profile"
+              appearance={{
+                variables: {
+                  colorPrimary: '#101b2c',
+                },
+              }}
+            />
+          )}
         </li>
       </ul>
     </header>

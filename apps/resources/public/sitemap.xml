@@ -12,8 +12,19 @@
     <loc>https://lifecentereddesign.net/imprint</loc>
   </url>
 
-
   <url>
     <loc>https://lifecentereddesign.net/privacy</loc>
+  </url>
+
+  <url>
+    <loc>https://lifecentereddesign.net/sign-in</loc>
+  </url>
+
+  <url>
+    <loc>https://lifecentereddesign.net/sign-up</loc>
+  </url>
+
+  <url>
+    <loc>https://lifecentereddesign.net/profile</loc>
   </url>
 </urlset>
