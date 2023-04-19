@@ -58,6 +58,7 @@ export function Navigation() {
                   colorPrimary: '#101b2c',
                 },
               }}
+              afterSignOutUrl="/"
             />
           )}
         </li>
