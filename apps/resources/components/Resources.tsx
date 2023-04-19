@@ -190,6 +190,7 @@ export const Resources = ({
   const { data: likedResources } = trpc.resources.liked.useQuery(undefined, {
     enabled: !!isSignedIn,
   });
+  const likedResourcesCount = likedResources?.length;
 
   const resourcesTopRef = useRef<HTMLDivElement>(null);
   const [listRef] = useAutoAnimate<HTMLUListElement>();
@@ -485,24 +486,27 @@ export const Resources = ({
 
             <div className="flex flex-wrap gap-3">
               {likedResources && likedResources.length > 0 && (
-                <Tooltip
-                  content={
-                    filterByLikes
-                      ? 'Show all resources'
-                      : 'Only show liked resources'
-                  }
-                  delayDuration={500}
-                >
-                  <Toggle.Root
-                    aria-label="Filter by likes"
-                    className="ease text-text-primary flex items-center justify-center transition-transform hover:scale-110 active:scale-90"
-                    onPressedChange={() =>
-                      dispatch({ type: 'TOGGLE_FILTER_BY_LIKES' })
+                <div className="flex items-center justify-center gap-1">
+                  <Tooltip
+                    content={
+                      filterByLikes
+                        ? 'Show all resources'
+                        : `Only show ${likedResourcesCount} liked resources`
                     }
+                    delayDuration={500}
                   >
-                    {filterByLikes ? <SolidHeart /> : <UilHeart />}
-                  </Toggle.Root>
-                </Tooltip>
+                    <Toggle.Root
+                      aria-label="Filter by likes"
+                      className="ease text-text-primary flex items-center justify-center transition-transform hover:scale-110 active:scale-90"
+                      onPressedChange={() =>
+                        dispatch({ type: 'TOGGLE_FILTER_BY_LIKES' })
+                      }
+                    >
+                      {filterByLikes ? <SolidHeart /> : <UilHeart />}
+                    </Toggle.Root>
+                  </Tooltip>
+                  {likedResourcesCount}
+                </div>
               )}
 
               {/* Search */}
