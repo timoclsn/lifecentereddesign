@@ -22,7 +22,7 @@ export function Layout({
   slug,
   previewImage,
 }: Props) {
-  const defaultTitle = 'Life Centered Design.Net';
+  const defaultTitle = 'LifeCenteredDesign.Net';
   const pageTitle = !title ? defaultTitle : `${title}  |  ${defaultTitle}`;
   const pageDescription = description
     ? description

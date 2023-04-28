@@ -1,4 +1,4 @@
-# Life Centered Design.Net
+# LifeCenteredDesign.Net
 
 Life-centered design related resources.
 
