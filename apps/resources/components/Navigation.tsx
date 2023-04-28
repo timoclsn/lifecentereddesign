@@ -14,9 +14,9 @@ export function Navigation() {
           <Heading
             as="span"
             level="4"
-            className="hover:text-text-secondary whitespace-nowrap transition-colors"
+            className="hover:text-text-secondary break-all transition-colors"
           >
-            Life Centered Design.Net
+            LifeCenteredDesign.Net
           </Heading>
         </Link>
       </div>
