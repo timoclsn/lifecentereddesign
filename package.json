@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "@manypkg/cli": "0.20.0",
-    "prettier": "2.8.7",
-    "prettier-plugin-tailwindcss": "0.2.6",
-    "turbo": "1.8.8"
+    "prettier": "2.8.8",
+    "prettier-plugin-tailwindcss": "0.2.8",
+    "turbo": "1.9.3"
   }
 }
