@@ -1,5 +1,10 @@
 import { useAuth } from '@clerk/nextjs';
-import { UilHeart, UilNotes, UilUsersAlt } from '@iconscout/react-unicons';
+import {
+  UilExternalLinkAlt,
+  UilHeart,
+  UilNotes,
+  UilUsersAlt,
+} from '@iconscout/react-unicons';
 import { cva } from 'class-variance-authority';
 import {
   Card as CardPrimitive,
@@ -143,8 +148,25 @@ export const Card = ({
     unlikeMutation.mutate(input);
   };
 
-  const getTitle = (title: ReactNode) => {
+  const getTitle = () => {
     const resourceLink = tags?.at(0)?.url;
+
+    const heading = (
+      <Heading
+        level="3"
+        title={title}
+        className="line-clamp-2 sm:line-clamp-none"
+      >
+        {title}
+        {resourceLink && (
+          <span>
+            {' '}
+            <UilExternalLinkAlt size={18} className="inline align-baseline" />
+          </span>
+        )}
+      </Heading>
+    );
+
     if (resourceLink) {
       return (
         <Link
@@ -153,11 +175,11 @@ export const Card = ({
           rel="noopener noreferrer"
           className="hover:opacity-80"
         >
-          {title}
+          {heading}
         </Link>
       );
     }
-    return title;
+    return heading;
   };
 
   const getType = (type: ReactNode) => {
@@ -257,15 +279,7 @@ export const Card = ({
 
         <div className="flex flex-col items-start gap-4">
           {/* Title */}
-          {getTitle(
-            <Heading
-              level="3"
-              title={title}
-              className="line-clamp-2 sm:line-clamp-none"
-            >
-              {title}
-            </Heading>
-          )}
+          {getTitle()}
 
           {/* Meta infos */}
           {metaInfos && (
