@@ -62,6 +62,7 @@ export const SocialMediaProfileCard = ({ socielaMediaProfile }: Props) => {
       ]}
       description={socielaMediaProfile.description}
       suggestion={socielaMediaProfile.suggestion}
+      note={socielaMediaProfile.note}
       showType
     />
   );

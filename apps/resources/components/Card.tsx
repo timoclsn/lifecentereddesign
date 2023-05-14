@@ -1,5 +1,5 @@
 import { useAuth } from '@clerk/nextjs';
-import { UilHeart, UilUsersAlt } from '@iconscout/react-unicons';
+import { UilHeart, UilNotes, UilUsersAlt } from '@iconscout/react-unicons';
 import { cva } from 'class-variance-authority';
 import {
   Card as CardPrimitive,
@@ -51,6 +51,7 @@ interface Props {
   }>;
   description?: string | null;
   suggestion?: boolean;
+  note?: string | null;
 }
 
 export const Card = ({
@@ -67,6 +68,7 @@ export const Card = ({
   tags,
   description,
   suggestion = false,
+  note,
 }: Props) => {
   const { isSignedIn } = useAuth();
   const utils = trpc.useContext();
@@ -191,7 +193,16 @@ export const Card = ({
             {/* Type */}
             {showType && getType(<Tag variant="outline">{displayType}</Tag>)}
 
-            {/* User suggestion? */}
+            {/* Note */}
+            {note && (
+              <Tooltip content={`Editor's note: ${note}`}>
+                <div>
+                  <UilNotes />
+                </div>
+              </Tooltip>
+            )}
+
+            {/* User suggestion */}
             {suggestion && (
               <Tooltip content="Resource suggested by the community ❤️">
                 <div>

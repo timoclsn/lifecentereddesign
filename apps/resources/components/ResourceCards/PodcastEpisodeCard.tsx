@@ -101,6 +101,7 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
           : []),
       ]}
       suggestion={podcastEpisode.suggestion}
+      note={podcastEpisode.note}
       showType
     />
   );

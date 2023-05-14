@@ -91,6 +91,7 @@ export const ReportCard = ({ report }: Props) => {
       ]}
       description={report.description}
       suggestion={report.suggestion}
+      note={report.note}
       showType
     />
   );

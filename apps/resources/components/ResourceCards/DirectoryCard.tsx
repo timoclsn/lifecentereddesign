@@ -52,6 +52,7 @@ export const DirectoryCard = ({ directory }: Props) => {
       ]}
       description={directory.description}
       suggestion={directory.suggestion}
+      note={directory.note}
       showType
     />
   );
