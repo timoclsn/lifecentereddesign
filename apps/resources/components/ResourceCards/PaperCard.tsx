@@ -98,6 +98,7 @@ export const PaperCard = ({ paper }: Props) => {
           : []),
       ]}
       suggestion={paper.suggestion}
+      note={paper.note}
       showType
     />
   );

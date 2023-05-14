@@ -52,6 +52,7 @@ export const MagazineCard = ({ magazine }: Props) => {
       ]}
       description={magazine.description}
       suggestion={magazine.suggestion}
+      note={magazine.note}
       showType
     />
   );

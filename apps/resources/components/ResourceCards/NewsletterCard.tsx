@@ -72,6 +72,7 @@ export const NewsletterCard = ({ newsletter }: Props) => {
       ]}
       description={newsletter.description}
       suggestion={newsletter.suggestion}
+      note={newsletter.note}
       showType
     />
   );

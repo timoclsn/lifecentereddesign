@@ -91,6 +91,7 @@ export const BookCard = ({ book }: Props) => {
           : []),
       ]}
       suggestion={book.suggestion}
+      note={book.note}
       showType
     />
   );

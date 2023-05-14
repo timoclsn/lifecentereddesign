@@ -90,6 +90,7 @@ export const VideoCard = ({ video }: Props) => {
           : []),
       ]}
       suggestion={video.suggestion}
+      note={video.note}
       showType
     />
   );

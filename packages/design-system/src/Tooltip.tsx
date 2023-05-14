@@ -14,7 +14,7 @@ export const Tooltip = ({ children, content, delayDuration = 0 }: Props) => {
         <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
           <TooltipPrimitive.Content
-            className="bg-primary-main-bg text-primary-contrast-text animate-in fade-in data-[state=delayed-open]:data-[side=top]:slide-in-from-bottom-[20px] data-[state=delayed-open]:data-[side=top]:zoom-in-75 z-50 rounded-md px-4 py-2 text-sm duration-150"
+            className="bg-primary-main-bg text-primary-contrast-text animate-in fade-in data-[state=delayed-open]:data-[side=top]:slide-in-from-bottom-[20px] data-[state=delayed-open]:data-[side=top]:zoom-in-75 z-50 max-w-xs rounded-md p-4 text-sm duration-150"
             sideOffset={5}
           >
             {content}
