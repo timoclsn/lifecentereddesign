@@ -217,7 +217,7 @@ export const Card = ({
 
             {/* Note */}
             {note && (
-              <Tooltip content={`Editor's note: ${note}`}>
+              <Tooltip content={`Editor's note: ${note}`} openOnClick>
                 <div>
                   <UilNotes />
                 </div>
@@ -226,7 +226,10 @@ export const Card = ({
 
             {/* User suggestion */}
             {suggestion && (
-              <Tooltip content="Resource suggested by the community ❤️">
+              <Tooltip
+                content="Resource suggested by the community ❤️"
+                openOnClick
+              >
                 <div>
                   <UilUsersAlt />
                 </div>
@@ -254,6 +257,7 @@ export const Card = ({
                   : 'Sign-in to like resource and show your support.'
               }
               delayDuration={500}
+              openOnClick={!isSignedIn}
             >
               <div>
                 {likesData?.liked ? (
