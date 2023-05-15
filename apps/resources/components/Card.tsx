@@ -257,6 +257,7 @@ export const Card = ({
                   : 'Sign-in to like resource and show your support.'
               }
               delayDuration={500}
+              openOnClick={!isSignedIn}
             >
               <div>
                 {likesData?.liked ? (
