@@ -5,20 +5,28 @@ interface Props {
   children: ReactNode;
   content: string;
   delayDuration?: number;
+  openOnClick?: boolean;
 }
 
-export const Tooltip = ({ children, content, delayDuration = 0 }: Props) => {
-  const [open, setOpen] = useState(false);
+export const Tooltip = ({
+  children,
+  content,
+  delayDuration = 0,
+  openOnClick = false,
+}: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleOpenState = () => setIsOpen((value) => !value);
+  const handleTriggerClick = () => toggleOpenState();
   return (
     <TooltipPrimitive.Provider>
       <TooltipPrimitive.Root
         delayDuration={delayDuration}
-        open={open}
-        onOpenChange={setOpen}
+        open={isOpen}
+        onOpenChange={setIsOpen}
       >
         <TooltipPrimitive.Trigger
           asChild
-          onClick={() => setOpen((value) => !value)}
+          onClick={openOnClick ? handleTriggerClick : undefined}
         >
           {children}
         </TooltipPrimitive.Trigger>
