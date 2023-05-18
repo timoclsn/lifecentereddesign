@@ -1,4 +1,4 @@
-import { UilLinkAlt } from '@iconscout/react-unicons';
+import { UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { Course } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
@@ -38,6 +38,16 @@ export const CourseCard = ({ course }: Props) => {
           : undefined
       }
       title={course.name}
+      metaInfos={[
+        ...(course.topics.length
+          ? [
+              {
+                text: course.topics.map((topic) => topic.name).join(', '),
+                icon: UilTagAlt,
+              },
+            ]
+          : []),
+      ]}
       category={course.category?.name}
       tags={[
         ...(course.link

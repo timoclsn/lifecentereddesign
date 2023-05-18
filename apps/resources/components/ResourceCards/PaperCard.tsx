@@ -3,6 +3,7 @@ import {
   UilCalendarAlt,
   UilLinkAlt,
   UilNewspaper,
+  UilTagAlt,
 } from '@iconscout/react-unicons';
 import { Paper } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
@@ -81,6 +82,14 @@ export const PaperCard = ({ paper }: Props) => {
               {
                 text: paper.journal,
                 icon: UilNewspaper,
+              },
+            ]
+          : []),
+        ...(paper.topics.length
+          ? [
+              {
+                text: paper.topics.map((topic) => topic.name).join(', '),
+                icon: UilTagAlt,
               },
             ]
           : []),

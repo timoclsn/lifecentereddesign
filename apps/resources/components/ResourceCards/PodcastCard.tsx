@@ -1,4 +1,4 @@
-import { UilGrin, UilLinkAlt } from '@iconscout/react-unicons';
+import { UilGrin, UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { Podcast } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
@@ -52,6 +52,14 @@ export const PodcastCard = ({ podcast }: Props) => {
               {
                 text: podcast.hostsPlain,
                 icon: UilGrin,
+              },
+            ]
+          : []),
+        ...(podcast.topics.length
+          ? [
+              {
+                text: podcast.topics.map((topic) => topic.name).join(', '),
+                icon: UilTagAlt,
               },
             ]
           : []),

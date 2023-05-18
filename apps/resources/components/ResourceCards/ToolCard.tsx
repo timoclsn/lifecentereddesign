@@ -1,4 +1,4 @@
-import { UilLinkAlt } from '@iconscout/react-unicons';
+import { UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { Tool } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
@@ -38,6 +38,16 @@ export const ToolCard = ({ tool }: Props) => {
           : undefined
       }
       title={tool.name}
+      metaInfos={[
+        ...(tool.topics.length
+          ? [
+              {
+                text: tool.topics.map((topic) => topic.name).join(', '),
+                icon: UilTagAlt,
+              },
+            ]
+          : []),
+      ]}
       category={tool.category?.name}
       tags={[
         ...(tool.link

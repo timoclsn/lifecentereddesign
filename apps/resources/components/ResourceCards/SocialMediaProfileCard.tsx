@@ -1,4 +1,4 @@
-import { UilAt, UilLinkAlt } from '@iconscout/react-unicons';
+import { UilAt, UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { SocialMediaProfile } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
@@ -44,6 +44,16 @@ export const SocialMediaProfileCard = ({ socielaMediaProfile }: Props) => {
               {
                 text: socielaMediaProfile.handle,
                 icon: UilAt,
+              },
+            ]
+          : []),
+        ...(socielaMediaProfile.topics.length
+          ? [
+              {
+                text: socielaMediaProfile.topics
+                  .map((topic) => topic.name)
+                  .join(', '),
+                icon: UilTagAlt,
               },
             ]
           : []),

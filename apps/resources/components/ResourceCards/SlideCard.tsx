@@ -2,6 +2,7 @@ import {
   UilBookReader,
   UilCalendarAlt,
   UilLinkAlt,
+  UilTagAlt,
 } from '@iconscout/react-unicons';
 import { Slide } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
@@ -72,6 +73,14 @@ export const SlideCard = ({ slide }: Props) => {
               {
                 text: slide.datePlain,
                 icon: UilCalendarAlt,
+              },
+            ]
+          : []),
+        ...(slide.topics.length
+          ? [
+              {
+                text: slide.topics.map((topic) => topic.name).join(', '),
+                icon: UilTagAlt,
               },
             ]
           : []),

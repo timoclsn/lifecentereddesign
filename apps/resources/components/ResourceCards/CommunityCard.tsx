@@ -1,4 +1,4 @@
-import { UilLinkAlt } from '@iconscout/react-unicons';
+import { UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { Community } from 'lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
@@ -38,6 +38,16 @@ export const CommunityCard = ({ community }: Props) => {
           : undefined
       }
       title={community.name}
+      metaInfos={[
+        ...(community.topics.length
+          ? [
+              {
+                text: community.topics.map((topic) => topic.name).join(', '),
+                icon: UilTagAlt,
+              },
+            ]
+          : []),
+      ]}
       category={community.category?.name}
       tags={[
         ...(community.link

@@ -1,4 +1,4 @@
-import { UilBookReader, UilLinkAlt } from '@iconscout/react-unicons';
+import { UilBookReader, UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { Newsletter } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
@@ -54,6 +54,14 @@ export const NewsletterCard = ({ newsletter }: Props) => {
               {
                 text: newsletter.authorsPlain,
                 icon: UilBookReader,
+              },
+            ]
+          : []),
+        ...(newsletter.topics.length
+          ? [
+              {
+                text: newsletter.topics.map((topic) => topic.name).join(', '),
+                icon: UilTagAlt,
               },
             ]
           : []),

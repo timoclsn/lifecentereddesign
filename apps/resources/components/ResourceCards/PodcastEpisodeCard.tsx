@@ -1,9 +1,10 @@
 import {
-  UilLinkAlt,
-  UilMicrophone,
-  UilGrin,
   UilCalendarAlt,
   UilClockThree,
+  UilGrin,
+  UilLinkAlt,
+  UilMicrophone,
+  UilTagAlt,
 } from '@iconscout/react-unicons';
 import { PodcastEpisode } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
@@ -84,6 +85,16 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
               {
                 text: `${podcastEpisode.duration} min`,
                 icon: UilClockThree,
+              },
+            ]
+          : []),
+        ...(podcastEpisode.topics.length
+          ? [
+              {
+                text: podcastEpisode.topics
+                  .map((topic) => topic.name)
+                  .join(', '),
+                icon: UilTagAlt,
               },
             ]
           : []),

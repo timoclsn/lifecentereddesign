@@ -1,4 +1,4 @@
-import { UilLinkAlt } from '@iconscout/react-unicons';
+import { UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { Agency } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
@@ -38,6 +38,16 @@ export const AgencyCard = ({ agency }: Props) => {
           : undefined
       }
       title={agency.name}
+      metaInfos={[
+        ...(agency.topics.length
+          ? [
+              {
+                text: agency.topics.map((topic) => topic.name).join(', '),
+                icon: UilTagAlt,
+              },
+            ]
+          : []),
+      ]}
       category={agency.category?.name}
       tags={[
         ...(agency.link

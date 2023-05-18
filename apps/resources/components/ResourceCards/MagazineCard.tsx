@@ -1,4 +1,4 @@
-import { UilLinkAlt } from '@iconscout/react-unicons';
+import { UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { Magazine } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
@@ -38,6 +38,16 @@ export const MagazineCard = ({ magazine }: Props) => {
           : undefined
       }
       title={magazine.name}
+      metaInfos={[
+        ...(magazine.topics.length
+          ? [
+              {
+                text: magazine.topics.map((topic) => topic.name).join(', '),
+                icon: UilTagAlt,
+              },
+            ]
+          : []),
+      ]}
       category={magazine.category?.name}
       tags={[
         ...(magazine.link
