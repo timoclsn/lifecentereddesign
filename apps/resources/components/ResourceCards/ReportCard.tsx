@@ -1,8 +1,8 @@
 import {
   UilBookReader,
   UilCalendarAlt,
-  UilClockThree,
   UilLinkAlt,
+  UilTagAlt,
 } from '@iconscout/react-unicons';
 import { Report } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
@@ -73,6 +73,14 @@ export const ReportCard = ({ report }: Props) => {
               {
                 text: report.datePlain,
                 icon: UilCalendarAlt,
+              },
+            ]
+          : []),
+        ...(report.topics.length
+          ? [
+              {
+                text: report.topics.map((topic) => topic.name).join(', '),
+                icon: UilTagAlt,
               },
             ]
           : []),

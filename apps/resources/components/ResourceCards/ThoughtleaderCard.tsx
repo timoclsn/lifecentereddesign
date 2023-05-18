@@ -1,4 +1,8 @@
-import { UilBriefcaseAlt, UilLinkAlt } from '@iconscout/react-unicons';
+import {
+  UilBriefcaseAlt,
+  UilLinkAlt,
+  UilTagAlt,
+} from '@iconscout/react-unicons';
 import { Thoughtleader } from 'lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
@@ -44,6 +48,16 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
               {
                 text: thoughtleader.jobDescription,
                 icon: UilBriefcaseAlt,
+              },
+            ]
+          : []),
+        ...(thoughtleader.topics.length
+          ? [
+              {
+                text: thoughtleader.topics
+                  .map((topic) => topic.name)
+                  .join(', '),
+                icon: UilTagAlt,
               },
             ]
           : []),

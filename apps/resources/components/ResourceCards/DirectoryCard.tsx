@@ -1,4 +1,4 @@
-import { UilLinkAlt } from '@iconscout/react-unicons';
+import { UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { Directory } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
@@ -38,6 +38,16 @@ export const DirectoryCard = ({ directory }: Props) => {
           : undefined
       }
       title={directory.name}
+      metaInfos={[
+        ...(directory.topics.length
+          ? [
+              {
+                text: directory.topics.map((topic) => topic.name).join(', '),
+                icon: UilTagAlt,
+              },
+            ]
+          : []),
+      ]}
       category={directory.category?.name}
       tags={[
         ...(directory.link

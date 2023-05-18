@@ -4,6 +4,7 @@ import {
   UilCalendarAlt,
   UilLinkAlt,
   UilQrcodeScan,
+  UilTagAlt,
 } from '@iconscout/react-unicons';
 import { Book } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
@@ -74,6 +75,14 @@ export const BookCard = ({ book }: Props) => {
               {
                 text: book.isbn,
                 icon: UilQrcodeScan,
+              },
+            ]
+          : []),
+        ...(book.topics.length
+          ? [
+              {
+                text: book.topics.map((topic) => topic.name).join(', '),
+                icon: UilTagAlt,
               },
             ]
           : []),

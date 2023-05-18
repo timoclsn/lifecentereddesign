@@ -1,8 +1,9 @@
 import {
-  UilVideo,
-  UilLinkAlt,
   UilCalendarAlt,
   UilClockThree,
+  UilLinkAlt,
+  UilTagAlt,
+  UilVideo,
 } from '@iconscout/react-unicons';
 import { Video } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
@@ -73,6 +74,14 @@ export const VideoCard = ({ video }: Props) => {
               {
                 text: `${video.duration} min`,
                 icon: UilClockThree,
+              },
+            ]
+          : []),
+        ...(video.topics.length
+          ? [
+              {
+                text: video.topics.map((topic) => topic.name).join(', '),
+                icon: UilTagAlt,
               },
             ]
           : []),

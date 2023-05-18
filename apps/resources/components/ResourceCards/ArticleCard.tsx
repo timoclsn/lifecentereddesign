@@ -3,6 +3,7 @@ import {
   UilCalendarAlt,
   UilClockThree,
   UilLinkAlt,
+  UilTagAlt,
 } from '@iconscout/react-unicons';
 import { Article } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
@@ -81,6 +82,14 @@ export const ArticleCard = ({ article }: Props) => {
               {
                 text: `${article.duration} min`,
                 icon: UilClockThree,
+              },
+            ]
+          : []),
+        ...(article.topics.length
+          ? [
+              {
+                text: article.topics.map((topic) => topic.name).join(', '),
+                icon: UilTagAlt,
               },
             ]
           : []),
