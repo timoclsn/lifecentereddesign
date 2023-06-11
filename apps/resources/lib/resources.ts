@@ -317,6 +317,20 @@ export const likeResource = async (
   });
 };
 
+export const anonymousLikeResource = async (id: number, type: ContentType) => {
+  // @ts-expect-error: Dynamic table access doesn't work on type level
+  await prisma[type].update({
+    where: {
+      id,
+    },
+    data: {
+      likes: {
+        increment: 1,
+      },
+    },
+  });
+};
+
 export const unlikeResource = async (
   userId: string,
   id: number,

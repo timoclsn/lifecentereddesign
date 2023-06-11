@@ -1,4 +1,5 @@
 import {
+  anonymousLikeResource,
   getLikedResources,
   getResourceNewLikes,
   getResourceOldLikesCount,
@@ -32,7 +33,7 @@ export const resourcesRouter = router({
         limit: input?.limit,
       });
     }),
-  like: protectedProcedure
+  like: publicProcedure
     .input(
       z.object({
         id: z.number(),
@@ -43,7 +44,11 @@ export const resourcesRouter = router({
       const { id, type } = input;
       const { userId } = ctx.auth;
 
-      await likeResource(userId, id, type);
+      if (userId) {
+        await likeResource(userId, id, type);
+      } else {
+        await anonymousLikeResource(id, type);
+      }
     }),
   unlike: protectedProcedure
     .input(
