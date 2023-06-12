@@ -20,19 +20,19 @@ import { ReactNode } from 'react';
 import { trpc } from 'utils/trpc';
 import { SolidHeart } from './Icons/SolidHeart';
 
-const heartVariants = cva(null, {
-  variants: {
-    interactive: {
-      true: 'group-hover:scale-110 group-active:scale-90 transition-transform ease',
+const heartVariants = cva(
+  'group-hover:scale-110 group-active:scale-90 transition-transform ease',
+  {
+    variants: {
+      loading: {
+        true: 'animate-pulse',
+      },
+      active: {
+        true: 'text-red-700',
+      },
     },
-    loading: {
-      true: 'animate-pulse',
-    },
-    active: {
-      true: 'text-red-700',
-    },
-  },
-});
+  }
+);
 
 interface Props {
   resourceId: number;
@@ -91,7 +91,7 @@ export const Card = ({
 
       utils.resources.likes.setData(input, {
         count: oldData.count + 1,
-        liked: true,
+        liked: !!isSignedIn, // Anonymous likes should not fill the heart
       });
 
       return { oldData };
@@ -240,7 +240,7 @@ export const Card = ({
           {/* Likes */}
           <button
             onClick={likesData?.liked ? unlikeResource : likeResource}
-            disabled={likesIsLoading || !isSignedIn}
+            disabled={likesIsLoading}
             className="ease group flex items-center justify-center gap-2 disabled:opacity-80"
           >
             {likesData && (
@@ -254,17 +254,15 @@ export const Card = ({
                   ? likesData?.liked
                     ? 'Remove resource from your favourites'
                     : 'Like resource to show support and mark as favourite'
-                  : 'Sign-in to like resource and show your support.'
+                  : 'Like resource anonymously or sign-in to add resource to your favourites'
               }
               delayDuration={500}
-              openOnClick={!isSignedIn}
             >
               <div>
                 {likesData?.liked ? (
                   <SolidHeart
                     className={heartVariants({
                       loading: likesIsLoading,
-                      interactive: isSignedIn,
                       active: likesData.liked,
                     })}
                   />
@@ -272,7 +270,6 @@ export const Card = ({
                   <UilHeart
                     className={heartVariants({
                       loading: likesIsLoading,
-                      interactive: isSignedIn,
                     })}
                   />
                 )}
