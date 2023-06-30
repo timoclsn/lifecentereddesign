@@ -61,9 +61,9 @@ export const Newsletter = () => {
 
   const mutation = trpc.newsletter.subscribe.useMutation({
     onSuccess: () => {
+      // @ts-expect-error: Errors because consens can only be true in schema
       reset({
         email: '',
-        // @ts-expect-error
         consens: false,
       });
       if (document.activeElement instanceof HTMLElement) {
@@ -129,6 +129,7 @@ export const Newsletter = () => {
                 id="consens"
                 value={undefined}
                 checked={field.value}
+                // @ts-expect-error: Errors because consens can only be true in schema
                 onCheckedChange={field.onChange}
                 className={checkboxStyles({ error: !!errors.consens })}
               >

@@ -18,7 +18,7 @@ import {
 } from 'design-system';
 import { ContentType } from 'lib/resources';
 import Link from 'next/link';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { trpc } from 'utils/trpc';
 import { SolidHeart } from './Icons/SolidHeart';
 
@@ -361,21 +361,13 @@ interface CopyButtonProps {
 const CopyButton = ({ link }: CopyButtonProps) => {
   const [copied, setCopied] = useState(false);
 
-  let timeoutId: NodeJS.Timeout;
-
   const handleClick = () => {
     setCopied(true);
     navigator.clipboard.writeText(link);
-    timeoutId = setTimeout(() => {
+    setTimeout(() => {
       setCopied(false);
     }, 3000);
   };
-
-  useEffect(() => {
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, []);
 
   return (
     <Tooltip content="Copy resource link" delayDuration={500}>
