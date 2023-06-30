@@ -12,7 +12,7 @@
     "content": "contentlayer build"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.21.12",
+    "@clerk/nextjs": "^4.17.1",
     "@fontsource-variable/source-serif-4": "^5.0.4",
     "@fontsource/dm-sans": "5.0.3",
     "@formkit/auto-animate": "1.0.0-beta.6",
