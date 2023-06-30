@@ -1,5 +1,7 @@
 import { useAuth } from '@clerk/nextjs';
 import {
+  UilCheck,
+  UilCopyAlt,
   UilExternalLinkAlt,
   UilHeart,
   UilNotes,
@@ -16,7 +18,7 @@ import {
 } from 'design-system';
 import { ContentType } from 'lib/resources';
 import Link from 'next/link';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { trpc } from 'utils/trpc';
 import { SolidHeart } from './Icons/SolidHeart';
 
@@ -78,6 +80,7 @@ export const Card = ({
   const { isSignedIn } = useAuth();
   const utils = trpc.useContext();
   const input = { id: resourceId, type: resourceType };
+  const resourceLink = tags?.at(0)?.url;
 
   const { data: likesData, isLoading: likesIsLoading } =
     trpc.resources.likes.useQuery(input);
@@ -149,8 +152,6 @@ export const Card = ({
   };
 
   const getTitle = () => {
-    const resourceLink = tags?.at(0)?.url;
-
     const heading = (
       <Heading
         level="3"
@@ -315,15 +316,17 @@ export const Card = ({
         </div>
       </div>
 
-      {/* Category */}
       <div
         className={`flex flex-wrap gap-3 ${
           category ? 'justify-between' : 'justify-end'
         }`}
       >
+        {/* Category */}
         {category && getCategory(<Tag variant="light">{category}</Tag>)}
+
+        {/* Tags */}
         {tags && tags.length > 0 && (
-          <ul className="flex gap-8">
+          <ul className="flex flex-wrap gap-2">
             {tags.map((tag, idx) => (
               <li key={idx}>
                 <a
@@ -341,9 +344,41 @@ export const Card = ({
                 </a>
               </li>
             ))}
+
+            {/* Copy Link Button*/}
+            {resourceLink && <CopyButton link={resourceLink} />}
           </ul>
         )}
       </div>
     </CardPrimitive>
+  );
+};
+
+interface CopyButtonProps {
+  link: string;
+}
+
+const CopyButton = ({ link }: CopyButtonProps) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleClick = () => {
+    setCopied(true);
+    navigator.clipboard.writeText(link);
+    setTimeout(() => {
+      setCopied(false);
+    }, 3000);
+  };
+
+  return (
+    <Tooltip content="Copy resource link" delayDuration={500}>
+      <button className="flex items-stretch" onClick={handleClick}>
+        <Tag variant="dark">
+          <div className="flex items-center gap-1">
+            {copied ? <UilCheck size="18" /> : <UilCopyAlt size="18" />}
+            <span className="sr-only">Copy resource link</span>
+          </div>
+        </Tag>
+      </button>
+    </Tooltip>
   );
 };

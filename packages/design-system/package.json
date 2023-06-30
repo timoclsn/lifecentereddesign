@@ -10,20 +10,20 @@
   },
   "dependencies": {
     "@iconscout/react-unicons": "2.0.2",
-    "@radix-ui/react-label": "^2.0.1",
-    "@radix-ui/react-select": "1.2.1",
-    "@radix-ui/react-tooltip": "^1.0.5",
-    "class-variance-authority": "0.6.0",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-select": "1.2.2",
+    "@radix-ui/react-tooltip": "^1.0.6",
+    "class-variance-authority": "0.6.1",
     "tsconfig": "workspace:*"
   },
   "devDependencies": {
-    "@types/react": "18.2.5",
-    "@types/react-dom": "18.2.4",
-    "eslint": "8.39.0",
+    "@types/react": "18.2.14",
+    "@types/react-dom": "18.2.6",
+    "eslint": "8.43.0",
     "eslint-config-custom": "workspace:*",
     "react": "18.2.0",
     "tailwind-config": "workspace:*",
     "tailwindcss": "3.3.2",
-    "typescript": "5.0.4"
+    "typescript": "5.1.6"
   }
 }
