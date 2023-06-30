@@ -9,9 +9,9 @@
     "db:pull": "prisma db pull"
   },
   "dependencies": {
-    "@prisma/client": "4.13.0"
+    "@prisma/client": "4.16.1"
   },
   "devDependencies": {
-    "prisma": "4.13.0"
+    "prisma": "4.16.1"
   }
 }

@@ -16,9 +16,9 @@
     "db:pull": "turbo run db:push"
   },
   "dependencies": {
-    "@manypkg/cli": "0.20.0",
+    "@manypkg/cli": "0.21.0",
     "prettier": "2.8.8",
-    "prettier-plugin-tailwindcss": "0.2.8",
-    "turbo": "1.9.3"
+    "prettier-plugin-tailwindcss": "0.3.0",
+    "turbo": "1.10.6"
   }
 }
