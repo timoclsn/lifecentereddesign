@@ -364,6 +364,7 @@ const CopyButton = ({ link }: CopyButtonProps) => {
   const handleClick = () => {
     setCopied(true);
     navigator.clipboard.writeText(link);
+    splitbee.track('Copy resource link');
     setTimeout(() => {
       setCopied(false);
     }, 3000);
