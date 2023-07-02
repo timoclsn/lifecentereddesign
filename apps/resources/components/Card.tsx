@@ -17,6 +17,7 @@ import {
   Tooltip,
 } from 'design-system';
 import { ContentType } from 'lib/resources';
+import { wait } from 'lib/utils';
 import Link from 'next/link';
 import { ReactNode, useState } from 'react';
 import { trpc } from 'utils/trpc';
@@ -361,18 +362,17 @@ interface CopyButtonProps {
 const CopyButton = ({ link }: CopyButtonProps) => {
   const [copied, setCopied] = useState(false);
 
-  const handleClick = () => {
+  const copyLink = async () => {
     setCopied(true);
     navigator.clipboard.writeText(link);
     splitbee.track('Copy resource link');
-    setTimeout(() => {
-      setCopied(false);
-    }, 3000);
+    await wait(3000);
+    setCopied(false);
   };
 
   return (
     <Tooltip content="Copy resource link" delayDuration={500}>
-      <button className="flex items-stretch" onClick={handleClick}>
+      <button className="flex items-stretch" onClick={copyLink}>
         <Tag variant="dark">
           <div className="flex items-center gap-1">
             {copied ? <UilCheck size="18" /> : <UilCopyAlt size="18" />}
