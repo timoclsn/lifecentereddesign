@@ -7,3 +7,6 @@ export const getHostname = (url: string) => {
 
 export const wait = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
+
+export const minDelay = async <T>(promise: Promise<T>, ms: number) =>
+  (await Promise.all([promise, wait(ms)]))[0];
