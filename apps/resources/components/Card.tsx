@@ -176,6 +176,12 @@ export const Card = ({
           target="_blank"
           rel="noopener noreferrer"
           className="hover:opacity-80"
+          onClick={() => {
+            splitbee.track('Open resource', {
+              type: resourceType,
+              name: title,
+            });
+          }}
         >
           {heading}
         </Link>
