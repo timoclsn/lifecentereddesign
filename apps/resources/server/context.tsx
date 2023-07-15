@@ -1,8 +1,4 @@
-import type {
-  SignedInAuthObject,
-  SignedOutAuthObject,
-} from '@clerk/nextjs/dist/api';
-import { getAuth } from '@clerk/nextjs/server';
+import { SignedInAuthObject, SignedOutAuthObject, getAuth } from '@clerk/nextjs/server';
 import * as trpc from '@trpc/server';
 import * as trpcNext from '@trpc/server/adapters/next';
 
