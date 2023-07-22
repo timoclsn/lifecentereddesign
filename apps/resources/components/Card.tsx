@@ -1,9 +1,10 @@
+'use client';
+
 import { useAuth } from '@clerk/nextjs';
 import {
   UilCheck,
   UilCopyAlt,
   UilExternalLinkAlt,
-  UilHeart,
   UilNotes,
   UilUsersAlt,
 } from '@iconscout/react-unicons';
@@ -20,8 +21,6 @@ import { ContentType } from 'lib/resources';
 import { wait } from 'lib/utils';
 import Link from 'next/link';
 import { ReactNode, useState } from 'react';
-import { trpc } from 'utils/trpc';
-import { SolidHeart } from './Icons/SolidHeart';
 
 const heartVariants = cva(
   'group-hover:scale-110 group-active:scale-90 transition-transform ease',
@@ -79,78 +78,7 @@ export const Card = ({
   note,
 }: Props) => {
   const { isSignedIn } = useAuth();
-  const utils = trpc.useContext();
-  const input = { id: resourceId, type: resourceType };
   const resourceLink = tags?.at(0)?.url;
-
-  const { data: likesData, isLoading: likesIsLoading } =
-    trpc.resources.likes.useQuery(input);
-
-  const likeMutation = trpc.resources.like.useMutation({
-    onMutate: () => {
-      utils.resources.likes.cancel(input);
-
-      const oldData = utils.resources.likes.getData(input);
-      if (!oldData) return;
-
-      utils.resources.likes.setData(input, {
-        count: oldData.count + 1,
-        liked: !!isSignedIn, // Anonymous likes should not fill the heart
-      });
-
-      return { oldData };
-    },
-    onSuccess: () => {
-      utils.resources.liked.invalidate();
-      splitbee.track('Like resource', {
-        type: resourceType,
-        name: title,
-      });
-    },
-    onError: (err, input, context) => {
-      utils.resources.likes.setData(input, context?.oldData);
-    },
-    onSettled: () => {
-      utils.resources.likes.invalidate(input);
-    },
-  });
-
-  const unlikeMutation = trpc.resources.unlike.useMutation({
-    onMutate: () => {
-      utils.resources.likes.cancel(input);
-
-      const oldData = utils.resources.likes.getData(input);
-      if (!oldData) return;
-
-      utils.resources.likes.setData(input, {
-        count: oldData.count - 1,
-        liked: false,
-      });
-
-      return { oldData };
-    },
-    onSuccess: () => {
-      utils.resources.liked.invalidate();
-      splitbee.track('Un-like resource', {
-        type: resourceType,
-        name: title,
-      });
-    },
-    onError: (err, input, context) => {
-      utils.resources.likes.setData(input, context?.oldData);
-    },
-    onSettled: () => {
-      utils.resources.likes.invalidate(input);
-    },
-  });
-
-  const likeResource = () => {
-    likeMutation.mutate(input);
-  };
-
-  const unlikeResource = () => {
-    unlikeMutation.mutate(input);
-  };
 
   const getTitle = () => {
     const heading = (
@@ -246,7 +174,7 @@ export const Card = ({
           </div>
 
           {/* Likes */}
-          <button
+          {/* <button
             onClick={likesData?.liked ? unlikeResource : likeResource}
             disabled={likesIsLoading}
             className="ease group flex items-center justify-center gap-2 disabled:opacity-80"
@@ -283,7 +211,7 @@ export const Card = ({
                 )}
               </div>
             </Tooltip>
-          </button>
+          </button> */}
         </div>
 
         <div className="flex flex-col items-start gap-4">

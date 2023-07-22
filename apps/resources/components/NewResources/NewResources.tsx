@@ -1,44 +1,33 @@
 import { UilArrowRight } from '@iconscout/react-unicons';
 import { Bleed, Card, Heading, Text } from 'design-system';
-import { Resources } from 'lib/resources';
+import { getResources } from 'lib/resources';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getCardComponent } from '../utils';
 import groundImg from './ground.jpg';
+import { Suspense } from 'react';
 
-interface Props {
-  resources: Resources;
-}
-
-export const NewResources = ({ resources }: Props) => {
+export const NewResources = async () => {
   return (
     <Bleed>
       <section id="new-resources">
         <Heading level="2" className="text-primary mb-10 px-6 sm:px-8 xl:px-10">
           New Resources
         </Heading>
-        <ul className="mb-14 flex gap-6 overflow-x-auto px-6 sm:px-8 xl:px-10 snap-x">
+        <ul className="mb-14 flex snap-x gap-6 overflow-x-auto px-6 sm:px-8 xl:px-10">
           <Image
             src={groundImg}
             alt="Image of desert ground."
-            className="hidden rounded-4xl sm:block flex-none snap-center"
+            className="rounded-4xl hidden flex-none snap-center sm:block"
           />
-          {resources.map((resource) => {
-            const component = getCardComponent(resource);
-            return (
-              <li
-                key={`${resource.type}-${resource.id}`}
-                className="w-[330px] flex-none sm:w-[600px] snap-center"
-              >
-                {component}
-              </li>
-            );
-          })}
-          <li className="snap-center rounded-4xl flex-none">
+          <Suspense fallback={<Loading />}>
+            <NewResourcesInner />
+          </Suspense>
+          <li className="rounded-4xl flex-none snap-center">
             <Link href="/resources" className="block h-full hover:opacity-80">
               <Card
                 variant="primary"
-                className="h-full flex items-center justify-center"
+                className="flex h-full items-center justify-center"
               >
                 <div className="text-primary-contrast-text flex items-center justify-center gap-2 [&>svg]:h-[25px] [&>svg]:w-[25px]">
                   <UilArrowRight />
@@ -50,5 +39,36 @@ export const NewResources = ({ resources }: Props) => {
         </ul>
       </section>
     </Bleed>
+  );
+};
+
+const Loading = () => {
+  return (
+    <>
+      {[...Array(5)].map((_, index) => (
+        <li
+          key={index}
+          className="rounded-4xl bg-lime h-[490px] w-[600px] flex-none animate-pulse"
+        />
+      ))}
+    </>
+  );
+};
+const NewResourcesInner = async () => {
+  const resources = await getResources({ sort: 'date', limit: 10 });
+  return (
+    <>
+      {resources.map((resource) => {
+        const component = getCardComponent(resource);
+        return (
+          <li
+            key={`${resource.type}-${resource.id}`}
+            className="w-[330px] flex-none snap-center sm:w-[600px]"
+          >
+            {component}
+          </li>
+        );
+      })}
+    </>
   );
 };

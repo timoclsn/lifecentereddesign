@@ -1,3 +1,5 @@
+'use client';
+
 import * as Dialog from '@radix-ui/react-dialog';
 import { Heading, Link, Text } from 'design-system';
 import { FiArrowRight, FiX } from 'react-icons/fi';

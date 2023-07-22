@@ -1,3 +1,5 @@
+'use client';
+
 import { UilBookReader, UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { Newsletter } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';

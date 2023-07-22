@@ -1,3 +1,5 @@
+'use client';
+
 import { UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { Community } from 'lib/resources';
 import { getHostname } from '../../lib/utils';

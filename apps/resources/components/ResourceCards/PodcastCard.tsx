@@ -1,3 +1,5 @@
+'use client';
+
 import { UilGrin, UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { Podcast } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';

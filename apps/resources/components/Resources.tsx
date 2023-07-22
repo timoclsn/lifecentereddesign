@@ -1,3 +1,5 @@
+'use client';
+
 import { useAuth } from '@clerk/nextjs';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import {

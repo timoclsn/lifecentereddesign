@@ -1,11 +1,13 @@
+'use client';
+
 import { SignInButton, UserButton, useAuth } from '@clerk/nextjs';
 import { UilSpinnerAlt } from '@iconscout/react-unicons';
 import { Button, Heading, Text } from 'design-system';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 export function Navigation() {
-  const { pathname } = useRouter();
+  const pathname = usePathname();
   const { isSignedIn, isLoaded } = useAuth();
   return (
     <header className="flex flex-wrap items-center justify-between gap-x-10 gap-y-4 px-6 py-6 sm:px-8 xl:px-10">
