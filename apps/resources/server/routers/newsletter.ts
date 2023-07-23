@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server';
-import { newsletterFormSchema } from 'components/Newsletter';
+import { newsletterFormSchema } from 'components/Newsletter/schemas';
 import { publicProcedure, router } from 'server/trpc';
 import { z } from 'zod';
 
