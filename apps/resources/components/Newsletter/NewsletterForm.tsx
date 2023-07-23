@@ -19,12 +19,9 @@ import { useZodForm } from 'hooks/useZodForm';
 import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler } from 'react-hook-form';
 import { NewsletterFormSchema, newsletterFormSchema } from './schemas';
+import { subscribe } from './actions';
 
-interface Props {
-  subscribe: (input: NewsletterFormSchema) => Promise<{ error: string }>;
-}
-
-export const NewsletterForm = ({ subscribe }: Props) => {
+export const NewsletterForm = () => {
   const { user } = useUser();
   const {
     register,

@@ -347,6 +347,7 @@ export const unlikeResource = async (
   });
 };
 
+export type LikedResources = Awaited<ReturnType<typeof getLikedResources>>;
 export const getLikedResources = async (userId: string) => {
   return await prisma.like.findMany({
     where: {

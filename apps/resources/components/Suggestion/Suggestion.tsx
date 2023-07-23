@@ -1,7 +1,6 @@
 import { ForrestSection } from 'components/ForrestSection/ForrestSection';
 import { Heading, Text } from 'design-system';
 import { SuggestionForm } from './SuggestionForm';
-import { submit } from './actions';
 
 export const Suggestion = () => {
   return (
@@ -15,8 +14,7 @@ export const Suggestion = () => {
         just submit the resource and we&apos;ll review it and get it on the site
         as soon as possible.
       </Text>
-
-      <SuggestionForm submit={submit} />
+      <SuggestionForm />
     </ForrestSection>
   );
 };

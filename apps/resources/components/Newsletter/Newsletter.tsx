@@ -2,7 +2,6 @@ import { ForrestSection } from 'components/ForrestSection/ForrestSection';
 import { Heading, Link, Text } from 'design-system';
 import NextLink from 'next/link';
 import { NewsletterForm } from './NewsletterForm';
-import { subscribe } from './actions';
 
 export const Newsletter = () => {
   return (
@@ -14,7 +13,7 @@ export const Newsletter = () => {
         Sign up for our Newsletter to get all the new resources and other
         Life-centered Design related news delivered to your inbox once a month.
       </Text>
-      <NewsletterForm subscribe={subscribe} />
+      <NewsletterForm />
 
       {/* Info text */}
       <div className=" mx-auto mb-40 mt-10 max-w-prose">

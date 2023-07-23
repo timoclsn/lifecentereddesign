@@ -4,7 +4,7 @@ import { UilAt, UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { SocialMediaProfile } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card';
-import { useResources } from '../Resources';
+import { useResources } from '../ResourcesTable';
 
 interface Props {
   socielaMediaProfile: SocialMediaProfile;

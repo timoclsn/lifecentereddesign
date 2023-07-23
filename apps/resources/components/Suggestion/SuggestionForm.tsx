@@ -16,12 +16,9 @@ import { useZodForm } from 'hooks/useZodForm';
 import { useEffect, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { SuggestionFormSchema, suggestionFormSchema } from './schemas';
+import { submit } from './actions';
 
-interface Props {
-  submit: (input: SuggestionFormSchema) => Promise<{ error: string }>;
-}
-
-export const SuggestionForm = ({ submit }: Props) => {
+export const SuggestionForm = () => {
   const { user } = useUser();
   const {
     register,

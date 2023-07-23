@@ -3,15 +3,16 @@
 import { useAuth } from '@clerk/nextjs';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import {
+  SolidHeart,
   UilArrowDown,
   UilHeart,
   UilSearch,
   UilTimesCircle,
 } from '@iconscout/react-unicons';
 import * as Toggle from '@radix-ui/react-toggle';
-import { Button, Heading, Select, Text, Tooltip } from 'design-system';
+import { Button, Heading, Select, Tooltip } from 'design-system';
 import { matchSorter } from 'match-sorter';
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import {
   Dispatch,
   createContext,
@@ -20,16 +21,15 @@ import {
   useReducer,
   useRef,
 } from 'react';
-import { trpc } from 'utils/trpc';
 import {
   Categories,
   Category,
   ContentType,
+  LikedResources,
   Resources as ResourcesType,
   Topic,
   Topics,
 } from '../lib/resources';
-import { SolidHeart } from './Icons/SolidHeart';
 import { getCardComponent } from './utils';
 
 type TypeFilterList = Array<{
@@ -178,21 +178,20 @@ interface Props {
   categories: Categories;
   topics: Topics;
   initialSort?: Sort;
+  likedResources: LikedResources;
 }
 
-export const Resources = ({
+export const ResourcesTable = ({
   initialSort = 'title',
   resources,
   categories,
   topics,
+  likedResources,
 }: Props) => {
   initalState.sort = initialSort;
 
   const { isSignedIn } = useAuth();
-  const { data: likedResources } = trpc.resources.liked.useQuery(undefined, {
-    enabled: !!isSignedIn,
-  });
-  const likedResourcesCount = likedResources?.length;
+  const likedResourcesCount = likedResources.length;
 
   const resourcesTopRef = useRef<HTMLDivElement>(null);
   const [listRef] = useAutoAnimate<HTMLUListElement>();
@@ -309,10 +308,10 @@ export const Resources = ({
     searchQuery !== initalState.searchQuery ||
     sort !== initalState.sort;
 
-  const { query } = useRouter();
-  const { title, from, till } = query;
-  const fromParsed = Array.isArray(from) ? from[0] : from;
-  const tillParsed = Array.isArray(till) ? till.at(0) : till;
+  const searchParams = useSearchParams();
+  const title = searchParams.get('title');
+  const from = searchParams.get('from');
+  const till = searchParams.get('till');
 
   // Flag so componets can check if they are rendered in context
   if (!inContext) {
@@ -370,25 +369,25 @@ export const Resources = ({
       return resource.topics.some((topic) => topic.name === filteredByTopic);
     })
     // Filter by likes
-    .filter((resource) => {
-      if (!filterByLikes || !likedResources || likedResources.length === 0) {
-        return true;
-      }
-      return likedResources.some(
-        (likedResources) =>
-          likedResources.resourceId === resource.id &&
-          likedResources.type === resource.type
-      );
-    })
+    // .filter((resource) => {
+    //   if (!filterByLikes || !likedResources || likedResources.length === 0) {
+    //     return true;
+    //   }
+    //   return likedResources.some(
+    //     (likedResources) =>
+    //       likedResources.resourceId === resource.id &&
+    //       likedResources.type === resource.type
+    //   );
+    // })
     // Filter from
     .filter((resource) => {
-      if (!fromParsed) return true;
-      return resource.createdAt.getTime() > new Date(fromParsed).getTime();
+      if (!from) return true;
+      return resource.createdAt.getTime() > new Date(from).getTime();
     })
     // Filter till
     .filter((resource) => {
-      if (!tillParsed) return true;
-      return resource.createdAt.getTime() < new Date(tillParsed).getTime();
+      if (!till) return true;
+      return resource.createdAt.getTime() < new Date(till).getTime();
     });
 
   const resourcesToDisplay = processedResources.slice(0, itemsCount);
@@ -412,185 +411,172 @@ export const Resources = ({
 
   return (
     <ResourcesContext.Provider value={{ state, dispatch }}>
-      <section id="resources" className="flex flex-col gap-10">
-        <div>
-          <Heading level="1" className="mb-8 max-w-3xl">
-            {title ? title : 'Resources'}
-          </Heading>
-          <Text as="p" size="large" className="text-text-secondary max-w-5xl">
-            Have fun browsing all our resources on Life-centered Design and
-            related topics:
-          </Text>
-        </div>
-        <div>
-          <div className="bg-bg-primary sticky top-0 z-10 flex flex-wrap justify-between gap-3 py-4 sm:py-6">
-            <div className="flex flex-1 gap-3 sm:w-auto sm:flex-nowrap">
-              {/* Filter by type select */}
-              <Select
-                defaultValue={undefined}
-                value={filteredByType}
-                onValueChange={(type: TypeFilter) =>
-                  filterResourcesByType(type)
-                }
-              >
-                <Select.FilterTrigger label="Type" />
-                <Select.Content>
-                  {typeFilterList.map((type, idx) => (
-                    <Select.Item key={idx} value={type.type}>
-                      {type.text}
-                    </Select.Item>
-                  ))}
-                </Select.Content>
-              </Select>
-
-              {/* Filter by category select */}
-              <Select
-                defaultValue={undefined}
-                value={filteredByCategory}
-                onValueChange={(category: CategoryFilter) =>
-                  filterResourcesByCategory(category)
-                }
-              >
-                <Select.FilterTrigger label="Category" />
-                <Select.Content>
-                  <Select.Item key="all" value="all">
-                    All
+      <div>
+        <div className="sticky top-0 z-10 flex flex-wrap justify-between gap-3 py-4 sm:py-6">
+          <div className="flex flex-1 gap-3 sm:w-auto sm:flex-nowrap">
+            {/* Filter by type select */}
+            <Select
+              defaultValue={undefined}
+              value={filteredByType}
+              onValueChange={(type: TypeFilter) => filterResourcesByType(type)}
+            >
+              <Select.FilterTrigger label="Type" />
+              <Select.Content>
+                {typeFilterList.map((type, idx) => (
+                  <Select.Item key={idx} value={type.type}>
+                    {type.text}
                   </Select.Item>
-                  {categories.map((category) => (
-                    <Select.Item key={category.id} value={category.name}>
-                      {category.name}
-                    </Select.Item>
-                  ))}
-                </Select.Content>
-              </Select>
+                ))}
+              </Select.Content>
+            </Select>
 
-              {/* Filter by topic select */}
-              <Select
-                defaultValue={undefined}
-                value={filteredByTopic}
-                onValueChange={(topic: TopicFilter) =>
-                  filterResourcesByTopic(topic)
-                }
-              >
-                <Select.FilterTrigger label="Topic" />
-                <Select.Content>
-                  <Select.Item key="all" value="all">
-                    All
+            {/* Filter by category select */}
+            <Select
+              defaultValue={undefined}
+              value={filteredByCategory}
+              onValueChange={(category: CategoryFilter) =>
+                filterResourcesByCategory(category)
+              }
+            >
+              <Select.FilterTrigger label="Category" />
+              <Select.Content>
+                <Select.Item key="all" value="all">
+                  All
+                </Select.Item>
+                {categories.map((category) => (
+                  <Select.Item key={category.id} value={category.name}>
+                    {category.name}
                   </Select.Item>
-                  {topics.map((topic) => (
-                    <Select.Item key={topic.id} value={topic.name}>
-                      {topic.name}
-                    </Select.Item>
-                  ))}
-                </Select.Content>
-              </Select>
-            </div>
+                ))}
+              </Select.Content>
+            </Select>
 
-            <div className="flex flex-wrap gap-3">
-              {likedResources && likedResources.length > 0 && (
-                <div className="flex items-center justify-center gap-1">
-                  <Tooltip
-                    content={
-                      filterByLikes
-                        ? 'Show all resources'
-                        : `Only show ${likedResourcesCount} liked resources`
-                    }
-                    delayDuration={500}
-                  >
-                    <Toggle.Root
-                      aria-label="Filter by likes"
-                      className="ease text-text-primary flex items-center justify-center transition-transform hover:scale-110 active:scale-90"
-                      onPressedChange={() =>
-                        dispatch({ type: 'TOGGLE_FILTER_BY_LIKES' })
-                      }
-                    >
-                      {filterByLikes ? <SolidHeart /> : <UilHeart />}
-                    </Toggle.Root>
-                  </Tooltip>
-                  {likedResourcesCount}
-                </div>
-              )}
-
-              {/* Search */}
-              <div className="bg-primary-ghost-bg text-text-secondary focus-within:ring-text-secondary flex min-w-[100px] flex-1 items-center gap-2 px-4 py-1 outline-none ring-inset focus-within:ring-2 sm:max-w-[240px]">
-                <UilSearch className="flex-none opacity-60" size="16" />
-                <input
-                  placeholder="Search"
-                  value={searchInput}
-                  onChange={(e) => {
-                    dispatch({
-                      type: 'TYPE_SEARCH',
-                      value: e.target.value,
-                    });
-                    startTransition(() => {
-                      dispatch({
-                        type: 'SEARCH',
-                      });
-                    });
-                  }}
-                  className="text-text-primary w-full bg-transparent outline-none"
-                />
-              </div>
-
-              {/* Sort select */}
-              <Select
-                defaultValue="date"
-                value={sort}
-                onValueChange={(value: Sort) => sortResources(value)}
-              >
-                <Select.SortTrigger disabled={searchQuery !== ''} />
-                <Select.Content>
-                  <Select.Item value="date">Date added</Select.Item>
-                  <Select.Item value="title">Title</Select.Item>
-                  <Select.Item value="likes">Likes</Select.Item>
-                </Select.Content>
-              </Select>
-
-              <Tooltip content="Clear all filter" delayDuration={500}>
-                <button
-                  disabled={!isFiltered}
-                  onClick={clearAll}
-                  className="ease transition-transform hover:scale-110 active:scale-90 disabled:scale-100 disabled:opacity-50"
-                >
-                  <UilTimesCircle />
-                  <span className="sr-only">Clear filters</span>
-                </button>
-              </Tooltip>
-            </div>
+            {/* Filter by topic select */}
+            <Select
+              defaultValue={undefined}
+              value={filteredByTopic}
+              onValueChange={(topic: TopicFilter) =>
+                filterResourcesByTopic(topic)
+              }
+            >
+              <Select.FilterTrigger label="Topic" />
+              <Select.Content>
+                <Select.Item key="all" value="all">
+                  All
+                </Select.Item>
+                {topics.map((topic) => (
+                  <Select.Item key={topic.id} value={topic.name}>
+                    {topic.name}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
           </div>
-          <div className="flex flex-col gap-6">
-            <div ref={resourcesTopRef} className="scroll-m-20" />
-            {resourcesToDisplay.length > 0 ? (
-              <ul
-                className="grid grid-cols-1 gap-4 overflow-hidden md:grid-cols-2"
-                ref={listRef}
-              >
-                {resourcesToDisplay.map((resource) => {
-                  const component = getCardComponent(resource);
-                  return (
-                    <li key={`${resource.type}-${resource.id}`}>{component}</li>
-                  );
-                })}
-              </ul>
-            ) : (
-              <div className="flex flex-col items-center justify-center gap-10 py-16">
-                <Heading level="3">No resources found…</Heading>
-                <Button variant="outline" onClick={clearAll}>
-                  Clear Filters
-                </Button>
+
+          <div className="flex flex-wrap gap-3">
+            {likedResourcesCount > 0 && (
+              <div className="flex items-center justify-center gap-1">
+                <Tooltip
+                  content={
+                    filterByLikes
+                      ? 'Show all resources'
+                      : `Only show ${likedResourcesCount} liked resources`
+                  }
+                  delayDuration={500}
+                >
+                  <Toggle.Root
+                    aria-label="Filter by likes"
+                    className="ease text-text-primary flex items-center justify-center transition-transform hover:scale-110 active:scale-90"
+                    onPressedChange={() =>
+                      dispatch({ type: 'TOGGLE_FILTER_BY_LIKES' })
+                    }
+                  >
+                    {filterByLikes ? <SolidHeart /> : <UilHeart />}
+                  </Toggle.Root>
+                </Tooltip>
+                {likedResourcesCount}
               </div>
             )}
+
+            {/* Search */}
+            <div className="bg-primary-ghost-bg text-text-secondary focus-within:ring-text-secondary flex min-w-[100px] flex-1 items-center gap-2 px-4 py-1 outline-none ring-inset focus-within:ring-2 sm:max-w-[240px]">
+              <UilSearch className="flex-none opacity-60" size="16" />
+              <input
+                placeholder="Search"
+                value={searchInput}
+                onChange={(e) => {
+                  dispatch({
+                    type: 'TYPE_SEARCH',
+                    value: e.target.value,
+                  });
+                  startTransition(() => {
+                    dispatch({
+                      type: 'SEARCH',
+                    });
+                  });
+                }}
+                className="text-text-primary w-full bg-transparent outline-none"
+              />
+            </div>
+
+            {/* Sort select */}
+            <Select
+              defaultValue="date"
+              value={sort}
+              onValueChange={(value: Sort) => sortResources(value)}
+            >
+              <Select.SortTrigger disabled={searchQuery !== ''} />
+              <Select.Content>
+                <Select.Item value="date">Date added</Select.Item>
+                <Select.Item value="title">Title</Select.Item>
+                <Select.Item value="likes">Likes</Select.Item>
+              </Select.Content>
+            </Select>
+
+            <Tooltip content="Clear all filter" delayDuration={500}>
+              <button
+                disabled={!isFiltered}
+                onClick={clearAll}
+                className="ease transition-transform hover:scale-110 active:scale-90 disabled:scale-100 disabled:opacity-50"
+              >
+                <UilTimesCircle />
+                <span className="sr-only">Clear filters</span>
+              </button>
+            </Tooltip>
           </div>
-          {showShowMoreBtn && (
-            <div className="mt-10 flex justify-center">
-              <Button size="large" onClick={() => showMore()}>
-                <UilArrowDown />
-                Show More
+        </div>
+        <div className="flex flex-col gap-6">
+          <div ref={resourcesTopRef} className="scroll-m-20" />
+          {resourcesToDisplay.length > 0 ? (
+            <ul
+              className="grid grid-cols-1 gap-4 overflow-hidden md:grid-cols-2"
+              ref={listRef}
+            >
+              {resourcesToDisplay.map((resource) => {
+                const component = getCardComponent(resource);
+                return (
+                  <li key={`${resource.type}-${resource.id}`}>{component}</li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="flex flex-col items-center justify-center gap-10 py-16">
+              <Heading level="3">No resources found…</Heading>
+              <Button variant="outline" onClick={clearAll}>
+                Clear Filters
               </Button>
             </div>
           )}
         </div>
-      </section>
+        {showShowMoreBtn && (
+          <div className="mt-10 flex justify-center">
+            <Button size="large" onClick={() => showMore()}>
+              <UilArrowDown />
+              Show More
+            </Button>
+          </div>
+        )}
+      </div>
     </ResourcesContext.Provider>
   );
 };
