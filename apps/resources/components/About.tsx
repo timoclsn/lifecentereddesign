@@ -1,15 +1,16 @@
-import { Page } from 'contentlayer/generated';
+import { allPages } from 'contentlayer/generated';
 import { Heading } from 'design-system';
 import { ProfileCards } from './ProfileCards/ProfileCards';
 
-interface Props {
-  content: Page;
-}
+export const About = () => {
+  const content = allPages.find((page) => page.title === 'About');
+  if (!content) {
+    throw new Error('About content not found');
+  }
 
-export const About = ({ content }: Props) => {
   return (
     <section id="about" className="space-y-10">
-      <div className="space-y-20 max-w-prose mx-auto">
+      <div className="mx-auto max-w-prose space-y-20">
         <Heading level="1" className="mb-6">
           {content.title}
         </Heading>

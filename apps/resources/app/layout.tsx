@@ -19,8 +19,8 @@ interface Props {
 const RootLayout = ({ children }: Props) => {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body>
+      <html lang="en" className="min-h-screen">
+        <body className="bg-bg-primary text-text-primary min-h-screen font-sans text-base font-normal">
           <div className="flex min-h-screen flex-col space-y-20 sm:space-y-40">
             <div>
               <div className="flex justify-center">

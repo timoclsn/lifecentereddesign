@@ -1,5 +1,3 @@
-'use client';
-
 import {
   UilBriefcaseAlt,
   UilLinkAlt,
@@ -7,42 +5,39 @@ import {
 } from '@iconscout/react-unicons';
 import { Thoughtleader } from 'lib/resources';
 import { getHostname } from '../../lib/utils';
-import { Card } from '../Card';
-import { useResources } from '../ResourcesTable';
+import { Card } from '../Card/Card';
 
 interface Props {
   thoughtleader: Thoughtleader;
 }
 
 export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
-  const { dispatch, state } = useResources();
-  const { inContext } = state;
   return (
     <Card
       resourceId={thoughtleader.id}
       resourceType={thoughtleader.type}
       variant="evening"
       displayType="Thoughtleader"
-      onTypeClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_TYPE',
-                typeIs: 'thoughtleader',
-              });
-            }
-          : undefined
-      }
-      onCategoryClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_CATEGORY',
-                category: thoughtleader.category?.name,
-              });
-            }
-          : undefined
-      }
+      // onTypeClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_TYPE',
+      //           typeIs: 'thoughtleader',
+      //         });
+      //       }
+      //     : undefined
+      // }
+      // onCategoryClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_CATEGORY',
+      //           category: thoughtleader.category?.name,
+      //         });
+      //       }
+      //     : undefined
+      // }
       title={thoughtleader.name}
       metaInfos={[
         ...(thoughtleader.jobDescription

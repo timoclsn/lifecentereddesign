@@ -1,44 +1,39 @@
-'use client';
-
 import { UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { Example } from 'lib/resources';
 import { getHostname } from '../../lib/utils';
-import { Card } from '../Card';
-import { useResources } from '../ResourcesTable';
+import { Card } from '../Card/Card';
 
 interface Props {
   example: Example;
 }
 
 export const ExampleCard = ({ example }: Props) => {
-  const { dispatch, state } = useResources();
-  const { inContext } = state;
   return (
     <Card
       resourceId={example.id}
       resourceType={example.type}
       variant="lime"
       displayType="Example"
-      onTypeClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_TYPE',
-                typeIs: 'example',
-              });
-            }
-          : undefined
-      }
-      onCategoryClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_CATEGORY',
-                category: example.category?.name,
-              });
-            }
-          : undefined
-      }
+      // onTypeClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_TYPE',
+      //           typeIs: 'example',
+      //         });
+      //       }
+      //     : undefined
+      // }
+      // onCategoryClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_CATEGORY',
+      //           category: example.category?.name,
+      //         });
+      //       }
+      //     : undefined
+      // }
       title={example.name}
       metaInfos={[
         ...(example.topics.length

@@ -1,5 +1,5 @@
 import { auth } from '@clerk/nextjs';
-import { ResourcesTable } from 'components/ResourcesTable';
+import { ResourcesTable } from 'app/resources/ResourcesTable';
 import { Heading, Text } from 'design-system';
 import {
   getCategories,
@@ -7,15 +7,20 @@ import {
   getResources,
   getTopics,
 } from 'lib/resources';
-import { Suspense } from 'react';
+import { unstable_cache as cache } from 'next/cache';
+import { ReseourcesFilter } from './page';
 
-export const Resources = async () => {
+interface Props {
+  resourcesFilter: ReseourcesFilter;
+}
+
+export const Resources = async ({ resourcesFilter }: Props) => {
   const { userId } = auth();
   const [resources, categories, topics, likedResources] = await Promise.all([
-    getResources(),
-    getCategories(),
-    getTopics(),
-    getLikedResources(userId ?? ''),
+    cache(getResources, undefined, { revalidate: 60 })(),
+    cache(getCategories, undefined, { revalidate: 60 })(),
+    cache(getTopics, undefined, { revalidate: 60 })(),
+    cache(getLikedResources, undefined, { revalidate: 60 })(userId ?? ''),
   ]);
   return (
     <section id="resources" className="flex flex-col gap-10">
@@ -27,20 +32,15 @@ export const Resources = async () => {
           Have fun browsing all our resources on Life-centered Design and
           related topics:
         </Text>
-        <Suspense fallback={<Loading />}>
-          <ResourcesTable
-            initialSort="date"
-            resources={resources}
-            categories={categories}
-            topics={topics}
-            likedResources={likedResources}
-          />
-        </Suspense>
       </div>
+      <ResourcesTable
+        initialSort="date"
+        resources={resources}
+        categories={categories}
+        topics={topics}
+        likedResources={likedResources}
+        reseourcesFilter={resourcesFilter}
+      />
     </section>
   );
-};
-
-const Loading = () => {
-  return <div>Loading…</div>;
 };

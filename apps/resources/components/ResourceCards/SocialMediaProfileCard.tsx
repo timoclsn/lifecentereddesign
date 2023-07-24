@@ -1,44 +1,39 @@
-'use client';
-
 import { UilAt, UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
 import { SocialMediaProfile } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
-import { Card } from '../Card';
-import { useResources } from '../ResourcesTable';
+import { Card } from '../Card/Card';
 
 interface Props {
   socielaMediaProfile: SocialMediaProfile;
 }
 
 export const SocialMediaProfileCard = ({ socielaMediaProfile }: Props) => {
-  const { dispatch, state } = useResources();
-  const { inContext } = state;
   return (
     <Card
       resourceId={socielaMediaProfile.id}
       resourceType={socielaMediaProfile.type}
       variant="lime"
       displayType="Social Media Profile"
-      onTypeClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_TYPE',
-                typeIs: 'socialMediaProfile',
-              });
-            }
-          : undefined
-      }
-      onCategoryClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_CATEGORY',
-                category: socielaMediaProfile.category?.name,
-              });
-            }
-          : undefined
-      }
+      // onTypeClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_TYPE',
+      //           typeIs: 'socialMediaProfile',
+      //         });
+      //       }
+      //     : undefined
+      // }
+      // onCategoryClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_CATEGORY',
+      //           category: socielaMediaProfile.category?.name,
+      //         });
+      //       }
+      //     : undefined
+      // }
       title={socielaMediaProfile.name}
       metaInfos={[
         ...(socielaMediaProfile.handle

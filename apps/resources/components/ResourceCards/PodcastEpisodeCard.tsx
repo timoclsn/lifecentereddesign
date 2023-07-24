@@ -1,5 +1,3 @@
-'use client';
-
 import {
   UilCalendarAlt,
   UilClockThree,
@@ -10,42 +8,39 @@ import {
 } from '@iconscout/react-unicons';
 import { PodcastEpisode } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
-import { Card } from '../Card';
-import { useResources } from '../ResourcesTable';
+import { Card } from '../Card/Card';
 
 interface Props {
   podcastEpisode: PodcastEpisode;
 }
 
 export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
-  const { dispatch, state } = useResources();
-  const { inContext } = state;
   return (
     <Card
       resourceId={podcastEpisode.id}
       resourceType={podcastEpisode.type}
       variant="sand"
       displayType="Podcast Episode"
-      onTypeClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_TYPE',
-                typeIs: 'podcastEpisode',
-              });
-            }
-          : undefined
-      }
-      onCategoryClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_CATEGORY',
-                category: podcastEpisode.category?.name,
-              });
-            }
-          : undefined
-      }
+      // onTypeClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_TYPE',
+      //           typeIs: 'podcastEpisode',
+      //         });
+      //       }
+      //     : undefined
+      // }
+      // onCategoryClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_CATEGORY',
+      //           category: podcastEpisode.category?.name,
+      //         });
+      //       }
+      //     : undefined
+      // }
       title={podcastEpisode.title}
       metaInfos={[
         ...(podcastEpisode.podcast

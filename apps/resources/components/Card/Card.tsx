@@ -1,14 +1,8 @@
-'use client';
-
-import { useAuth } from '@clerk/nextjs';
 import {
-  UilCheck,
-  UilCopyAlt,
   UilExternalLinkAlt,
   UilNotes,
   UilUsersAlt,
 } from '@iconscout/react-unicons';
-import { cva } from 'class-variance-authority';
 import {
   Card as CardPrimitive,
   CardProps,
@@ -18,31 +12,17 @@ import {
   Tooltip,
 } from 'design-system';
 import { ContentType } from 'lib/resources';
-import { wait } from 'lib/utils';
 import Link from 'next/link';
-import { ReactNode, useState } from 'react';
-
-const heartVariants = cva(
-  'group-hover:scale-110 group-active:scale-90 transition-transform ease',
-  {
-    variants: {
-      loading: {
-        true: 'animate-pulse',
-      },
-      active: {
-        true: 'text-red-700',
-      },
-    },
-  }
-);
+import { CategoryButton } from './CategoryButton';
+import { CopyButton } from './CopyButton';
+import { LikesButton } from './LikesButton/LikesButton';
+import { TypeButton } from './TypeButton';
 
 interface Props {
   resourceId: number;
   resourceType: ContentType;
   variant: CardProps['variant'];
   displayType: string;
-  onTypeClick?: () => void;
-  onCategoryClick?: () => void;
   title: string;
   showType?: boolean;
   metaInfos?: Array<{
@@ -67,8 +47,6 @@ export const Card = ({
   showType,
   variant,
   displayType,
-  onTypeClick,
-  onCategoryClick,
   title,
   metaInfos,
   category,
@@ -77,7 +55,6 @@ export const Card = ({
   suggestion = false,
   note,
 }: Props) => {
-  const { isSignedIn } = useAuth();
   const resourceLink = tags?.at(0)?.url;
 
   const getTitle = () => {
@@ -104,40 +81,18 @@ export const Card = ({
           target="_blank"
           rel="noopener noreferrer"
           className="hover:opacity-80"
-          onClick={() => {
-            splitbee.track('Open resource', {
-              type: resourceType,
-              name: title,
-            });
-          }}
+          // onClick={() => {
+          //   splitbee.track('Open resource', {
+          //     type: resourceType,
+          //     name: title,
+          //   });
+          // }}
         >
           {heading}
         </Link>
       );
     }
     return heading;
-  };
-
-  const getType = (type: ReactNode) => {
-    if (!!onTypeClick) {
-      return (
-        <button onClick={onTypeClick} className="hover:opacity-80">
-          {type}
-        </button>
-      );
-    }
-    return type;
-  };
-
-  const getCategory = (category: ReactNode) => {
-    if (!!onCategoryClick) {
-      return (
-        <button onClick={onCategoryClick} className="hover:opacity-80">
-          {category}
-        </button>
-      );
-    }
-    return category;
   };
 
   return (
@@ -149,7 +104,9 @@ export const Card = ({
         <div className="relative flex w-full justify-between">
           <div className="flex items-center gap-2">
             {/* Type */}
-            {showType && getType(<Tag variant="outline">{displayType}</Tag>)}
+            {showType && (
+              <TypeButton type={resourceType}>{displayType}</TypeButton>
+            )}
 
             {/* Note */}
             {note && (
@@ -174,44 +131,7 @@ export const Card = ({
           </div>
 
           {/* Likes */}
-          {/* <button
-            onClick={likesData?.liked ? unlikeResource : likeResource}
-            disabled={likesIsLoading}
-            className="ease group flex items-center justify-center gap-2 disabled:opacity-80"
-          >
-            {likesData && (
-              <div className="animate-in slide-in-from-right-full fade-in transition-transform duration-100 ease-in">
-                {likesData.count}
-              </div>
-            )}
-            <Tooltip
-              content={
-                isSignedIn
-                  ? likesData?.liked
-                    ? 'Remove resource from your favourites'
-                    : 'Like resource to show support and mark as favourite'
-                  : 'Like resource anonymously or sign-in to add resource to your favourites'
-              }
-              delayDuration={500}
-            >
-              <div>
-                {likesData?.liked ? (
-                  <SolidHeart
-                    className={heartVariants({
-                      loading: likesIsLoading,
-                      active: likesData.liked,
-                    })}
-                  />
-                ) : (
-                  <UilHeart
-                    className={heartVariants({
-                      loading: likesIsLoading,
-                    })}
-                  />
-                )}
-              </div>
-            </Tooltip>
-          </button> */}
+          <LikesButton resourceId={resourceId} resourceType={resourceType} />
         </div>
 
         <div className="flex flex-col items-start gap-4">
@@ -257,7 +177,9 @@ export const Card = ({
         }`}
       >
         {/* Category */}
-        {category && getCategory(<Tag variant="light">{category}</Tag>)}
+        {category && (
+          <CategoryButton category={category}>{category}</CategoryButton>
+        )}
 
         {/* Tags */}
         {tags && tags.length > 0 && (
@@ -286,34 +208,5 @@ export const Card = ({
         )}
       </div>
     </CardPrimitive>
-  );
-};
-
-interface CopyButtonProps {
-  link: string;
-}
-
-const CopyButton = ({ link }: CopyButtonProps) => {
-  const [copied, setCopied] = useState(false);
-
-  const copyLink = async () => {
-    setCopied(true);
-    navigator.clipboard.writeText(link);
-    splitbee.track('Copy resource link');
-    await wait(3000);
-    setCopied(false);
-  };
-
-  return (
-    <Tooltip content="Copy resource link" delayDuration={500}>
-      <button className="flex items-stretch" onClick={copyLink}>
-        <Tag variant="dark">
-          <div className="flex items-center gap-1">
-            {copied ? <UilCheck size="18" /> : <UilCopyAlt size="18" />}
-            <span className="sr-only">Copy resource link</span>
-          </div>
-        </Tag>
-      </button>
-    </Tooltip>
   );
 };

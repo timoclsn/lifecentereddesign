@@ -33,7 +33,7 @@
     "design-system": "workspace:*",
     "esbuild": "^0.18.13",
     "match-sorter": "6.3.1",
-    "next": "13.4.10",
+    "next": "13.4.12",
     "next-contentlayer": "0.3.1",
     "next-superjson-plugin": "0.5.9",
     "nodemailer": "^6.9.3",

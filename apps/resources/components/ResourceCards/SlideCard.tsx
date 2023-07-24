@@ -1,5 +1,3 @@
-'use client';
-
 import {
   UilBookReader,
   UilCalendarAlt,
@@ -8,42 +6,39 @@ import {
 } from '@iconscout/react-unicons';
 import { Slide } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
-import { Card } from '../Card';
-import { useResources } from '../ResourcesTable';
+import { Card } from '../Card/Card';
 
 interface Props {
   slide: Slide;
 }
 
 export const SlideCard = ({ slide }: Props) => {
-  const { dispatch, state } = useResources();
-  const { inContext } = state;
   return (
     <Card
       resourceId={slide.id}
       resourceType={slide.type}
       variant="evening"
       displayType="Slide"
-      onTypeClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_TYPE',
-                typeIs: 'slide',
-              });
-            }
-          : undefined
-      }
-      onCategoryClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_CATEGORY',
-                category: slide.category?.name,
-              });
-            }
-          : undefined
-      }
+      // onTypeClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_TYPE',
+      //           typeIs: 'slide',
+      //         });
+      //       }
+      //     : undefined
+      // }
+      // onCategoryClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_CATEGORY',
+      //           category: slide.category?.name,
+      //         });
+      //       }
+      //     : undefined
+      // }
       title={slide.title}
       metaInfos={[
         ...(slide.authors.length

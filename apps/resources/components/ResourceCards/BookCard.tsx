@@ -1,5 +1,3 @@
-'use client';
-
 import {
   UilBookReader,
   UilBooks,
@@ -10,42 +8,39 @@ import {
 } from '@iconscout/react-unicons';
 import { Book } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
-import { Card } from '../Card';
-import { useResources } from '../ResourcesTable';
+import { Card } from '../Card/Card';
 
 interface Props {
   book: Book;
 }
 
 export const BookCard = ({ book }: Props) => {
-  const { dispatch, state } = useResources();
-  const { inContext } = state;
   return (
     <Card
       resourceId={book.id}
       resourceType={book.type}
       variant="oak"
       displayType="Book"
-      onTypeClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_TYPE',
-                typeIs: 'book',
-              });
-            }
-          : undefined
-      }
-      onCategoryClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_CATEGORY',
-                category: book.category?.name,
-              });
-            }
-          : undefined
-      }
+      // onTypeClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_TYPE',
+      //           typeIs: 'book',
+      //         });
+      //       }
+      //     : undefined
+      // }
+      // onCategoryClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_CATEGORY',
+      //           category: book.category?.name,
+      //         });
+      //       }
+      //     : undefined
+      // }
       title={book.title}
       metaInfos={[
         ...(book.authors.length

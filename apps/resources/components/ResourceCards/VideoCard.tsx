@@ -1,5 +1,3 @@
-'use client';
-
 import {
   UilCalendarAlt,
   UilClockThree,
@@ -9,42 +7,39 @@ import {
 } from '@iconscout/react-unicons';
 import { Video } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
-import { Card } from '../Card';
-import { useResources } from '../ResourcesTable';
+import { Card } from '../Card/Card';
 
 interface Props {
   video: Video;
 }
 
 export const VideoCard = ({ video }: Props) => {
-  const { dispatch, state } = useResources();
-  const { inContext } = state;
   return (
     <Card
       resourceId={video.id}
       resourceType={video.type}
       variant="lime"
       displayType="Video"
-      onTypeClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_TYPE',
-                typeIs: 'video',
-              });
-            }
-          : undefined
-      }
-      onCategoryClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_CATEGORY',
-                category: video.category?.name,
-              });
-            }
-          : undefined
-      }
+      // onTypeClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_TYPE',
+      //           typeIs: 'video',
+      //         });
+      //       }
+      //     : undefined
+      // }
+      // onCategoryClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_CATEGORY',
+      //           category: video.category?.name,
+      //         });
+      //       }
+      //     : undefined
+      // }
       title={video.title}
       metaInfos={[
         ...(video.creators.length

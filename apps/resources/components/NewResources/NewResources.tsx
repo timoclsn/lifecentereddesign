@@ -1,13 +1,17 @@
 import { UilArrowRight } from '@iconscout/react-unicons';
 import { Bleed, Card, Heading, Text } from 'design-system';
 import { getResources } from 'lib/resources';
+import { unstable_cache as cache } from 'next/cache';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getCardComponent } from '../utils';
 import groundImg from './ground.jpg';
-import { Suspense } from 'react';
 
 export const NewResources = async () => {
+  const resources = await cache(getResources, undefined, { revalidate: 60 })({
+    sort: 'date',
+    limit: 10,
+  });
   return (
     <Bleed>
       <section id="new-resources">
@@ -20,9 +24,17 @@ export const NewResources = async () => {
             alt="Image of desert ground."
             className="rounded-4xl hidden flex-none snap-center sm:block"
           />
-          <Suspense fallback={<Loading />}>
-            <NewResourcesInner />
-          </Suspense>
+          {resources.map((resource) => {
+            const component = getCardComponent(resource);
+            return (
+              <li
+                key={`${resource.type}-${resource.id}`}
+                className="w-[330px] flex-none snap-center sm:w-[600px]"
+              >
+                {component}
+              </li>
+            );
+          })}
           <li className="rounded-4xl flex-none snap-center">
             <Link href="/resources" className="block h-full hover:opacity-80">
               <Card
@@ -39,36 +51,5 @@ export const NewResources = async () => {
         </ul>
       </section>
     </Bleed>
-  );
-};
-
-const Loading = () => {
-  return (
-    <>
-      {[...Array(5)].map((_, index) => (
-        <li
-          key={index}
-          className="rounded-4xl bg-lime h-[490px] w-[600px] flex-none animate-pulse"
-        />
-      ))}
-    </>
-  );
-};
-const NewResourcesInner = async () => {
-  const resources = await getResources({ sort: 'date', limit: 10 });
-  return (
-    <>
-      {resources.map((resource) => {
-        const component = getCardComponent(resource);
-        return (
-          <li
-            key={`${resource.type}-${resource.id}`}
-            className="w-[330px] flex-none snap-center sm:w-[600px]"
-          >
-            {component}
-          </li>
-        );
-      })}
-    </>
   );
 };

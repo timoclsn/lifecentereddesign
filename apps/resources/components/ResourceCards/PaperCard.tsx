@@ -1,5 +1,3 @@
-'use client';
-
 import {
   UilBookReader,
   UilCalendarAlt,
@@ -9,42 +7,39 @@ import {
 } from '@iconscout/react-unicons';
 import { Paper } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
-import { Card } from '../Card';
-import { useResources } from '../ResourcesTable';
+import { Card } from '../Card/Card';
 
 interface Props {
   paper: Paper;
 }
 
 export const PaperCard = ({ paper }: Props) => {
-  const { dispatch, state } = useResources();
-  const { inContext } = state;
   return (
     <Card
       resourceId={paper.id}
       resourceType={paper.type}
       variant="forest"
       displayType="Paper"
-      onTypeClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_TYPE',
-                typeIs: 'paper',
-              });
-            }
-          : undefined
-      }
-      onCategoryClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_CATEGORY',
-                category: paper.category?.name,
-              });
-            }
-          : undefined
-      }
+      // onTypeClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_TYPE',
+      //           typeIs: 'paper',
+      //         });
+      //       }
+      //     : undefined
+      // }
+      // onCategoryClick={
+      //   inContext
+      //     ? () => {
+      //         dispatch({
+      //           type: 'FILTER_BY_CATEGORY',
+      //           category: paper.category?.name,
+      //         });
+      //       }
+      //     : undefined
+      // }
       title={paper.title}
       metaInfos={[
         ...(paper.authors.length
