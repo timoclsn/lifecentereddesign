@@ -91,18 +91,11 @@ export const LikesButtonClient = ({
           {optimisticLiked ? (
             <SolidHeart
               className={heartVariants({
-                // loading: likesIsLoading,
-                loading: false,
                 active: optimisticLiked,
               })}
             />
           ) : (
-            <UilHeart
-              className={heartVariants({
-                // loading: likesIsLoading,
-                loading: false,
-              })}
-            />
+            <UilHeart className={heartVariants()} />
           )}
         </div>
       </Tooltip>

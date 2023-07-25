@@ -12,6 +12,7 @@ const reseourcesFilterSchema = z.object({
   likes: z.coerce.boolean().optional(),
   from: z.coerce.string().optional(),
   till: z.coerce.string().optional(),
+  limit: z.coerce.number().optional(),
 });
 
 interface Props {

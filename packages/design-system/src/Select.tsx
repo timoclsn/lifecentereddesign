@@ -6,6 +6,7 @@ import {
   UilArrowUp,
   UilCheck,
   UilSortAmountDown,
+  UilSpinnerAlt,
 } from '@iconscout/react-unicons';
 import { Label } from '@radix-ui/react-label';
 import * as SelectPrimitive from '@radix-ui/react-select';
@@ -28,8 +29,12 @@ Select.FilterTrigger = forwardRef<
   ElementRef<typeof SelectPrimitive.Trigger>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
     label: string;
+    isLoading?: boolean;
   }
->(function SelectFilterTrigger({ className, disabled, label, ...props }, ref) {
+>(function SelectFilterTrigger(
+  { className, disabled, label, isLoading, ...props },
+  ref
+) {
   const id = useId();
   return (
     <div className="relative min-w-[0px] flex-1 sm:max-w-[240px]">
@@ -50,9 +55,15 @@ Select.FilterTrigger = forwardRef<
         ref={ref}
       >
         <SelectPrimitive.Value />
-        <SelectPrimitive.Icon className="text-text-secondary flex-none">
-          <UilArrowDown />
-        </SelectPrimitive.Icon>
+        <div className="flex items-center justify-center">
+          {isLoading ? (
+            <UilSpinnerAlt className="flex-none animate-spin opacity-60" />
+          ) : (
+            <SelectPrimitive.Icon className="text-text-secondary flex-none">
+              <UilArrowDown />
+            </SelectPrimitive.Icon>
+          )}
+        </div>
       </SelectPrimitive.Trigger>
     </div>
   );

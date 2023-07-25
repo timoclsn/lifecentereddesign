@@ -1,7 +1,7 @@
 'use client';
 
+import { useFilter } from 'app/resources/useFilter';
 import { Tag } from 'design-system';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ReactNode } from 'react';
 
 interface Props {
@@ -10,28 +10,14 @@ interface Props {
 }
 
 export const TypeButton = ({ children, type }: Props) => {
-  const nextSearchParams = useSearchParams();
-  const searchParams = new URLSearchParams(nextSearchParams.toString());
+  const { handleValueChange, searchParams } = useFilter();
 
-  const { replace } = useRouter();
-  const pathname = usePathname();
-
-  const filter = () => {
-    const searchParamsString = searchParams.toString();
-    replace(`${pathname}${searchParamsString ? '?' : ''}${searchParamsString}`);
-  };
-
-  const handleValueChange = (param: string, value: string) => {
-    searchParams.set(param, value);
-    filter();
-  };
   return (
     <button
       onClick={() => {
         const searchParamsType = searchParams.get('type');
         if (searchParamsType === type) {
-          searchParams.delete('type');
-          filter();
+          handleValueChange('type', '');
           return;
         }
         handleValueChange('type', type);
