@@ -1,5 +1,7 @@
+import { UilSpinnerAlt } from '@iconscout/react-unicons';
 import { Heading } from 'design-system';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { NavigationLink } from './NavigationLink';
 import { UserButton } from './UserButton';
 
@@ -26,7 +28,9 @@ export const Navigation = () => {
           <NavigationLink href="/resources">Resources</NavigationLink>
         </li>
         <li>
-          <UserButton />
+          <Suspense fallback={<UilSpinnerAlt className="mx-8 animate-spin" />}>
+            <UserButton />
+          </Suspense>
         </li>
       </ul>
     </header>
