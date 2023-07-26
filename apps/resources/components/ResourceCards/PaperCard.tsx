@@ -20,26 +20,6 @@ export const PaperCard = ({ paper }: Props) => {
       resourceType={paper.type}
       variant="forest"
       displayType="Paper"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'paper',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: paper.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={paper.title}
       metaInfos={[
         ...(paper.authors.length

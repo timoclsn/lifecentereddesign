@@ -14,26 +14,6 @@ export const CourseCard = ({ course }: Props) => {
       resourceType={course.type}
       variant="evening"
       displayType="Course"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'course',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: course.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={course.name}
       metaInfos={[
         ...(course.topics.length

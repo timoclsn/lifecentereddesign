@@ -20,26 +20,6 @@ export const VideoCard = ({ video }: Props) => {
       resourceType={video.type}
       variant="lime"
       displayType="Video"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'video',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: video.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={video.title}
       metaInfos={[
         ...(video.creators.length

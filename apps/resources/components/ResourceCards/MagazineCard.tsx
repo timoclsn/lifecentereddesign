@@ -14,26 +14,6 @@ export const MagazineCard = ({ magazine }: Props) => {
       resourceType={magazine.type}
       variant="sky"
       displayType="Magazine"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'magazine',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: magazine.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={magazine.name}
       metaInfos={[
         ...(magazine.topics.length

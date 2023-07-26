@@ -19,9 +19,15 @@ export const Resources = async ({ resourcesFilter }: Props) => {
           related topics:
         </Text>
       </div>
-      <Suspense>
+      <Suspense fallback={<Loading />}>
         <ResourcesTable reseourcesFilter={resourcesFilter} />
       </Suspense>
     </section>
+  );
+};
+
+const Loading = () => {
+  return (
+    <div className="rounded-4xl bg-lime h-[1000px] w-full animate-pulse" />
   );
 };

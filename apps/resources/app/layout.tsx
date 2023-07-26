@@ -1,17 +1,17 @@
+import { ClerkProvider } from '@clerk/nextjs';
 import '@fontsource-variable/source-serif-4';
 import '@fontsource/dm-sans';
 import '@fontsource/dm-sans/400-italic.css';
 import '@fontsource/dm-sans/700.css';
-import 'design-system/src/themes/resources.css';
-import { ReactNode, Suspense } from 'react';
-import '../styles/globals.css';
 import { CO2Badge } from 'components/CO2Badge/CO2Badge';
-import { Navigation } from 'components/Navigation';
-import { Container } from 'design-system';
 import { Footer } from 'components/Footer';
-import { ClerkProvider } from '@clerk/nextjs';
-import Script from 'next/script';
+import { Navigation } from 'components/Navigation/Navigation';
+import { Container } from 'design-system';
+import 'design-system/src/themes/resources.css';
 import { Metadata } from 'next';
+import Script from 'next/script';
+import { ReactNode } from 'react';
+import '../styles/globals.css';
 
 const title = 'LifeCenteredDesign.Net';
 const description =
@@ -68,13 +68,11 @@ const RootLayout = ({ children }: Props) => {
               </div>
               <Navigation />
             </div>
-            <Suspense>
-              <main className="flex-1">
-                <Container inset className="space-y-10 sm:space-y-40">
-                  {children}
-                </Container>
-              </main>
-            </Suspense>
+            <main className="flex-1">
+              <Container inset className="space-y-10 sm:space-y-40">
+                {children}
+              </Container>
+            </main>
             <Footer />
           </div>
         </body>

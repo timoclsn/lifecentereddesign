@@ -21,26 +21,6 @@ export const BookCard = ({ book }: Props) => {
       resourceType={book.type}
       variant="oak"
       displayType="Book"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'book',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: book.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={book.title}
       metaInfos={[
         ...(book.authors.length

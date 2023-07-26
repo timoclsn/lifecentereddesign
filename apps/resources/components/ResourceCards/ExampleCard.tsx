@@ -14,26 +14,6 @@ export const ExampleCard = ({ example }: Props) => {
       resourceType={example.type}
       variant="lime"
       displayType="Example"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'example',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: example.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={example.name}
       metaInfos={[
         ...(example.topics.length

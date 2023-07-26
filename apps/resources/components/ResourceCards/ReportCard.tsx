@@ -19,26 +19,6 @@ export const ReportCard = ({ report }: Props) => {
       resourceType={report.type}
       variant="oak"
       displayType="Report"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'report',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: report.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={report.title}
       metaInfos={[
         ...(report.authors.length

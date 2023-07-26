@@ -14,26 +14,6 @@ export const NewsletterCard = ({ newsletter }: Props) => {
       resourceType={newsletter.type}
       variant="sand"
       displayType="Newsletter"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'newsletter',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: newsletter.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={newsletter.name}
       metaInfos={[
         ...(newsletter.authors.length

@@ -14,26 +14,6 @@ export const SocialMediaProfileCard = ({ socielaMediaProfile }: Props) => {
       resourceType={socielaMediaProfile.type}
       variant="lime"
       displayType="Social Media Profile"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'socialMediaProfile',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: socielaMediaProfile.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={socielaMediaProfile.name}
       metaInfos={[
         ...(socielaMediaProfile.handle

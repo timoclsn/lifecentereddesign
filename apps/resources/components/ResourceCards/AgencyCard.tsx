@@ -14,26 +14,6 @@ export const AgencyCard = ({ agency }: Props) => {
       resourceType={agency.type}
       variant="morning"
       displayType="Agency"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'agency',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: agency.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={agency.name}
       metaInfos={[
         ...(agency.topics.length

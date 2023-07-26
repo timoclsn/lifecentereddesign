@@ -14,26 +14,6 @@ export const CommunityCard = ({ community }: Props) => {
       resourceType={community.type}
       variant="morning"
       displayType="Community"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'community',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: community.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={community.name}
       metaInfos={[
         ...(community.topics.length

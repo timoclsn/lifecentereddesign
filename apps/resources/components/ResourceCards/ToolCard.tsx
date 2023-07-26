@@ -14,26 +14,6 @@ export const ToolCard = ({ tool }: Props) => {
       resourceType={tool.type}
       variant="stone"
       displayType="Tool"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'tool',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: tool.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={tool.name}
       metaInfos={[
         ...(tool.topics.length

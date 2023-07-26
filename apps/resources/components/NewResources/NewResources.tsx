@@ -4,22 +4,11 @@ import { getResources } from 'lib/resources';
 import { unstable_cache as cache } from 'next/cache';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { getCardComponent } from '../utils';
 import groundImg from './ground.jpg';
 
-export const NewResources = async () => {
-  const resources = await cache(getResources, undefined, {
-    revalidate: 60,
-    tags: ['resources'],
-  })();
-
-  const resourcesToDisplay = resources
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
-    .slice(0, 10);
-
+export const NewResources = () => {
   return (
     <Bleed>
       <section id="new-resources">
@@ -32,17 +21,9 @@ export const NewResources = async () => {
             alt="Image of desert ground."
             className="rounded-4xl hidden flex-none snap-center sm:block"
           />
-          {resourcesToDisplay.map((resource) => {
-            const component = getCardComponent(resource);
-            return (
-              <li
-                key={`${resource.type}-${resource.id}`}
-                className="w-[330px] flex-none snap-center sm:w-[600px]"
-              >
-                {component}
-              </li>
-            );
-          })}
+          <Suspense fallback={<Loading />}>
+            <NewResourcesInner />
+          </Suspense>
           <li className="rounded-4xl flex-none snap-center">
             <Link href="/resources" className="block h-full hover:opacity-80">
               <Card
@@ -59,5 +40,51 @@ export const NewResources = async () => {
         </ul>
       </section>
     </Bleed>
+  );
+};
+
+const NewResourcesInner = async () => {
+  const resources = await cache(getResources, undefined, {
+    revalidate: 60,
+    tags: ['resources'],
+  })();
+
+  const resourcesToDisplay = resources
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    .slice(0, 10);
+  return (
+    <>
+      {resourcesToDisplay.map((resource) => {
+        const component = getCardComponent(resource);
+        return (
+          <li
+            key={`${resource.type}-${resource.id}`}
+            className="w-[330px] flex-none snap-center sm:w-[600px]"
+          >
+            {component}
+          </li>
+        );
+      })}
+    </>
+  );
+};
+
+const Loading = () => {
+  return (
+    <>
+      {Array(5)
+        .fill(0)
+        .map((_, index) => {
+          return (
+            <li
+              key={index}
+              className="bg-lime rounded-4xl h-[492px] w-[330px] flex-none animate-pulse sm:w-[600px]"
+            />
+          );
+        })}
+    </>
   );
 };

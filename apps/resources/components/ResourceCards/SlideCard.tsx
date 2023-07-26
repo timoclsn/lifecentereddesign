@@ -19,26 +19,6 @@ export const SlideCard = ({ slide }: Props) => {
       resourceType={slide.type}
       variant="evening"
       displayType="Slide"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'slide',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: slide.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={slide.title}
       metaInfos={[
         ...(slide.authors.length

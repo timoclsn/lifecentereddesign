@@ -14,26 +14,6 @@ export const DirectoryCard = ({ directory }: Props) => {
       resourceType={directory.type}
       variant="oak"
       displayType="Directory"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'directory',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: directory.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={directory.name}
       metaInfos={[
         ...(directory.topics.length

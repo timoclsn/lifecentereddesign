@@ -20,26 +20,6 @@ export const ArticleCard = ({ article }: Props) => {
       resourceType={article.type}
       variant="forest"
       displayType="Article"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'article',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: article.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={article.title}
       metaInfos={[
         ...(article.authors.length

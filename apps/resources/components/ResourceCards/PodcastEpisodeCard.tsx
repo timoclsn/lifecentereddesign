@@ -21,26 +21,6 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
       resourceType={podcastEpisode.type}
       variant="sand"
       displayType="Podcast Episode"
-      // onTypeClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_TYPE',
-      //           typeIs: 'podcastEpisode',
-      //         });
-      //       }
-      //     : undefined
-      // }
-      // onCategoryClick={
-      //   inContext
-      //     ? () => {
-      //         dispatch({
-      //           type: 'FILTER_BY_CATEGORY',
-      //           category: podcastEpisode.category?.name,
-      //         });
-      //       }
-      //     : undefined
-      // }
       title={podcastEpisode.title}
       metaInfos={[
         ...(podcastEpisode.podcast
