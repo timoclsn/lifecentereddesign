@@ -1,5 +1,6 @@
 'use client';
 
+import { UilSpinnerAlt } from '@iconscout/react-unicons';
 import { useResourcesTable } from 'app/resources/ResourcesTableProvider';
 import { useFilter } from 'app/resources/useFilter';
 import { Tag } from 'design-system';
@@ -11,7 +12,7 @@ interface Props {
 }
 
 export const TypeButton = ({ children, type }: Props) => {
-  const { handleValueChange, searchParams } = useFilter();
+  const { handleValueChange, searchParams, isPending } = useFilter();
   const { inContext } = useResourcesTable();
 
   const handleClick = () => {
@@ -34,5 +35,10 @@ export const TypeButton = ({ children, type }: Props) => {
     return type;
   };
 
-  return getType(<Tag variant="outline">{children}</Tag>);
+  return getType(
+    <Tag variant="outline">
+      {children}
+      {isPending && <UilSpinnerAlt className="animate-spin" />}
+    </Tag>
+  );
 };
