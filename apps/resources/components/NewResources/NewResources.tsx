@@ -8,10 +8,18 @@ import { getCardComponent } from '../utils';
 import groundImg from './ground.jpg';
 
 export const NewResources = async () => {
-  const resources = await cache(getResources, undefined, { revalidate: 60 })({
-    sort: 'date',
-    limit: 10,
-  });
+  const resources = await cache(getResources, undefined, {
+    revalidate: 60,
+    tags: ['resources'],
+  })();
+
+  const resourcesToDisplay = resources
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    .slice(0, 10);
+
   return (
     <Bleed>
       <section id="new-resources">
@@ -24,7 +32,7 @@ export const NewResources = async () => {
             alt="Image of desert ground."
             className="rounded-4xl hidden flex-none snap-center sm:block"
           />
-          {resources.map((resource) => {
+          {resourcesToDisplay.map((resource) => {
             const component = getCardComponent(resource);
             return (
               <li

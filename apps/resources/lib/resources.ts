@@ -181,19 +181,7 @@ export type Resource =
 export type Resources = Array<Resource>;
 export type ContentType = Resource['type'];
 
-export interface QueryFilter {
-  from?: Date;
-  till?: Date;
-  limit?: number;
-  sort?: 'date' | 'title' | 'likes';
-}
-
-export const getResources = async ({
-  from,
-  till,
-  limit,
-  sort,
-}: QueryFilter = {}) => {
+export const getResources = async () => {
   const resourcePromises = resourceTypes.map((type) => {
     // @ts-expect-error: Dynamic table access doesn't work on type level
     return prisma[type].findMany({
@@ -229,15 +217,6 @@ export const getResources = async ({
           authors: true,
         }),
       },
-      where: {
-        createdAt:
-          from && till
-            ? {
-                gte: from,
-                lte: till,
-              }
-            : undefined,
-      },
     }) as Promise<Array<Resource>>;
   });
 
@@ -256,25 +235,11 @@ export const getResources = async ({
     };
   });
 
-  const enhancedResources = await Promise.all(enhancedResourcesPromises);
+  const enhancedResources = (
+    await Promise.all(enhancedResourcesPromises)
+  ).flat();
 
-  return enhancedResources
-    .flat()
-    .sort((a, b) => {
-      if (sort === 'date') {
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-      } else if (sort === 'title') {
-        const itemA = 'title' in a ? a.title : a.name;
-        const itemB = 'title' in b ? b.title : b.name;
-        return itemA.localeCompare(itemB);
-      } else if (sort === 'likes') {
-        return b.likes - a.likes;
-      }
-      return 0;
-    })
-    .slice(0, limit);
+  return enhancedResources;
 };
 
 export const getResourceOldLikesCount = async (

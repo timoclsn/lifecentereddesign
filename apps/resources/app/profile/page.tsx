@@ -5,6 +5,7 @@ import {
   UserProfile,
 } from '@clerk/nextjs';
 import { Heading } from 'design-system';
+import { DeleteAccountButton } from './DeleteAccountButton';
 
 const ProfilePage = () => {
   // const { signOut } = useAuth();
@@ -35,49 +36,9 @@ const ProfilePage = () => {
               },
             }}
           />
-          {/* <div className="flex flex-col items-center justify-center gap-10">
-              <Button
-                color="danger"
-                onClick={() => {
-                  if (
-                    window.confirm(
-                      "Do you really want to delete your account? This action can't be undone."
-                    )
-                  ) {
-                    mutate();
-                  }
-                }}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <UilSpinnerAlt className="animate-spin" />
-                ) : (
-                  <UilTimesCircle />
-                )}
-                Delete account
-              </Button>
-
-              {isSuccess && (
-                <InfoBox
-                  variant="success"
-                  icon={<UilCheckCircle />}
-                  className="animate-in zoom-in-0 fade-in duration-150 ease-in-out"
-                >
-                  Succesfully deleted your account! We are sad to see you go.
-                </InfoBox>
-              )}
-
-              {isError && (
-                <InfoBox
-                  variant="error"
-                  icon={<UilExclamationTriangle />}
-                  className="animate-in zoom-in-50 fade-in duration-150 ease-in-out"
-                >
-                  Something went wrong while deleting your account. Please try
-                  again or contact us at hello@lifecentereddesign.net.
-                </InfoBox>
-              )}
-            </div> */}
+          <div className="flex flex-col items-center justify-center gap-10">
+            <DeleteAccountButton />
+          </div>
         </div>
       </SignedIn>
       <SignedOut>

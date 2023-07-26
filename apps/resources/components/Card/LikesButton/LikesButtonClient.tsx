@@ -26,6 +26,7 @@ const heartVariants = cva(
 interface Props {
   resourceId: number;
   resourceType: ContentType;
+  resourceTitle: string;
   count: number;
   liked: boolean;
 }
@@ -33,6 +34,7 @@ interface Props {
 export const LikesButtonClient = ({
   resourceId,
   resourceType,
+  resourceTitle,
   count,
   liked,
 }: Props) => {
@@ -57,6 +59,10 @@ export const LikesButtonClient = ({
         id: resourceId,
         type: resourceType,
       });
+      splitbee.track('Un-like resource', {
+        type: resourceType,
+        name: resourceTitle,
+      });
     } else {
       updateOptimisticCount(optimisticCount + 1);
       if (isSignedIn) {
@@ -66,12 +72,15 @@ export const LikesButtonClient = ({
         id: resourceId,
         type: resourceType,
       });
+      splitbee.track('Like resource', {
+        type: resourceType,
+        name: resourceTitle,
+      });
     }
   };
   return (
     <button
       onClick={handleClick}
-      // disabled={likesIsLoading}
       className="ease group flex items-center justify-center gap-2 disabled:opacity-80"
     >
       <div className="animate-in slide-in-from-right-full fade-in transition-transform duration-100 ease-in">

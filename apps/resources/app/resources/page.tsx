@@ -1,6 +1,11 @@
 import { Suggestion } from 'components/Suggestion/Suggestion';
 import { Resources } from './Resources';
 import { z } from 'zod';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Resources',
+};
 
 export type ReseourcesFilter = z.infer<typeof reseourcesFilterSchema>;
 const reseourcesFilterSchema = z.object({

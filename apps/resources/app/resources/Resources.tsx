@@ -1,13 +1,6 @@
-import { auth } from '@clerk/nextjs';
 import { ResourcesTable } from 'app/resources/ResourcesTable';
 import { Heading, Text } from 'design-system';
-import {
-  getCategories,
-  getLikedResources,
-  getResources,
-  getTopics,
-} from 'lib/resources';
-import { unstable_cache as cache } from 'next/cache';
+import { Suspense } from 'react';
 import { ReseourcesFilter } from './page';
 
 interface Props {
@@ -15,13 +8,6 @@ interface Props {
 }
 
 export const Resources = async ({ resourcesFilter }: Props) => {
-  const { userId } = auth();
-  const [resources, categories, topics, likedResources] = await Promise.all([
-    cache(getResources, undefined, { revalidate: 60 })(),
-    cache(getCategories, undefined, { revalidate: 60 })(),
-    cache(getTopics, undefined, { revalidate: 60 })(),
-    cache(getLikedResources, undefined, { revalidate: 60 })(userId ?? ''),
-  ]);
   return (
     <section id="resources" className="flex flex-col gap-10">
       <div>
@@ -33,14 +19,9 @@ export const Resources = async ({ resourcesFilter }: Props) => {
           related topics:
         </Text>
       </div>
-      <ResourcesTable
-        initialSort="date"
-        resources={resources}
-        categories={categories}
-        topics={topics}
-        likedResources={likedResources}
-        reseourcesFilter={resourcesFilter}
-      />
+      <Suspense>
+        <ResourcesTable reseourcesFilter={resourcesFilter} />
+      </Suspense>
     </section>
   );
 };

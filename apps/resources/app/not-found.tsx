@@ -1,4 +1,9 @@
 import { Text } from 'design-system';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: '404 - Page not found',
+};
 
 const NotFound = () => {
   return (

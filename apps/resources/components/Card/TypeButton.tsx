@@ -1,5 +1,6 @@
 'use client';
 
+import { useResourcesTable } from 'app/resources/ResourcesTableProvider';
 import { useFilter } from 'app/resources/useFilter';
 import { Tag } from 'design-system';
 import { ReactNode } from 'react';
@@ -11,20 +12,27 @@ interface Props {
 
 export const TypeButton = ({ children, type }: Props) => {
   const { handleValueChange, searchParams } = useFilter();
+  const { inContext } = useResourcesTable();
 
-  return (
-    <button
-      onClick={() => {
-        const searchParamsType = searchParams.get('type');
-        if (searchParamsType === type) {
-          handleValueChange('type', '');
-          return;
-        }
-        handleValueChange('type', type);
-      }}
-      className="hover:opacity-80"
-    >
-      <Tag variant="outline">{children}</Tag>
-    </button>
-  );
+  const handleClick = () => {
+    const searchParamsType = searchParams.get('type');
+    if (searchParamsType === type) {
+      handleValueChange('type', '');
+      return;
+    }
+    handleValueChange('type', type);
+  };
+
+  const getType = (type: ReactNode) => {
+    if (inContext) {
+      return (
+        <button onClick={handleClick} className="hover:opacity-80">
+          {type}
+        </button>
+      );
+    }
+    return type;
+  };
+
+  return getType(<Tag variant="outline">{children}</Tag>);
 };

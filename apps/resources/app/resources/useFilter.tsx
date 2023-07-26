@@ -53,6 +53,41 @@ export const useFilter = () => {
     filter({
       scrollTop: !isLimit,
     });
+
+    // Tracking
+    if (param === 'type') {
+      splitbee.track('Filter resources by type', {
+        type: value,
+      });
+    }
+
+    if (param === 'category') {
+      splitbee.track('Filter resources by category', {
+        category: value,
+      });
+    }
+
+    if (param === 'topic') {
+      splitbee.track('Filter resources by topic', {
+        topic: value,
+      });
+    }
+
+    if (param === 'sort') {
+      splitbee.track('Sort resources', {
+        by: value,
+      });
+    }
+
+    if (param === 'likes') {
+      splitbee.track('Toggle filter resources by likes');
+    }
+
+    if (param === 'limit') {
+      splitbee.track('Show more resources', {
+        count: parseInt(value),
+      });
+    }
   };
 
   const clearAll = () => {

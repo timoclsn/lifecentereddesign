@@ -9,6 +9,7 @@ import {
 } from 'lib/resources';
 import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
+import { likesDataTag } from './LikesButton/LikesButtonServer';
 
 const typeSchema = z.enum(resourceTypes);
 
@@ -20,7 +21,14 @@ const inputSchema = z.object({
 });
 
 export const like = async (input: Input) => {
-  const { id, type } = inputSchema.parse(input);
+  const result = inputSchema.safeParse(input);
+  if (!result.success) {
+    return {
+      error: result.error.message,
+    };
+  }
+  const { id, type } = result.data;
+
   const { userId } = auth();
 
   if (userId) {
@@ -29,11 +37,19 @@ export const like = async (input: Input) => {
     await anonymousLikeResource(id, type);
   }
 
-  revalidateTag(`likes-${id}-${type}`);
+  const tag = likesDataTag(id, type);
+  revalidateTag(tag);
 };
 
 export const unLike = async (input: Input) => {
-  const { id, type } = inputSchema.parse(input);
+  const result = inputSchema.safeParse(input);
+  if (!result.success) {
+    return {
+      error: result.error.message,
+    };
+  }
+  const { id, type } = result.data;
+
   const { userId } = auth();
 
   if (!userId) {
@@ -42,5 +58,6 @@ export const unLike = async (input: Input) => {
 
   await unlikeResource(userId, id, type);
 
-  revalidateTag(`likes-${id}-${type}`);
+  const tag = likesDataTag(id, type);
+  revalidateTag(tag);
 };

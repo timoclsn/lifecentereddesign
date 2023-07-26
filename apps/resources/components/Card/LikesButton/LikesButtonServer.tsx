@@ -22,23 +22,30 @@ const getLikesData = async (resourceId: number, resourceType: ContentType) => {
   };
 };
 
+export const likesDataTag = (resourceId: number, resourceType: ContentType) =>
+  `likes-${resourceId}-${resourceType}`;
+
 interface Props {
   resourceId: number;
   resourceType: ContentType;
+  resourceTitle: string;
 }
 
 export const LikesButtonServer = async ({
   resourceId,
   resourceType,
+  resourceTitle,
 }: Props) => {
+  const tag = likesDataTag(resourceId, resourceType);
   const { count, liked } = await cache(getLikesData, undefined, {
-    tags: [`likes-${resourceId}-${resourceType}`],
+    tags: [tag],
   })(resourceId, resourceType);
 
   return (
     <LikesButtonClient
       resourceId={resourceId}
       resourceType={resourceType}
+      resourceTitle={resourceTitle}
       count={count}
       liked={liked}
     />

@@ -3,7 +3,7 @@ import '@fontsource/dm-sans';
 import '@fontsource/dm-sans/400-italic.css';
 import '@fontsource/dm-sans/700.css';
 import 'design-system/src/themes/resources.css';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 import '../styles/globals.css';
 import { CO2Badge } from 'components/CO2Badge/CO2Badge';
 import { Navigation } from 'components/Navigation';
@@ -11,6 +11,46 @@ import { Container } from 'design-system';
 import { Footer } from 'components/Footer';
 import { ClerkProvider } from '@clerk/nextjs';
 import Script from 'next/script';
+import { Metadata } from 'next';
+
+const title = 'LifeCenteredDesign.Net';
+const description =
+  'A curated directory of resources around Life-centered Design and related fields.';
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://lifecentereddesign.net'),
+  title: {
+    default: title,
+    template: `%s | ${title}`,
+  },
+  description:
+    'A curated directory of resources around Life-centered Design and related fields.',
+  icons: '/favicon.png',
+  openGraph: {
+    type: 'website',
+    title,
+    url: '/',
+    siteName: title,
+    description,
+    images: {
+      url: '/og-image.png',
+      alt: title,
+      width: 1200,
+      height: 630,
+    },
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    site: '@KatharinaClasen',
+    creator: '@KatharinaClasen',
+  },
+  robots: {
+    follow: true,
+    index: true,
+  },
+};
 
 interface Props {
   children: ReactNode;
@@ -28,11 +68,13 @@ const RootLayout = ({ children }: Props) => {
               </div>
               <Navigation />
             </div>
-            <main className="flex-1">
-              <Container inset className="space-y-10 sm:space-y-40">
-                {children}
-              </Container>
-            </main>
+            <Suspense>
+              <main className="flex-1">
+                <Container inset className="space-y-10 sm:space-y-40">
+                  {children}
+                </Container>
+              </main>
+            </Suspense>
             <Footer />
           </div>
         </body>

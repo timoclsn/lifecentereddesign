@@ -6,12 +6,21 @@ import { LikesButtonServer } from './LikesButtonServer';
 interface Props {
   resourceId: number;
   resourceType: ContentType;
+  resourceTitle: string;
 }
 
-export const LikesButton = ({ resourceId, resourceType }: Props) => {
+export const LikesButton = ({
+  resourceId,
+  resourceType,
+  resourceTitle,
+}: Props) => {
   return (
     <Suspense fallback={<Loading />}>
-      <LikesButtonServer resourceId={resourceId} resourceType={resourceType} />
+      <LikesButtonServer
+        resourceId={resourceId}
+        resourceType={resourceType}
+        resourceTitle={resourceTitle}
+      />
     </Suspense>
   );
 };

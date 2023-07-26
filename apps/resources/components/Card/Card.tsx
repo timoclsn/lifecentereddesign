@@ -12,10 +12,10 @@ import {
   Tooltip,
 } from 'design-system';
 import { ContentType } from 'lib/resources';
-import Link from 'next/link';
 import { CategoryButton } from './CategoryButton';
 import { CopyButton } from './CopyButton';
 import { LikesButton } from './LikesButton/LikesButton';
+import { ResourceLink } from './ResourceLink';
 import { TypeButton } from './TypeButton';
 
 interface Props {
@@ -76,20 +76,13 @@ export const Card = ({
 
     if (resourceLink) {
       return (
-        <Link
+        <ResourceLink
           href={resourceLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:opacity-80"
-          // onClick={() => {
-          //   splitbee.track('Open resource', {
-          //     type: resourceType,
-          //     name: title,
-          //   });
-          // }}
+          resourceType={resourceType}
+          resourceTitle={resourceType}
         >
           {heading}
-        </Link>
+        </ResourceLink>
       );
     }
     return heading;
@@ -131,7 +124,11 @@ export const Card = ({
           </div>
 
           {/* Likes */}
-          <LikesButton resourceId={resourceId} resourceType={resourceType} />
+          <LikesButton
+            resourceId={resourceId}
+            resourceType={resourceType}
+            resourceTitle={title}
+          />
         </div>
 
         <div className="flex flex-col items-start gap-4">

@@ -3,11 +3,13 @@
 import { ReactNode, RefObject, createContext, useContext, useRef } from 'react';
 
 interface State {
+  inContext: boolean;
   scrollToTop: () => void;
   resourcesTopRef: RefObject<HTMLDivElement>;
 }
 
 const initalState: State = {
+  inContext: false,
   scrollToTop: () => {},
   resourcesTopRef: {
     current: null,
@@ -16,15 +18,7 @@ const initalState: State = {
 
 const ResourcesTableContext = createContext<State>(initalState);
 
-export const useResourcesTable = () => {
-  const context = useContext(ResourcesTableContext);
-  if (!context) {
-    throw new Error(
-      'useResourcesTable must be used within a ResourcesTableProvider'
-    );
-  }
-  return context;
-};
+export const useResourcesTable = () => useContext(ResourcesTableContext);
 
 interface Props {
   children: ReactNode;
@@ -39,6 +33,7 @@ export const ResourcesTableProvider = ({ children }: Props) => {
   return (
     <ResourcesTableContext.Provider
       value={{
+        inContext: true,
         resourcesTopRef,
         scrollToTop,
       }}

@@ -10,7 +10,13 @@ import {
 const { SUGGESTION_MAIL_PASSWORD } = envSchema.parse(process.env);
 
 export const submit = async (input: SuggestionFormSchema) => {
-  const { link, message, name } = suggestionFormSchema.parse(input);
+  const result = suggestionFormSchema.safeParse(input);
+  if (!result.success) {
+    return {
+      error: 'Please enter a valid link.',
+    };
+  }
+  const { link, message, name } = result.data;
 
   const transporter = nodemailer.createTransport({
     port: 465,

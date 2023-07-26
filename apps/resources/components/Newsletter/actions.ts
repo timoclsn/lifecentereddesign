@@ -31,8 +31,21 @@ const errorSchema = z.object({
   message: z.string(),
 });
 
-export const subscribe = async (input: NewsletterFormSchema) => {
-  const { email, consens } = newsletterFormSchema.parse(input);
+const genericError =
+  "There was an error subscribing to the newsletter. Send us an email at hello@lifecentereddesign.net and we'll add you to the list.";
+
+export const subscribe = async (
+  input: NewsletterFormSchema
+): Promise<{ error: string }> => {
+  const result = newsletterFormSchema.safeParse(input);
+
+  if (!result.success) {
+    return {
+      error: 'Please enter a valid email address.',
+    };
+  }
+
+  const { email, consens } = result.data;
 
   const data = {
     email_address: email,
@@ -57,28 +70,36 @@ export const subscribe = async (input: NewsletterFormSchema) => {
 
     if (!response.ok) {
       const responseJson = await response.json();
-      const error = apiErrorSchema.parse(responseJson);
+      const result = apiErrorSchema.safeParse(responseJson);
+      if (!result.success) throw new Error();
 
-      if (error.title === 'Member Exists') {
+      const { title } = result.data;
+
+      if (title === 'Member Exists') {
         return {
-          error: error.title,
+          error: title,
         };
       }
 
       throw new Error();
     }
   } catch (e) {
-    const error = errorSchema.parse(e);
+    const result = errorSchema.safeParse(e);
+    if (!result.success) {
+      return {
+        error: genericError,
+      };
+    }
+    const { message } = result.data;
 
-    if (error.message === 'Member Exists') {
+    if (message === 'Member Exists') {
       return {
         error: `${email} is already subscribed to our newsletter.`,
       };
     }
 
     return {
-      error:
-        "There was an error subscribing to the newsletter. Send us an email at hello@lifecentereddesign.net and we'll add you to the list.",
+      error: genericError,
     };
   }
 

@@ -1,5 +1,10 @@
 import { allPages } from 'contentlayer/generated';
 import { Heading } from 'design-system';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy',
+};
 
 const PrivacyPage = () => {
   const content = allPages.find((page) => page.title === 'Privacy');

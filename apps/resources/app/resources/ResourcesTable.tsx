@@ -1,32 +1,32 @@
+import { auth } from '@clerk/nextjs';
 import {
-  Categories,
-  LikedResources,
-  Resources as ResourcesType,
-  Topics,
-} from '../../lib/resources';
+  getCategories,
+  getLikedResources,
+  getResources,
+  getTopics,
+} from 'lib/resources';
+import { unstable_cache as cache } from 'next/cache';
 import { ResourcesFilter } from './ResourcesFilter';
 import { ResourcesList } from './ResourcesList';
 import { ResourcesTableProvider } from './ResourcesTableProvider';
 import { ReseourcesFilter } from './page';
 
-type Sort = 'date' | 'title' | 'likes';
-
 interface Props {
-  resources: ResourcesType;
-  categories: Categories;
-  topics: Topics;
-  initialSort?: Sort;
-  likedResources: LikedResources;
   reseourcesFilter: ReseourcesFilter;
 }
 
-export const ResourcesTable = ({
-  resources,
-  categories,
-  topics,
-  likedResources,
-  reseourcesFilter,
-}: Props) => {
+export const ResourcesTable = async ({ reseourcesFilter }: Props) => {
+  const { userId } = auth();
+  const [resources, categories, topics, likedResources] = await Promise.all([
+    cache(getResources, undefined, { revalidate: 60, tags: ['resources'] })(),
+    cache(getCategories, undefined, { revalidate: 60, tags: ['categroies'] })(),
+    cache(getTopics, undefined, { revalidate: 60, tags: ['topics'] })(),
+    cache(getLikedResources, undefined, {
+      revalidate: 60,
+      tags: ['liked-resources'],
+    })(userId ?? ''),
+  ]);
+
   return (
     <ResourcesTableProvider>
       <div>
