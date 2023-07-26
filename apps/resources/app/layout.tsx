@@ -10,7 +10,7 @@ import { Container } from 'design-system';
 import 'design-system/src/themes/resources.css';
 import { Metadata } from 'next';
 import Script from 'next/script';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 import '../styles/globals.css';
 
 const title = 'LifeCenteredDesign.Net';
@@ -68,11 +68,13 @@ const RootLayout = ({ children }: Props) => {
               </div>
               <Navigation />
             </div>
-            <main className="flex-1">
-              <Container inset className="space-y-10 sm:space-y-40">
-                {children}
-              </Container>
-            </main>
+            <Suspense>
+              <main className="flex-1">
+                <Container inset className="space-y-10 sm:space-y-40">
+                  {children}
+                </Container>
+              </main>
+            </Suspense>
             <Footer />
           </div>
         </body>
