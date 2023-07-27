@@ -95,6 +95,7 @@ export const useFilter = () => {
       replace(pathname, { scroll: false });
     });
     scrollToTop();
+    console.log('clearAll');
   };
 
   return {

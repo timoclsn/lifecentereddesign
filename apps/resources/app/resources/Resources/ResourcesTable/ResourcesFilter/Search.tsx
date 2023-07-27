@@ -3,21 +3,42 @@
 import { Loader, Search as SearchIcon } from 'lucide-react';
 import { useDebouncedCallback } from 'use-debounce';
 import { useFilter } from '../../../../../hooks/useFilter';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 export const Search = () => {
-  const { handleValueChange, isPending } = useFilter();
+  const [searchInput, setSearchInput] = useState<string | null>(null);
+  const { handleValueChange, isPending, searchParams } = useFilter();
+
+  const searchQuery = searchParams.get('search');
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(event.target.value);
+  };
+
   const handleSearch = useDebouncedCallback((value) => {
     handleValueChange('search', value);
   }, 500);
+
+  // Trigger search when search input changes
+  useEffect(() => {
+    if (searchInput === null) return; // Skip as long as search input is not set
+    handleSearch(searchInput);
+  }, [handleSearch, searchInput]);
+
+  // Set search input when search query changes
+  useEffect(() => {
+    if (searchInput === null) return; // Skip as long as search input is not set
+    setSearchInput(searchQuery ?? '');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]);
 
   return (
     <div className="bg-primary-ghost-bg text-text-secondary focus-within:ring-text-secondary flex min-w-[100px] flex-1 items-center gap-2 px-4 py-1 outline-none ring-inset focus-within:ring-2 sm:max-w-[240px]">
       <SearchIcon className="flex-none opacity-60" size="16" />
       <input
         placeholder="Search"
-        onChange={(e) => {
-          handleSearch(e.target.value);
-        }}
+        value={searchInput ?? ''}
+        onChange={handleChange}
         className="text-text-primary w-full bg-transparent outline-none"
       />
       <Loader
