@@ -1,7 +1,7 @@
-import { Suggestion } from 'components/Suggestion/Suggestion';
-import { Resources } from './Resources';
-import { z } from 'zod';
 import { Metadata } from 'next';
+import { z } from 'zod';
+import { Resources } from './Resources/Resources';
+import { Suggestion } from './Suggestion/Suggestion';
 
 export const metadata: Metadata = {
   title: 'Resources',

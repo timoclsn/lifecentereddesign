@@ -1,7 +1,7 @@
-import { About } from 'components/About';
-import { Header } from 'components/Header/Header';
-import { NewResources } from 'components/NewResources/NewResources';
-import { Newsletter } from 'components/Newsletter/Newsletter';
+import { About } from './About/About';
+import { Header } from './Header/Header';
+import { NewResources } from './NewResources/NewResources';
+import { Newsletter } from './Newsletter/Newsletter';
 
 const Home = () => {
   return (

@@ -1,11 +1,11 @@
-import { ProfileCard } from 'components/ProfileCard';
 import { Link } from 'design-system';
 import kathaImg from './katharina-clasen.png';
 import timoImg from './timo-clasen.png';
+import { ProfileCard } from './ProfileCard';
 
 export const ProfileCards = () => {
   return (
-    <section className="flex gap-5 flex-col md:flex-row max-w-5xl mx-auto">
+    <section className="mx-auto flex max-w-5xl flex-col gap-5 md:flex-row">
       <ProfileCard
         variant="sky"
         name="Katharina Clasen"
@@ -15,7 +15,7 @@ export const ProfileCards = () => {
         instagramUrl="https://www.instagram.com/katharinaclasen/"
         twitterUrl="https://twitter.com/KatharinaClasen"
       >
-        <span className="block text-text-primary mb-4">
+        <span className="text-text-primary mb-4 block">
           Idea, concept, design & content
         </span>
         UX Designer (self-employed), Lecturer (
@@ -32,7 +32,7 @@ export const ProfileCards = () => {
         linkedInUrl="https://www.linkedin.com/in/timoclsn"
         twitterUrl="https://twitter.com/timoclsn"
       >
-        <span className="block text-text-primary mb-4">Development</span>
+        <span className="text-text-primary mb-4 block">Development</span>
         Frontend Engineer (
         <Link url="https://steuerbot.com" external>
           Steuerbot

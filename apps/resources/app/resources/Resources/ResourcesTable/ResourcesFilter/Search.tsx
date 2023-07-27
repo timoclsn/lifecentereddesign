@@ -1,8 +1,8 @@
 'use client';
 
-import { Search as SearchIcon, Loader } from 'lucide-react';
+import { Loader, Search as SearchIcon } from 'lucide-react';
 import { useDebouncedCallback } from 'use-debounce';
-import { useFilter } from './useFilter';
+import { useFilter } from '../../../../../hooks/useFilter';
 
 export const Search = () => {
   const { handleValueChange, isPending } = useFilter();

@@ -1,14 +1,14 @@
 'use server';
 
 import { auth } from '@clerk/nextjs';
+import { revalidateTag } from 'next/cache';
+import { z } from 'zod';
 import {
   anonymousLikeResource,
   likeResource,
   resourceTypes,
   unlikeResource,
-} from 'lib/resources';
-import { revalidateTag } from 'next/cache';
-import { z } from 'zod';
+} from '../../lib/resources';
 import { likesDataTag } from './LikesButton/LikesButtonServer';
 
 const typeSchema = z.enum(resourceTypes);

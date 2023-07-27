@@ -1,12 +1,12 @@
 import { getCardComponent } from 'components/utils';
 import { Heading } from 'design-system';
-import { LikedResources, Resource } from 'lib/resources';
 import { matchSorter } from 'match-sorter';
-import { AutoAnimate } from '../../components/AutoAnimate/AutoAnimate';
+import { AutoAnimate } from '../../../../../components/AutoAnimate/AutoAnimate';
+import { ReseourcesFilter } from '../../../page';
 import { ClearAllButton } from './ClearAllButton';
-import { ShowMoreButton } from './ShowMoreButton';
-import { ReseourcesFilter } from './page';
 import { ResourcesListTop } from './ResourcesListTop';
+import { ShowMoreButton } from './ShowMoreButton';
+import { LikedResources, Resource } from '../../../../../lib/resources';
 
 interface Props {
   resources: Array<Resource>;

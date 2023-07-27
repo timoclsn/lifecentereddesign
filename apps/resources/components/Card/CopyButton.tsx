@@ -1,9 +1,9 @@
 'use client';
 
-import { Check, Copy } from 'lucide-react';
 import { Tag, Tooltip } from 'design-system';
-import { wait } from 'lib/utils';
+import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
+import { wait } from '../../lib/utils';
 
 interface Props {
   link: string;

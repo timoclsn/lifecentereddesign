@@ -1,7 +1,7 @@
 import { Bleed, Button, Heading, Text } from 'design-system';
 import Image from 'next/image';
-import earthImg from './earth.jpg';
 import Link from 'next/link';
+import earthImg from './earth.jpg';
 
 export function Header() {
   return (

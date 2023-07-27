@@ -1,4 +1,4 @@
-export async function fetcher(...args: [RequestInfo, RequestInit?]) {
+export const fetcher = async (...args: [RequestInfo, RequestInit?]) => {
   const res = await fetch(...args);
   return res.json();
-}
+};

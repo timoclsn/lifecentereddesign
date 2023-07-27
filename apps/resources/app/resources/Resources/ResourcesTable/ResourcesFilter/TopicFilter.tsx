@@ -1,8 +1,8 @@
 'use client';
 
 import { Select } from 'design-system';
-import { Topics } from 'lib/resources';
-import { useFilter } from './useFilter';
+import { useFilter } from '../../../../../hooks/useFilter';
+import { Topics } from '../../../../../lib/resources';
 
 interface Props {
   topics: Topics;

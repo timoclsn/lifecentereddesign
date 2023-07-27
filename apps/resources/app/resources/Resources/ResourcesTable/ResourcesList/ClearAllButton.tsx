@@ -1,8 +1,8 @@
 'use client';
 
-import { Loader, XCircle } from 'lucide-react';
 import { Button } from 'design-system';
-import { useFilter } from './useFilter';
+import { Loader, XCircle } from 'lucide-react';
+import { useFilter } from '../../../../../hooks/useFilter';
 
 export const ClearAllButton = () => {
   const { clearAll, isPending } = useFilter();

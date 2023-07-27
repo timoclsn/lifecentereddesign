@@ -1,5 +1,5 @@
-import { ForrestSection } from 'components/ForrestSection/ForrestSection';
 import { Heading, Text } from 'design-system';
+import { ForrestSection } from '../../../components/ForrestSection/ForrestSection';
 import { SuggestionForm } from './SuggestionForm';
 
 export const Suggestion = () => {

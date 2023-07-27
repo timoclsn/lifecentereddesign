@@ -1,6 +1,6 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
-import { useResourcesTable } from './ResourcesTableProvider';
+import { useResourcesTable } from '../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
 
 interface FilterOptions {
   scrollTop?: boolean;

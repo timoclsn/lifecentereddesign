@@ -1,6 +1,6 @@
 import { Heart } from 'lucide-react';
-import { ContentType } from 'lib/resources';
 import { Suspense } from 'react';
+import { ContentType } from '../../../lib/resources';
 import { LikesButtonServer } from './LikesButtonServer';
 
 interface Props {

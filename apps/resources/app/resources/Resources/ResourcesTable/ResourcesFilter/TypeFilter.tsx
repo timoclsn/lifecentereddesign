@@ -1,8 +1,8 @@
 'use client';
 
 import { Select } from 'design-system';
-import { ContentType } from 'lib/resources';
-import { useFilter } from './useFilter';
+import { useFilter } from '../../../../../hooks/useFilter';
+import { ContentType } from '../../../../../lib/resources';
 
 type TypeFilter = ContentType | 'all';
 

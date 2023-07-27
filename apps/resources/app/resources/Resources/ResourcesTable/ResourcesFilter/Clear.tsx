@@ -1,8 +1,8 @@
 'use client';
 
-import { XCircle } from 'lucide-react';
 import { Tooltip } from 'design-system';
-import { useFilter } from './useFilter';
+import { XCircle } from 'lucide-react';
+import { useFilter } from '../../../../../hooks/useFilter';
 
 export const Clear = () => {
   const { isFiltered, clearAll } = useFilter();

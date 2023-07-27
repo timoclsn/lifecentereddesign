@@ -1,4 +1,3 @@
-import { ExternalLink, StickyNote, Users2 } from 'lucide-react';
 import {
   Card as CardPrimitive,
   CardProps,
@@ -7,7 +6,8 @@ import {
   Text,
   Tooltip,
 } from 'design-system';
-import { ContentType } from 'lib/resources';
+import { ExternalLink, StickyNote, Users2 } from 'lucide-react';
+import { ContentType } from '../../lib/resources';
 import { CategoryButton } from './CategoryButton';
 import { CopyButton } from './CopyButton';
 import { LikesButton } from './LikesButton/LikesButton';

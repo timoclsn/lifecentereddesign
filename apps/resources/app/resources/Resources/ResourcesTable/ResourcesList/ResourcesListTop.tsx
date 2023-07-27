@@ -1,6 +1,6 @@
 'use client';
 
-import { useResourcesTable } from './ResourcesTableProvider';
+import { useResourcesTable } from '../ResourcesTableProvider';
 
 export const ResourcesListTop = () => {
   const { resourcesTopRef } = useResourcesTable();

@@ -1,7 +1,7 @@
 'use server';
 
 import { auth, clerkClient } from '@clerk/nextjs';
-import { deleteUserData } from 'lib/resources';
+import { deleteUserData } from '../../lib/resources';
 
 export const deleteAccount = async () => {
   const { userId } = auth();

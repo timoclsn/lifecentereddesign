@@ -1,17 +1,17 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
-import { CheckCircle2, Mail, AlertTriangle, Loader } from 'lucide-react';
+import { Button, InfoBox } from 'design-system';
+import { AlertTriangle, CheckCircle2, Loader, Mail } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { SubmitHandler } from 'react-hook-form';
 import {
   errorStyles,
   inputStyles,
-} from 'components/ForrestSection/ForrestSection';
-import { Button, InfoBox } from 'design-system';
-import { useZodForm } from 'hooks/useZodForm';
-import { useEffect, useState } from 'react';
-import { SubmitHandler } from 'react-hook-form';
-import { SuggestionFormSchema, suggestionFormSchema } from './schemas';
+} from '../../../components/ForrestSection/ForrestSection';
+import { useZodForm } from '../../../hooks/useZodForm';
 import { submit } from './actions';
+import { SuggestionFormSchema, suggestionFormSchema } from './schemas';
 
 export const SuggestionForm = () => {
   const { user } = useUser();

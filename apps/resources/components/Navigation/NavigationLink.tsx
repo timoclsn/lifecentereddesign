@@ -1,9 +1,9 @@
 'use client';
 
-import Link from 'next/link';
-import { ReactNode } from 'react';
 import { Text } from 'design-system';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;

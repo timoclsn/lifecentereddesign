@@ -1,10 +1,10 @@
 'use client';
 
-import { Loader } from 'lucide-react';
-import { useResourcesTable } from 'app/resources/ResourcesTableProvider';
-import { useFilter } from 'app/resources/useFilter';
 import { Tag } from 'design-system';
+import { Loader } from 'lucide-react';
 import { ReactNode } from 'react';
+import { useResourcesTable } from '../../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
+import { useFilter } from '../../hooks/useFilter';
 
 interface Props {
   children: ReactNode;

@@ -1,4 +1,8 @@
-import { Categories, LikedResources, Topics } from 'lib/resources';
+import {
+  Categories,
+  LikedResources,
+  Topics,
+} from '../../../../../lib/resources';
 import { CategoryFilter } from './CategoryFilter';
 import { Clear } from './Clear';
 import { LikeFilter } from './LikeFilter';

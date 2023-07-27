@@ -8,16 +8,6 @@ import { Heading } from 'design-system';
 import { DeleteAccountButton } from './DeleteAccountButton';
 
 const ProfilePage = () => {
-  // const { signOut } = useAuth();
-  // const utils = trpc.useContext();
-  // const { mutate, isLoading, isSuccess, isError } =
-  //   trpc.user.delete.useMutation({
-  //     onSuccess: () => {
-  //       utils.resources.likes.invalidate();
-  //       signOut();
-  //     },
-  //   });
-
   return (
     <section className="mx-auto max-w-4xl">
       <Heading level="1" className="mb-8">

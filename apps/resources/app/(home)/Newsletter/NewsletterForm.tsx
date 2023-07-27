@@ -1,19 +1,19 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
-import { Check, CheckCircle2, Mail, AlertTriangle, Loader } from 'lucide-react';
 import * as Checkbox from '@radix-ui/react-checkbox';
+import { Button, InfoBox } from 'design-system';
+import { AlertTriangle, Check, CheckCircle2, Loader, Mail } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Controller, SubmitHandler } from 'react-hook-form';
 import {
   checkboxStyles,
   errorStyles,
   inputStyles,
-} from 'components/ForrestSection/ForrestSection';
-import { Button, InfoBox } from 'design-system';
-import { useZodForm } from 'hooks/useZodForm';
-import { useEffect, useState } from 'react';
-import { Controller, SubmitHandler } from 'react-hook-form';
-import { NewsletterFormSchema, newsletterFormSchema } from './schemas';
+} from '../../../components/ForrestSection/ForrestSection';
+import { useZodForm } from '../../../hooks/useZodForm';
 import { subscribe } from './actions';
+import { NewsletterFormSchema, newsletterFormSchema } from './schemas';
 
 export const NewsletterForm = () => {
   const { user } = useUser();

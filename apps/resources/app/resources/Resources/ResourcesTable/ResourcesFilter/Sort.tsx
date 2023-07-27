@@ -1,7 +1,7 @@
 'use client';
 
 import { Select } from 'design-system';
-import { useFilter } from './useFilter';
+import { useFilter } from '../../../../../hooks/useFilter';
 
 export const Sort = () => {
   const { searchParams, handleValueChange, isPending } = useFilter();

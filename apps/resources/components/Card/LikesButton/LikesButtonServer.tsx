@@ -1,10 +1,10 @@
 import { auth } from '@clerk/nextjs';
+import { unstable_cache as cache } from 'next/cache';
 import {
   ContentType,
   getResourceNewLikes,
   getResourceOldLikesCount,
-} from 'lib/resources';
-import { unstable_cache as cache } from 'next/cache';
+} from '../../../lib/resources';
 import { LikesButtonClient } from './LikesButtonClient';
 
 const getLikesData = async (resourceId: number, resourceType: ContentType) => {

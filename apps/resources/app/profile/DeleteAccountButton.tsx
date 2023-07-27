@@ -1,10 +1,10 @@
 'use client';
 
-import { CheckCircle2, AlertTriangle, Loader, XCircle } from 'lucide-react';
+import { useAuth } from '@clerk/nextjs';
 import { Button, InfoBox } from 'design-system';
+import { AlertTriangle, CheckCircle2, Loader, XCircle } from 'lucide-react';
 import { useState } from 'react';
 import { deleteAccount } from './actions';
-import { useAuth } from '@clerk/nextjs';
 
 export const DeleteAccountButton = () => {
   const { signOut } = useAuth();

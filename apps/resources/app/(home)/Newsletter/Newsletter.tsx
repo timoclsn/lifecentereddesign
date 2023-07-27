@@ -1,6 +1,6 @@
-import { ForrestSection } from 'components/ForrestSection/ForrestSection';
 import { Heading, Link, Text } from 'design-system';
 import NextLink from 'next/link';
+import { ForrestSection } from '../../../components/ForrestSection/ForrestSection';
 import { NewsletterForm } from './NewsletterForm';
 
 export const Newsletter = () => {

@@ -1,8 +1,8 @@
 'use client';
 
-import { ArrowDown, Loader } from 'lucide-react';
 import { Button } from 'design-system';
-import { useFilter } from './useFilter';
+import { ArrowDown, Loader } from 'lucide-react';
+import { useFilter } from '../../../../../hooks/useFilter';
 
 export const ShowMoreButton = () => {
   const { searchParams, handleValueChange, isPending } = useFilter();

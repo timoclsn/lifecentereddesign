@@ -1,11 +1,11 @@
 'use client';
 
-import { Heart } from 'lucide-react';
 import * as Toggle from '@radix-ui/react-toggle';
 import { Tooltip } from 'design-system';
-import { LikedResources } from 'lib/resources';
-import { SolidHeart } from '../../components/Icons/SolidHeart';
-import { useFilter } from './useFilter';
+import { Heart } from 'lucide-react';
+import { SolidHeart } from '../../../../../components/Icons/SolidHeart';
+import { useFilter } from '../../../../../hooks/useFilter';
+import { LikedResources } from '../../../../../lib/resources';
 
 interface Props {
   likedResources: LikedResources;

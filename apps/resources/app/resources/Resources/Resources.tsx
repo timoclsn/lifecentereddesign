@@ -1,7 +1,7 @@
-import { ResourcesTable } from 'app/resources/ResourcesTable';
 import { Heading, Text, getRandomBackground } from 'design-system';
 import { Suspense } from 'react';
-import { ReseourcesFilter } from './page';
+import { ReseourcesFilter } from '../page';
+import { ResourcesTable } from './ResourcesTable/ResourcesTable';
 
 interface Props {
   resourcesFilter: ReseourcesFilter;

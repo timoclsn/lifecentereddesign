@@ -1,15 +1,15 @@
 import { auth } from '@clerk/nextjs';
+import { unstable_cache as cache } from 'next/cache';
+import { ReseourcesFilter } from '../../page';
+import { ResourcesFilter } from './ResourcesFilter/ResourcesFilter';
+import { ResourcesList } from './ResourcesList/ResourcesList';
+import { ResourcesTableProvider } from './ResourcesTableProvider';
 import {
   getCategories,
   getLikedResources,
   getResources,
   getTopics,
-} from 'lib/resources';
-import { unstable_cache as cache } from 'next/cache';
-import { ResourcesFilter } from './ResourcesFilter';
-import { ResourcesList } from './ResourcesList';
-import { ResourcesTableProvider } from './ResourcesTableProvider';
-import { ReseourcesFilter } from './page';
+} from '../../../../lib/resources';
 
 interface Props {
   reseourcesFilter: ReseourcesFilter;

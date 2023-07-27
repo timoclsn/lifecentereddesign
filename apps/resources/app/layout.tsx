@@ -3,15 +3,15 @@ import '@fontsource-variable/source-serif-4';
 import '@fontsource/dm-sans';
 import '@fontsource/dm-sans/400-italic.css';
 import '@fontsource/dm-sans/700.css';
-import { CO2Badge } from 'components/CO2Badge/CO2Badge';
-import { Footer } from 'components/Footer';
-import { Navigation } from 'components/Navigation/Navigation';
 import { Container } from 'design-system';
 import 'design-system/src/themes/resources.css';
 import { Metadata } from 'next';
 import Script from 'next/script';
 import { ReactNode, Suspense } from 'react';
 import '../styles/globals.css';
+import { CO2Badge } from '../components/CO2Badge/CO2Badge';
+import { Navigation } from '../components/Navigation/Navigation';
+import { Footer } from '../components/Footer/Footer';
 
 const title = 'LifeCenteredDesign.Net';
 const description =

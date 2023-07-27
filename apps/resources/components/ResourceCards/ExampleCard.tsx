@@ -1,5 +1,5 @@
 import { Link, Tag } from 'lucide-react';
-import { Example } from 'lib/resources';
+import { Example } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
 
