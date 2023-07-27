@@ -10,7 +10,7 @@
     "typecheck": "turbo run typecheck",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint:workspace": "manypkg check",
-    "lint:workspace:fix": "manypkg fix",
+    "lint:workspace:X": "manypkg X",
     "db:generate": "turbo run db:generate",
     "db:push": "turbo run db:push",
     "db:pull": "turbo run db:push"

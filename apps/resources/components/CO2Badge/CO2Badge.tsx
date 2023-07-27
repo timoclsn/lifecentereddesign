@@ -2,17 +2,16 @@
 
 import * as Dialog from '@radix-ui/react-dialog';
 import { Heading, Link, Text } from 'design-system';
-import { FiArrowRight, FiX } from 'react-icons/fi';
-import { RiLeafLine } from 'react-icons/ri';
+import { ArrowRight, Leaf, X } from 'lucide-react';
 import { demoResult } from '../../lib/co2';
 import styles from './CO2Badge.module.css';
 
 export function CO2Badge() {
   const co2Consumption = demoResult;
   return (
-    <Dialog.Root modal>
+    <Dialog.Root>
       <Dialog.Trigger className="bg-lime group flex items-center gap-1 rounded-b-lg px-4 py-2 font-bold">
-        <RiLeafLine
+        <Leaf
           size={22}
           className="transition-transform group-hover:scale-110"
         />
@@ -28,7 +27,7 @@ export function CO2Badge() {
         >
           <div className="mb-4">
             <Dialog.Close className="hover:opacity-80 focus:outline-none">
-              <FiX size={24} />
+              <X size={24} />
             </Dialog.Close>
           </div>
           <div>
@@ -57,7 +56,7 @@ export function CO2Badge() {
               </ul>
             </div>
             <div className="mt-4 flex gap-4 font-bold">
-              <FiArrowRight size={24} />
+              <ArrowRight size={24} />
               <Link url="https://www.websitecarbon.com" external>
                 Website Carbon Calculator
               </Link>

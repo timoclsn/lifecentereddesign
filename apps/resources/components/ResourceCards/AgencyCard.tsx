@@ -1,4 +1,4 @@
-import { UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
+import { Link, Tag } from 'lucide-react';
 import { Agency } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -20,7 +20,7 @@ export const AgencyCard = ({ agency }: Props) => {
           ? [
               {
                 text: agency.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -30,7 +30,7 @@ export const AgencyCard = ({ agency }: Props) => {
         ...(agency.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(agency.link),
                 url: agency.link,
               },

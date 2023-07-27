@@ -1,6 +1,6 @@
-import { UilArrowRight } from '@iconscout/react-unicons';
-import { Bleed, Card, Heading, Text } from 'design-system';
+import { Bleed, Card, Heading, Text, getRandomBackground } from 'design-system';
 import { getResources } from 'lib/resources';
+import { ArrowRight } from 'lucide-react';
 import { unstable_cache as cache } from 'next/cache';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -31,7 +31,7 @@ export const NewResources = () => {
                 className="flex h-full items-center justify-center"
               >
                 <div className="text-primary-contrast-text flex items-center justify-center gap-2 [&>svg]:h-[25px] [&>svg]:w-[25px]">
-                  <UilArrowRight />
+                  <ArrowRight />
                   <Text size="large">All Resources</Text>
                 </div>
               </Card>
@@ -81,7 +81,7 @@ const Loading = () => {
           return (
             <li
               key={index}
-              className="bg-lime rounded-4xl h-[492px] w-[330px] flex-none animate-pulse sm:w-[600px]"
+              className={`rounded-4xl h-[492px] w-[330px] flex-none animate-pulse sm:w-[600px] ${getRandomBackground()}`}
             />
           );
         })}

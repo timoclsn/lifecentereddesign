@@ -1,10 +1,4 @@
-import {
-  UilCalendarAlt,
-  UilClockThree,
-  UilLinkAlt,
-  UilTagAlt,
-  UilVideo,
-} from '@iconscout/react-unicons';
+import { CalendarDays, Clock3, Link, Tag, VideoIcon } from 'lucide-react';
 import { Video } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -26,7 +20,7 @@ export const VideoCard = ({ video }: Props) => {
           ? [
               {
                 text: video.creators.map((creator) => creator.name).join(', '),
-                icon: UilVideo,
+                icon: VideoIcon,
               },
             ]
           : []),
@@ -34,7 +28,7 @@ export const VideoCard = ({ video }: Props) => {
           ? [
               {
                 text: video.creatorsPlain,
-                icon: UilVideo,
+                icon: VideoIcon,
               },
             ]
           : []),
@@ -42,7 +36,7 @@ export const VideoCard = ({ video }: Props) => {
           ? [
               {
                 text: new Date(video.date).toLocaleDateString('en'),
-                icon: UilCalendarAlt,
+                icon: CalendarDays,
               },
             ]
           : []),
@@ -50,7 +44,7 @@ export const VideoCard = ({ video }: Props) => {
           ? [
               {
                 text: `${video.duration} min`,
-                icon: UilClockThree,
+                icon: Clock3,
               },
             ]
           : []),
@@ -58,7 +52,7 @@ export const VideoCard = ({ video }: Props) => {
           ? [
               {
                 text: video.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -68,7 +62,7 @@ export const VideoCard = ({ video }: Props) => {
         ...(video.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(video.link),
                 url: video.link,
               },

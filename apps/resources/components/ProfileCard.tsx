@@ -1,12 +1,7 @@
 import { Card, CardProps, Heading, Text } from 'design-system';
 import Image, { StaticImageData } from 'next/image';
 import { ReactNode } from 'react';
-import {
-  IoIosGlobe,
-  IoLogoInstagram,
-  IoLogoLinkedin,
-  IoLogoTwitter,
-} from 'react-icons/io';
+import { Globe, Instagram, Linkedin, Twitter } from 'lucide-react';
 
 interface Props {
   children: ReactNode;
@@ -31,17 +26,17 @@ export function ProfileCard({
 }: Props) {
   return (
     <Card variant={variant}>
-      <div className="flex flex-col sm:flex-row items-start gap-6">
+      <div className="flex flex-col items-start gap-6 sm:flex-row">
         <Image
           src={image}
           alt={`Portrait image of ${name}`}
-          className="border-primary-contrast-text rounded-full border-4 border-solid leading-none w-[120px]"
+          className="border-primary-contrast-text w-[120px] rounded-full border-4 border-solid leading-none"
         />
         <div className="flex-1">
           <Heading as="h2" level="4" className="mb-1">
             {name}
           </Heading>
-          <Text as="p" className="mb-6 text-text-secondary">
+          <Text as="p" className="text-text-secondary mb-6">
             {children}
           </Text>
           <ul className="flex space-x-4">
@@ -49,7 +44,7 @@ export function ProfileCard({
               <li>
                 <a href={websiteUrl} target="_blank" rel="noopener noreferrer">
                   <span className="sr-only">Website of {name}</span>
-                  <IoIosGlobe size={24} />
+                  <Globe size={24} />
                 </a>
               </li>
             )}
@@ -57,7 +52,7 @@ export function ProfileCard({
               <li>
                 <a href={linkedInUrl} target="_blank" rel="noopener noreferrer">
                   <span className="sr-only">LinkedIn of {name}</span>
-                  <IoLogoLinkedin size={24} />
+                  <Linkedin size={24} />
                 </a>
               </li>
             )}
@@ -69,7 +64,7 @@ export function ProfileCard({
                   rel="noopener noreferrer"
                 >
                   <span className="sr-only">Instagram of {name}</span>
-                  <IoLogoInstagram size={24} />
+                  <Instagram size={24} />
                 </a>
               </li>
             )}
@@ -77,7 +72,7 @@ export function ProfileCard({
               <li>
                 <a href={twitterUrl} target="_blank" rel="noopener noreferrer">
                   <span className="sr-only">Twitter of {name}</span>
-                  <IoLogoTwitter size={24} />
+                  <Twitter size={24} />
                 </a>
               </li>
             )}

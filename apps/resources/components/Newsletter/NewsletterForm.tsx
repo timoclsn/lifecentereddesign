@@ -1,13 +1,7 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
-import {
-  UilCheck,
-  UilCheckCircle,
-  UilEnvelopeAlt,
-  UilExclamationTriangle,
-  UilSpinnerAlt,
-} from '@iconscout/react-unicons';
+import { Check, CheckCircle2, Mail, AlertTriangle, Loader } from 'lucide-react';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import {
   checkboxStyles,
@@ -112,7 +106,7 @@ export const NewsletterForm = () => {
               className={checkboxStyles({ error: !!errors.consens })}
             >
               <Checkbox.Indicator className="animate-in zoom-in-150 fade-in-50 duration-100">
-                <UilCheck />
+                <Check />
               </Checkbox.Indicator>
             </Checkbox.Root>
           )}
@@ -127,11 +121,7 @@ export const NewsletterForm = () => {
 
       {/* Submit button */}
       <Button type="submit" size="large">
-        {isLoading ? (
-          <UilSpinnerAlt className="animate-spin" />
-        ) : (
-          <UilEnvelopeAlt />
-        )}
+        {isLoading ? <Loader className="animate-spin" /> : <Mail />}
         Subscribe
       </Button>
 
@@ -139,7 +129,7 @@ export const NewsletterForm = () => {
       {isSuccess && (
         <InfoBox
           variant="success"
-          icon={<UilCheckCircle />}
+          icon={<CheckCircle2 />}
           className="animate-in zoom-in-0 fade-in duration-150 ease-in-out"
         >
           Almost finished... We need to confirm your email address. To complete
@@ -150,7 +140,7 @@ export const NewsletterForm = () => {
       {error && (
         <InfoBox
           variant="error"
-          icon={<UilExclamationTriangle />}
+          icon={<AlertTriangle />}
           className="animate-in zoom-in-50 fade-in duration-150 ease-in-out"
         >
           {error}

@@ -1,4 +1,4 @@
-import { UilGrin, UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
+import { Smile, Link, Tag } from 'lucide-react';
 import { Podcast } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -20,7 +20,7 @@ export const PodcastCard = ({ podcast }: Props) => {
           ? [
               {
                 text: podcast.hosts.map((host) => host.name).join(', '),
-                icon: UilGrin,
+                icon: Smile,
               },
             ]
           : []),
@@ -28,7 +28,7 @@ export const PodcastCard = ({ podcast }: Props) => {
           ? [
               {
                 text: podcast.hostsPlain,
-                icon: UilGrin,
+                icon: Smile,
               },
             ]
           : []),
@@ -36,7 +36,7 @@ export const PodcastCard = ({ podcast }: Props) => {
           ? [
               {
                 text: podcast.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -46,7 +46,7 @@ export const PodcastCard = ({ podcast }: Props) => {
         ...(podcast.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(podcast.link),
                 url: podcast.link,
               },

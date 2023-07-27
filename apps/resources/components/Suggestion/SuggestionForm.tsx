@@ -1,12 +1,7 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
-import {
-  UilCheckCircle,
-  UilEnvelopeAlt,
-  UilExclamationTriangle,
-  UilSpinnerAlt,
-} from '@iconscout/react-unicons';
+import { CheckCircle2, Mail, AlertTriangle, Loader } from 'lucide-react';
 import {
   errorStyles,
   inputStyles,
@@ -139,11 +134,7 @@ export const SuggestionForm = () => {
 
       {/* Submit button */}
       <Button type="submit" size="large">
-        {isLoading ? (
-          <UilSpinnerAlt className="animate-spin" />
-        ) : (
-          <UilEnvelopeAlt />
-        )}
+        {isLoading ? <Loader className="animate-spin" /> : <Mail />}
         Submit
       </Button>
 
@@ -151,7 +142,7 @@ export const SuggestionForm = () => {
       {isSuccess && (
         <InfoBox
           variant="success"
-          icon={<UilCheckCircle />}
+          icon={<CheckCircle2 />}
           className="animate-in zoom-in-0 fade-in duration-150 ease-in-out"
         >
           Thanks for your contribution! We&apos;ll get the resource on the site
@@ -161,7 +152,7 @@ export const SuggestionForm = () => {
       {error && (
         <InfoBox
           variant="error"
-          icon={<UilExclamationTriangle />}
+          icon={<AlertTriangle />}
           className="animate-in zoom-in-50 fade-in duration-150 ease-in-out"
         >
           {error}

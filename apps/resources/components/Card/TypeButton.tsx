@@ -1,6 +1,6 @@
 'use client';
 
-import { UilSpinnerAlt } from '@iconscout/react-unicons';
+import { Loader } from 'lucide-react';
 import { useResourcesTable } from 'app/resources/ResourcesTableProvider';
 import { useFilter } from 'app/resources/useFilter';
 import { Tag } from 'design-system';
@@ -38,7 +38,7 @@ export const TypeButton = ({ children, type }: Props) => {
   return getType(
     <Tag variant="outline">
       {children}
-      {isPending && <UilSpinnerAlt className="animate-spin" />}
+      {isPending && <Loader className="animate-spin" />}
     </Tag>
   );
 };

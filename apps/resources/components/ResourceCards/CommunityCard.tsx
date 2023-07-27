@@ -1,4 +1,4 @@
-import { UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
+import { Link, Tag } from 'lucide-react';
 import { Community } from 'lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -20,7 +20,7 @@ export const CommunityCard = ({ community }: Props) => {
           ? [
               {
                 text: community.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -30,7 +30,7 @@ export const CommunityCard = ({ community }: Props) => {
         ...(community.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(community.link),
                 url: community.link,
               },

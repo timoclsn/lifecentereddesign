@@ -1,6 +1,6 @@
 'use client';
 
-import { UilCheck, UilCopyAlt } from '@iconscout/react-unicons';
+import { Check, Copy } from 'lucide-react';
 import { Tag, Tooltip } from 'design-system';
 import { wait } from 'lib/utils';
 import { useState } from 'react';
@@ -25,7 +25,7 @@ export const CopyButton = ({ link }: Props) => {
       <button className="flex items-stretch" onClick={copyLink}>
         <Tag variant="dark">
           <div className="flex items-center gap-1">
-            {copied ? <UilCheck size="18" /> : <UilCopyAlt size="18" />}
+            {copied ? <Check size="18" /> : <Copy size="18" />}
             <span className="sr-only">Copy resource link</span>
           </div>
         </Tag>

@@ -1,10 +1,4 @@
-import {
-  UilBookReader,
-  UilCalendarAlt,
-  UilLinkAlt,
-  UilNewspaper,
-  UilTagAlt,
-} from '@iconscout/react-unicons';
+import { BookOpen, CalendarDays, Link, Newspaper, Tag } from 'lucide-react';
 import { Paper } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -26,7 +20,7 @@ export const PaperCard = ({ paper }: Props) => {
           ? [
               {
                 text: paper.authors.map((author) => author?.name).join(', '),
-                icon: UilBookReader,
+                icon: BookOpen,
               },
             ]
           : []),
@@ -34,7 +28,7 @@ export const PaperCard = ({ paper }: Props) => {
           ? [
               {
                 text: paper.authorsPlain,
-                icon: UilBookReader,
+                icon: BookOpen,
               },
             ]
           : []),
@@ -42,7 +36,7 @@ export const PaperCard = ({ paper }: Props) => {
           ? [
               {
                 text: new Date(paper.date).toLocaleDateString('en'),
-                icon: UilCalendarAlt,
+                icon: CalendarDays,
               },
             ]
           : []),
@@ -50,7 +44,7 @@ export const PaperCard = ({ paper }: Props) => {
           ? [
               {
                 text: paper.datePlain,
-                icon: UilCalendarAlt,
+                icon: CalendarDays,
               },
             ]
           : []),
@@ -58,7 +52,7 @@ export const PaperCard = ({ paper }: Props) => {
           ? [
               {
                 text: paper.journal,
-                icon: UilNewspaper,
+                icon: Newspaper,
               },
             ]
           : []),
@@ -66,7 +60,7 @@ export const PaperCard = ({ paper }: Props) => {
           ? [
               {
                 text: paper.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -76,7 +70,7 @@ export const PaperCard = ({ paper }: Props) => {
         ...(paper.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(paper.link),
                 url: paper.link,
               },

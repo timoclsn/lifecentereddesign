@@ -1,4 +1,4 @@
-import { UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
+import { Link, Tag } from 'lucide-react';
 import { Course } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -20,7 +20,7 @@ export const CourseCard = ({ course }: Props) => {
           ? [
               {
                 text: course.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -30,7 +30,7 @@ export const CourseCard = ({ course }: Props) => {
         ...(course.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(course.link),
                 url: course.link,
               },

@@ -1,8 +1,4 @@
-import {
-  UilBriefcaseAlt,
-  UilLinkAlt,
-  UilTagAlt,
-} from '@iconscout/react-unicons';
+import { Briefcase, Link, Tag } from 'lucide-react';
 import { Thoughtleader } from 'lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -24,7 +20,7 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
           ? [
               {
                 text: thoughtleader.jobDescription,
-                icon: UilBriefcaseAlt,
+                icon: Briefcase,
               },
             ]
           : []),
@@ -34,7 +30,7 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
                 text: thoughtleader.topics
                   .map((topic) => topic.name)
                   .join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -44,7 +40,7 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
         ...(thoughtleader.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(thoughtleader.link),
                 url: thoughtleader.link,
               },

@@ -1,8 +1,4 @@
-import {
-  UilExternalLinkAlt,
-  UilNotes,
-  UilUsersAlt,
-} from '@iconscout/react-unicons';
+import { ExternalLink, StickyNote, Users2 } from 'lucide-react';
 import {
   Card as CardPrimitive,
   CardProps,
@@ -68,7 +64,7 @@ export const Card = ({
         {resourceLink && (
           <span>
             {' '}
-            <UilExternalLinkAlt size={18} className="inline align-baseline" />
+            <ExternalLink size={18} className="inline align-baseline" />
           </span>
         )}
       </Heading>
@@ -105,7 +101,7 @@ export const Card = ({
             {note && (
               <Tooltip content={`Editor's note: ${note}`} openOnClick>
                 <div>
-                  <UilNotes />
+                  <StickyNote />
                 </div>
               </Tooltip>
             )}
@@ -117,7 +113,7 @@ export const Card = ({
                 openOnClick
               >
                 <div>
-                  <UilUsersAlt />
+                  <Users2 />
                 </div>
               </Tooltip>
             )}

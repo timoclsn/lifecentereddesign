@@ -1,11 +1,11 @@
 import {
-  UilBookReader,
-  UilBooks,
-  UilCalendarAlt,
-  UilLinkAlt,
-  UilQrcodeScan,
-  UilTagAlt,
-} from '@iconscout/react-unicons';
+  BookOpen,
+  Book as BookIcon,
+  CalendarDays,
+  Link,
+  QrCode,
+  Tag,
+} from 'lucide-react';
 import { Book } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -27,7 +27,7 @@ export const BookCard = ({ book }: Props) => {
           ? [
               {
                 text: book.authors.map((author) => author.name).join(', '),
-                icon: UilBookReader,
+                icon: BookOpen,
               },
             ]
           : []),
@@ -35,7 +35,7 @@ export const BookCard = ({ book }: Props) => {
           ? [
               {
                 text: new Date(book.publishingDate).toLocaleDateString('en'),
-                icon: UilCalendarAlt,
+                icon: CalendarDays,
               },
             ]
           : []),
@@ -43,7 +43,7 @@ export const BookCard = ({ book }: Props) => {
           ? [
               {
                 text: book.publisher,
-                icon: UilBooks,
+                icon: BookIcon,
               },
             ]
           : []),
@@ -51,7 +51,7 @@ export const BookCard = ({ book }: Props) => {
           ? [
               {
                 text: book.isbn,
-                icon: UilQrcodeScan,
+                icon: QrCode,
               },
             ]
           : []),
@@ -59,7 +59,7 @@ export const BookCard = ({ book }: Props) => {
           ? [
               {
                 text: book.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -69,7 +69,7 @@ export const BookCard = ({ book }: Props) => {
         ...(book.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(book.link),
                 url: book.link,
               },

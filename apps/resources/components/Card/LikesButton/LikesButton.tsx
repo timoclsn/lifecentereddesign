@@ -1,4 +1,4 @@
-import { UilHeart } from '@iconscout/react-unicons';
+import { Heart } from 'lucide-react';
 import { ContentType } from 'lib/resources';
 import { Suspense } from 'react';
 import { LikesButtonServer } from './LikesButtonServer';
@@ -29,7 +29,7 @@ const Loading = () => {
   return (
     <div className="ease group flex items-center justify-center gap-2 disabled:opacity-80">
       <div>
-        <UilHeart className="animate-pulse" />
+        <Heart className="animate-pulse" />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { ResourcesTable } from 'app/resources/ResourcesTable';
-import { Heading, Text } from 'design-system';
+import { Heading, Text, getRandomBackground } from 'design-system';
 import { Suspense } from 'react';
 import { ReseourcesFilter } from './page';
 
@@ -28,6 +28,18 @@ export const Resources = async ({ resourcesFilter }: Props) => {
 
 const Loading = () => {
   return (
-    <div className="rounded-4xl bg-lime h-[1000px] w-full animate-pulse" />
+    <div className="space-y-10">
+      <div className="rounded-4xl bg-stone h-[100px] w-full animate-pulse" />
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {Array(10)
+          .fill(0)
+          .map((_, index) => (
+            <div
+              key={index}
+              className={`rounded-4xl h-[400px] w-full animate-pulse ${getRandomBackground()}`}
+            />
+          ))}
+      </div>
+    </div>
   );
 };

@@ -1,4 +1,4 @@
-import { UilBookReader, UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
+import { BookOpen, Link, Tag } from 'lucide-react';
 import { Newsletter } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -22,7 +22,7 @@ export const NewsletterCard = ({ newsletter }: Props) => {
                 text: newsletter.authors
                   .map((author) => author.name)
                   .join(', '),
-                icon: UilBookReader,
+                icon: BookOpen,
               },
             ]
           : []),
@@ -30,7 +30,7 @@ export const NewsletterCard = ({ newsletter }: Props) => {
           ? [
               {
                 text: newsletter.authorsPlain,
-                icon: UilBookReader,
+                icon: BookOpen,
               },
             ]
           : []),
@@ -38,7 +38,7 @@ export const NewsletterCard = ({ newsletter }: Props) => {
           ? [
               {
                 text: newsletter.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -48,7 +48,7 @@ export const NewsletterCard = ({ newsletter }: Props) => {
         ...(newsletter.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(newsletter.link),
                 url: newsletter.link,
               },

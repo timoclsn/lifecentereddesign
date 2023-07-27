@@ -1,10 +1,4 @@
-import {
-  UilBookReader,
-  UilCalendarAlt,
-  UilClockThree,
-  UilLinkAlt,
-  UilTagAlt,
-} from '@iconscout/react-unicons';
+import { BookOpen, CalendarDays, Clock3, Link, Tag } from 'lucide-react';
 import { Article } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -26,7 +20,7 @@ export const ArticleCard = ({ article }: Props) => {
           ? [
               {
                 text: article.authors.map((author) => author?.name).join(', '),
-                icon: UilBookReader,
+                icon: BookOpen,
               },
             ]
           : []),
@@ -34,7 +28,7 @@ export const ArticleCard = ({ article }: Props) => {
           ? [
               {
                 text: article.authorsPlain,
-                icon: UilBookReader,
+                icon: BookOpen,
               },
             ]
           : []),
@@ -42,7 +36,7 @@ export const ArticleCard = ({ article }: Props) => {
           ? [
               {
                 text: new Date(article.date).toLocaleDateString('en'),
-                icon: UilCalendarAlt,
+                icon: CalendarDays,
               },
             ]
           : []),
@@ -50,7 +44,7 @@ export const ArticleCard = ({ article }: Props) => {
           ? [
               {
                 text: article.datePlain,
-                icon: UilCalendarAlt,
+                icon: CalendarDays,
               },
             ]
           : []),
@@ -58,7 +52,7 @@ export const ArticleCard = ({ article }: Props) => {
           ? [
               {
                 text: `${article.duration} min`,
-                icon: UilClockThree,
+                icon: Clock3,
               },
             ]
           : []),
@@ -66,7 +60,7 @@ export const ArticleCard = ({ article }: Props) => {
           ? [
               {
                 text: article.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -76,7 +70,7 @@ export const ArticleCard = ({ article }: Props) => {
         ...(article.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(article.link),
                 url: article.link,
               },

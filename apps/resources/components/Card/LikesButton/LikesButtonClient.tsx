@@ -1,11 +1,11 @@
 'use client';
 
 import { useAuth } from '@clerk/nextjs';
-import { UilHeart } from '@iconscout/react-unicons';
+import { Heart } from 'lucide-react';
 import { cva } from 'class-variance-authority';
 import { Tooltip } from 'design-system';
 import { ContentType } from 'lib/resources';
-import { experimental_useOptimistic as useOptimistic } from 'react';
+import { experimental_useOptimistic as useOptimistic, useState } from 'react';
 import { SolidHeart } from '../../Icons/SolidHeart';
 import { like, unLike } from '../actions';
 
@@ -49,6 +49,8 @@ export const LikesButtonClient = ({
     (state, newState) => newState as boolean
   );
 
+  const isLoading = optimisticCount !== count;
+
   const handleClick = async () => {
     if (liked) {
       updateOptimisticCount(optimisticCount - 1);
@@ -81,6 +83,7 @@ export const LikesButtonClient = ({
   return (
     <button
       onClick={handleClick}
+      disabled={isLoading}
       className="ease group flex items-center justify-center gap-2 disabled:opacity-80"
     >
       <div className="animate-in slide-in-from-right-full fade-in transition-transform duration-100 ease-in">
@@ -104,7 +107,7 @@ export const LikesButtonClient = ({
               })}
             />
           ) : (
-            <UilHeart className={heartVariants()} />
+            <Heart className={heartVariants()} />
           )}
         </div>
       </Tooltip>

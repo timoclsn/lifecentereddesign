@@ -1,4 +1,4 @@
-import { UilAt, UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
+import { AtSign, Link, Tag } from 'lucide-react';
 import { SocialMediaProfile } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -20,7 +20,7 @@ export const SocialMediaProfileCard = ({ socielaMediaProfile }: Props) => {
           ? [
               {
                 text: socielaMediaProfile.handle,
-                icon: UilAt,
+                icon: AtSign,
               },
             ]
           : []),
@@ -30,7 +30,7 @@ export const SocialMediaProfileCard = ({ socielaMediaProfile }: Props) => {
                 text: socielaMediaProfile.topics
                   .map((topic) => topic.name)
                   .join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -40,7 +40,7 @@ export const SocialMediaProfileCard = ({ socielaMediaProfile }: Props) => {
         ...(socielaMediaProfile.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(socielaMediaProfile.link),
                 url: socielaMediaProfile.link,
               },

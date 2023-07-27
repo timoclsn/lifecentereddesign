@@ -1,9 +1,4 @@
-import {
-  UilBookReader,
-  UilCalendarAlt,
-  UilLinkAlt,
-  UilTagAlt,
-} from '@iconscout/react-unicons';
+import { BookOpen, CalendarDays, Link, Tag } from 'lucide-react';
 import { Report } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -25,7 +20,7 @@ export const ReportCard = ({ report }: Props) => {
           ? [
               {
                 text: report.authors.map((author) => author?.name).join(', '),
-                icon: UilBookReader,
+                icon: BookOpen,
               },
             ]
           : []),
@@ -33,7 +28,7 @@ export const ReportCard = ({ report }: Props) => {
           ? [
               {
                 text: report.authorsPlain,
-                icon: UilBookReader,
+                icon: BookOpen,
               },
             ]
           : []),
@@ -41,7 +36,7 @@ export const ReportCard = ({ report }: Props) => {
           ? [
               {
                 text: new Date(report.date).toLocaleDateString('en'),
-                icon: UilCalendarAlt,
+                icon: CalendarDays,
               },
             ]
           : []),
@@ -49,7 +44,7 @@ export const ReportCard = ({ report }: Props) => {
           ? [
               {
                 text: report.datePlain,
-                icon: UilCalendarAlt,
+                icon: CalendarDays,
               },
             ]
           : []),
@@ -57,7 +52,7 @@ export const ReportCard = ({ report }: Props) => {
           ? [
               {
                 text: report.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -67,7 +62,7 @@ export const ReportCard = ({ report }: Props) => {
         ...(report.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(report.link),
                 url: report.link,
               },

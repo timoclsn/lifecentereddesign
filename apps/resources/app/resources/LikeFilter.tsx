@@ -1,6 +1,6 @@
 'use client';
 
-import { UilHeart } from '@iconscout/react-unicons';
+import { Heart } from 'lucide-react';
 import * as Toggle from '@radix-ui/react-toggle';
 import { Tooltip } from 'design-system';
 import { LikedResources } from 'lib/resources';
@@ -38,7 +38,7 @@ export const LikeFilter = ({ likedResources }: Props) => {
             handleValueChange('likes', 'true');
           }}
         >
-          {filterByLikes ? <SolidHeart /> : <UilHeart />}
+          {filterByLikes ? <SolidHeart /> : <Heart />}
         </Toggle.Root>
       </Tooltip>
       {likedResourcesCount}

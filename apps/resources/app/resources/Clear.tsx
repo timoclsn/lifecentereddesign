@@ -1,6 +1,6 @@
 'use client';
 
-import { UilTimesCircle } from '@iconscout/react-unicons';
+import { XCircle } from 'lucide-react';
 import { Tooltip } from 'design-system';
 import { useFilter } from './useFilter';
 
@@ -14,7 +14,7 @@ export const Clear = () => {
         onClick={clearAll}
         className="ease transition-transform hover:scale-110 active:scale-90 disabled:scale-100 disabled:opacity-50"
       >
-        <UilTimesCircle />
+        <XCircle />
         <span className="sr-only">Clear filters</span>
       </button>
     </Tooltip>

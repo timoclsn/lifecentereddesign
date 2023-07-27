@@ -1,6 +1,6 @@
 'use client';
 
-import { UilArrowDown, UilSpinnerAlt } from '@iconscout/react-unicons';
+import { ArrowDown, Loader } from 'lucide-react';
 import { Button } from 'design-system';
 import { useFilter } from './useFilter';
 
@@ -15,11 +15,7 @@ export const ShowMoreButton = () => {
         handleValueChange('limit', newLimit.toString());
       }}
     >
-      {isPending ? (
-        <UilSpinnerAlt className="animate-spin" />
-      ) : (
-        <UilArrowDown />
-      )}
+      {isPending ? <Loader className="animate-spin" /> : <ArrowDown />}
       Show More
     </Button>
   );
