@@ -29,7 +29,7 @@ export const Resources = async ({ resourcesFilter }: Props) => {
 const Loading = () => {
   return (
     <div className="space-y-10">
-      <div className="rounded-4xl bg-stone h-[100px] w-full animate-pulse" />
+      <div className="bg-stone h-[100px] w-full animate-pulse" />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {Array(10)
           .fill(0)
