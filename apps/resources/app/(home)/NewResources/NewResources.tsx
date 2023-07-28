@@ -62,7 +62,7 @@ const NewResourcesInner = async () => {
         return (
           <li
             key={`${resource.type}-${resource.id}`}
-            className="w-[330px] flex-none snap-center sm:w-[600px]"
+            className="relative w-[330px] flex-none snap-center sm:w-[600px]"
           >
             {component}
           </li>
