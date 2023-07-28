@@ -37,7 +37,7 @@ export const LikesButtonServer = async ({
   resourceTitle,
 }: Props) => {
   const tag = likesDataTag(resourceId, resourceType);
-  const { count, liked } = await cache(getLikesData, undefined, {
+  const { count, liked } = await cache(getLikesData, [tag], {
     tags: [tag],
   })(resourceId, resourceType);
 

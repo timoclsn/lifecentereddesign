@@ -18,10 +18,16 @@ interface Props {
 export const ResourcesTable = async ({ reseourcesFilter }: Props) => {
   const { userId } = auth();
   const [resources, categories, topics, likedResources] = await Promise.all([
-    cache(getResources, undefined, { revalidate: 60, tags: ['resources'] })(),
-    cache(getCategories, undefined, { revalidate: 60, tags: ['categroies'] })(),
-    cache(getTopics, undefined, { revalidate: 60, tags: ['topics'] })(),
-    cache(getLikedResources, undefined, {
+    cache(getResources, ['resources'], {
+      revalidate: 60,
+      tags: ['resources'],
+    })(),
+    cache(getCategories, ['categroies'], {
+      revalidate: 60,
+      tags: ['categroies'],
+    })(),
+    cache(getTopics, ['topics'], { revalidate: 60, tags: ['topics'] })(),
+    cache(getLikedResources, ['liked-resources'], {
       revalidate: 60,
       tags: ['liked-resources'],
     })(userId ?? ''),

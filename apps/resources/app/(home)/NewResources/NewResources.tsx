@@ -44,7 +44,7 @@ export const NewResources = () => {
 };
 
 const NewResourcesInner = async () => {
-  const resources = await cache(getResources, undefined, {
+  const resources = await cache(getResources, ['resources'], {
     revalidate: 60,
     tags: ['resources'],
   })();
