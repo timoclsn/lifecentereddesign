@@ -101,13 +101,9 @@ export const LikesButtonClient = ({
       >
         <div>
           {optimisticLiked ? (
-            <SolidHeart
-              className={heartVariants({
-                active: optimisticLiked,
-              })}
-            />
+            <SolidHeart className={heartVariants({ active: true })} />
           ) : (
-            <Heart className={heartVariants()} />
+            <Heart className={heartVariants({ active: false })} />
           )}
         </div>
       </Tooltip>
