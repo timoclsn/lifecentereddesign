@@ -23,13 +23,17 @@ export const Search = () => {
   useEffect(() => {
     if (!inputChanged) return;
     handleSearch(searchInput);
-  }, [handleSearch, inputChanged, searchInput]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInput]);
 
   // Set search input when search query changes
   useEffect(() => {
     if (!inputChanged) return;
     setSearchInput(searchQuery ?? '');
-  }, [inputChanged, searchQuery]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]);
 
   return (
     <div className="bg-primary-ghost-bg text-text-secondary focus-within:ring-text-secondary flex min-w-[100px] flex-1 items-center gap-2 px-4 py-1 outline-none ring-inset focus-within:ring-2 sm:max-w-[240px]">
