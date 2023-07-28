@@ -1,56 +1,26 @@
-import {
-  UilCalendarAlt,
-  UilClockThree,
-  UilGrin,
-  UilLinkAlt,
-  UilMicrophone,
-  UilTagAlt,
-} from '@iconscout/react-unicons';
+import { CalendarDays, Clock3, Smile, Link, Mic, Tag } from 'lucide-react';
 import { PodcastEpisode } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
-import { Card } from '../Card';
-import { useResources } from '../Resources';
+import { Card } from '../Card/Card';
 
 interface Props {
   podcastEpisode: PodcastEpisode;
 }
 
 export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
-  const { dispatch, state } = useResources();
-  const { inContext } = state;
   return (
     <Card
       resourceId={podcastEpisode.id}
       resourceType={podcastEpisode.type}
       variant="sand"
       displayType="Podcast Episode"
-      onTypeClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_TYPE',
-                typeIs: 'podcastEpisode',
-              });
-            }
-          : undefined
-      }
-      onCategoryClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_CATEGORY',
-                category: podcastEpisode.category?.name,
-              });
-            }
-          : undefined
-      }
       title={podcastEpisode.title}
       metaInfos={[
         ...(podcastEpisode.podcast
           ? [
               {
                 text: podcastEpisode.podcast.title,
-                icon: UilMicrophone,
+                icon: Mic,
               },
             ]
           : []),
@@ -58,7 +28,7 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
           ? [
               {
                 text: podcastEpisode.podcastPlain,
-                icon: UilMicrophone,
+                icon: Mic,
               },
             ]
           : []),
@@ -68,7 +38,7 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
                 text: podcastEpisode.guests
                   .map((guest) => guest.name)
                   .join(', '),
-                icon: UilGrin,
+                icon: Smile,
               },
             ]
           : []),
@@ -76,7 +46,7 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
           ? [
               {
                 text: new Date(podcastEpisode.date).toLocaleDateString('en'),
-                icon: UilCalendarAlt,
+                icon: CalendarDays,
               },
             ]
           : []),
@@ -84,7 +54,7 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
           ? [
               {
                 text: `${podcastEpisode.duration} min`,
-                icon: UilClockThree,
+                icon: Clock3,
               },
             ]
           : []),
@@ -94,7 +64,7 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
                 text: podcastEpisode.topics
                   .map((topic) => topic.name)
                   .join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -104,7 +74,7 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
         ...(podcastEpisode.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(podcastEpisode.link),
                 url: podcastEpisode.link,
               },

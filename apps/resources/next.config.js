@@ -8,7 +8,7 @@ const config = {
   },
   transpilePackages: ['design-system'],
   experimental: {
-    swcPlugins: [['next-superjson-plugin', {}]],
+    serverActions: true,
   },
   async rewrites() {
     return [

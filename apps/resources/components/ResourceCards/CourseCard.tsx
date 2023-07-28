@@ -1,49 +1,26 @@
-import { UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
+import { Link, Tag } from 'lucide-react';
 import { Course } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
-import { Card } from '../Card';
-import { useResources } from '../Resources';
+import { Card } from '../Card/Card';
 
 interface Props {
   course: Course;
 }
 
 export const CourseCard = ({ course }: Props) => {
-  const { dispatch, state } = useResources();
-  const { inContext } = state;
   return (
     <Card
       resourceId={course.id}
       resourceType={course.type}
       variant="evening"
       displayType="Course"
-      onTypeClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_TYPE',
-                typeIs: 'course',
-              });
-            }
-          : undefined
-      }
-      onCategoryClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_CATEGORY',
-                category: course.category?.name,
-              });
-            }
-          : undefined
-      }
       title={course.name}
       metaInfos={[
         ...(course.topics.length
           ? [
               {
                 text: course.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -53,7 +30,7 @@ export const CourseCard = ({ course }: Props) => {
         ...(course.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(course.link),
                 url: course.link,
               },

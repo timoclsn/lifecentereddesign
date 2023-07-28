@@ -1,49 +1,26 @@
-import { UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
-import { Example } from 'lib/resources';
+import { Link, Tag } from 'lucide-react';
+import { Example } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
-import { Card } from '../Card';
-import { useResources } from '../Resources';
+import { Card } from '../Card/Card';
 
 interface Props {
   example: Example;
 }
 
 export const ExampleCard = ({ example }: Props) => {
-  const { dispatch, state } = useResources();
-  const { inContext } = state;
   return (
     <Card
       resourceId={example.id}
       resourceType={example.type}
       variant="lime"
       displayType="Example"
-      onTypeClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_TYPE',
-                typeIs: 'example',
-              });
-            }
-          : undefined
-      }
-      onCategoryClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_CATEGORY',
-                category: example.category?.name,
-              });
-            }
-          : undefined
-      }
       title={example.name}
       metaInfos={[
         ...(example.topics.length
           ? [
               {
                 text: example.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -53,7 +30,7 @@ export const ExampleCard = ({ example }: Props) => {
         ...(example.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(example.link),
                 url: example.link,
               },

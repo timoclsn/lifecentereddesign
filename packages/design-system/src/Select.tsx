@@ -1,10 +1,13 @@
+'use client';
+
 import {
-  UilAngleDown,
-  UilArrowDown,
-  UilArrowUp,
-  UilCheck,
-  UilSortAmountDown,
-} from '@iconscout/react-unicons';
+  ChevronDown,
+  ArrowDown,
+  ArrowUp,
+  Check,
+  ArrowDownWideNarrow,
+  Loader,
+} from 'lucide-react';
 import { Label } from '@radix-ui/react-label';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { cx } from 'class-variance-authority';
@@ -26,8 +29,12 @@ Select.FilterTrigger = forwardRef<
   ElementRef<typeof SelectPrimitive.Trigger>,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
     label: string;
+    isLoading?: boolean;
   }
->(function SelectFilterTrigger({ className, disabled, label, ...props }, ref) {
+>(function SelectFilterTrigger(
+  { className, disabled, label, isLoading, ...props },
+  ref
+) {
   const id = useId();
   return (
     <div className="relative min-w-[0px] flex-1 sm:max-w-[240px]">
@@ -48,9 +55,15 @@ Select.FilterTrigger = forwardRef<
         ref={ref}
       >
         <SelectPrimitive.Value />
-        <SelectPrimitive.Icon className="text-text-secondary flex-none">
-          <UilArrowDown />
-        </SelectPrimitive.Icon>
+        <div className="flex items-center justify-center">
+          {isLoading ? (
+            <Loader className="flex-none animate-spin opacity-60" />
+          ) : (
+            <SelectPrimitive.Icon className="text-text-secondary flex-none">
+              <ArrowDown />
+            </SelectPrimitive.Icon>
+          )}
+        </div>
       </SelectPrimitive.Trigger>
     </div>
   );
@@ -58,8 +71,10 @@ Select.FilterTrigger = forwardRef<
 
 Select.SortTrigger = forwardRef<
   ElementRef<typeof SelectPrimitive.Trigger>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.SelectTrigger>
->(function SelectSortTrigger({ className, ...props }, ref) {
+  ComponentPropsWithoutRef<typeof SelectPrimitive.SelectTrigger> & {
+    isLoading?: boolean;
+  }
+>(function SelectSortTrigger({ className, isLoading, ...props }, ref) {
   const id = useId();
   return (
     <div className="flex items-center">
@@ -75,11 +90,15 @@ Select.SortTrigger = forwardRef<
         {...props}
         ref={ref}
       >
-        <UilSortAmountDown className="text-text-secondary" />
+        <ArrowDownWideNarrow className="text-text-secondary" />
         <SelectPrimitive.Value />
-        <SelectPrimitive.Icon className="text-text-secondary flex-none">
-          <UilAngleDown />
-        </SelectPrimitive.Icon>
+        {isLoading ? (
+          <Loader size={20} className="flex-none animate-spin opacity-60" />
+        ) : (
+          <SelectPrimitive.Icon className="text-text-secondary flex-none">
+            <ChevronDown />
+          </SelectPrimitive.Icon>
+        )}
       </SelectPrimitive.Trigger>
     </div>
   );
@@ -100,13 +119,13 @@ Select.Content = forwardRef<
         ref={ref}
       >
         <SelectPrimitive.ScrollUpButton className="flex cursor-default items-center justify-center">
-          <UilArrowUp />
+          <ArrowUp />
         </SelectPrimitive.ScrollUpButton>
         <SelectPrimitive.Viewport className="flex flex-col gap-1">
           {children}
         </SelectPrimitive.Viewport>
         <SelectPrimitive.ScrollDownButton className="flex cursor-default items-center justify-center">
-          <UilArrowDown />
+          <ArrowDown />
         </SelectPrimitive.ScrollDownButton>
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
@@ -127,7 +146,7 @@ Select.Item = forwardRef<
       ref={ref}
     >
       <SelectPrimitive.ItemIndicator className="absolute left-1 w-[25px]">
-        <UilCheck />
+        <Check />
       </SelectPrimitive.ItemIndicator>
       <SelectPrimitive.ItemText className="whitespace-nowrap">
         {children}

@@ -1,55 +1,26 @@
-import {
-  UilBookReader,
-  UilCalendarAlt,
-  UilLinkAlt,
-  UilNewspaper,
-  UilTagAlt,
-} from '@iconscout/react-unicons';
+import { BookOpen, CalendarDays, Link, Newspaper, Tag } from 'lucide-react';
 import { Paper } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
-import { Card } from '../Card';
-import { useResources } from '../Resources';
+import { Card } from '../Card/Card';
 
 interface Props {
   paper: Paper;
 }
 
 export const PaperCard = ({ paper }: Props) => {
-  const { dispatch, state } = useResources();
-  const { inContext } = state;
   return (
     <Card
       resourceId={paper.id}
       resourceType={paper.type}
       variant="forest"
       displayType="Paper"
-      onTypeClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_TYPE',
-                typeIs: 'paper',
-              });
-            }
-          : undefined
-      }
-      onCategoryClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_CATEGORY',
-                category: paper.category?.name,
-              });
-            }
-          : undefined
-      }
       title={paper.title}
       metaInfos={[
         ...(paper.authors.length
           ? [
               {
                 text: paper.authors.map((author) => author?.name).join(', '),
-                icon: UilBookReader,
+                icon: BookOpen,
               },
             ]
           : []),
@@ -57,7 +28,7 @@ export const PaperCard = ({ paper }: Props) => {
           ? [
               {
                 text: paper.authorsPlain,
-                icon: UilBookReader,
+                icon: BookOpen,
               },
             ]
           : []),
@@ -65,7 +36,7 @@ export const PaperCard = ({ paper }: Props) => {
           ? [
               {
                 text: new Date(paper.date).toLocaleDateString('en'),
-                icon: UilCalendarAlt,
+                icon: CalendarDays,
               },
             ]
           : []),
@@ -73,7 +44,7 @@ export const PaperCard = ({ paper }: Props) => {
           ? [
               {
                 text: paper.datePlain,
-                icon: UilCalendarAlt,
+                icon: CalendarDays,
               },
             ]
           : []),
@@ -81,7 +52,7 @@ export const PaperCard = ({ paper }: Props) => {
           ? [
               {
                 text: paper.journal,
-                icon: UilNewspaper,
+                icon: Newspaper,
               },
             ]
           : []),
@@ -89,7 +60,7 @@ export const PaperCard = ({ paper }: Props) => {
           ? [
               {
                 text: paper.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -99,7 +70,7 @@ export const PaperCard = ({ paper }: Props) => {
         ...(paper.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(paper.link),
                 url: paper.link,
               },

@@ -1,49 +1,26 @@
-import { UilGrin, UilLinkAlt, UilTagAlt } from '@iconscout/react-unicons';
+import { Smile, Link, Tag } from 'lucide-react';
 import { Podcast } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
-import { Card } from '../Card';
-import { useResources } from '../Resources';
+import { Card } from '../Card/Card';
 
 interface Props {
   podcast: Podcast;
 }
 
 export const PodcastCard = ({ podcast }: Props) => {
-  const { dispatch, state } = useResources();
-  const { inContext } = state;
   return (
     <Card
       resourceId={podcast.id}
       resourceType={podcast.type}
       variant="sky"
       displayType="Podcast"
-      onTypeClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_TYPE',
-                typeIs: 'podcast',
-              });
-            }
-          : undefined
-      }
-      onCategoryClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_CATEGORY',
-                category: podcast.category?.name,
-              });
-            }
-          : undefined
-      }
       title={podcast.title}
       metaInfos={[
         ...(podcast.hosts.length
           ? [
               {
                 text: podcast.hosts.map((host) => host.name).join(', '),
-                icon: UilGrin,
+                icon: Smile,
               },
             ]
           : []),
@@ -51,7 +28,7 @@ export const PodcastCard = ({ podcast }: Props) => {
           ? [
               {
                 text: podcast.hostsPlain,
-                icon: UilGrin,
+                icon: Smile,
               },
             ]
           : []),
@@ -59,7 +36,7 @@ export const PodcastCard = ({ podcast }: Props) => {
           ? [
               {
                 text: podcast.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -69,7 +46,7 @@ export const PodcastCard = ({ podcast }: Props) => {
         ...(podcast.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(podcast.link),
                 url: podcast.link,
               },

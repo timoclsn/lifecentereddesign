@@ -1,56 +1,33 @@
 import {
-  UilBookReader,
-  UilBooks,
-  UilCalendarAlt,
-  UilLinkAlt,
-  UilQrcodeScan,
-  UilTagAlt,
-} from '@iconscout/react-unicons';
+  BookOpen,
+  Book as BookIcon,
+  CalendarDays,
+  Link,
+  QrCode,
+  Tag,
+} from 'lucide-react';
 import { Book } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
-import { Card } from '../Card';
-import { useResources } from '../Resources';
+import { Card } from '../Card/Card';
 
 interface Props {
   book: Book;
 }
 
 export const BookCard = ({ book }: Props) => {
-  const { dispatch, state } = useResources();
-  const { inContext } = state;
   return (
     <Card
       resourceId={book.id}
       resourceType={book.type}
       variant="oak"
       displayType="Book"
-      onTypeClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_TYPE',
-                typeIs: 'book',
-              });
-            }
-          : undefined
-      }
-      onCategoryClick={
-        inContext
-          ? () => {
-              dispatch({
-                type: 'FILTER_BY_CATEGORY',
-                category: book.category?.name,
-              });
-            }
-          : undefined
-      }
       title={book.title}
       metaInfos={[
         ...(book.authors.length
           ? [
               {
                 text: book.authors.map((author) => author.name).join(', '),
-                icon: UilBookReader,
+                icon: BookOpen,
               },
             ]
           : []),
@@ -58,7 +35,7 @@ export const BookCard = ({ book }: Props) => {
           ? [
               {
                 text: new Date(book.publishingDate).toLocaleDateString('en'),
-                icon: UilCalendarAlt,
+                icon: CalendarDays,
               },
             ]
           : []),
@@ -66,7 +43,7 @@ export const BookCard = ({ book }: Props) => {
           ? [
               {
                 text: book.publisher,
-                icon: UilBooks,
+                icon: BookIcon,
               },
             ]
           : []),
@@ -74,7 +51,7 @@ export const BookCard = ({ book }: Props) => {
           ? [
               {
                 text: book.isbn,
-                icon: UilQrcodeScan,
+                icon: QrCode,
               },
             ]
           : []),
@@ -82,7 +59,7 @@ export const BookCard = ({ book }: Props) => {
           ? [
               {
                 text: book.topics.map((topic) => topic.name).join(', '),
-                icon: UilTagAlt,
+                icon: Tag,
               },
             ]
           : []),
@@ -92,7 +69,7 @@ export const BookCard = ({ book }: Props) => {
         ...(book.link
           ? [
               {
-                icon: UilLinkAlt,
+                icon: Link,
                 text: getHostname(book.link),
                 url: book.link,
               },
