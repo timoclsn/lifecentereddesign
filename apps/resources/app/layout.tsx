@@ -18,7 +18,6 @@ const description =
   'A curated directory of resources around Life-centered Design and related fields.';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://lifecentereddesign.net'),
   title: {
     default: title,
     template: `%s | ${title}`,
