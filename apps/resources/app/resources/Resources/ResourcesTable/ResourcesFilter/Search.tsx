@@ -6,10 +6,10 @@ import { useFilter } from '../../../../../hooks/useFilter';
 import { ChangeEvent, useEffect, useState } from 'react';
 
 export const Search = () => {
-  const [searchInput, setSearchInput] = useState<string | null>(null);
   const { handleValueChange, isPending, searchParams } = useFilter();
-
   const searchQuery = searchParams.get('search');
+  const [searchInput, setSearchInput] = useState(searchQuery);
+  const inputChanged = searchInput !== searchQuery;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);
@@ -21,16 +21,15 @@ export const Search = () => {
 
   // Trigger search when search input changes
   useEffect(() => {
-    if (searchInput === null) return; // Skip as long as search input is not set
+    if (!inputChanged) return;
     handleSearch(searchInput);
-  }, [handleSearch, searchInput]);
+  }, [handleSearch, inputChanged, searchInput]);
 
   // Set search input when search query changes
   useEffect(() => {
-    if (searchInput === null) return; // Skip as long as search input is not set
+    if (!inputChanged) return;
     setSearchInput(searchQuery ?? '');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchQuery]);
+  }, [inputChanged, searchQuery]);
 
   return (
     <div className="bg-primary-ghost-bg text-text-secondary focus-within:ring-text-secondary flex min-w-[100px] flex-1 items-center gap-2 px-4 py-1 outline-none ring-inset focus-within:ring-2 sm:max-w-[240px]">
