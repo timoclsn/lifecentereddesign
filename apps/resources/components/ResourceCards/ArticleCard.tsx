@@ -1,6 +1,6 @@
 import { BookOpen, CalendarDays, Clock3, Link, Tag } from 'lucide-react';
 import { Article } from '../../lib/resources';
-import { getHostname } from '../../lib/utils';
+import { formateDate, getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
 
 interface Props {
@@ -35,7 +35,7 @@ export const ArticleCard = ({ article }: Props) => {
         ...(article.date
           ? [
               {
-                text: new Date(article.date).toLocaleDateString('en'),
+                text: formateDate(article.date),
                 icon: CalendarDays,
               },
             ]

@@ -1,5 +1,4 @@
 import { auth } from '@clerk/nextjs';
-import { unstable_cache as cache } from 'next/cache';
 import {
   ContentType,
   getResourceNewLikes,
@@ -18,12 +17,9 @@ const getLikesData = async (resourceId: number, resourceType: ContentType) => {
 
   return {
     count: oldLikesCount + newLikesCount,
-    liked: newLikes.some((like) => like.userId === userId),
+    liked: userId ? newLikes.some((like) => like.userId === userId) : false,
   };
 };
-
-export const likesDataTag = (resourceId: number, resourceType: ContentType) =>
-  `likes-${resourceId}-${resourceType}`;
 
 interface Props {
   resourceId: number;
@@ -36,10 +32,7 @@ export const LikesButtonServer = async ({
   resourceType,
   resourceTitle,
 }: Props) => {
-  const tag = likesDataTag(resourceId, resourceType);
-  const { count, liked } = await cache(getLikesData, [tag], {
-    tags: [tag],
-  })(resourceId, resourceType);
+  const { count, liked } = await getLikesData(resourceId, resourceType);
 
   return (
     <LikesButtonClient

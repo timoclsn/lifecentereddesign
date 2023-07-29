@@ -24,6 +24,7 @@
     "class-variance-authority": "0.6.1",
     "contentlayer": "0.3.1",
     "database": "workspace:*",
+    "date-fns": "^2.30.0",
     "design-system": "workspace:*",
     "esbuild": "^0.18.13",
     "lucide-react": "^0.263.1",
