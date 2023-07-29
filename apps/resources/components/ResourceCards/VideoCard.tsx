@@ -1,6 +1,6 @@
 import { CalendarDays, Clock3, Link, Tag, VideoIcon } from 'lucide-react';
 import { Video } from '../../lib/resources';
-import { getHostname } from '../../lib/utils';
+import { formateDate, getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
 
 interface Props {
@@ -35,7 +35,7 @@ export const VideoCard = ({ video }: Props) => {
         ...(video.date
           ? [
               {
-                text: new Date(video.date).toLocaleDateString('en'),
+                text: formateDate(video.date),
                 icon: CalendarDays,
               },
             ]

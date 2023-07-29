@@ -1,13 +1,13 @@
 import {
-  BookOpen,
   Book as BookIcon,
+  BookOpen,
   CalendarDays,
   Link,
   QrCode,
   Tag,
 } from 'lucide-react';
 import { Book } from '../../lib/resources';
-import { getHostname } from '../../lib/utils';
+import { formateDate, getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
 
 interface Props {
@@ -34,7 +34,7 @@ export const BookCard = ({ book }: Props) => {
         ...(book.publishingDate
           ? [
               {
-                text: new Date(book.publishingDate).toLocaleDateString('en'),
+                text: formateDate(book.publishingDate),
                 icon: CalendarDays,
               },
             ]
