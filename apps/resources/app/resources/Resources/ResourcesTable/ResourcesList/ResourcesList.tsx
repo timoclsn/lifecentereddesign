@@ -96,14 +96,16 @@ export const ResourcesList = ({
     .filter((resource) => {
       if (!reseourcesFilter.from) return true;
       return (
-        resource.createdAt.getTime() > new Date(reseourcesFilter.from).getTime()
+        new Date(resource.createdAt).getTime() >
+        new Date(reseourcesFilter.from).getTime()
       );
     })
     // Filter till
     .filter((resource) => {
       if (!reseourcesFilter.till) return true;
       return (
-        resource.createdAt.getTime() < new Date(reseourcesFilter.till).getTime()
+        new Date(resource.createdAt).getTime() <
+        new Date(reseourcesFilter.till).getTime()
       );
     });
 
