@@ -14,4 +14,4 @@ export const minDelay = async <T>(promise: Promise<T>, ms: number) =>
   (await Promise.all([promise, wait(ms)]))[0];
 
 export const formateDate = (date: Date | string) =>
-  format(new Date(date), 'LL/dd/yyyy');
+  format(new Date(date), 'L/d/yyyy');
