@@ -1,7 +1,6 @@
 'use server';
 
 import { auth } from '@clerk/nextjs';
-import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 import {
   anonymousLikeResource,
@@ -9,7 +8,6 @@ import {
   resourceTypes,
   unlikeResource,
 } from '../../lib/resources';
-import { likesDataTag } from './LikesButton/LikesButtonServer';
 
 const typeSchema = z.enum(resourceTypes);
 
@@ -36,9 +34,6 @@ export const like = async (input: Input) => {
   } else {
     await anonymousLikeResource(id, type);
   }
-
-  const tag = likesDataTag(id, type);
-  revalidateTag(tag);
 };
 
 export const unLike = async (input: Input) => {
@@ -57,7 +52,4 @@ export const unLike = async (input: Input) => {
   }
 
   await unlikeResource(userId, id, type);
-
-  const tag = likesDataTag(id, type);
-  revalidateTag(tag);
 };

@@ -4,6 +4,7 @@ import { useAuth } from '@clerk/nextjs';
 import { cva } from 'class-variance-authority';
 import { Tooltip } from 'design-system';
 import { Heart } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { experimental_useOptimistic as useOptimistic } from 'react';
 import { ContentType } from '../../../lib/resources';
 import { SolidHeart } from '../../Icons/SolidHeart';
@@ -39,6 +40,7 @@ export const LikesButtonClient = ({
   liked,
 }: Props) => {
   const { isSignedIn } = useAuth();
+  const { refresh } = useRouter();
 
   const [optimisticCount, updateOptimisticCount] = useOptimistic(
     count,
@@ -79,6 +81,8 @@ export const LikesButtonClient = ({
         name: resourceTitle,
       });
     }
+
+    refresh();
   };
   return (
     <button
