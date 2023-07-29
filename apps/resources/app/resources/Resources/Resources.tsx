@@ -15,17 +15,17 @@ export const Resources = async ({ resourcesFilter }: Props) => {
 
   const description = () => {
     if (from && till) {
-      return `New resourcse added between ${formateDate(
+      return `New resources added between ${formateDate(
         from
       )} and ${formateDate(till)}:`;
     }
 
     if (from) {
-      return `New resourcse added after ${formateDate(from)}:`;
+      return `New resources added after ${formateDate(from)}:`;
     }
 
     if (till) {
-      return `New resourcse added before ${formateDate(till)}:`;
+      return `New resources added before ${formateDate(till)}:`;
     }
 
     return 'Have fun browsing all our resources on Life-centered Design and related topics:';
