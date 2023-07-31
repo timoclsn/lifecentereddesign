@@ -32,7 +32,7 @@ const ResourcesPage = ({ searchParams }: Props) => {
   return (
     <>
       <Resources resourcesFilter={resourcesFilter} />
-      <Suggestion />
+      {/* <Suggestion /> */}
     </>
   );
 };

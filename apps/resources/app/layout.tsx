@@ -13,6 +13,8 @@ import { CO2Badge } from '../components/CO2Badge/CO2Badge';
 import { Navigation } from '../components/Navigation/Navigation';
 import { Footer } from '../components/Footer/Footer';
 
+export const runtime = 'edge';
+
 const title = 'LifeCenteredDesign.Net';
 const description =
   'A curated directory of resources around Life-centered Design and related fields.';
