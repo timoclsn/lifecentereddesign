@@ -1,7 +1,7 @@
 import { About } from './About/About';
 import { Header } from './Header/Header';
 import { NewResources } from './NewResources/NewResources';
-import { Newsletter } from './Newsletter/Newsletter';
+import { Newsletter } from '../../components/Newsletter/Newsletter';
 
 const Home = () => {
   return (

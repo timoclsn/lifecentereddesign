@@ -196,7 +196,9 @@ export const Card = ({
             ))}
 
             {/* Copy Link Button*/}
-            {resourceLink && <CopyButton link={resourceLink} />}
+            {resourceLink && (
+              <CopyButton link={`/resources/${resourceType}-${resourceId}`} />
+            )}
           </ul>
         )}
       </div>

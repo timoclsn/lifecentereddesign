@@ -14,7 +14,7 @@ export const CopyButton = ({ link }: Props) => {
 
   const copyLink = async () => {
     setCopied(true);
-    navigator.clipboard.writeText(link);
+    navigator.clipboard.writeText(`${window.location.origin}${link}`);
     splitbee.track('Copy resource link');
     await wait(3000);
     setCopied(false);

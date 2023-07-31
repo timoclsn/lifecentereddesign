@@ -181,41 +181,56 @@ export type Resource =
 export type Resources = Array<Resource>;
 export type ContentType = Resource['type'];
 
+const includes = (type: ContentType) => {
+  return {
+    category: true,
+    topics: true,
+    ...(type === 'book' && {
+      authors: true,
+    }),
+    ...(type === 'article' && {
+      authors: true,
+    }),
+    ...(type === 'podcastEpisode' && {
+      guests: true,
+      podcast: true,
+    }),
+    ...(type === 'podcast' && {
+      hosts: true,
+    }),
+    ...(type === 'video' && {
+      creators: true,
+    }),
+    ...(type === 'slide' && {
+      authors: true,
+    }),
+    ...(type === 'newsletter' && {
+      authors: true,
+    }),
+    ...(type === 'paper' && {
+      authors: true,
+    }),
+    ...(type === 'report' && {
+      authors: true,
+    }),
+  };
+};
+
+const getNewLikesCount = async (resourceId: number, type: ContentType) => {
+  return await prisma.like.count({
+    where: {
+      resourceId,
+      type,
+    },
+  });
+};
+
 export const getResources = async () => {
   const resourcePromises = resourceTypes.map((type) => {
     // @ts-expect-error: Dynamic table access doesn't work on type level
     return prisma[type].findMany({
       include: {
-        category: true,
-        topics: true,
-        ...(type === 'book' && {
-          authors: true,
-        }),
-        ...(type === 'article' && {
-          authors: true,
-        }),
-        ...(type === 'podcastEpisode' && {
-          guests: true,
-          podcast: true,
-        }),
-        ...(type === 'podcast' && {
-          hosts: true,
-        }),
-        ...(type === 'video' && {
-          creators: true,
-        }),
-        ...(type === 'slide' && {
-          authors: true,
-        }),
-        ...(type === 'newsletter' && {
-          authors: true,
-        }),
-        ...(type === 'paper' && {
-          authors: true,
-        }),
-        ...(type === 'report' && {
-          authors: true,
-        }),
+        ...includes(type),
       },
     }) as Promise<Array<Resource>>;
   });
@@ -223,12 +238,7 @@ export const getResources = async () => {
   const resources = await Promise.all(resourcePromises);
 
   const enhancedResourcesPromises = resources.flat().map(async (resource) => {
-    const newLikesCount = await prisma.like.count({
-      where: {
-        resourceId: resource.id,
-        type: resource.type,
-      },
-    });
+    const newLikesCount = await getNewLikesCount(resource.id, resource.type);
     return {
       ...resource,
       likes: resource.likes + newLikesCount,
@@ -240,6 +250,25 @@ export const getResources = async () => {
   ).flat();
 
   return enhancedResources;
+};
+
+export const getResource = async (id: number, type: ContentType) => {
+  // @ts-expect-error: Dynamic table access doesn't work on type level
+  const resource = (await prisma[type].findUnique({
+    where: {
+      id: id,
+    },
+    include: {
+      ...includes(type),
+    },
+  })) as Resource;
+
+  const newLikesCount = await getNewLikesCount(resource.id, resource.type);
+
+  return {
+    ...resource,
+    likes: resource.likes + newLikesCount,
+  };
 };
 
 export const getResourceOldLikesCount = async (
