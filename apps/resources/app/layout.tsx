@@ -12,10 +12,7 @@ import '../styles/globals.css';
 import { CO2Badge } from '../components/CO2Badge/CO2Badge';
 import { Navigation } from '../components/Navigation/Navigation';
 import { Footer } from '../components/Footer/Footer';
-
-const title = 'LifeCenteredDesign.Net';
-const description =
-  'A curated directory of resources around Life-centered Design and related fields.';
+import { description, title } from '../lib/metadata';
 
 export const metadata: Metadata = {
   title: {

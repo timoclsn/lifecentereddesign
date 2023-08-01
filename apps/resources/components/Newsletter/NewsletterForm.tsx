@@ -10,8 +10,8 @@ import {
   checkboxStyles,
   errorStyles,
   inputStyles,
-} from '../../../components/ForrestSection/ForrestSection';
-import { useZodForm } from '../../../hooks/useZodForm';
+} from '../ForrestSection/ForrestSection';
+import { useZodForm } from '../../hooks/useZodForm';
 import { subscribe } from './actions';
 import { NewsletterFormSchema, newsletterFormSchema } from './schemas';
 
