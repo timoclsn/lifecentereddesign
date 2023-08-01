@@ -1,32 +1,34 @@
 'use client';
 
 import { Tag, Tooltip } from 'design-system';
-import { Check, Copy } from 'lucide-react';
-import { useState } from 'react';
+import { Check } from 'lucide-react';
+import { ReactNode, useState } from 'react';
 import { wait } from '../../lib/utils';
 
 interface Props {
+  children: ReactNode;
   link: string;
+  tooltip: string;
 }
 
-export const CopyButton = ({ link }: Props) => {
+export const CopyButton = ({ children, link, tooltip }: Props) => {
   const [copied, setCopied] = useState(false);
 
   const copyLink = async () => {
     setCopied(true);
-    navigator.clipboard.writeText(`${window.location.origin}${link}`);
-    splitbee.track('Copy resource link');
+    navigator.clipboard.writeText(link);
+    splitbee.track(tooltip);
     await wait(3000);
     setCopied(false);
   };
 
   return (
-    <Tooltip content="Copy resource link" delayDuration={500}>
+    <Tooltip content={tooltip} delayDuration={500}>
       <button className="flex items-stretch" onClick={copyLink}>
         <Tag variant="dark">
-          <div className="flex items-center gap-1">
-            {copied ? <Check size="18" /> : <Copy size="18" />}
-            <span className="sr-only">Copy resource link</span>
+          <div className="flex items-center gap-1 [&>svg]:h-[18px] [&>svg]:w-[18px]">
+            {copied ? <Check /> : children}
+            <span className="sr-only">{tooltip}</span>
           </div>
         </Tag>
       </button>

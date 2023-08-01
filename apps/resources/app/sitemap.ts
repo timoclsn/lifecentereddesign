@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
+import { getResources } from '../lib/resources';
 
-const sitemap = (): MetadataRoute.Sitemap => {
-  return [
+const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
+  const pages = [
     {
       url: 'https://lifecentereddesign.net',
       lastModified: new Date(),
@@ -27,6 +28,17 @@ const sitemap = (): MetadataRoute.Sitemap => {
       lastModified: new Date(),
     },
   ];
+
+  const resources = await getResources();
+
+  resources.forEach((resource) => {
+    pages.push({
+      url: `https://lifecentereddesign.net/resources/${resource.id}-${resource.type}`,
+      lastModified: new Date(),
+    });
+  });
+
+  return pages;
 };
 
 export default sitemap;

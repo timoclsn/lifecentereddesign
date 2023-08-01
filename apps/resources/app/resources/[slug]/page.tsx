@@ -1,14 +1,52 @@
-import { getRandomBackground } from 'design-system';
-import { Metadata } from 'next';
-import { unstable_cache as cache } from 'next/cache';
-import { Suspense } from 'react';
+import { NewResources } from '../../../components/NewResources/NewResources';
 import { Newsletter } from '../../../components/Newsletter/Newsletter';
-import { getCardComponent } from '../../../components/utils';
-import { ContentType, getResource } from '../../../lib/resources';
+import {
+  ResourceCard,
+  getResourceCached,
+} from '../../../components/ResourceCard/ResourceCard';
+import { createGenerateMetadata, description } from '../../../lib/metadata';
+import { ContentType } from '../../../lib/resources';
+import { getBaseUrl } from '../../../lib/utils';
 
-export const metadata: Metadata = {
-  title: 'Resource',
+const parseSlug = (slug: string) => {
+  const resourceType = slug.split('-')[0] as ContentType;
+  const resourceId = parseInt(slug.split('-')[1]);
+  return { resourceType, resourceId };
 };
+
+export const generateMetadata = createGenerateMetadata(async ({ params }) => {
+  const { slug } = params;
+  const { resourceId, resourceType } = parseSlug(slug);
+  const resource = await getResourceCached(resourceId, resourceType);
+
+  const title = 'name' in resource ? resource.name : resource.title;
+  const type = resource.type;
+  const category = resource.category ? resource.category.name : '';
+  const link = resource.link || '';
+
+  const searchParams = new URLSearchParams();
+  searchParams.set('title', title);
+  searchParams.set('type', type);
+  searchParams.set('category', category);
+  searchParams.set('link', link);
+
+  return {
+    title,
+    openGraph: {
+      type: 'website',
+      title,
+      url: `${getBaseUrl()}/resources/${slug}`,
+      siteName: 'LifeCenteredDesign.Net',
+      description,
+      images: {
+        url: `/resource-og-image?${searchParams.toString()}`,
+        alt: title,
+        width: 1200,
+        height: 630,
+      },
+    },
+  };
+});
 
 interface Props {
   params: {
@@ -18,44 +56,15 @@ interface Props {
 
 const ResourcePage = async ({ params }: Props) => {
   const { slug } = params;
-
-  const resourceType = slug.split('-')[0] as ContentType;
-  const resourceId = parseInt(slug.split('-')[1]);
+  const { resourceId, resourceType } = parseSlug(slug);
 
   return (
     <>
-      <Suspense fallback={<Loading />}>
-        <ResourceCard resourceId={resourceId} resourceType={resourceType} />
-      </Suspense>
+      <ResourceCard resourceId={resourceId} resourceType={resourceType} />
+      <NewResources />
       <Newsletter />
     </>
   );
-};
-
-const Loading = () => {
-  return (
-    <div
-      className={`rounded-4xl h-[400px] w-full animate-pulse ${getRandomBackground()}`}
-    />
-  );
-};
-
-interface ResourceCardProps {
-  resourceId: number;
-  resourceType: ContentType;
-}
-
-const ResourceCard = async ({
-  resourceId,
-  resourceType,
-}: ResourceCardProps) => {
-  const tag = `resource-${resourceType}-${resourceId}`;
-  const resource = await cache(getResource, [tag], {
-    revalidate: 60,
-    tags: [tag],
-  })(resourceId, resourceType);
-
-  return getCardComponent(resource);
 };
 
 export default ResourcePage;

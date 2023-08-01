@@ -13,6 +13,8 @@ import { CopyButton } from './CopyButton';
 import { LikesButton } from './LikesButton/LikesButton';
 import { ResourceLink } from './ResourceLink';
 import { TypeButton } from './TypeButton';
+import { CopyLink } from './CopyLink';
+import { CopyShareLink } from './CopyShareLink';
 
 interface Props {
   resourceId: number;
@@ -195,9 +197,16 @@ export const Card = ({
               </li>
             ))}
 
+            {/* Copy Share Link */}
+            <CopyShareLink
+              resourceId={resourceId}
+              resourceType={resourceType}
+            />
+
             {/* Copy Link Button*/}
             {resourceLink && (
-              <CopyButton link={`/resources/${resourceType}-${resourceId}`} />
+              // <CopyButton link={`/resources/${resourceType}-${resourceId}`} />
+              <CopyLink link={resourceLink} />
             )}
           </ul>
         )}
