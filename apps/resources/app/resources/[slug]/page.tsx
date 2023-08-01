@@ -4,7 +4,7 @@ import {
   ResourceCard,
   getResourceCached,
 } from '../../../components/ResourceCard/ResourceCard';
-import { createGenerateMetadata, description } from '../../../lib/metadata';
+import { createGenerateMetadata } from '../../../lib/metadata';
 import { ContentType } from '../../../lib/resources';
 import { getBaseUrl } from '../../../lib/utils';
 
@@ -20,6 +20,8 @@ export const generateMetadata = createGenerateMetadata(async ({ params }) => {
   const resource = await getResourceCached(resourceId, resourceType);
 
   const title = 'name' in resource ? resource.name : resource.title;
+  const description =
+    'A resource from LifeCenteredDesign.Net: A curated directory of resources around Life-centered Design and related fields.';
   const type = resource.type;
   const category = resource.category ? resource.category.name : '';
   const link = resource.link || '';

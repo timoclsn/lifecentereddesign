@@ -34,6 +34,7 @@ export const GET = async (request: Request) => {
           padding: '32px',
           width: '100%',
           height: '100%',
+          background: '#f8f6f1',
         }}
       >
         <div
