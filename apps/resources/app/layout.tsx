@@ -13,14 +13,15 @@ import { CO2Badge } from '../components/CO2Badge/CO2Badge';
 import { Navigation } from '../components/Navigation/Navigation';
 import { Footer } from '../components/Footer/Footer';
 import { description, title } from '../lib/metadata';
+import { getBaseUrl } from '../lib/utils';
 
 export const metadata: Metadata = {
   title: {
     default: title,
     template: `%s | ${title}`,
   },
-  description:
-    'A curated directory of resources around Life-centered Design and related fields.',
+  metadataBase: new URL(getBaseUrl()),
+  description,
   icons: '/favicon.png',
   openGraph: {
     type: 'website',

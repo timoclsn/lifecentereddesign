@@ -18,7 +18,7 @@ export const formateDate = (date: Date | string) =>
 
 export const getBaseUrl = () => {
   // eslint-disable-next-line turbo/no-undeclared-env-vars
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
+  if (process.env.URL) return process.env.URL;
   // eslint-disable-next-line turbo/no-undeclared-env-vars
-  return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
+  return `http://localhost:${process.env.PORT ?? 3000}`;
 };
