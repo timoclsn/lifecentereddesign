@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next';
 import { getResources } from '../lib/resources';
 
+export const revalidate = 60;
+
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
   const pages = [
     {

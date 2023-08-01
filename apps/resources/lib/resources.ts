@@ -1,4 +1,6 @@
 import { Prisma } from 'database';
+import { unstable_cache as nextCache } from 'next/cache';
+import { cache as reactCache } from 'react';
 import { prisma } from './prisma';
 
 export const resourceTypes = [
@@ -252,6 +254,13 @@ export const getResources = async () => {
   return enhancedResources;
 };
 
+export const getResourcesCached = reactCache(async () => {
+  return await nextCache(getResources, ['resources'], {
+    revalidate: 60,
+    tags: ['resources'],
+  })();
+});
+
 export const getResource = async (id: number, type: ContentType) => {
   // @ts-expect-error: Dynamic table access doesn't work on type level
   const resource = (await prisma[type].findUnique({
@@ -270,6 +279,16 @@ export const getResource = async (id: number, type: ContentType) => {
     likes: resource.likes + newLikesCount,
   };
 };
+
+export const getResourceCached = reactCache(
+  async (resourceId: number, resourceType: ContentType) => {
+    const tag = `resource-${resourceType}-${resourceId}`;
+    return await nextCache(getResource, [tag], {
+      revalidate: 60,
+      tags: [tag],
+    })(resourceId, resourceType);
+  }
+);
 
 export const getResourceOldLikesCount = async (
   id: number,

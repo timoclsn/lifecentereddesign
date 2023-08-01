@@ -1,18 +1,7 @@
 import { getRandomBackground } from 'design-system';
-import { unstable_cache as nextCache } from 'next/cache';
-import { Suspense, cache as reactCache } from 'react';
-import { ContentType, getResource } from '../../lib/resources';
+import { Suspense } from 'react';
+import { ContentType, getResourceCached } from '../../lib/resources';
 import { getCardComponent } from '../utils';
-
-export const getResourceCached = reactCache(
-  async (resourceId: number, resourceType: ContentType) => {
-    const tag = `resource-${resourceType}-${resourceId}`;
-    return await nextCache(getResource, [tag], {
-      revalidate: 60,
-      tags: [tag],
-    })(resourceId, resourceType);
-  }
-);
 
 interface Props {
   resourceId: number;

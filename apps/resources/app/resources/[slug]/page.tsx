@@ -1,11 +1,8 @@
 import { NewResources } from '../../../components/NewResources/NewResources';
 import { Newsletter } from '../../../components/Newsletter/Newsletter';
-import {
-  ResourceCard,
-  getResourceCached,
-} from '../../../components/ResourceCard/ResourceCard';
+import { ResourceCard } from '../../../components/ResourceCard/ResourceCard';
 import { createGenerateMetadata } from '../../../lib/metadata';
-import { ContentType } from '../../../lib/resources';
+import { ContentType, getResourceCached } from '../../../lib/resources';
 import { getBaseUrl } from '../../../lib/utils';
 
 const parseSlug = (slug: string) => {

@@ -1,15 +1,15 @@
 import { auth } from '@clerk/nextjs';
 import { unstable_cache as cache } from 'next/cache';
+import {
+  getCategories,
+  getLikedResources,
+  getResourcesCached,
+  getTopics,
+} from '../../../../lib/resources';
 import { ReseourcesFilter } from '../../page';
 import { ResourcesFilter } from './ResourcesFilter/ResourcesFilter';
 import { ResourcesList } from './ResourcesList/ResourcesList';
 import { ResourcesTableProvider } from './ResourcesTableProvider';
-import {
-  getCategories,
-  getLikedResources,
-  getResources,
-  getTopics,
-} from '../../../../lib/resources';
 
 interface Props {
   reseourcesFilter: ReseourcesFilter;
@@ -18,10 +18,7 @@ interface Props {
 export const ResourcesTable = async ({ reseourcesFilter }: Props) => {
   const { userId } = auth();
   const [resources, categories, topics, likedResources] = await Promise.all([
-    cache(getResources, ['resources'], {
-      revalidate: 60,
-      tags: ['resources'],
-    })(),
+    getResourcesCached(),
     cache(getCategories, ['categroies'], {
       revalidate: 60,
       tags: ['categroies'],

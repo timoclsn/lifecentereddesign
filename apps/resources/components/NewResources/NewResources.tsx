@@ -1,12 +1,11 @@
 import { Bleed, Card, Heading, Text, getRandomBackground } from 'design-system';
 import { ArrowRight } from 'lucide-react';
-import { unstable_cache as cache } from 'next/cache';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import { getResourcesCached } from '../../lib/resources';
 import { getCardComponent } from '../utils';
 import groundImg from './ground.jpg';
-import { getResources } from '../../lib/resources';
 
 export const NewResources = () => {
   return (
@@ -44,10 +43,7 @@ export const NewResources = () => {
 };
 
 const NewResourcesInner = async () => {
-  const resources = await cache(getResources, ['resources'], {
-    revalidate: 60,
-    tags: ['resources'],
-  })();
+  const resources = await getResourcesCached();
 
   const resourcesToDisplay = resources
     .sort(
