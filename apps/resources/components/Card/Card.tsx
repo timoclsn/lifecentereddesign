@@ -9,12 +9,11 @@ import {
 import { ExternalLink, StickyNote, Users2 } from 'lucide-react';
 import { ContentType } from '../../lib/resources';
 import { CategoryButton } from './CategoryButton';
-import { CopyButton } from './CopyButton';
+import { CopyLink } from './CopyLink';
+import { CopyShareLink } from './CopyShareLink';
 import { LikesButton } from './LikesButton/LikesButton';
 import { ResourceLink } from './ResourceLink';
 import { TypeButton } from './TypeButton';
-import { CopyLink } from './CopyLink';
-import { CopyShareLink } from './CopyShareLink';
 
 interface Props {
   resourceId: number;
