@@ -5,7 +5,7 @@ import {
 } from '../../../../../lib/resources';
 import { CategoryFilter } from './CategoryFilter';
 import { Clear } from './Clear';
-import { LikeFilter } from './LikeFilter';
+import { LikesFilter } from './LikesFilter';
 import { Search } from './Search';
 import { Sort } from './Sort';
 import { TopicFilter } from './TopicFilter';
@@ -32,7 +32,7 @@ export const ResourcesFilter = ({
 
       <div className="flex flex-wrap gap-3">
         {likedResources.length > 0 && (
-          <LikeFilter likedResources={likedResources} />
+          <LikesFilter likedResources={likedResources} />
         )}
         <Search />
         <Sort />

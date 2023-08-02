@@ -11,7 +11,7 @@ interface Props {
   likedResources: LikedResources;
 }
 
-export const LikeFilter = ({ likedResources }: Props) => {
+export const LikesFilter = ({ likedResources }: Props) => {
   const { searchParams, handleValueChange, filter, isPending } = useFilter();
   const filterByLikes = searchParams.get('likes') === 'true';
   const likedResourcesCount = likedResources.length;
@@ -39,7 +39,7 @@ export const LikeFilter = ({ likedResources }: Props) => {
             handleValueChange('likes', 'true');
           }}
         >
-          {isPending && <Loader className="animate-spin" />}
+          {isPending && <Loader size={18} className="animate-spin" />}
           {!isPending && filterByLikes && <SolidHeart />}
           {!isPending && !filterByLikes && <Heart />}
         </Toggle.Root>
