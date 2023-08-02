@@ -14,7 +14,7 @@ export const NavigationLink = ({ children, href }: Props) => {
   const pathname = usePathname();
   return (
     <Link href={href} className="hover:text-text-secondary transition-colors">
-      <Text weight={pathname.includes(href) ? 'bold' : 'normal'}>
+      <Text weight={pathname.startsWith(href) ? 'bold' : 'normal'}>
         {children}
       </Text>
     </Link>
