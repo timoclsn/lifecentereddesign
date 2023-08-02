@@ -2,7 +2,7 @@
 
 import * as Toggle from '@radix-ui/react-toggle';
 import { Tooltip } from 'design-system';
-import { Heart } from 'lucide-react';
+import { Heart, Loader } from 'lucide-react';
 import { SolidHeart } from '../../../../../components/Icons/SolidHeart';
 import { useFilter } from '../../../../../hooks/useFilter';
 import { LikedResources } from '../../../../../lib/resources';
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const LikeFilter = ({ likedResources }: Props) => {
-  const { searchParams, handleValueChange, filter } = useFilter();
+  const { searchParams, handleValueChange, filter, isPending } = useFilter();
   const filterByLikes = searchParams.get('likes') === 'true';
   const likedResourcesCount = likedResources.length;
 
@@ -28,6 +28,7 @@ export const LikeFilter = ({ likedResources }: Props) => {
       >
         <Toggle.Root
           aria-label="Filter by likes"
+          disabled={isPending}
           className="ease text-text-primary flex items-center justify-center transition-transform hover:scale-110 active:scale-90"
           onPressedChange={() => {
             if (filterByLikes) {
@@ -38,7 +39,9 @@ export const LikeFilter = ({ likedResources }: Props) => {
             handleValueChange('likes', 'true');
           }}
         >
-          {filterByLikes ? <SolidHeart /> : <Heart />}
+          {isPending && <Loader className="animate-spin" />}
+          {!isPending && filterByLikes && <SolidHeart />}
+          {!isPending && !filterByLikes && <Heart />}
         </Toggle.Root>
       </Tooltip>
       {likedResourcesCount}
