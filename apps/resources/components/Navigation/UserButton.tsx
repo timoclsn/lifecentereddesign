@@ -27,11 +27,13 @@ export const UserButton = () => {
         </div>
       </SignedIn>
       <SignedOut>
-        <SignInButton>
-          <Button variant="outline" size="small">
-            Sign in
-          </Button>
-        </SignInButton>
+        <div className="w-20">
+          <SignInButton>
+            <Button variant="outline" size="small">
+              Sign in
+            </Button>
+          </SignInButton>
+        </div>
       </SignedOut>
     </>
   );
