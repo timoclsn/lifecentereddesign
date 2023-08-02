@@ -121,12 +121,20 @@ export const Card = ({
             )}
           </div>
 
-          {/* Likes */}
-          <LikesButton
-            resourceId={resourceId}
-            resourceType={resourceType}
-            resourceTitle={title}
-          />
+          <div className="flex items-center justify-center gap-2">
+            {/* Likes */}
+            <LikesButton
+              resourceId={resourceId}
+              resourceType={resourceType}
+              resourceTitle={title}
+            />
+
+            {/* Copy Share Link */}
+            <CopyShareLink
+              resourceId={resourceId}
+              resourceType={resourceType}
+            />
+          </div>
         </div>
 
         <div className="flex flex-col items-start gap-4">
@@ -196,12 +204,6 @@ export const Card = ({
                 </a>
               </li>
             ))}
-
-            {/* Copy Share Link */}
-            <CopyShareLink
-              resourceId={resourceId}
-              resourceType={resourceType}
-            />
 
             {/* Copy Link Button*/}
             {resourceLink && (
