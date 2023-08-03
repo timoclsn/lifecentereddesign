@@ -185,31 +185,27 @@ export const Card = ({
 
         {/* Tags */}
         {tags && tags.length > 0 && (
-          <ul className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
             {tags.map((tag, idx) => (
-              <li key={idx}>
-                <a
-                  href={tag.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:opacity-80"
-                >
-                  <Tag variant="dark">
-                    <div className="flex items-center gap-1">
-                      <tag.icon size="18" />
-                      <span>{tag.text}</span>
-                    </div>
-                  </Tag>
-                </a>
-              </li>
+              <a
+                key={idx}
+                href={tag.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-80"
+              >
+                <Tag variant="dark">
+                  <div className="flex items-center gap-1">
+                    <tag.icon size="18" />
+                    <span>{tag.text}</span>
+                  </div>
+                </Tag>
+              </a>
             ))}
 
             {/* Copy Link Button*/}
-            {resourceLink && (
-              // <CopyButton link={`/resources/${resourceType}-${resourceId}`} />
-              <CopyLink link={resourceLink} />
-            )}
-          </ul>
+            {resourceLink && <CopyLink link={resourceLink} />}
+          </div>
         )}
       </div>
     </CardPrimitive>

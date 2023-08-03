@@ -105,6 +105,7 @@ export const NewsletterForm = () => {
               onCheckedChange={field.onChange}
               className={checkboxStyles({ error: !!errors.consens })}
             >
+              <span className="sr-only">Consens checkbox toggle button</span>
               <Checkbox.Indicator className="animate-in zoom-in-150 fade-in-50 duration-100">
                 <Check />
               </Checkbox.Indicator>

@@ -15,11 +15,13 @@ export const NewResources = () => {
           New Resources
         </Heading>
         <ul className="mb-14 flex snap-x gap-6 overflow-x-auto px-6 sm:px-8 xl:px-10">
-          <Image
-            src={groundImg}
-            alt="Image of desert ground."
-            className="rounded-4xl hidden flex-none snap-center object-cover sm:block"
-          />
+          <li className="hidden flex-none snap-center sm:block">
+            <Image
+              src={groundImg}
+              alt="Image of desert ground."
+              className="rounded-4xl h-full object-cover"
+            />
+          </li>
           <Suspense fallback={<Loading />}>
             <NewResourcesInner />
           </Suspense>
