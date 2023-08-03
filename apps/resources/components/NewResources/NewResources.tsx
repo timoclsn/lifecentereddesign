@@ -18,7 +18,7 @@ export const NewResources = () => {
           <Image
             src={groundImg}
             alt="Image of desert ground."
-            className="rounded-4xl hidden flex-none snap-center sm:block"
+            className="rounded-4xl hidden flex-none snap-center object-cover sm:block"
           />
           <Suspense fallback={<Loading />}>
             <NewResourcesInner />
