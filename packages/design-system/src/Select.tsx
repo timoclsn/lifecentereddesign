@@ -1,16 +1,17 @@
 'use client';
 
-import {
-  ChevronDown,
-  ArrowDown,
-  ArrowUp,
-  Check,
-  ArrowDownWideNarrow,
-  Loader,
-} from 'lucide-react';
 import { Label } from '@radix-ui/react-label';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { cx } from 'class-variance-authority';
+import {
+  ArrowDown,
+  ArrowDownWideNarrow,
+  ArrowUp,
+  Check,
+  ChevronDown,
+  Loader,
+  XCircle,
+} from 'lucide-react';
 import {
   ComponentProps,
   ComponentPropsWithoutRef,
@@ -30,9 +31,11 @@ Select.FilterTrigger = forwardRef<
   ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
     label: string;
     isLoading?: boolean;
+    isResettable?: boolean;
+    onReset?: () => void;
   }
 >(function SelectFilterTrigger(
-  { className, disabled, label, isLoading, ...props },
+  { className, disabled, label, isLoading, isResettable, onReset, ...props },
   ref
 ) {
   const id = useId();
@@ -54,17 +57,35 @@ Select.FilterTrigger = forwardRef<
         {...props}
         ref={ref}
       >
+        {/* Value */}
         <SelectPrimitive.Value />
+
+        {/* Icon */}
         <div className="flex items-center justify-center">
-          {isLoading ? (
+          {isLoading && (
             <Loader className="flex-none animate-spin opacity-60" />
-          ) : (
-            <SelectPrimitive.Icon className="text-text-secondary flex-none">
+          )}
+          {!isLoading && (
+            <SelectPrimitive.Icon
+              className={`text-text-secondary flex-none${
+                isResettable ? ' opacity-0' : ''
+              }`}
+            >
               <ArrowDown />
             </SelectPrimitive.Icon>
           )}
         </div>
       </SelectPrimitive.Trigger>
+
+      {/* Reset Button */}
+      {isResettable && !isLoading && (
+        <button
+          className="text-text-secondary absolute right-0 top-0 mr-2 flex h-full items-center justify-center sm:mr-6"
+          onClick={onReset}
+        >
+          <XCircle />
+        </button>
+      )}
     </div>
   );
 });
