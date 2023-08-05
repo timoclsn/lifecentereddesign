@@ -1,11 +1,11 @@
 'use client';
 
 import { Tooltip } from 'design-system';
-import { XCircle } from 'lucide-react';
+import { Loader, XCircle } from 'lucide-react';
 import { useFilter } from '../../../../../hooks/useFilter';
 
 export const Clear = () => {
-  const { isFiltered, clearAll } = useFilter();
+  const { isFiltered, clearAll, isPending } = useFilter();
 
   return (
     <Tooltip content="Clear all filter" delayDuration={500}>
@@ -14,7 +14,8 @@ export const Clear = () => {
         onClick={clearAll}
         className="ease transition-transform hover:scale-110 active:scale-90 disabled:scale-100 disabled:opacity-50"
       >
-        <XCircle />
+        {isPending && <Loader size={18} className="animate-spin" />}
+        {!isPending && <XCircle />}
         <span className="sr-only">Clear filters</span>
       </button>
     </Tooltip>
