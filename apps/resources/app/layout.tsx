@@ -1,19 +1,30 @@
 import { ClerkProvider } from '@clerk/nextjs';
-import '@fontsource-variable/source-serif-4';
-import '@fontsource/dm-sans';
-import '@fontsource/dm-sans/400-italic.css';
-import '@fontsource/dm-sans/700.css';
 import { Container } from 'design-system';
 import 'design-system/src/themes/resources.css';
 import { Metadata } from 'next';
+import { DM_Sans, Source_Serif_4 } from 'next/font/google';
 import Script from 'next/script';
 import { ReactNode, Suspense } from 'react';
-import '../styles/globals.css';
 import { CO2Badge } from '../components/CO2Badge/CO2Badge';
-import { Navigation } from '../components/Navigation/Navigation';
 import { Footer } from '../components/Footer/Footer';
+import { Navigation } from '../components/Navigation/Navigation';
 import { description, title } from '../lib/metadata';
 import { getBaseUrl } from '../lib/utils';
+import '../styles/globals.css';
+
+const sans = DM_Sans({
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sans',
+});
+
+const serif = Source_Serif_4({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-serif',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -56,7 +67,10 @@ interface Props {
 const RootLayout = ({ children }: Props) => {
   return (
     <ClerkProvider>
-      <html lang="en" className="min-h-screen">
+      <html
+        lang="en"
+        className={`${sans.variable} ${serif.variable} min-h-screen`}
+      >
         <body className="bg-bg-primary text-text-primary min-h-screen font-sans text-base font-normal">
           <div className="flex min-h-screen flex-col space-y-20 sm:space-y-40">
             <div>

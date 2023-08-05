@@ -26,12 +26,6 @@ importers:
       '@clerk/nextjs':
         specifier: ^4.23.2
         version: 4.23.2(next@13.4.12)(react-dom@18.2.0)(react@18.2.0)
-      '@fontsource-variable/source-serif-4':
-        specifier: ^5.0.6
-        version: 5.0.6
-      '@fontsource/dm-sans':
-        specifier: 5.0.5
-        version: 5.0.5
       '@formkit/auto-animate':
         specifier: 1.0.0-beta.6
         version: 1.0.0-beta.6
@@ -766,14 +760,6 @@ packages:
       '@floating-ui/dom': 1.4.5
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
-  /@fontsource-variable/source-serif-4@5.0.6:
-    resolution: {integrity: sha512-utOme6nZHr//qKmK60CX2Zx+qyMtGQ4Di9z9f0KTm8ve1/vvQJGfpyEubVvZ86/McmNlF4zeQgjj4bHFQbAolw==}
-    dev: false
-
-  /@fontsource/dm-sans@5.0.5:
-    resolution: {integrity: sha512-KpqtEz6ySGJK4JjFcFI0HxD+9NHRRHa1uAcTGZUugHoKXspRJlHZK/U+IF1EegkV4Xp0Yn41njAmwYYX7DfwWw==}
     dev: false
 
   /@formkit/auto-animate@1.0.0-beta.6:
