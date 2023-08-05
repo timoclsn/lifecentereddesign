@@ -10,16 +10,24 @@ interface Props {
 
 export const CategoryFilter = ({ categories }: Props) => {
   const { searchParams, handleValueChange, isPending } = useFilter();
+  const value = searchParams.get('category') || 'all';
 
   return (
     <Select
       defaultValue="all"
-      value={searchParams.get('category') || 'all'}
+      value={value}
       onValueChange={(value) => {
         handleValueChange('category', value);
       }}
     >
-      <Select.FilterTrigger label="Category" isLoading={isPending} />
+      <Select.FilterTrigger
+        label="Category"
+        isLoading={isPending}
+        isResettable={value !== 'all'}
+        onReset={() => {
+          handleValueChange('category', 'all');
+        }}
+      />
       <Select.Content>
         <Select.Item key="all" value="all">
           All

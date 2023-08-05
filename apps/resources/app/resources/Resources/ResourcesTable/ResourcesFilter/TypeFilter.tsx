@@ -98,16 +98,24 @@ const typeFilterList = (
 
 export const TypeFilter = () => {
   const { searchParams, handleValueChange, isPending } = useFilter();
+  const value = searchParams.get('type') || 'all';
 
   return (
     <Select
       defaultValue="all"
-      value={searchParams.get('type') || 'all'}
+      value={value}
       onValueChange={(value) => {
         handleValueChange('type', value);
       }}
     >
-      <Select.FilterTrigger label="Type" isLoading={isPending} />
+      <Select.FilterTrigger
+        label="Type"
+        isLoading={isPending}
+        isResettable={value !== 'all'}
+        onReset={() => {
+          handleValueChange('type', 'all');
+        }}
+      />
       <Select.Content>
         {typeFilterList.map((type, idx) => (
           <Select.Item key={idx} value={type.type}>
