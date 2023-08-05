@@ -80,7 +80,7 @@ Select.FilterTrigger = forwardRef<
       {/* Reset Button */}
       {isResettable && !isLoading && (
         <button
-          className="absolute right-0 top-0 mr-2 flex h-full items-center justify-center sm:mr-6"
+          className="text-text-secondary absolute right-0 top-0 mr-2 flex h-full items-center justify-center sm:mr-6"
           onClick={onReset}
         >
           <XCircle />
