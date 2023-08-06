@@ -165,7 +165,7 @@ const convertToCsv = (
     link: string;
   }>
 ) => {
-  const headers = ['Title', 'Type', 'Category', 'Link'];
+  const headers = ['Title', 'Link'];
   const rows = resources.map((resource) => [resource.title, resource.link]);
 
   const csv = [headers, ...rows]
