@@ -157,7 +157,7 @@ export const ResourcesList = ({
               csv={downloadadbleResourcesCsv}
             >{`Download ${
               isFiltered ? 'Filtered ' : 'All '
-            }Resources`}</DownloadResourcesButton>
+            }`}</DownloadResourcesButton>
           )}
         </div>
       )}
