@@ -2,14 +2,12 @@
 
 import { Button } from 'design-system';
 import { Download } from 'lucide-react';
-import { ReactNode } from 'react';
 
 interface Props {
-  children: ReactNode;
   csv: string;
 }
 
-export const DownloadResourcesButton = ({ children, csv }: Props) => {
+export const DownloadButton = ({ csv }: Props) => {
   return (
     <Button
       variant="outline"
@@ -19,7 +17,7 @@ export const DownloadResourcesButton = ({ children, csv }: Props) => {
       }}
     >
       <Download />
-      {children}
+      Download
     </Button>
   );
 };

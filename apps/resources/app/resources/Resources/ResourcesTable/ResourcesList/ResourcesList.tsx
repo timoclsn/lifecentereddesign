@@ -6,7 +6,7 @@ import { LikedResources, Resource } from '../../../../../lib/resources';
 import { formatType } from '../../../../../lib/utils';
 import { ReseourcesFilter } from '../../../page';
 import { ClearAllButton } from './ClearAllButton';
-import { DownloadResourcesButton } from './DownloadResourcesButton/DownloadResourcesButton';
+import { DownloadButton } from './DownloadButton';
 import { ResourcesListTop } from './ResourcesListTop';
 import { ShowMoreButton } from './ShowMoreButton';
 
@@ -111,7 +111,6 @@ export const ResourcesList = ({
       );
     });
 
-  const isFiltered = resources.length !== processedResources.length;
   const resourcesToDisplay = processedResources.slice(0, limit);
   const showShowMoreBtn = processedResources.length > limit;
 
@@ -124,7 +123,7 @@ export const ResourcesList = ({
     };
   });
   const downloadadbleResourcesCsv = convertToCsv(downloadadbleResources);
-  const showDownloadResourceButton = downloadadbleResources.length > 0;
+  const showDownloadButton = downloadadbleResources.length > 0;
 
   return (
     <>
@@ -149,15 +148,11 @@ export const ResourcesList = ({
           </div>
         )}
       </div>
-      {(showShowMoreBtn || showDownloadResourceButton) && (
+      {(showShowMoreBtn || showDownloadButton) && (
         <div className="mt-10 flex flex-col justify-center gap-4 sm:items-center">
           {showShowMoreBtn && <ShowMoreButton />}
-          {showDownloadResourceButton && (
-            <DownloadResourcesButton
-              csv={downloadadbleResourcesCsv}
-            >{`Download ${
-              isFiltered ? 'Filtered ' : 'All '
-            }`}</DownloadResourcesButton>
+          {showDownloadButton && (
+            <DownloadButton csv={downloadadbleResourcesCsv} />
           )}
         </div>
       )}
