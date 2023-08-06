@@ -111,19 +111,18 @@ export const ResourcesList = ({
       );
     });
 
+  const isFiltered = resources.length !== processedResources.length;
   const resourcesToDisplay = processedResources.slice(0, limit);
   const showShowMoreBtn = processedResources.length > limit;
 
   const downloadableResources = processedResources.map((resource) => {
     return {
       title: 'title' in resource ? resource.title : resource.name,
-      type: formatType(resource.type),
-      category: resource.category?.name ?? '',
       link: resource.link ?? '',
     };
   });
   const downloadableResourcesCsv = convertToCsv(downloadableResources);
-  const showDownloadButton = downloadableResources.length > 0;
+  const showDownloadButton = isFiltered && downloadableResources.length > 0;
 
   return (
     <>
@@ -164,17 +163,10 @@ const convertToCsv = (
   resources: Array<{
     title: string;
     link: string;
-    type: string;
-    category: string;
   }>
 ) => {
   const headers = ['Title', 'Type', 'Category', 'Link'];
-  const rows = resources.map((resource) => [
-    resource.title,
-    resource.type,
-    resource.category,
-    resource.link,
-  ]);
+  const rows = resources.map((resource) => [resource.title, resource.link]);
 
   const csv = [headers, ...rows]
     .map((row) => row.map((cell) => `"${cell.replace(/"/g, '""')}"`).join(','))
