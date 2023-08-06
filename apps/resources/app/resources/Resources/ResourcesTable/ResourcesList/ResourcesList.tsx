@@ -2,11 +2,13 @@ import { getCardComponent } from 'components/utils';
 import { Heading } from 'design-system';
 import { matchSorter } from 'match-sorter';
 import { AutoAnimate } from '../../../../../components/AutoAnimate/AutoAnimate';
+import { LikedResources, Resource } from '../../../../../lib/resources';
+import { formatType } from '../../../../../lib/utils';
 import { ReseourcesFilter } from '../../../page';
 import { ClearAllButton } from './ClearAllButton';
+import { DownloadResourcesButton } from './DownloadResourcesButton/DownloadResourcesButton';
 import { ResourcesListTop } from './ResourcesListTop';
 import { ShowMoreButton } from './ShowMoreButton';
-import { LikedResources, Resource } from '../../../../../lib/resources';
 
 interface Props {
   resources: Array<Resource>;
@@ -109,8 +111,20 @@ export const ResourcesList = ({
       );
     });
 
+  const isFiltered = resources.length !== processedResources.length;
   const resourcesToDisplay = processedResources.slice(0, limit);
   const showShowMoreBtn = processedResources.length > limit;
+
+  const downloadadbleResources = processedResources.map((resource) => {
+    return {
+      title: 'title' in resource ? resource.title : resource.name,
+      type: formatType(resource.type),
+      category: resource.category?.name ?? '',
+      link: resource.link ?? '',
+    };
+  });
+  const downloadadbleResourcesCsv = convertToCsv(downloadadbleResources);
+  const showDownloadResourceButton = downloadadbleResources.length > 0;
 
   return (
     <>
@@ -135,11 +149,41 @@ export const ResourcesList = ({
           </div>
         )}
       </div>
-      {showShowMoreBtn && (
-        <div className="mt-10 flex justify-center">
-          <ShowMoreButton />
+      {(showShowMoreBtn || showDownloadResourceButton) && (
+        <div className="mt-10 flex flex-col justify-center gap-4 sm:items-center">
+          {showShowMoreBtn && <ShowMoreButton />}
+          {showDownloadResourceButton && (
+            <DownloadResourcesButton
+              csv={downloadadbleResourcesCsv}
+            >{`Download ${
+              isFiltered ? 'Filtered ' : 'All '
+            }Resources`}</DownloadResourcesButton>
+          )}
         </div>
       )}
     </>
   );
+};
+
+const convertToCsv = (
+  resources: Array<{
+    title: string;
+    link: string;
+    type: string;
+    category: string;
+  }>
+) => {
+  const headers = ['Title', 'Type', 'Category', 'Link'];
+  const rows = resources.map((resource) => [
+    resource.title,
+    resource.type,
+    resource.category,
+    resource.link,
+  ]);
+
+  const csv = [headers, ...rows]
+    .map((row) => row.map((cell) => `"${cell.replace(/"/g, '""')}"`).join(','))
+    .join('\n');
+
+  return csv;
 };

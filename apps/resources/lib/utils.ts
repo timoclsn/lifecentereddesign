@@ -22,3 +22,9 @@ export const getBaseUrl = () => {
   // eslint-disable-next-line turbo/no-undeclared-env-vars
   return `http://localhost:${process.env.PORT ?? 3000}`;
 };
+
+export const formatType = (type: string) => {
+  const uppercaseFirstLetterType = type.charAt(0).toUpperCase() + type.slice(1);
+  const typeWithSpaces = uppercaseFirstLetterType.replace(/([A-Z])/g, ' $1');
+  return typeWithSpaces;
+};
