@@ -1,14 +1,16 @@
 'use client';
 
+import { Button, Heading } from 'design-system';
+
 interface Props {
   reset: () => void;
 }
 
 const Error = ({ reset }: Props) => {
   return (
-    <div>
-      <h2>Something went wrong.</h2>
-      <button onClick={() => reset()}>Try again</button>
+    <div className="flex flex-col items-center justify-center gap-8">
+      <Heading level="2">Something went wrong :(</Heading>
+      <Button onClick={() => reset()}>Try again</Button>
     </div>
   );
 };
