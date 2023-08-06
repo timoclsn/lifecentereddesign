@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/server';
 import { ContentType } from '../../lib/resources';
-import { getHostname } from '../../lib/utils';
+import { formatType, getHostname } from '../../lib/utils';
 
 export const runtime = 'edge';
 
@@ -20,8 +20,7 @@ export const GET = async (request: Request) => {
 
   const title = searchParams.get('title') || '';
   const type = (searchParams.get('type') || '') as ContentType;
-  const uppercaseFirstLetterType = type.charAt(0).toUpperCase() + type.slice(1);
-  const spaceType = uppercaseFirstLetterType.replace(/([A-Z])/g, ' $1');
+  const formattedType = formatType(type);
   const category = searchParams.get('category') || '';
   const link = searchParams.get('link') || '';
 
@@ -68,7 +67,7 @@ export const GET = async (request: Request) => {
                 color: '#101b2c',
               }}
             >
-              {spaceType}
+              {formattedType}
             </div>
             <div
               style={{
