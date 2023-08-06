@@ -114,7 +114,7 @@ export const ResourcesList = ({
   const resourcesToDisplay = processedResources.slice(0, limit);
   const showShowMoreBtn = processedResources.length > limit;
 
-  const downloadadbleResources = processedResources.map((resource) => {
+  const downloadableResources = processedResources.map((resource) => {
     return {
       title: 'title' in resource ? resource.title : resource.name,
       type: formatType(resource.type),
@@ -122,8 +122,8 @@ export const ResourcesList = ({
       link: resource.link ?? '',
     };
   });
-  const downloadadbleResourcesCsv = convertToCsv(downloadadbleResources);
-  const showDownloadButton = downloadadbleResources.length > 0;
+  const downloadableResourcesCsv = convertToCsv(downloadableResources);
+  const showDownloadButton = downloadableResources.length > 0;
 
   return (
     <>
@@ -152,7 +152,7 @@ export const ResourcesList = ({
         <div className="mt-10 flex flex-col justify-center gap-4 sm:items-center">
           {showShowMoreBtn && <ShowMoreButton />}
           {showDownloadButton && (
-            <DownloadButton csv={downloadadbleResourcesCsv} />
+            <DownloadButton csv={downloadableResourcesCsv} />
           )}
         </div>
       )}
