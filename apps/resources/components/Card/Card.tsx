@@ -91,7 +91,7 @@ export const Card = ({
       className="flex h-full w-full flex-col gap-8 sm:gap-24"
     >
       <div className="flex flex-1 flex-col items-start gap-9">
-        <div className="relative flex w-full justify-between">
+        <div className="relative flex w-full flex-wrap justify-between gap-2">
           <div className="flex items-center gap-2">
             {/* Type */}
             {showType && (
