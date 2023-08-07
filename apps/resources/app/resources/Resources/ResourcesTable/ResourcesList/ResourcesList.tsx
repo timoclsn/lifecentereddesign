@@ -3,10 +3,9 @@ import { Heading } from 'design-system';
 import { matchSorter } from 'match-sorter';
 import { AutoAnimate } from '../../../../../components/AutoAnimate/AutoAnimate';
 import { LikedResources, Resource } from '../../../../../lib/resources';
-import { formatType } from '../../../../../lib/utils';
 import { ReseourcesFilter } from '../../../page';
 import { ClearAllButton } from './ClearAllButton';
-import { DownloadButton } from './DownloadButton';
+import { DownloadButton } from './DownloadButton/DownloadButton';
 import { ResourcesListTop } from './ResourcesListTop';
 import { ShowMoreButton } from './ShowMoreButton';
 
@@ -111,18 +110,10 @@ export const ResourcesList = ({
       );
     });
 
-  const isFiltered = resources.length !== processedResources.length;
   const resourcesToDisplay = processedResources.slice(0, limit);
+  const isFiltered = resources.length !== processedResources.length;
   const showShowMoreBtn = processedResources.length > limit;
-
-  const downloadableResources = processedResources.map((resource) => {
-    return {
-      title: 'title' in resource ? resource.title : resource.name,
-      link: resource.link ?? '',
-    };
-  });
-  const downloadableResourcesCsv = convertToCsv(downloadableResources);
-  const showDownloadButton = isFiltered && downloadableResources.length > 0;
+  const showDownloadButton = isFiltered && processedResources.length > 0;
 
   return (
     <>
@@ -151,26 +142,10 @@ export const ResourcesList = ({
         <div className="mt-10 flex flex-col justify-center gap-4 sm:items-center">
           {showShowMoreBtn && <ShowMoreButton />}
           {showDownloadButton && (
-            <DownloadButton csv={downloadableResourcesCsv} />
+            <DownloadButton resources={processedResources} />
           )}
         </div>
       )}
     </>
   );
-};
-
-const convertToCsv = (
-  resources: Array<{
-    title: string;
-    link: string;
-  }>
-) => {
-  const headers = ['Title', 'Link'];
-  const rows = resources.map((resource) => [resource.title, resource.link]);
-
-  const csv = [headers, ...rows]
-    .map((row) => row.map((cell) => `"${cell.replace(/"/g, '""')}"`).join(','))
-    .join('\n');
-
-  return csv;
 };

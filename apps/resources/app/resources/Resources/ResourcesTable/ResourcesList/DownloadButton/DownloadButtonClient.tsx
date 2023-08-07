@@ -7,7 +7,7 @@ interface Props {
   csv: string;
 }
 
-export const DownloadButton = ({ csv }: Props) => {
+export const DownloadButtonClient = ({ csv }: Props) => {
   return (
     <Button
       variant="outline"
