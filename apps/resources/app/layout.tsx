@@ -5,9 +5,8 @@ import { Metadata } from 'next';
 import { DM_Sans, Source_Serif_4 } from 'next/font/google';
 import Script from 'next/script';
 import { ReactNode, Suspense } from 'react';
-import { CO2Badge } from '../components/CO2Badge/CO2Badge';
 import { Footer } from '../components/Footer/Footer';
-import { Navigation } from '../components/Navigation/Navigation';
+import { Header } from '../components/Header/Header';
 import { description, title } from '../lib/metadata';
 import { getBaseUrl } from '../lib/utils';
 import '../styles/globals.css';
@@ -71,23 +70,16 @@ const RootLayout = ({ children }: Props) => {
         lang="en"
         className={`${sans.variable} ${serif.variable} min-h-screen`}
       >
-        <body className="bg-bg-primary text-text-primary min-h-screen font-sans text-base font-normal">
-          <div className="flex min-h-screen flex-col space-y-20 sm:space-y-40">
-            <div>
-              <div className="flex justify-center">
-                <CO2Badge />
-              </div>
-              <Navigation />
-            </div>
-            <Suspense>
-              <main className="flex-1">
-                <Container inset className="space-y-10 sm:space-y-40">
-                  {children}
-                </Container>
-              </main>
-            </Suspense>
-            <Footer />
-          </div>
+        <body className="bg-bg-primary text-text-primary flex min-h-screen flex-col font-sans text-base font-normal">
+          <Header />
+          <Suspense>
+            <main className="flex-1">
+              <Container inset className="space-y-10 sm:space-y-40">
+                {children}
+              </Container>
+            </main>
+          </Suspense>
+          <Footer />
         </body>
         <Script data-no-cookie data-api="/_hive" src="/bee.js" />
       </html>

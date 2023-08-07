@@ -3,7 +3,7 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { Heading, Link, Text } from 'design-system';
 import { ArrowRight, Leaf, X } from 'lucide-react';
-import { demoResult } from '../../lib/co2';
+import { demoResult } from '../../../lib/co2';
 import styles from './CO2Badge.module.css';
 
 export function CO2Badge() {

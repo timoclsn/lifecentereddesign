@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="mt-auto flex justify-between gap-4 py-10 px-6 text-text-secondary sm:gap-10 sm:px-8 xl:px-10">
+    <footer className="text-text-secondary mt-20 flex justify-between gap-4 px-6 py-10 sm:mt-40 sm:gap-10 sm:px-8 xl:px-10">
       <ul className="flex flex-col gap-4 sm:flex-row sm:gap-10">
         <li className="hover:underline">
           <Link href="/#about">
@@ -26,7 +26,7 @@ export function Footer() {
           </Link>
         </li>
       </ul>
-      <ul className="flex flex-col space-y-4 font-bold sm:flex-row sm:space-y-0 sm:space-x-8">
+      <ul className="flex flex-col space-y-4 font-bold sm:flex-row sm:space-x-8 sm:space-y-0">
         <li className="hover:underline">
           <Link href="/imprint">
             <Text>Imprint</Text>

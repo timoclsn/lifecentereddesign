@@ -5,7 +5,7 @@ import { UserButton } from './UserButton';
 
 export const Navigation = () => {
   return (
-    <header className="flex flex-wrap items-center justify-between gap-x-10 gap-y-4 px-6 py-6 sm:px-8 xl:px-10">
+    <nav className="flex flex-wrap items-center justify-between gap-x-10 gap-y-4 px-6 py-6 sm:px-8 xl:px-10">
       <div className="font-serif text-2xl font-bold">
         <Link href="/">
           <Heading
@@ -29,6 +29,6 @@ export const Navigation = () => {
           <UserButton />
         </li>
       </ul>
-    </header>
+    </nav>
   );
 };
