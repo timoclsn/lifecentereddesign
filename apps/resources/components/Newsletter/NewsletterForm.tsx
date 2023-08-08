@@ -33,7 +33,7 @@ export const NewsletterForm = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
 
-  const userEmail = user?.emailAddresses[0].emailAddress;
+  const userEmail = user?.emailAddresses.at(0)?.emailAddress;
 
   useEffect(() => {
     if (userEmail && !dirtyFields.email) {

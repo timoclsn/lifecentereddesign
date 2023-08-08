@@ -32,7 +32,7 @@ export const SuggestionForm = () => {
 
   let name = '';
   const userName = user?.fullName;
-  const userEmail = user?.emailAddresses[0].emailAddress;
+  const userEmail = user?.emailAddresses.at(0)?.emailAddress;
 
   if (userName && userEmail) {
     name = `${userName} (${userEmail})`;
