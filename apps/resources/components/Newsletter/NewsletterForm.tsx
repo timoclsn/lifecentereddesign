@@ -101,7 +101,6 @@ export const NewsletterForm = () => {
               id="consens"
               value={undefined}
               checked={field.value}
-              // @ts-expect-error: Errors because consens can only be true in schema
               onCheckedChange={field.onChange}
               className={checkboxStyles({ error: !!errors.consens })}
             >
