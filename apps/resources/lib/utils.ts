@@ -1,3 +1,5 @@
+/* eslint-disable turbo/no-undeclared-env-vars */
+
 import { format } from 'date-fns';
 
 export const getHostname = (url: string) => {
@@ -17,9 +19,8 @@ export const formateDate = (date: Date | string) =>
   format(new Date(date), 'L/d/yyyy');
 
 export const getBaseUrl = () => {
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
-  if (process.env.URL) return process.env.URL;
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  if (process.env.NEXT_PUBLIC_VERCEL_URL)
+    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
   return `http://localhost:${process.env.PORT ?? 3000}`;
 };
 
