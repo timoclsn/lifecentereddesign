@@ -14,6 +14,7 @@ export const CopyButton = ({ link }: Props) => {
   const tooltip = 'Copy resource link';
 
   const handleClick = async () => {
+    if (!navigator.clipboard) return;
     setCopied(true);
     navigator.clipboard.writeText(link);
     splitbee.track(tooltip);

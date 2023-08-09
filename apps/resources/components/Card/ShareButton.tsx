@@ -16,21 +16,25 @@ export const ShareButton = ({ title, resourceId, resourceType }: Props) => {
   const [copied, setCopied] = useState(false);
 
   const link = `${getBaseUrl()}/resources/${resourceType}-${resourceId}`;
+  const text = 'Check out this resource I found LifeCenteredDesign.Net:';
   const tooltip = 'Share resource link';
 
   const handleClick = async () => {
+    if (!navigator.share && !navigator.clipboard) return;
+
     if (navigator.share) {
       navigator.share({
         title,
-        text: 'Check out this resource on LifeCenteredDesign.Net:',
+        text,
         url: link,
       });
     } else {
       setCopied(true);
-      navigator.clipboard.writeText(link);
+      navigator.clipboard.writeText(`${text} ${link}`);
       await wait(3000);
       setCopied(false);
     }
+
     splitbee.track(tooltip);
   };
 
