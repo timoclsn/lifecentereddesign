@@ -9,10 +9,10 @@ import {
 import { ExternalLink, StickyNote, Users2 } from 'lucide-react';
 import { ContentType } from '../../lib/resources';
 import { CategoryButton } from './CategoryButton';
-import { CopyLink } from './CopyLink';
-import { CopyShareLink } from './CopyShareLink';
+import { CopyButton } from './CopyButton';
 import { LikesButton } from './LikesButton/LikesButton';
 import { ResourceLink } from './ResourceLink';
+import { ShareButton } from './ShareButton';
 import { TypeButton } from './TypeButton';
 
 interface Props {
@@ -129,7 +129,8 @@ export const Card = ({
             />
 
             {/* Copy Share Link */}
-            <CopyShareLink
+            <ShareButton
+              title={title}
               resourceId={resourceId}
               resourceType={resourceType}
             />
@@ -204,7 +205,7 @@ export const Card = ({
             ))}
 
             {/* Copy Link Button*/}
-            {resourceLink && <CopyLink link={resourceLink} />}
+            {resourceLink && <CopyButton link={resourceLink} />}
           </div>
         )}
       </div>
