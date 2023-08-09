@@ -16,7 +16,7 @@ export const ShareButton = ({ title, resourceId, resourceType }: Props) => {
   const [copied, setCopied] = useState(false);
 
   const link = `${getBaseUrl()}/resources/${resourceType}-${resourceId}`;
-  const text = 'Check out this resource I found LifeCenteredDesign.Net 🌱';
+  const text = 'Check out this resource I found on LifeCenteredDesign.Net 🌱';
   const tooltip = 'Share resource link';
 
   const handleClick = async () => {
