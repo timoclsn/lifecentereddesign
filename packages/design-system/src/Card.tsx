@@ -2,7 +2,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { ReactNode } from 'react';
 import { objectKeys } from './utils';
 
-const baseVariants = {
+const colorVariants = {
   oak: 'bg-oak',
   forest: 'bg-forest',
   evening: 'bg-evening',
@@ -11,11 +11,10 @@ const baseVariants = {
   sky: 'bg-sky',
   stone: 'bg-stone',
   morning: 'bg-morning',
-  primary: 'bg-primary-main-bg',
 } as const;
 
 export const getRandomCardVariant = () => {
-  const keys = objectKeys(baseVariants);
+  const keys = objectKeys(colorVariants);
   const randomKey = keys[Math.floor(Math.random() * keys.length)];
   return randomKey;
 };
@@ -23,7 +22,8 @@ export const getRandomCardVariant = () => {
 const styles = cva('rounded-4xl p-8 pt-10 w-full', {
   variants: {
     variant: {
-      ...baseVariants,
+      ...colorVariants,
+      primary: 'bg-primary-main-bg',
       error: 'bg-red-700',
     },
   },
