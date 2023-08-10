@@ -287,12 +287,12 @@ export const getResourceCached = reactCache(
       revalidate: 60,
       tags: [tag],
     })(resourceId, resourceType);
-  }
+  },
 );
 
 export const getResourceOldLikesCount = async (
   id: number,
-  type: ContentType
+  type: ContentType,
 ) => {
   // @ts-expect-error: Dynamic table access doesn't work on type level
   const data = (await prisma[type].findUnique({
@@ -319,7 +319,7 @@ export const getResourceNewLikes = async (id: number, type: ContentType) => {
 export const likeResource = async (
   userId: string,
   id: number,
-  type: ContentType
+  type: ContentType,
 ) => {
   await prisma.like.create({
     data: {
@@ -347,7 +347,7 @@ export const anonymousLikeResource = async (id: number, type: ContentType) => {
 export const unlikeResource = async (
   userId: string,
   id: number,
-  type: ContentType
+  type: ContentType,
 ) => {
   await prisma.like.delete({
     where: {

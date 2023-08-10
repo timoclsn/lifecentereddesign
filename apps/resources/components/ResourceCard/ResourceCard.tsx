@@ -1,7 +1,8 @@
-import { getRandomBackground } from 'design-system';
-import { Suspense } from 'react';
+import { Card, getRandomCardVariant } from 'design-system';
 import { ContentType, getResourceCached } from '../../lib/resources';
+import { Await } from '../Await/Await';
 import { getCardComponent } from '../utils';
+import { AlertTriangle } from 'lucide-react';
 
 interface Props {
   resourceId: number;
@@ -9,35 +10,33 @@ interface Props {
 }
 
 export const ResourceCard = ({ resourceId, resourceType }: Props) => {
+  const resource = getResourceCached(resourceId, resourceType);
   return (
     <section>
-      <Suspense fallback={<Loading />}>
-        <ResourceCardInner
-          resourceId={resourceId}
-          resourceType={resourceType}
-        />
-      </Suspense>
+      <Await promise={resource} loading={<Loading />} error={<Error />}>
+        {(resource) => <>{getCardComponent(resource)}</>}
+      </Await>
     </section>
   );
 };
 
 const Loading = () => {
   return (
-    <div
-      className={`rounded-4xl h-[400px] w-full animate-pulse ${getRandomBackground()}`}
+    <Card
+      variant={getRandomCardVariant()}
+      className="h-[400px] animate-pulse"
     />
   );
 };
 
-interface ResourceCardProps {
-  resourceId: number;
-  resourceType: ContentType;
-}
-
-const ResourceCardInner = async ({
-  resourceId,
-  resourceType,
-}: ResourceCardProps) => {
-  const resource = await getResourceCached(resourceId, resourceType);
-  return getCardComponent(resource);
+const Error = () => {
+  return (
+    <Card
+      variant="error"
+      className="flex h-[400px] items-center justify-center gap-2 text-xl text-white"
+    >
+      <AlertTriangle />
+      Error loading resource. Please try again…
+    </Card>
+  );
 };

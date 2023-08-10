@@ -14,7 +14,12 @@ const parseSlug = (slug: string) => {
 export const generateMetadata = createGenerateMetadata(async ({ params }) => {
   const { slug } = params;
   const { resourceId, resourceType } = parseSlug(slug);
-  const resource = await getResourceCached(resourceId, resourceType);
+
+  try {
+    var resource = await getResourceCached(resourceId, resourceType);
+  } catch (error) {
+    return {};
+  }
 
   const title = 'name' in resource ? resource.name : resource.title;
   const description =
@@ -38,7 +43,7 @@ export const generateMetadata = createGenerateMetadata(async ({ params }) => {
       siteName: 'LifeCenteredDesign.Net',
       description,
       images: {
-        url: `/resource-og-image?${searchParams.toString()}`,
+        url: `/resource-og-image?${searchParams}`,
         alt: title,
         width: 1200,
         height: 630,

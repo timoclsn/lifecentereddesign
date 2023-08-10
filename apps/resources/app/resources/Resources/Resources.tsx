@@ -1,5 +1,4 @@
-import { Heading, Text, getRandomBackground } from 'design-system';
-import { Suspense } from 'react';
+import { Heading, Text } from 'design-system';
 import { formateDate } from '../../../lib/utils';
 import { ReseourcesFilter } from '../page';
 import { ResourcesTable } from './ResourcesTable/ResourcesTable';
@@ -16,7 +15,7 @@ export const Resources = async ({ resourcesFilter }: Props) => {
   const description = () => {
     if (from && till) {
       return `New resources added between ${formateDate(
-        from
+        from,
       )} and ${formateDate(till)}:`;
     }
 
@@ -41,27 +40,7 @@ export const Resources = async ({ resourcesFilter }: Props) => {
           {description()}
         </Text>
       </div>
-      <Suspense fallback={<Loading />}>
-        <ResourcesTable reseourcesFilter={resourcesFilter} />
-      </Suspense>
+      <ResourcesTable reseourcesFilter={resourcesFilter} />
     </section>
-  );
-};
-
-const Loading = () => {
-  return (
-    <div className="space-y-10">
-      <div className="bg-stone h-[100px] w-full animate-pulse" />
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {Array(10)
-          .fill(0)
-          .map((_, index) => (
-            <div
-              key={index}
-              className={`rounded-4xl h-[400px] w-full animate-pulse ${getRandomBackground()}`}
-            />
-          ))}
-      </div>
-    </div>
   );
 };
