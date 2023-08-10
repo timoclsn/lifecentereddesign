@@ -4,7 +4,7 @@ import 'design-system/src/themes/resources.css';
 import { Metadata } from 'next';
 import { DM_Sans, Source_Serif_4 } from 'next/font/google';
 import Script from 'next/script';
-import { ReactNode, Suspense } from 'react';
+import { ReactNode } from 'react';
 import { Footer } from '../components/Footer/Footer';
 import { Header } from '../components/Header/Header';
 import { description, title } from '../lib/metadata';
@@ -73,13 +73,11 @@ const RootLayout = ({ children }: Props) => {
       >
         <body className="bg-bg-primary text-text-primary flex min-h-screen flex-col font-sans text-base font-normal">
           <Header />
-          <Suspense>
-            <main className="flex-1">
-              <Container inset className="space-y-10 sm:space-y-40">
-                {children}
-              </Container>
-            </main>
-          </Suspense>
+          <main className="flex-1">
+            <Container inset className="space-y-10 sm:space-y-40">
+              {children}
+            </Container>
+          </main>
           <Footer />
         </body>
         <Script data-no-cookie data-api="/_hive" src="/bee.js" />
