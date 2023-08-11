@@ -2,6 +2,7 @@
 
 import { auth } from '@clerk/nextjs';
 import { z } from 'zod';
+import { createServerAction } from '../../lib/actions';
 import {
   anonymousLikeResource,
   likeResource,
@@ -11,22 +12,12 @@ import {
 
 const typeSchema = z.enum(resourceTypes);
 
-type Input = z.infer<typeof inputSchema>;
-
 const inputSchema = z.object({
   id: z.number(),
   type: typeSchema,
 });
 
-export const like = async (input: Input) => {
-  const result = inputSchema.safeParse(input);
-  if (!result.success) {
-    return {
-      error: result.error.message,
-    };
-  }
-  const { id, type } = result.data;
-
+export const like = createServerAction(inputSchema)(async ({ id, type }) => {
   const { userId } = auth();
 
   if (userId) {
@@ -34,17 +25,9 @@ export const like = async (input: Input) => {
   } else {
     await anonymousLikeResource(id, type);
   }
-};
+});
 
-export const unLike = async (input: Input) => {
-  const result = inputSchema.safeParse(input);
-  if (!result.success) {
-    return {
-      error: result.error.message,
-    };
-  }
-  const { id, type } = result.data;
-
+export const unLike = createServerAction(inputSchema)(async ({ id, type }) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -52,4 +35,4 @@ export const unLike = async (input: Input) => {
   }
 
   await unlikeResource(userId, id, type);
-};
+});

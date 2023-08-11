@@ -1,23 +1,16 @@
 'use server';
 
 import nodemailer from 'nodemailer';
-import {
-  SuggestionFormSchema,
-  envSchema,
-  suggestionFormSchema,
-} from './schemas';
+import { createServerAction } from '../../../lib/actions';
+import { envSchema, suggestionFormSchema } from './schemas';
 
 const { SUGGESTION_MAIL_PASSWORD } = envSchema.parse(process.env);
 
-export const submit = async (input: SuggestionFormSchema) => {
-  const result = suggestionFormSchema.safeParse(input);
-  if (!result.success) {
-    return {
-      error: 'Please enter a valid link.',
-    };
-  }
-  const { link, message, name } = result.data;
-
+export const submit = createServerAction(suggestionFormSchema)(async ({
+  link,
+  message,
+  name,
+}) => {
   const transporter = nodemailer.createTransport({
     port: 465,
     host: 'sslout.de',
@@ -47,7 +40,5 @@ export const submit = async (input: SuggestionFormSchema) => {
     };
   }
 
-  return {
-    error: '',
-  };
-};
+  return { data: 'success' };
+});

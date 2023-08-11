@@ -1,7 +1,8 @@
 'use server';
 
 import { z } from 'zod';
-import { NewsletterFormSchema, newsletterFormSchema } from './schemas';
+import { createServerAction } from '../../lib/actions';
+import { newsletterFormSchema } from './schemas';
 
 const envSchema = z.object({
   MAILCHIMP_API_KEY: z.string(),
@@ -34,19 +35,10 @@ const errorSchema = z.object({
 const genericError =
   "There was an error subscribing to the newsletter. Send us an email at hello@lifecentereddesign.net and we'll add you to the list.";
 
-export const subscribe = async (
-  input: NewsletterFormSchema
-): Promise<{ error: string }> => {
-  const result = newsletterFormSchema.safeParse(input);
-
-  if (!result.success) {
-    return {
-      error: 'Please enter a valid email address.',
-    };
-  }
-
-  const { email, consens } = result.data;
-
+export const subscribe = createServerAction(newsletterFormSchema)(async ({
+  consens,
+  email,
+}) => {
   const data = {
     email_address: email,
     status: 'pending',
@@ -102,8 +94,4 @@ export const subscribe = async (
       error: genericError,
     };
   }
-
-  return {
-    error: '',
-  };
-};
+});
