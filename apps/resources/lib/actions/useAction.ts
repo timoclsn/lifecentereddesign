@@ -1,7 +1,62 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useReducer } from 'react';
 import { z } from 'zod';
 import { getErrorMessage } from '../utils';
 import { ServerAction } from './createAction';
+
+interface State<TResponse extends any> {
+  isIdle: boolean;
+  isRunning: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  data: TResponse | null;
+  error: string | null;
+}
+
+const initalState: State<any> = {
+  isIdle: true,
+  isRunning: false,
+  isSuccess: false,
+  isError: false,
+  data: null,
+  error: null,
+};
+
+type Action<TResponse extends any> =
+  | { type: 'RUN_ACTION' }
+  | { type: 'IS_SUCCESS'; data: TResponse | null }
+  | { type: 'IS_ERROR'; error: string };
+
+const createReducer =
+  <TResponse extends any>() =>
+  (state: State<TResponse>, action: Action<TResponse>): State<TResponse> => {
+    switch (action.type) {
+      case 'RUN_ACTION':
+        return {
+          ...state,
+          isIdle: false,
+          isRunning: true,
+          isSuccess: false,
+          isError: false,
+          error: null,
+        };
+      case 'IS_SUCCESS':
+        return {
+          ...state,
+          isRunning: false,
+          isSuccess: true,
+          data: action.data,
+        };
+      case 'IS_ERROR':
+        return {
+          ...state,
+          isRunning: false,
+          isError: true,
+          error: action.error,
+        };
+      default:
+        throw new Error('Unknown action type');
+    }
+  };
 
 export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
   inputAction: ServerAction<TInput, TResponse>,
@@ -12,20 +67,15 @@ export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
     onSettled?: () => void;
   } = {},
 ) => {
-  const [isIdle, setIsIdle] = useState(true);
-  const [isRunning, setIsRunning] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [data, setData] = useState<TResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const reducer = createReducer<TResponse>();
+  const [state, dispatch] = useReducer(reducer, initalState);
+  const { isIdle, isRunning, isSuccess, isError, data, error } = state;
 
   const runAction = useCallback(
     async (input?: z.input<TInput>) => {
-      setIsIdle(false);
-      setIsRunning(true);
-      setIsSuccess(false);
-      setIsError(false);
-      setError(null);
+      dispatch({
+        type: 'RUN_ACTION',
+      });
 
       options.onRunAction?.(input);
 
@@ -33,25 +83,27 @@ export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
         const result = await inputAction(input);
 
         if (result.error) {
-          // Error
-          setIsError(true);
-          setError(result.error);
+          dispatch({
+            type: 'IS_ERROR',
+            error: result.error,
+          });
           options.onError?.(result.error);
         } else {
-          // Success
-          setIsSuccess(true);
-          setData(result.data);
+          dispatch({
+            type: 'IS_SUCCESS',
+            data: result.data,
+          });
           options.onSuccess?.(result.data);
         }
       } catch (error) {
-        // Error
-        setIsError(true);
-        setError(getErrorMessage(error));
+        dispatch({
+          type: 'IS_ERROR',
+          error: getErrorMessage(error),
+        });
         options.onError?.(getErrorMessage(error));
       }
 
       options.onSettled?.();
-      setIsRunning(false);
     },
     [inputAction, options],
   );
