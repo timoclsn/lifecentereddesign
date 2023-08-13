@@ -3,18 +3,20 @@
 import { useUser } from '@clerk/nextjs';
 import { Button, InfoBox } from 'design-system';
 import { AlertTriangle, CheckCircle2, Loader, Mail } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import {
   errorStyles,
   inputStyles,
 } from '../../../components/ForrestSection/ForrestSection';
 import { useZodForm } from '../../../hooks/useZodForm';
+import { useAction } from '../../../lib/actions/useAction';
 import { submit } from './actions';
 import { SuggestionFormSchema, suggestionFormSchema } from './schemas';
 
 export const SuggestionForm = () => {
   const { user } = useUser();
+  const { error, isLoading, isSuccess, action } = useAction(submit);
   const {
     register,
     handleSubmit,
@@ -26,9 +28,6 @@ export const SuggestionForm = () => {
   } = useZodForm({
     schema: suggestionFormSchema,
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState('');
 
   let name = '';
   const userName = user?.fullName;
@@ -55,24 +54,17 @@ export const SuggestionForm = () => {
     message,
     name,
   }) => {
-    setIsLoading(true);
-    setIsSuccess(false);
-    setError('');
-
-    const { error } = await submit({
+    await action({
       link,
       message,
       name: userEmail || name,
     });
-    setIsLoading(false);
 
     if (error) {
-      setError(error);
       setFocus('link', { shouldSelect: true });
       return;
     }
 
-    setIsSuccess(true);
     reset();
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();

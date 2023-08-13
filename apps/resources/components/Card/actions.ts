@@ -2,7 +2,7 @@
 
 import { auth } from '@clerk/nextjs';
 import { z } from 'zod';
-import { createServerAction } from '../../lib/actions';
+import { createAction } from '../../lib/actions/createAction';
 import {
   anonymousLikeResource,
   likeResource,
@@ -17,7 +17,7 @@ const inputSchema = z.object({
   type: typeSchema,
 });
 
-export const like = createServerAction(inputSchema)(async ({ id, type }) => {
+export const like = createAction(inputSchema)(async ({ id, type }) => {
   const { userId } = auth();
 
   if (userId) {
@@ -27,7 +27,7 @@ export const like = createServerAction(inputSchema)(async ({ id, type }) => {
   }
 });
 
-export const unLike = createServerAction(inputSchema)(async ({ id, type }) => {
+export const unLike = createAction(inputSchema)(async ({ id, type }) => {
   const { userId } = auth();
 
   if (!userId) {

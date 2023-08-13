@@ -3,33 +3,20 @@
 import { useAuth } from '@clerk/nextjs';
 import { Button, InfoBox } from 'design-system';
 import { AlertTriangle, CheckCircle2, Loader, XCircle } from 'lucide-react';
-import { useState } from 'react';
+import { useAction } from '../../lib/actions/useAction';
 import { deleteAccount } from './actions';
 
 export const DeleteAccountButton = () => {
+  const { isLoading, isSuccess, error, action } = useAction(deleteAccount);
   const { signOut } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState('');
 
   const handleDeleteAccount = async () => {
     if (
       window.confirm(
-        "Do you really want to delete your account? This action can't be undone."
+        "Do you really want to delete your account? This action can't be undone.",
       )
     ) {
-      setIsLoading(true);
-      setIsSuccess(false);
-      setError('');
-
-      const { error } = await deleteAccount();
-
-      if (error) {
-        setError(error);
-        return;
-      }
-
-      setIsSuccess(true);
+      await action();
       signOut();
     }
   };

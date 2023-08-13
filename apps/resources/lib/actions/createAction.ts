@@ -1,0 +1,49 @@
+import { z } from 'zod';
+import { getErrorMessage } from '../utils';
+
+export type ServerAction<TInput extends z.ZodTypeAny, TResponse extends any> = (
+  input?: z.infer<TInput>,
+) => Promise<{
+  data: TResponse | null;
+  error: string | null;
+}>;
+
+export const createAction = <TInputSchema extends z.ZodTypeAny>(
+  inputSchema?: TInputSchema,
+) => {
+  // Second function accepts the action
+  return <TInput extends z.ZodTypeAny, TResponse extends any>(
+    action: (input?: z.infer<TInput>) => Promise<void | TResponse>,
+  ) => {
+    // The actual returned serven action
+    const serverAction: ServerAction<TInputSchema, TResponse> = async (
+      input?: z.infer<TInputSchema>,
+    ) => {
+      if (inputSchema) {
+        const result = inputSchema.safeParse(input);
+        if (!result.success) {
+          return {
+            data: null,
+            error: result.error.message,
+          };
+        }
+      }
+
+      try {
+        var result = await action(input);
+      } catch (error) {
+        return {
+          data: null,
+          error: getErrorMessage(error),
+        };
+      }
+
+      return {
+        data: result ?? null,
+        error: null,
+      };
+    };
+
+    return serverAction;
+  };
+};

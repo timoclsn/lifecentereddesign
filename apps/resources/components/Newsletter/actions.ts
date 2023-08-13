@@ -1,7 +1,7 @@
 'use server';
 
 import { z } from 'zod';
-import { createServerAction } from '../../lib/actions';
+import { createAction } from '../../lib/actions/createAction';
 import { newsletterFormSchema } from './schemas';
 
 const envSchema = z.object({
@@ -35,7 +35,7 @@ const errorSchema = z.object({
 const genericError =
   "There was an error subscribing to the newsletter. Send us an email at hello@lifecentereddesign.net and we'll add you to the list.";
 
-export const subscribe = createServerAction(newsletterFormSchema)(async ({
+export const subscribe = createAction(newsletterFormSchema)(async ({
   consens,
   email,
 }) => {
@@ -68,9 +68,7 @@ export const subscribe = createServerAction(newsletterFormSchema)(async ({
       const { title } = result.data;
 
       if (title === 'Member Exists') {
-        return {
-          error: title,
-        };
+        throw new Error(title);
       }
 
       throw new Error();
@@ -78,20 +76,14 @@ export const subscribe = createServerAction(newsletterFormSchema)(async ({
   } catch (e) {
     const result = errorSchema.safeParse(e);
     if (!result.success) {
-      return {
-        error: genericError,
-      };
+      throw new Error(genericError);
     }
     const { message } = result.data;
 
     if (message === 'Member Exists') {
-      return {
-        error: `${email} is already subscribed to our newsletter.`,
-      };
+      throw new Error(`${email} is already subscribed to our newsletter.`);
     }
 
-    return {
-      error: genericError,
-    };
+    throw new Error(genericError);
   }
 });

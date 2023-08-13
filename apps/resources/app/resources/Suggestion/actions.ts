@@ -1,12 +1,12 @@
 'use server';
 
 import nodemailer from 'nodemailer';
-import { createServerAction } from '../../../lib/actions';
+import { createAction } from '../../../lib/actions/createAction';
 import { envSchema, suggestionFormSchema } from './schemas';
 
 const { SUGGESTION_MAIL_PASSWORD } = envSchema.parse(process.env);
 
-export const submit = createServerAction(suggestionFormSchema)(async ({
+export const submit = createAction(suggestionFormSchema)(async ({
   link,
   message,
   name,
@@ -34,11 +34,8 @@ export const submit = createServerAction(suggestionFormSchema)(async ({
     await transporter.sendMail(mailData);
   } catch (e) {
     console.error(e);
-    return {
-      error:
-        'There was an error submitting your suggestion. Please try again or send it via email at hello@lifecentereddesign.net.',
-    };
+    throw new Error(
+      'There was an error submitting your suggestion. Please try again or send it via email at hello@lifecentereddesign.net.',
+    );
   }
-
-  return { data: 'success' };
 });
