@@ -6,9 +6,11 @@ import { ContentType, getResourceCached } from '../../../lib/resources';
 import { getBaseUrl } from '../../../lib/utils';
 
 const parseSlug = (slug: string) => {
-  const resourceType = slug.split('-').at(0) as ContentType;
-  const resourceId = parseInt(slug.split('-').at(1) as string);
-  return { resourceType, resourceId };
+  const [resourceId, resourceType] = slug.split('-');
+  return {
+    resourceId: parseInt(resourceId),
+    resourceType: resourceType as ContentType,
+  };
 };
 
 export const generateMetadata = createGenerateMetadata(async ({ params }) => {
