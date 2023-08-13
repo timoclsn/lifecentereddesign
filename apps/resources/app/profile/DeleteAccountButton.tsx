@@ -7,7 +7,7 @@ import { useAction } from '../../lib/actions/useAction';
 import { deleteAccount } from './actions';
 
 export const DeleteAccountButton = () => {
-  const { isLoading, isSuccess, error, action } = useAction(deleteAccount);
+  const { isRunning, isSuccess, error, runAction } = useAction(deleteAccount);
   const { signOut } = useAuth();
 
   const handleDeleteAccount = async () => {
@@ -16,15 +16,15 @@ export const DeleteAccountButton = () => {
         "Do you really want to delete your account? This action can't be undone.",
       )
     ) {
-      await action();
+      await runAction();
       signOut();
     }
   };
 
   return (
     <>
-      <Button color="danger" onClick={handleDeleteAccount} disabled={isLoading}>
-        {isLoading ? <Loader className="animate-spin" /> : <XCircle />}
+      <Button color="danger" onClick={handleDeleteAccount} disabled={isRunning}>
+        {isRunning ? <Loader className="animate-spin" /> : <XCircle />}
         Delete account
       </Button>
 

@@ -46,8 +46,8 @@ export const LikesButtonClient = ({
   const { isSignedIn } = useAuth();
   const { refresh } = useRouter();
   let [, startTransition] = useTransition();
-  const { action: likeAction, data } = useAction(like);
-  const { action: unLikeAction } = useAction(unLike);
+  const { runAction: likeAction } = useAction(like);
+  const { runAction: unLikeAction } = useAction(unLike);
 
   const [optimisticCount, updateOptimisticCount] = useOptimistic(
     count,

@@ -16,7 +16,7 @@ import { SuggestionFormSchema, suggestionFormSchema } from './schemas';
 
 export const SuggestionForm = () => {
   const { user } = useUser();
-  const { error, isLoading, isSuccess, action } = useAction(submit);
+  const { error, isRunning, isSuccess, runAction } = useAction(submit);
   const {
     register,
     handleSubmit,
@@ -54,7 +54,7 @@ export const SuggestionForm = () => {
     message,
     name,
   }) => {
-    await action({
+    await runAction({
       link,
       message,
       name: userEmail || name,
@@ -126,7 +126,7 @@ export const SuggestionForm = () => {
 
       {/* Submit button */}
       <Button type="submit" size="large">
-        {isLoading ? <Loader className="animate-spin" /> : <Mail />}
+        {isRunning ? <Loader className="animate-spin" /> : <Mail />}
         Submit
       </Button>
 

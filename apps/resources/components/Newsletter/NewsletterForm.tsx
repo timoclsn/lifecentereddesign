@@ -30,7 +30,7 @@ export const NewsletterForm = () => {
   } = useZodForm({
     schema: newsletterFormSchema,
   });
-  const { isLoading, isSuccess, error, action } = useAction(subscribe);
+  const { isRunning, isSuccess, error, runAction } = useAction(subscribe);
 
   const userEmail = user?.emailAddresses.at(0)?.emailAddress;
 
@@ -44,7 +44,7 @@ export const NewsletterForm = () => {
   }, [dirtyFields.email, userEmail, setValue]);
 
   const onSubmit: SubmitHandler<NewsletterFormSchema> = async (input) => {
-    await action(input);
+    await runAction(input);
 
     if (error) {
       setFocus('email', { shouldSelect: true });
@@ -113,7 +113,7 @@ export const NewsletterForm = () => {
 
       {/* Submit button */}
       <Button type="submit" size="large">
-        {isLoading ? <Loader className="animate-spin" /> : <Mail />}
+        {isRunning ? <Loader className="animate-spin" /> : <Mail />}
         Subscribe
       </Button>
 

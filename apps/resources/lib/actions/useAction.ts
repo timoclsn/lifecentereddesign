@@ -10,15 +10,15 @@ export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
     onError?: (error: string) => void;
   } = {},
 ) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
   const [data, setData] = useState<TResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const action = useCallback(
+  const runAction = useCallback(
     async (input?: z.input<TInput>) => {
-      setIsLoading(true);
+      setIsRunning(true);
       setIsSuccess(false);
       setIsError(false);
       setError(null);
@@ -44,14 +44,14 @@ export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
         options.onError?.(getErrorMessage(error));
       }
 
-      setIsLoading(false);
+      setIsRunning(false);
     },
     [inputAction, options],
   );
 
   return {
-    action,
-    isLoading,
+    runAction,
+    isRunning,
     isSuccess,
     isError,
     data,
