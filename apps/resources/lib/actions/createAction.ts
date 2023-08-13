@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { getErrorMessage } from '../utils';
 
 export type ServerAction<TInput extends z.ZodTypeAny, TResponse extends any> = (
-  input?: z.infer<TInput>,
+  input?: z.input<TInput>,
 ) => Promise<{
   data: TResponse | null;
   error: string | null;
@@ -13,12 +13,14 @@ export const createAction = <TInputSchema extends z.ZodTypeAny>(
 ) => {
   // Second function accepts the action
   return <TInput extends z.ZodTypeAny, TResponse extends any>(
-    action: (input?: z.infer<TInput>) => Promise<void | TResponse>,
+    action: (input?: z.input<TInput>) => Promise<void | TResponse>,
   ) => {
     // The actual returned serven action
     const serverAction: ServerAction<TInputSchema, TResponse> = async (
-      input?: z.infer<TInputSchema>,
+      input?: z.input<TInputSchema>,
     ) => {
+      let parsedInput = input;
+
       if (inputSchema) {
         const result = inputSchema.safeParse(input);
         if (!result.success) {
@@ -27,21 +29,21 @@ export const createAction = <TInputSchema extends z.ZodTypeAny>(
             error: result.error.message,
           };
         }
+        parsedInput = result.data;
       }
 
       try {
-        var result = await action(input);
+        const response = await action(input);
+        return {
+          data: response ?? null,
+          error: null,
+        };
       } catch (error) {
         return {
           data: null,
           error: getErrorMessage(error),
         };
       }
-
-      return {
-        data: result ?? null,
-        error: null,
-      };
     };
 
     return serverAction;

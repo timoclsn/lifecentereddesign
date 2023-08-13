@@ -17,7 +17,7 @@ export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
   const [error, setError] = useState<string | null>(null);
 
   const action = useCallback(
-    async (input?: z.infer<TInput>) => {
+    async (input?: z.input<TInput>) => {
       setIsLoading(true);
       setIsSuccess(false);
       setIsError(false);
