@@ -6,10 +6,13 @@ import { ServerAction } from './createAction';
 export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
   inputAction: ServerAction<TInput, TResponse>,
   options: {
+    onRunAction?: (input?: z.input<TInput>) => void;
     onSuccess?: (data: TResponse | null) => void;
     onError?: (error: string) => void;
+    onSettled?: () => void;
   } = {},
 ) => {
+  const [isIdle, setIsIdle] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -18,10 +21,13 @@ export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
 
   const runAction = useCallback(
     async (input?: z.input<TInput>) => {
+      setIsIdle(false);
       setIsRunning(true);
       setIsSuccess(false);
       setIsError(false);
       setError(null);
+
+      options.onRunAction?.(input);
 
       try {
         const result = await inputAction(input);
@@ -44,6 +50,7 @@ export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
         options.onError?.(getErrorMessage(error));
       }
 
+      options.onSettled?.();
       setIsRunning(false);
     },
     [inputAction, options],
@@ -51,6 +58,7 @@ export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
 
   return {
     runAction,
+    isIdle,
     isRunning,
     isSuccess,
     isError,
