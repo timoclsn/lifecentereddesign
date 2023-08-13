@@ -1,12 +1,21 @@
 import { z } from 'zod';
 import { getErrorMessage } from '../utils';
 
-export type ServerAction<TInput extends z.ZodTypeAny, TResponse extends any> = (
+declare const brand: unique symbol;
+
+type Brand<T, TBrand extends string> = T & { [brand]: TBrand };
+
+type ServerAction<TInput extends z.ZodTypeAny, TResponse extends any> = (
   input?: z.input<TInput>,
 ) => Promise<{
   data: TResponse | null;
   error: string | null;
 }>;
+
+export type BrandedServerAction<
+  TInput extends z.ZodTypeAny,
+  TResponse extends any,
+> = Brand<ServerAction<TInput, TResponse>, 'ServerAction'>;
 
 export const createAction = <TInputSchema extends z.ZodTypeAny>(
   inputSchema?: TInputSchema,
@@ -46,6 +55,6 @@ export const createAction = <TInputSchema extends z.ZodTypeAny>(
       }
     };
 
-    return serverAction;
+    return serverAction as BrandedServerAction<TInputSchema, TResponse>;
   };
 };

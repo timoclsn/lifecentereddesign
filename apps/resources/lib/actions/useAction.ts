@@ -1,7 +1,7 @@
 import { useCallback, useReducer } from 'react';
 import { z } from 'zod';
 import { getErrorMessage } from '../utils';
-import { ServerAction } from './createAction';
+import { BrandedServerAction } from './createAction';
 
 interface State<TResponse extends any> {
   isIdle: boolean;
@@ -59,7 +59,7 @@ const createReducer =
   };
 
 export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
-  inputAction: ServerAction<TInput, TResponse>,
+  inputAction: BrandedServerAction<TInput, TResponse>,
   options: {
     onRunAction?: (input?: z.input<TInput>) => void;
     onSuccess?: (data: TResponse | null) => void;
