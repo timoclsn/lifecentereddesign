@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { createAction } from '../../lib/actions/createAction';
 import { newsletterFormSchema } from './schemas';
+import { getErrorMessage } from '../../lib/utils';
 
 const envSchema = z.object({
   MAILCHIMP_API_KEY: z.string(),
@@ -26,14 +27,6 @@ const apiErrorSchema = z.object({
   detail: z.string(),
   instance: z.string(),
 });
-
-const errorSchema = z.object({
-  name: z.string(),
-  message: z.string(),
-});
-
-const genericError =
-  "There was an error subscribing to the newsletter. Send us an email at hello@lifecentereddesign.net and we'll add you to the list.";
 
 export const subscribe = createAction(newsletterFormSchema)(async ({
   consens,
@@ -73,17 +66,14 @@ export const subscribe = createAction(newsletterFormSchema)(async ({
 
       throw new Error();
     }
-  } catch (e) {
-    const result = errorSchema.safeParse(e);
-    if (!result.success) {
-      throw new Error(genericError);
-    }
-    const { message } = result.data;
-
+  } catch (error) {
+    const message = getErrorMessage(error);
     if (message === 'Member Exists') {
       throw new Error(`${email} is already subscribed to our newsletter.`);
     }
 
-    throw new Error(genericError);
+    throw new Error(
+      "There was an error subscribing to the newsletter. Send us an email at hello@lifecentereddesign.net and we'll add you to the list.",
+    );
   }
 });

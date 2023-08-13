@@ -96,11 +96,13 @@ export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
           options.onSuccess?.(result.data);
         }
       } catch (error) {
+        const errorMessage = 'Something went wrong. Please try again.';
         dispatch({
           type: 'IS_ERROR',
-          error: getErrorMessage(error),
+          error: errorMessage,
         });
-        options.onError?.(getErrorMessage(error));
+        options.onError?.(errorMessage);
+        console.log(getErrorMessage(error));
       }
 
       options.onSettled?.();
