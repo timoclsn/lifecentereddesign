@@ -5,7 +5,11 @@ import { cva } from 'class-variance-authority';
 import { Tooltip } from 'design-system';
 import { Heart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { experimental_useOptimistic as useOptimistic } from 'react';
+import {
+  experimental_useOptimistic as useOptimistic,
+  useTransition,
+} from 'react';
+import { useAction } from '../../../lib/actions/useAction';
 import { ContentType } from '../../../lib/resources';
 import { SolidHeart } from '../../Icons/SolidHeart';
 import { like, unLike } from '../actions';
@@ -21,7 +25,7 @@ const heartVariants = cva(
         true: 'text-red-700',
       },
     },
-  }
+  },
 );
 
 interface Props {
@@ -41,48 +45,53 @@ export const LikesButtonClient = ({
 }: Props) => {
   const { isSignedIn } = useAuth();
   const { refresh } = useRouter();
+  let [, startTransition] = useTransition();
+  const { runAction: likeAction } = useAction(like);
+  const { runAction: unLikeAction } = useAction(unLike);
 
   const [optimisticCount, updateOptimisticCount] = useOptimistic(
     count,
-    (_, newState) => newState as number
+    (_, newState) => newState as number,
   );
   const [optimisticLiked, updateOptimisticLiked] = useOptimistic(
     liked,
-    (state, newState) => newState as boolean
+    (state, newState) => newState as boolean,
   );
 
   const isLoading = optimisticCount !== count;
 
-  const handleClick = async () => {
-    if (liked) {
-      updateOptimisticCount(optimisticCount - 1);
-      if (isSignedIn) {
-        updateOptimisticLiked(false);
+  const handleClick = () => {
+    startTransition(async () => {
+      if (liked) {
+        updateOptimisticCount(optimisticCount - 1);
+        if (isSignedIn) {
+          updateOptimisticLiked(false);
+        }
+        await unLikeAction({
+          id: resourceId,
+          type: resourceType,
+        });
+        splitbee.track('Un-like resource', {
+          type: resourceType,
+          name: resourceTitle,
+        });
+      } else {
+        updateOptimisticCount(optimisticCount + 1);
+        if (isSignedIn) {
+          updateOptimisticLiked(true);
+        }
+        await likeAction({
+          id: resourceId,
+          type: resourceType,
+        });
+        splitbee.track('Like resource', {
+          type: resourceType,
+          name: resourceTitle,
+        });
       }
-      await unLike({
-        id: resourceId,
-        type: resourceType,
-      });
-      splitbee.track('Un-like resource', {
-        type: resourceType,
-        name: resourceTitle,
-      });
-    } else {
-      updateOptimisticCount(optimisticCount + 1);
-      if (isSignedIn) {
-        updateOptimisticLiked(true);
-      }
-      await like({
-        id: resourceId,
-        type: resourceType,
-      });
-      splitbee.track('Like resource', {
-        type: resourceType,
-        name: resourceTitle,
-      });
-    }
 
-    refresh();
+      refresh();
+    });
   };
   return (
     <button

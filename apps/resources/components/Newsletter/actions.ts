@@ -1,7 +1,9 @@
 'use server';
 
 import { z } from 'zod';
-import { NewsletterFormSchema, newsletterFormSchema } from './schemas';
+import { createAction } from '../../lib/actions/createAction';
+import { newsletterFormSchema } from './schemas';
+import { getErrorMessage } from '../../lib/utils';
 
 const envSchema = z.object({
   MAILCHIMP_API_KEY: z.string(),
@@ -26,27 +28,10 @@ const apiErrorSchema = z.object({
   instance: z.string(),
 });
 
-const errorSchema = z.object({
-  name: z.string(),
-  message: z.string(),
-});
-
-const genericError =
-  "There was an error subscribing to the newsletter. Send us an email at hello@lifecentereddesign.net and we'll add you to the list.";
-
-export const subscribe = async (
-  input: NewsletterFormSchema
-): Promise<{ error: string }> => {
-  const result = newsletterFormSchema.safeParse(input);
-
-  if (!result.success) {
-    return {
-      error: 'Please enter a valid email address.',
-    };
-  }
-
-  const { email, consens } = result.data;
-
+export const subscribe = createAction(newsletterFormSchema)(async ({
+  consens,
+  email,
+}) => {
   const data = {
     email_address: email,
     status: 'pending',
@@ -76,34 +61,19 @@ export const subscribe = async (
       const { title } = result.data;
 
       if (title === 'Member Exists') {
-        return {
-          error: title,
-        };
+        throw new Error(title);
       }
 
       throw new Error();
     }
-  } catch (e) {
-    const result = errorSchema.safeParse(e);
-    if (!result.success) {
-      return {
-        error: genericError,
-      };
-    }
-    const { message } = result.data;
-
+  } catch (error) {
+    const message = getErrorMessage(error);
     if (message === 'Member Exists') {
-      return {
-        error: `${email} is already subscribed to our newsletter.`,
-      };
+      throw new Error(`${email} is already subscribed to our newsletter.`);
     }
 
-    return {
-      error: genericError,
-    };
+    throw new Error(
+      "There was an error subscribing to the newsletter. Send us an email at hello@lifecentereddesign.net and we'll add you to the list.",
+    );
   }
-
-  return {
-    error: '',
-  };
-};
+});

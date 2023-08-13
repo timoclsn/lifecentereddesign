@@ -4,14 +4,15 @@ import { useUser } from '@clerk/nextjs';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { Button, InfoBox } from 'design-system';
 import { AlertTriangle, Check, CheckCircle2, Loader, Mail } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Controller, SubmitHandler } from 'react-hook-form';
+import { useZodForm } from '../../hooks/useZodForm';
+import { useAction } from '../../lib/actions/useAction';
 import {
   checkboxStyles,
   errorStyles,
   inputStyles,
 } from '../ForrestSection/ForrestSection';
-import { useZodForm } from '../../hooks/useZodForm';
 import { subscribe } from './actions';
 import { NewsletterFormSchema, newsletterFormSchema } from './schemas';
 
@@ -29,9 +30,7 @@ export const NewsletterForm = () => {
   } = useZodForm({
     schema: newsletterFormSchema,
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState('');
+  const { isRunning, isSuccess, error, runAction } = useAction(subscribe);
 
   const userEmail = user?.emailAddresses.at(0)?.emailAddress;
 
@@ -45,20 +44,13 @@ export const NewsletterForm = () => {
   }, [dirtyFields.email, userEmail, setValue]);
 
   const onSubmit: SubmitHandler<NewsletterFormSchema> = async (input) => {
-    setIsLoading(true);
-    setIsSuccess(false);
-    setError('');
-
-    const { error } = await subscribe(input);
-    setIsLoading(false);
+    await runAction(input);
 
     if (error) {
-      setError(error);
       setFocus('email', { shouldSelect: true });
       return;
     }
 
-    setIsSuccess(true);
     // @ts-expect-error: Errors because consens can only be true in schema
     reset({
       email: '',
@@ -121,7 +113,7 @@ export const NewsletterForm = () => {
 
       {/* Submit button */}
       <Button type="submit" size="large">
-        {isLoading ? <Loader className="animate-spin" /> : <Mail />}
+        {isRunning ? <Loader className="animate-spin" /> : <Mail />}
         Subscribe
       </Button>
 
