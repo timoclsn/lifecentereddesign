@@ -49,6 +49,9 @@ export const generateMetadata = createGenerateMetadata(async ({ params }) => {
         height: 630,
       },
     },
+    alternates: {
+      canonical: `/resources/${slug}`,
+    },
   };
 });
 
