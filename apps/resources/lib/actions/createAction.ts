@@ -22,7 +22,9 @@ export const createAction = <TInputSchema extends z.ZodTypeAny>(
 ) => {
   // Second function accepts the action
   return <TInput extends z.ZodTypeAny, TResponse extends any>(
-    action: (input?: z.input<TInput>) => Promise<void | TResponse>,
+    action: (
+      input?: z.input<TInput>,
+    ) => void | TResponse | Promise<void | TResponse>,
   ) => {
     // The actual returned serven action
     const serverAction: ServerAction<TInputSchema, TResponse> = async (
