@@ -1,3 +1,4 @@
+import { Comments } from 'components/Comments/Comments';
 import { NewResources } from '../../../components/NewResources/NewResources';
 import { Newsletter } from '../../../components/Newsletter/Newsletter';
 import { ResourceCard } from '../../../components/ResourceCard/ResourceCard';
@@ -70,6 +71,7 @@ const ResourcePage = async ({ params }: Props) => {
   return (
     <>
       <ResourceCard resourceId={resourceId} resourceType={resourceType} />
+      <Comments resourceId={resourceId} resourceType={resourceType} />
       <NewResources />
       <Newsletter />
     </>
