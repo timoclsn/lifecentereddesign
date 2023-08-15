@@ -6,7 +6,7 @@ import { ContentType, getResourceCached } from '../../../lib/resources';
 import { getBaseUrl } from '../../../lib/utils';
 
 const parseSlug = (slug: string) => {
-  const [resourceId, resourceType] = slug.split('-');
+  const [resourceType, resourceId] = slug.split('-');
   return {
     resourceId: parseInt(resourceId),
     resourceType: resourceType as ContentType,
