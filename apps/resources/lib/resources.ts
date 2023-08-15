@@ -1,8 +1,8 @@
-import { clerkClient } from '@clerk/nextjs';
 import { Prisma } from 'database';
 import { unstable_cache as nextCache } from 'next/cache';
 import { cache as reactCache } from 'react';
 import { prisma } from './prisma';
+import { withUser } from './users';
 
 export const resourceTypes = [
   'thoughtleader',
@@ -414,23 +414,7 @@ export const getResourceComments = async (id: number, type: ContentType) => {
     },
   });
 
-  const userId = comments.map((comment) => comment.userId);
-  const users = await clerkClient.users.getUserList({
-    userId: userId,
-  });
-
-  return comments.map((comment) => {
-    const user = users.find((user) => user.id === comment.userId);
-
-    if (!user) {
-      throw new Error('Author not found');
-    }
-
-    return {
-      ...comment,
-      user,
-    };
-  });
+  return withUser(comments);
 };
 
 export const addResourceComment = async (
