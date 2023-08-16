@@ -1,7 +1,7 @@
 import { cva, VariantProps } from 'class-variance-authority';
 import { ReactNode } from 'react';
 
-const validElements = ['h1', 'h2', 'h3', 'h4', 'span'] as const;
+const validElements = ['h1', 'h2', 'h3', 'h4', 'h5', 'span', 'p'] as const;
 type ValidElements = (typeof validElements)[number];
 
 const styles = cva('font-serif font-bold', {
@@ -11,6 +11,7 @@ const styles = cva('font-serif font-bold', {
       '2': 'text-4xl',
       '3': 'text-xl sm:text-3xl',
       '4': 'text-2xl',
+      '5': 'text-xl',
     },
   },
 });

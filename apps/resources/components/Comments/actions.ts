@@ -2,14 +2,20 @@
 
 import { auth } from '@clerk/nextjs';
 import { createAction } from 'lib/actions/createAction';
-import { addResourceComment, resourceTypes } from 'lib/resources';
+import {
+  addResourceComment,
+  resourceComemntsTag,
+  resourceTypes,
+} from 'lib/resources';
+import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
+import { textSchema } from './schemas';
 
 export const add = createAction(
   z.object({
     id: z.number(),
     type: z.enum(resourceTypes),
-    text: z.string().min(3, 'Too short').max(256, 'Too long'),
+    text: textSchema,
   }),
 )(async ({ id, type, text }) => {
   const { userId } = auth();
@@ -19,4 +25,7 @@ export const add = createAction(
   }
 
   await addResourceComment(userId, id, type, text);
+
+  const tag = resourceComemntsTag(id, type);
+  revalidateTag(tag);
 });

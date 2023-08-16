@@ -417,6 +417,20 @@ export const getResourceComments = async (id: number, type: ContentType) => {
   return withUser(comments);
 };
 
+export const resourceComemntsTag = (resourceId: number, type: ContentType) => {
+  return `comments-${type}-${resourceId}`;
+};
+
+export const getResourceCommentsCached = reactCache(
+  async (resourceId: number, resourceType: ContentType) => {
+    const tag = resourceComemntsTag(resourceId, resourceType);
+    return await nextCache(getResourceComments, [tag], {
+      revalidate: 60,
+      tags: [tag],
+    })(resourceId, resourceType);
+  },
+);
+
 export const addResourceComment = async (
   userId: string,
   resourceId: number,

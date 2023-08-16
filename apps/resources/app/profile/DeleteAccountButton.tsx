@@ -7,17 +7,20 @@ import { useAction } from '../../lib/actions/useAction';
 import { deleteAccount } from './actions';
 
 export const DeleteAccountButton = () => {
-  const { isRunning, isSuccess, error, runAction } = useAction(deleteAccount);
+  const { isRunning, isSuccess, error, runAction } = useAction(deleteAccount, {
+    onSuccess: () => {
+      signOut();
+    },
+  });
   const { signOut } = useAuth();
 
-  const handleDeleteAccount = async () => {
+  const handleDeleteAccount = () => {
     if (
       window.confirm(
         "Do you really want to delete your account? This action can't be undone.",
       )
     ) {
-      await runAction();
-      signOut();
+      runAction();
     }
   };
 

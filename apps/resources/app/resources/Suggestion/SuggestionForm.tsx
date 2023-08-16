@@ -16,7 +16,18 @@ import { SuggestionFormSchema, suggestionFormSchema } from './schemas';
 
 export const SuggestionForm = () => {
   const { user } = useUser();
-  const { error, isRunning, isSuccess, runAction } = useAction(submit);
+  const { error, isRunning, isSuccess, runAction } = useAction(submit, {
+    onSuccess: () => {
+      reset();
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+      splitbee.track('Resource Suggestion');
+    },
+    onError: () => {
+      setFocus('link', { shouldSelect: true });
+    },
+  });
   const {
     register,
     handleSubmit,
@@ -49,27 +60,16 @@ export const SuggestionForm = () => {
     name;
   }, [dirtyFields.name, name, setValue]);
 
-  const onSubmit: SubmitHandler<SuggestionFormSchema> = async ({
+  const onSubmit: SubmitHandler<SuggestionFormSchema> = ({
     link,
     message,
     name,
   }) => {
-    await runAction({
+    runAction({
       link,
       message,
       name: userEmail || name,
     });
-
-    if (error) {
-      setFocus('link', { shouldSelect: true });
-      return;
-    }
-
-    reset();
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
-    splitbee.track('Resource Suggestion');
   };
 
   return (

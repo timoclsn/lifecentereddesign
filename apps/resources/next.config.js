@@ -5,6 +5,7 @@ const config = {
   reactStrictMode: true,
   images: {
     formats: ['image/avif', 'image/webp'],
+    domains: ['img.clerk.com'],
   },
   transpilePackages: ['design-system'],
   experimental: {
