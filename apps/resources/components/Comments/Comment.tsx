@@ -1,4 +1,4 @@
-import { formatDistance } from 'date-fns';
+import { formatDistance, parseISO } from 'date-fns';
 import { Heading, Text } from 'design-system';
 import { Avatar } from './Avatar';
 
@@ -10,6 +10,8 @@ interface Props {
 }
 
 export const Comment = ({ username, createdAt, avatarUrl, text }: Props) => {
+  const timeStamp =
+    typeof createdAt === 'string' ? parseISO(createdAt) : createdAt;
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-2">
@@ -19,7 +21,7 @@ export const Comment = ({ username, createdAt, avatarUrl, text }: Props) => {
             {username}
           </Heading>
           <Text size="small" className="text-text-secondary">
-            {`${formatDistance(createdAt, new Date())} ago`}
+            {`${formatDistance(timeStamp, new Date())} ago`}
           </Text>
         </div>
       </div>
