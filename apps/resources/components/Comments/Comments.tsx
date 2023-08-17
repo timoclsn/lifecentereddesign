@@ -5,6 +5,7 @@ import { AddCommentForm } from './AddCommentForm';
 import { Comment } from './Comment';
 import { AlertTriangle } from 'lucide-react';
 import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
+import { AutoAnimate } from 'components/AutoAnimate/AutoAnimate';
 
 interface Props {
   resourceId: number;
@@ -44,7 +45,7 @@ export const Comments = ({ resourceId, resourceType }: Props) => {
                 return (
                   <>
                     {comments.length > 0 ? (
-                      <ul className="space-y-8">
+                      <AutoAnimate as="ul" className="space-y-8">
                         {comments.map((comment, index) => (
                           <li key={comment.id}>
                             <Comment
@@ -58,7 +59,7 @@ export const Comments = ({ resourceId, resourceType }: Props) => {
                             )}
                           </li>
                         ))}
-                      </ul>
+                      </AutoAnimate>
                     ) : (
                       <div>
                         <Text className="text-text-primary">
