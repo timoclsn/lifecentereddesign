@@ -8,7 +8,7 @@ import { ContentType } from 'lib/resources';
 import { AlertTriangle, Loader, MessageCircle } from 'lucide-react';
 import { SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
-import { add } from './actions';
+import { addComment } from './actions';
 import { textSchema } from './schemas';
 
 const inputStyles = cva(
@@ -38,7 +38,7 @@ interface Props {
 }
 
 export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
-  const { error, runAction, isRunning } = useAction(add, {
+  const { error, runAction, isRunning } = useAction(addComment, {
     onSuccess: () => {
       reset();
 

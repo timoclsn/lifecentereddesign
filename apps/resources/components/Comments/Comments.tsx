@@ -14,6 +14,7 @@ interface Props {
 
 export const Comments = ({ resourceId, resourceType }: Props) => {
   const commentsPromise = getResourceCommentsCached(resourceId, resourceType);
+  console.log('fetching comemnts');
   return (
     <section id="comments">
       <Container>

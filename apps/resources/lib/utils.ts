@@ -1,6 +1,7 @@
 /* eslint-disable turbo/no-undeclared-env-vars */
 
 import { format } from 'date-fns';
+import { ContentType } from './resources';
 
 export const getHostname = (url: string) => {
   const urlPartsRegEx =
@@ -40,4 +41,12 @@ export const getErrorMessage = (error: unknown): string => {
   } else {
     return 'Something went wrong';
   }
+};
+
+export const parseResourceSlug = (slug: string) => {
+  const [resourceType, resourceId] = slug.split('-');
+  return {
+    resourceId: parseInt(resourceId),
+    resourceType: resourceType as ContentType,
+  };
 };

@@ -4,14 +4,16 @@ import { auth } from '@clerk/nextjs';
 import { createAction } from 'lib/actions/createAction';
 import {
   addResourceComment,
+  deleteResourceComment,
   resourceComemntsTag,
+  resourceCommentsCountTag,
   resourceTypes,
 } from 'lib/resources';
-import { revalidateTag } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { z } from 'zod';
 import { textSchema } from './schemas';
 
-export const add = createAction(
+export const addComment = createAction(
   z.object({
     id: z.number(),
     type: z.enum(resourceTypes),
@@ -26,6 +28,22 @@ export const add = createAction(
 
   await addResourceComment(userId, id, type, text);
 
-  const tag = resourceComemntsTag(id, type);
-  revalidateTag(tag);
+  revalidateTag(resourceComemntsTag(id, type));
+  revalidateTag(resourceCommentsCountTag(id, type));
+});
+
+export const deleteComment = createAction(
+  z.object({
+    commentId: z.number(),
+  }),
+)(async ({ commentId }) => {
+  const { userId } = auth();
+
+  if (!userId) {
+    throw new Error('Unauthorized');
+  }
+
+  await deleteResourceComment(commentId, userId);
+
+  revalidatePath('/');
 });

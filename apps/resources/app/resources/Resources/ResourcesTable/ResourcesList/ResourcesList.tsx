@@ -55,6 +55,8 @@ export const ResourcesList = ({
         return itemA.localeCompare(itemB);
       } else if (reseourcesFilter.sort === 'likes') {
         return b.likes - a.likes;
+      } else if (reseourcesFilter.sort === 'comments') {
+        return b.comments - a.comments;
       }
       return 0;
     })
@@ -75,7 +77,7 @@ export const ResourcesList = ({
       if (!reseourcesFilter.topic || reseourcesFilter.topic === 'all')
         return true;
       return resource.topics.some(
-        (topic) => topic.name === reseourcesFilter.topic
+        (topic) => topic.name === reseourcesFilter.topic,
       );
     })
     // Filter by likes
@@ -90,7 +92,7 @@ export const ResourcesList = ({
       return likedResources.some(
         (likedResources) =>
           likedResources.resourceId === resource.id &&
-          likedResources.type === resource.type
+          likedResources.type === resource.type,
       );
     })
     // Filter from

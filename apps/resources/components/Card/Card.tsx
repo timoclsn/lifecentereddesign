@@ -14,6 +14,7 @@ import { LikesButton } from './LikesButton/LikesButton';
 import { ResourceLink } from './ResourceLink';
 import { ShareButton } from './ShareButton';
 import { TypeButton } from './TypeButton';
+import { CommentsButton } from './CommentsButton/CommentsButton';
 
 interface Props {
   resourceId: number;
@@ -120,7 +121,13 @@ export const Card = ({
             )}
           </div>
 
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center gap-3">
+            {/* Comments */}
+            <CommentsButton
+              resourceId={resourceId}
+              resourceType={resourceType}
+            />
+
             {/* Likes */}
             <LikesButton
               resourceId={resourceId}

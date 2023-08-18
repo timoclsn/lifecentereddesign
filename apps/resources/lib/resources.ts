@@ -161,7 +161,7 @@ export type Report = Prisma.ReportGetPayload<{
   };
 }>;
 
-export type Resource =
+export type Resource = (
   | Thoughtleader
   | Article
   | Book
@@ -179,7 +179,8 @@ export type Resource =
   | Newsletter
   | Paper
   | SocialMediaProfile
-  | Report;
+  | Report
+) & { comments: number };
 
 export type Resources = Array<Resource>;
 export type ContentType = Resource['type'];
@@ -241,10 +242,14 @@ export const getResources = async () => {
   const resources = await Promise.all(resourcePromises);
 
   const enhancedResourcesPromises = resources.flat().map(async (resource) => {
-    const newLikesCount = await getNewLikesCount(resource.id, resource.type);
+    const [newLikesCount, commentsCount] = await Promise.all([
+      getNewLikesCount(resource.id, resource.type),
+      getCommentsCount(resource.id, resource.type),
+    ]);
     return {
       ...resource,
       likes: resource.likes + newLikesCount,
+      comments: commentsCount,
     };
   });
 
@@ -401,6 +406,11 @@ export const deleteUserData = async (userId: string) => {
       userId,
     },
   });
+  await prisma.comment.deleteMany({
+    where: {
+      userId,
+    },
+  });
 };
 
 export const getResourceComments = async (id: number, type: ContentType) => {
@@ -431,6 +441,32 @@ export const getResourceCommentsCached = reactCache(
   },
 );
 
+export const getCommentsCount = async (id: number, type: ContentType) => {
+  return await prisma.comment.count({
+    where: {
+      resourceId: id,
+      type,
+    },
+  });
+};
+
+export const resourceCommentsCountTag = (
+  resourceId: number,
+  type: ContentType,
+) => {
+  return `commentscount-${type}-${resourceId}`;
+};
+
+export const getResourceCommentsCountCached = reactCache(
+  async (resourceId: number, resourceType: ContentType) => {
+    const tag = resourceCommentsCountTag(resourceId, resourceType);
+    return await nextCache(getCommentsCount, [tag], {
+      revalidate: 60,
+      tags: [tag],
+    })(resourceId, resourceType);
+  },
+);
+
 export const addResourceComment = async (
   userId: string,
   resourceId: number,
@@ -443,6 +479,15 @@ export const addResourceComment = async (
       resourceId,
       type,
       text,
+    },
+  });
+};
+
+export const deleteResourceComment = async (id: number, userId: string) => {
+  await prisma.comment.delete({
+    where: {
+      id,
+      userId,
     },
   });
 };
