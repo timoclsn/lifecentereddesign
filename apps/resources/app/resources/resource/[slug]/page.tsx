@@ -34,7 +34,7 @@ export const generateMetadata = createGenerateMetadata(async ({ params }) => {
     openGraph: {
       type: 'website',
       title,
-      url: `${getBaseUrl()}/resources/${slug}`,
+      url: `${getBaseUrl()}/resources/resource/${slug}`,
       siteName: 'LifeCenteredDesign.Net',
       description,
       images: {
@@ -45,7 +45,7 @@ export const generateMetadata = createGenerateMetadata(async ({ params }) => {
       },
     },
     alternates: {
-      canonical: `/resources/${slug}`,
+      canonical: `/resources/resource/${slug}`,
     },
   };
 });
