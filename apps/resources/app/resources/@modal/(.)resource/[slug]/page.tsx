@@ -10,7 +10,6 @@ interface Props {
 
 const ResourceModal = ({ params }: Props) => {
   const { slug } = params;
-  console.log(slug);
   const { resourceId, resourceType } = parseResourceSlug(slug);
   return (
     <Modal>
