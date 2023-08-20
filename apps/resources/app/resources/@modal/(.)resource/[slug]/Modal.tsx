@@ -27,7 +27,7 @@ export const Modal = ({ children }: Props) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogPortal>
-        <DialogOverlay className="bg-stone fixed inset-0 opacity-50" />
+        <DialogOverlay />
         <DialogContent className="bg-stone fixed left-[50%] top-[50%] z-50 max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] overflow-y-scroll p-10">
           <DialogClose />
           {children}
