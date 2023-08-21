@@ -1,6 +1,5 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -9,6 +8,7 @@ import {
   DialogPortal,
 } from 'design-system';
 import { useRouter } from 'next/navigation';
+import { ReactNode, useState } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -28,7 +28,7 @@ export const Modal = ({ children }: Props) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogPortal>
         <DialogOverlay />
-        <DialogContent className="bg-stone fixed left-[50%] top-[50%] z-50 max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] overflow-y-scroll p-10">
+        <DialogContent className="h-[80%]">
           <DialogClose />
           {children}
         </DialogContent>
