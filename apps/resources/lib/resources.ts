@@ -242,10 +242,8 @@ export const getResources = async () => {
   const resources = await Promise.all(resourcePromises);
 
   const enhancedResourcesPromises = resources.flat().map(async (resource) => {
-    const [newLikesCount, commentsCount] = await Promise.all([
-      getNewLikesCount(resource.id, resource.type),
-      getCommentsCount(resource.id, resource.type),
-    ]);
+    const newLikesCount = await getNewLikesCount(resource.id, resource.type);
+    const commentsCount = await getCommentsCount(resource.id, resource.type);
     return {
       ...resource,
       likes: resource.likes + newLikesCount,
