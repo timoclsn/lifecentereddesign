@@ -49,6 +49,8 @@ export const Comments = ({ resourceId, resourceType }: Props) => {
                         {comments.map((comment, index) => (
                           <li key={comment.id}>
                             <Comment
+                              commentId={comment.id}
+                              userId={comment.userId}
                               username={comment.user.username ?? 'anonymous'}
                               createdAt={comment.createdAt}
                               avatarUrl={comment.user.imageUrl}

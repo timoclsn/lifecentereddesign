@@ -35,12 +35,17 @@ export const addComment = createAction(
 export const deleteComment = createAction(
   z.object({
     commentId: z.number(),
+    commentUserId: z.string(),
   }),
-)(async ({ commentId }) => {
+)(async ({ commentId, commentUserId }) => {
   const { userId } = auth();
 
   if (!userId) {
     throw new Error('Unauthorized');
+  }
+
+  if (userId !== commentUserId) {
+    throw new Error('You can only delete your own comments');
   }
 
   await deleteResourceComment(commentId, userId);
