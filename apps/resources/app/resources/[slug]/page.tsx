@@ -1,10 +1,10 @@
-import { Comments } from 'components/Comments/Comments';
-import { NewResources } from '../../../../components/NewResources/NewResources';
-import { Newsletter } from '../../../../components/Newsletter/Newsletter';
-import { ResourceCard } from '../../../../components/ResourceCard/ResourceCard';
-import { createGenerateMetadata } from '../../../../lib/metadata';
-import { getResourceCached } from '../../../../lib/resources';
-import { getBaseUrl, parseResourceSlug } from '../../../../lib/utils';
+import { Comments } from '../../../components/Comments/Comments';
+import { NewResources } from '../../../components/NewResources/NewResources';
+import { Newsletter } from '../../../components/Newsletter/Newsletter';
+import { ResourceCard } from '../../../components/ResourceCard/ResourceCard';
+import { createGenerateMetadata } from '../../../lib/metadata';
+import { getResourceCached } from '../../../lib/resources';
+import { getBaseUrl, parseResourceSlug } from '../../../lib/utils';
 
 export const generateMetadata = createGenerateMetadata(async ({ params }) => {
   const { slug } = params;
@@ -34,7 +34,7 @@ export const generateMetadata = createGenerateMetadata(async ({ params }) => {
     openGraph: {
       type: 'website',
       title,
-      url: `${getBaseUrl()}/resources/resource/${slug}`,
+      url: `${getBaseUrl()}/resources/${slug}`,
       siteName: 'LifeCenteredDesign.Net',
       description,
       images: {
@@ -45,7 +45,7 @@ export const generateMetadata = createGenerateMetadata(async ({ params }) => {
       },
     },
     alternates: {
-      canonical: `/resources/resource/${slug}`,
+      canonical: `/resources/${slug}`,
     },
   };
 });

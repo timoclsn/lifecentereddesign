@@ -62,9 +62,10 @@ export const metadata: Metadata = {
 
 interface Props {
   children: ReactNode;
+  modal: ReactNode;
 }
 
-const RootLayout = ({ children }: Props) => {
+const RootLayout = ({ children, modal }: Props) => {
   return (
     <ClerkProvider>
       <html
@@ -76,6 +77,7 @@ const RootLayout = ({ children }: Props) => {
           <main className="flex-1">
             <Container inset className="space-y-10 sm:space-y-40">
               {children}
+              {modal}
             </Container>
           </main>
           <Footer />

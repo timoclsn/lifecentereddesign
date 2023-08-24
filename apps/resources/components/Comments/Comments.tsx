@@ -1,11 +1,11 @@
-import { Await } from 'components/Await/Await';
+import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
 import { Button, Container, Heading, InfoBox, Text } from 'design-system';
-import { ContentType, getResourceCommentsCached } from 'lib/resources';
+import { AlertTriangle } from 'lucide-react';
+import { ContentType, getResourceCommentsCached } from '../../lib/resources';
+import { AutoAnimate } from '../AutoAnimate/AutoAnimate';
+import { Await } from '../Await/Await';
 import { AddCommentForm } from './AddCommentForm';
 import { Comment } from './Comment';
-import { AlertTriangle } from 'lucide-react';
-import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
-import { AutoAnimate } from 'components/AutoAnimate/AutoAnimate';
 
 interface Props {
   resourceId: number;
@@ -18,7 +18,6 @@ export const Comments = ({ resourceId, resourceType }: Props) => {
     <section id="comments">
       <Container>
         <div className="mx-auto flex w-full max-w-lg flex-col gap-12">
-          <Heading level="2">Comments</Heading>
           <SignedIn>
             <AddCommentForm
               resourceId={resourceId}

@@ -1,16 +1,17 @@
 'use server';
 
 import { auth } from '@clerk/nextjs';
-import { createAction } from 'lib/actions/createAction';
+
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { z } from 'zod';
+import { createAction } from '../../lib/actions/createAction';
 import {
   addResourceComment,
   deleteResourceComment,
   resourceComemntsTag,
   resourceCommentsCountTag,
   resourceTypes,
-} from 'lib/resources';
-import { revalidatePath, revalidateTag } from 'next/cache';
-import { z } from 'zod';
+} from '../../lib/resources';
 import { textSchema } from './schemas';
 
 export const addComment = createAction(

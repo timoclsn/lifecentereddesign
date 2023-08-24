@@ -1,6 +1,9 @@
-import { Await } from 'components/Await/Await';
-import { ContentType, getResourceCommentsCountCached } from 'lib/resources';
 import { MessageCircle } from 'lucide-react';
+import {
+  ContentType,
+  getResourceCommentsCountCached,
+} from '../../../lib/resources';
+import { Await } from '../../Await/Await';
 import { CommentsLink } from './CommentsLink';
 
 interface Props {
@@ -18,7 +21,7 @@ export const CommentsButton = ({ resourceId, resourceType }: Props) => {
       {(commentsCount) => {
         return (
           <CommentsLink resourceId={resourceId} resourceType={resourceType}>
-            <div className="ease group flex items-center justify-center gap-2 disabled:opacity-80">
+            <div className="ease flex items-center justify-center gap-2 disabled:opacity-80">
               <div className="animate-in slide-in-from-right-full fade-in transition-transform duration-100 ease-in">
                 {commentsCount}
               </div>

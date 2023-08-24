@@ -13,12 +13,15 @@ interface Props {
 
 export const CommentsLink = ({ children, resourceId, resourceType }: Props) => {
   const pathname = usePathname();
+  const resourceDetailPath = `/resources/${resourceType}-${resourceId}`;
 
-  const resourceDetailPath = `/resources/resource/${resourceType}-${resourceId}`;
-  const isResourceDetailPage = pathname === resourceDetailPath;
-  const link = `${resourceDetailPath}${
-    isResourceDetailPage ? '#comments' : ''
-  }`;
+  if (pathname === resourceDetailPath) {
+    return <>{children}</>;
+  }
 
-  return <Link href={link}>{children}</Link>;
+  return (
+    <Link href={resourceDetailPath} className="group">
+      {children}
+    </Link>
+  );
 };

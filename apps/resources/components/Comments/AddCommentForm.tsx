@@ -2,12 +2,14 @@
 
 import { cva } from 'class-variance-authority';
 import { Button, InfoBox } from 'design-system';
-import { useZodForm } from 'hooks/useZodForm';
-import { useAction } from 'lib/actions/useAction';
-import { ContentType } from 'lib/resources';
 import { AlertTriangle, Loader, MessageCircle } from 'lucide-react';
+import { useEffect } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
+import { useModal } from '../../app/@modal/(.)resources/[slug]/Modal';
+import { useZodForm } from '../../hooks/useZodForm';
+import { useAction } from '../../lib/actions/useAction';
+import { ContentType } from '../../lib/resources';
 import { addComment } from './actions';
 import { textSchema } from './schemas';
 
@@ -38,6 +40,7 @@ interface Props {
 }
 
 export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
+  const { setPreventAccidentalClose } = useModal();
   const { error, runAction, isRunning } = useAction(addComment, {
     onSuccess: () => {
       reset();
@@ -55,12 +58,20 @@ export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     reset,
     setFocus,
   } = useZodForm({
     schema: addCommentFormSchema,
+    defaultValues: {
+      text: '',
+    },
   });
+
+  useEffect(() => {
+    setPreventAccidentalClose(isDirty);
+    console.log(isDirty);
+  }, [isDirty, setPreventAccidentalClose]);
 
   const onSubmit: SubmitHandler<AddCommentFormSchema> = async ({ text }) => {
     await runAction({
@@ -80,7 +91,7 @@ export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
         <textarea
           id="text"
           placeholder="Post a comment…"
-          rows={5}
+          rows={4}
           className={inputStyles({ error: !!errors.text })}
           {...register('text')}
         />
