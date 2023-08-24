@@ -3,8 +3,11 @@ import { formatDistance, parseISO } from 'date-fns';
 import { Heading, Text } from 'design-system';
 import { Avatar } from './Avatar';
 import { DeleteCommentButton } from './DeleteCommentButton';
+import { ContentType } from '../../lib/resources';
 
 interface Props {
+  resourceId: number;
+  resourceType: ContentType;
   commentId: number;
   userId: string;
   username: string;
@@ -14,6 +17,7 @@ interface Props {
 }
 
 export const Comment = ({
+  resourceId,resourceType,
   commentId,
   userId,
   username,
@@ -41,7 +45,10 @@ export const Comment = ({
           </div>
         </div>
         {isAuthedUser && (
-          <DeleteCommentButton commentId={commentId} commentUserId={userId} />
+          <DeleteCommentButton 
+          resourceId={resourceId}
+                            resourceType={resourceType}
+          commentId={commentId} commentUserId={userId} />
         )}
       </div>
       <Text className="text-text-primary">{text}</Text>

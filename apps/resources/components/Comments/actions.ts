@@ -2,14 +2,14 @@
 
 import { auth } from '@clerk/nextjs';
 
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 import { createAction } from '../../lib/actions/createAction';
 import {
   addResourceComment,
   deleteResourceComment,
-  resourceComemntsTag,
   resourceCommentsCountTag,
+  resourceCommentsTag,
   resourceTypes,
 } from '../../lib/resources';
 import { textSchema } from './schemas';
@@ -29,16 +29,18 @@ export const addComment = createAction(
 
   await addResourceComment(userId, id, type, text);
 
-  revalidateTag(resourceComemntsTag(id, type));
+  revalidateTag(resourceCommentsTag(id, type));
   revalidateTag(resourceCommentsCountTag(id, type));
 });
 
 export const deleteComment = createAction(
   z.object({
+    resourceId: z.number(),
+    resourceType: z.enum(resourceTypes),
     commentId: z.number(),
     commentUserId: z.string(),
   }),
-)(async ({ commentId, commentUserId }) => {
+)(async ({ resourceId, resourceType, commentId, commentUserId }) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -51,5 +53,6 @@ export const deleteComment = createAction(
 
   await deleteResourceComment(commentId, userId);
 
-  revalidatePath('/');
+  revalidateTag(resourceCommentsTag(resourceId, resourceType));
+  revalidateTag(resourceCommentsCountTag(resourceId, resourceType));
 });

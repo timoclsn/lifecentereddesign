@@ -3,13 +3,21 @@
 import { Loader, Trash2 } from 'lucide-react';
 import { useAction } from '../../lib/actions/useAction';
 import { deleteComment } from './actions';
+import { ContentType } from '../../lib/resources';
 
 interface Props {
+  resourceId: number;
+  resourceType: ContentType;
   commentId: number;
   commentUserId: string;
 }
 
-export const DeleteCommentButton = ({ commentId, commentUserId }: Props) => {
+export const DeleteCommentButton = ({
+  resourceId,
+  resourceType,
+  commentId,
+  commentUserId,
+}: Props) => {
   const { isRunning, runAction } = useAction(deleteComment, {
     onError: (error) => {
       console.log(error);
@@ -22,6 +30,8 @@ export const DeleteCommentButton = ({ commentId, commentUserId }: Props) => {
       )
     ) {
       runAction({
+        resourceId,
+        resourceType,
         commentId,
         commentUserId,
       });
@@ -29,8 +39,9 @@ export const DeleteCommentButton = ({ commentId, commentUserId }: Props) => {
   };
   return (
     <button
-      className="text-text-secondary ease flex items-center justify-center transition-transform hover:scale-110 active:scale-90"
+      className="text-text-secondary ease flex items-center justify-center transition-transform hover:scale-110 active:scale-90 disabled:opacity-80"
       onClick={handleDeleteAccount}
+      disabled={isRunning}
     >
       {isRunning && <Loader size={16} className="animate-spin" />}
       {!isRunning && <Trash2 size={16} />}

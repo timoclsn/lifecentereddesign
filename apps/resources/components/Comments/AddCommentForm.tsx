@@ -70,7 +70,6 @@ export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
 
   useEffect(() => {
     setPreventAccidentalClose(isDirty);
-    console.log(isDirty);
   }, [isDirty, setPreventAccidentalClose]);
 
   const onSubmit: SubmitHandler<AddCommentFormSchema> = async ({ text }) => {
