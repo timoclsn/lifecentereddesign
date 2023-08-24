@@ -18,12 +18,10 @@ import {
 } from 'react';
 
 interface State {
-  preventAccidentalClose: boolean;
   setPreventAccidentalClose: Dispatch<SetStateAction<boolean>>;
 }
 
 const initialState: State = {
-  preventAccidentalClose: false,
   setPreventAccidentalClose: () => {},
 };
 
@@ -48,7 +46,7 @@ export const Modal = ({ children }: Props) => {
   };
   return (
     <ModalContext.Provider
-      value={{ preventAccidentalClose, setPreventAccidentalClose }}
+      value={{  setPreventAccidentalClose }}
     >
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogPortal>
