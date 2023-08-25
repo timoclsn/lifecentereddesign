@@ -82,7 +82,7 @@ export const LikesButtonClient = ({
   );
   const [optimisticLiked, updateOptimisticLiked] = useOptimistic(
     liked,
-    (state, newState) => newState as boolean,
+    (_, newState) => newState as boolean,
   );
 
   const handleClick = async () => {
