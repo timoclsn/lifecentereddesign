@@ -5,7 +5,6 @@ import { cva } from 'class-variance-authority';
 import { Tooltip } from 'design-system';
 import { useAction } from 'lib/actions/useAction';
 import { Heart } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { experimental_useOptimistic as useOptimistic } from 'react';
 import { ContentType } from '../../../lib/resources';
 import { SolidHeart } from '../../Icons/SolidHeart';
@@ -41,7 +40,6 @@ export const LikesButtonClient = ({
   liked,
 }: Props) => {
   const { isSignedIn } = useAuth();
-  const { refresh } = useRouter();
   const { runAction: runLikeAction, isRunning: isLikeRunning } = useAction(
     like,
     {
@@ -52,7 +50,6 @@ export const LikesButtonClient = ({
         }
       },
       onSuccess: () => {
-        refresh();
         splitbee.track('Like resource', {
           type: resourceType,
           name: resourceTitle,
@@ -70,7 +67,6 @@ export const LikesButtonClient = ({
         }
       },
       onSuccess: () => {
-        refresh();
         splitbee.track('Un-like resource', {
           type: resourceType,
           name: resourceTitle,

@@ -1,6 +1,7 @@
 'use server';
 
 import { auth } from '@clerk/nextjs';
+import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { createAction } from '../../lib/actions/createAction';
 import {
@@ -25,6 +26,8 @@ export const like = createAction(inputSchema)(async ({ id, type }) => {
   } else {
     await anonymousLikeResource(id, type);
   }
+
+  revalidatePath('/');
 });
 
 export const unLike = createAction(inputSchema)(async ({ id, type }) => {
@@ -35,4 +38,6 @@ export const unLike = createAction(inputSchema)(async ({ id, type }) => {
   }
 
   await unlikeResource(userId, id, type);
+
+  revalidatePath('/');
 });
