@@ -1,11 +1,10 @@
-import { useCallback, useReducer } from 'react';
+import { useCallback, useReducer, useTransition } from 'react';
 import { z } from 'zod';
 import { getErrorMessage } from '../utils';
 import { BrandedServerAction } from './createAction';
 
 interface State<TResponse extends any> {
   isIdle: boolean;
-  isRunning: boolean;
   isSuccess: boolean;
   isError: boolean;
   data: TResponse | null;
@@ -14,7 +13,6 @@ interface State<TResponse extends any> {
 
 const initalState: State<any> = {
   isIdle: true,
-  isRunning: false,
   isSuccess: false,
   isError: false,
   data: null,
@@ -34,7 +32,6 @@ const createReducer =
         return {
           ...state,
           isIdle: false,
-          isRunning: true,
           isSuccess: false,
           isError: false,
           error: null,
@@ -42,14 +39,12 @@ const createReducer =
       case 'IS_SUCCESS':
         return {
           ...state,
-          isRunning: false,
           isSuccess: true,
           data: action.data,
         };
       case 'IS_ERROR':
         return {
           ...state,
-          isRunning: false,
           isError: true,
           error: action.error,
         };
@@ -69,43 +64,46 @@ export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
 ) => {
   const reducer = createReducer<TResponse>();
   const [state, dispatch] = useReducer(reducer, initalState);
-  const { isIdle, isRunning, isSuccess, isError, data, error } = state;
+  const { isIdle, isSuccess, isError, data, error } = state;
+  const [isRunning, startTransition] = useTransition();
 
   const runAction = useCallback(
     async (input?: z.input<TInput>) => {
-      dispatch({
-        type: 'RUN_ACTION',
-      });
+      startTransition(async () => {
+        dispatch({
+          type: 'RUN_ACTION',
+        });
 
-      options.onRunAction?.(input);
+        options.onRunAction?.(input);
 
-      try {
-        const result = await inputAction(input);
+        try {
+          const result = await inputAction(input);
 
-        if (result.error) {
+          if (result.error) {
+            dispatch({
+              type: 'IS_ERROR',
+              error: result.error,
+            });
+            options.onError?.(result.error);
+          } else {
+            dispatch({
+              type: 'IS_SUCCESS',
+              data: result.data,
+            });
+            options.onSuccess?.(result.data);
+          }
+        } catch (error) {
+          const errorMessage = 'Something went wrong. Please try again.';
           dispatch({
             type: 'IS_ERROR',
-            error: result.error,
+            error: errorMessage,
           });
-          options.onError?.(result.error);
-        } else {
-          dispatch({
-            type: 'IS_SUCCESS',
-            data: result.data,
-          });
-          options.onSuccess?.(result.data);
+          options.onError?.(errorMessage);
+          console.log(getErrorMessage(error));
         }
-      } catch (error) {
-        const errorMessage = 'Something went wrong. Please try again.';
-        dispatch({
-          type: 'IS_ERROR',
-          error: errorMessage,
-        });
-        options.onError?.(errorMessage);
-        console.log(getErrorMessage(error));
-      }
 
-      options.onSettled?.();
+        options.onSettled?.();
+      });
     },
     [inputAction, options],
   );

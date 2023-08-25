@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { getResources } from '../lib/resources';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
   const pages = [

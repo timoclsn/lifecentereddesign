@@ -1,27 +1,11 @@
 import { auth } from '@clerk/nextjs';
+import { Heart } from 'lucide-react';
 import {
   ContentType,
-  getResourceNewLikes,
-  getResourceOldLikesCount,
+  getResourceLikesDataCached,
 } from '../../../lib/resources';
-import { LikesButtonClient } from './LikesButtonClient';
-import { Heart } from 'lucide-react';
 import { Await } from '../../Await/Await';
-
-const getLikesData = async (resourceId: number, resourceType: ContentType) => {
-  const { userId } = auth();
-  const [oldLikesCount, newLikes] = await Promise.all([
-    getResourceOldLikesCount(resourceId, resourceType),
-    getResourceNewLikes(resourceId, resourceType),
-  ]);
-
-  const newLikesCount = newLikes.length;
-
-  return {
-    count: oldLikesCount + newLikesCount,
-    liked: userId ? newLikes.some((like) => like.userId === userId) : false,
-  };
-};
+import { LikesButtonClient } from './LikesButtonClient';
 
 interface Props {
   resourceId: number;
@@ -34,18 +18,25 @@ export const LikesButton = async ({
   resourceType,
   resourceTitle,
 }: Props) => {
-  const promise = getLikesData(resourceId, resourceType);
+  const { userId } = auth();
+  const promise = getResourceLikesDataCached(resourceId, resourceType);
   return (
     <Await promise={promise} loading={<Loading />}>
-      {({ count, liked }) => (
-        <LikesButtonClient
-          resourceId={resourceId}
-          resourceType={resourceType}
-          resourceTitle={resourceTitle}
-          count={count}
-          liked={liked}
-        />
-      )}
+      {({ newLikes, oldLikesCount }) => {
+        const count = oldLikesCount + newLikes.length;
+        const liked = userId
+          ? newLikes.some((like) => like.userId === userId)
+          : false;
+        return (
+          <LikesButtonClient
+            resourceId={resourceId}
+            resourceType={resourceType}
+            resourceTitle={resourceTitle}
+            count={count}
+            liked={liked}
+          />
+        );
+      }}
     </Await>
   );
 };

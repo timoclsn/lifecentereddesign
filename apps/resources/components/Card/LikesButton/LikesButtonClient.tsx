@@ -3,13 +3,9 @@
 import { useAuth } from '@clerk/nextjs';
 import { cva } from 'class-variance-authority';
 import { Tooltip } from 'design-system';
+import { useAction } from 'lib/actions/useAction';
 import { Heart } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import {
-  experimental_useOptimistic as useOptimistic,
-  useTransition,
-} from 'react';
-import { useAction } from '../../../lib/actions/useAction';
+import { experimental_useOptimistic as useOptimistic } from 'react';
 import { ContentType } from '../../../lib/resources';
 import { SolidHeart } from '../../Icons/SolidHeart';
 import { like, unLike } from '../actions';
@@ -44,10 +40,41 @@ export const LikesButtonClient = ({
   liked,
 }: Props) => {
   const { isSignedIn } = useAuth();
-  const { refresh } = useRouter();
-  let [, startTransition] = useTransition();
-  const { runAction: likeAction } = useAction(like);
-  const { runAction: unLikeAction } = useAction(unLike);
+  const { runAction: runLikeAction, isRunning: isLikeRunning } = useAction(
+    like,
+    {
+      onRunAction: () => {
+        updateOptimisticCount(optimisticCount + 1);
+        if (isSignedIn) {
+          updateOptimisticLiked(true);
+        }
+      },
+      onSuccess: () => {
+        splitbee.track('Like resource', {
+          type: resourceType,
+          name: resourceTitle,
+        });
+      },
+    },
+  );
+  const { runAction: runUnLikeAction, isRunning: isUnLikeRunning } = useAction(
+    unLike,
+    {
+      onRunAction: () => {
+        updateOptimisticCount(optimisticCount - 1);
+        if (isSignedIn) {
+          updateOptimisticLiked(false);
+        }
+      },
+      onSuccess: () => {
+        splitbee.track('Un-like resource', {
+          type: resourceType,
+          name: resourceTitle,
+        });
+      },
+    },
+  );
+  const isRunning = isLikeRunning || isUnLikeRunning;
 
   const [optimisticCount, updateOptimisticCount] = useOptimistic(
     count,
@@ -55,48 +82,26 @@ export const LikesButtonClient = ({
   );
   const [optimisticLiked, updateOptimisticLiked] = useOptimistic(
     liked,
-    (state, newState) => newState as boolean,
+    (_, newState) => newState as boolean,
   );
 
-  const isLoading = optimisticCount !== count;
-
-  const handleClick = () => {
-    startTransition(async () => {
-      if (liked) {
-        updateOptimisticCount(optimisticCount - 1);
-        if (isSignedIn) {
-          updateOptimisticLiked(false);
-        }
-        await unLikeAction({
-          id: resourceId,
-          type: resourceType,
-        });
-        splitbee.track('Un-like resource', {
-          type: resourceType,
-          name: resourceTitle,
-        });
-      } else {
-        updateOptimisticCount(optimisticCount + 1);
-        if (isSignedIn) {
-          updateOptimisticLiked(true);
-        }
-        await likeAction({
-          id: resourceId,
-          type: resourceType,
-        });
-        splitbee.track('Like resource', {
-          type: resourceType,
-          name: resourceTitle,
-        });
-      }
-
-      refresh();
-    });
+  const handleClick = async () => {
+    if (liked) {
+      await runUnLikeAction({
+        id: resourceId,
+        type: resourceType,
+      });
+    } else {
+      await runLikeAction({
+        id: resourceId,
+        type: resourceType,
+      });
+    }
   };
   return (
     <button
       onClick={handleClick}
-      disabled={isLoading}
+      disabled={isRunning}
       className="ease group flex items-center justify-center gap-2 disabled:opacity-80"
     >
       <div className="animate-in slide-in-from-right-full fade-in transition-transform duration-100 ease-in">

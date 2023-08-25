@@ -20,6 +20,7 @@ export const Sort = () => {
         <Select.Item value="date">Date added</Select.Item>
         <Select.Item value="title">Title</Select.Item>
         <Select.Item value="likes">Likes</Select.Item>
+        <Select.Item value="comments">Comments</Select.Item>
       </Select.Content>
     </Select>
   );

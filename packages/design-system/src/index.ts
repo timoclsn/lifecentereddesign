@@ -2,6 +2,7 @@ export * from './Bleed';
 export * from './Button';
 export * from './Card';
 export * from './Container';
+export * from './Dialog';
 export * from './Heading';
 export * from './InfoBox';
 export * from './Link';

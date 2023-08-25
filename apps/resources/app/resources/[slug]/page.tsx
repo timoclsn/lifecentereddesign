@@ -1,21 +1,14 @@
+import { Comments } from '../../../components/Comments/Comments';
 import { NewResources } from '../../../components/NewResources/NewResources';
 import { Newsletter } from '../../../components/Newsletter/Newsletter';
 import { ResourceCard } from '../../../components/ResourceCard/ResourceCard';
 import { createGenerateMetadata } from '../../../lib/metadata';
-import { ContentType, getResourceCached } from '../../../lib/resources';
-import { getBaseUrl } from '../../../lib/utils';
-
-const parseSlug = (slug: string) => {
-  const [resourceType, resourceId] = slug.split('-');
-  return {
-    resourceId: parseInt(resourceId),
-    resourceType: resourceType as ContentType,
-  };
-};
+import { getResourceCached } from '../../../lib/resources';
+import { getBaseUrl, parseResourceSlug } from '../../../lib/utils';
 
 export const generateMetadata = createGenerateMetadata(async ({ params }) => {
   const { slug } = params;
-  const { resourceId, resourceType } = parseSlug(slug);
+  const { resourceId, resourceType } = parseResourceSlug(slug);
 
   try {
     var resource = await getResourceCached(resourceId, resourceType);
@@ -65,11 +58,12 @@ interface Props {
 
 const ResourcePage = async ({ params }: Props) => {
   const { slug } = params;
-  const { resourceId, resourceType } = parseSlug(slug);
+  const { resourceId, resourceType } = parseResourceSlug(slug);
 
   return (
     <>
       <ResourceCard resourceId={resourceId} resourceType={resourceType} />
+      <Comments resourceId={resourceId} resourceType={resourceType} />
       <NewResources />
       <Newsletter />
     </>

@@ -30,7 +30,22 @@ export const NewsletterForm = () => {
   } = useZodForm({
     schema: newsletterFormSchema,
   });
-  const { isRunning, isSuccess, error, runAction } = useAction(subscribe);
+  const { isRunning, isSuccess, error, runAction } = useAction(subscribe, {
+    onSuccess: () => {
+      // @ts-expect-error: Errors because consens can only be true in schema
+      reset({
+        email: '',
+        consens: false,
+      });
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+      splitbee.track('Newsletter Signup');
+    },
+    onError: () => {
+      setFocus('email', { shouldSelect: true });
+    },
+  });
 
   const userEmail = user?.emailAddresses.at(0)?.emailAddress;
 
@@ -43,23 +58,8 @@ export const NewsletterForm = () => {
     }
   }, [dirtyFields.email, userEmail, setValue]);
 
-  const onSubmit: SubmitHandler<NewsletterFormSchema> = async (input) => {
-    await runAction(input);
-
-    if (error) {
-      setFocus('email', { shouldSelect: true });
-      return;
-    }
-
-    // @ts-expect-error: Errors because consens can only be true in schema
-    reset({
-      email: '',
-      consens: false,
-    });
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
-    splitbee.track('Newsletter Signup');
+  const onSubmit: SubmitHandler<NewsletterFormSchema> = (input) => {
+    runAction(input);
   };
 
   return (

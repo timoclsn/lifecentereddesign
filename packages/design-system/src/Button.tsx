@@ -2,7 +2,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { ElementType, ReactNode } from 'react';
 
 const styles = cva(
-  'inline-flex items-center justify-center gap-2 leading-none whitespace-nowrap disabled:opacity-50',
+  'inline-flex items-center justify-center gap-2 leading-none whitespace-nowrap',
   {
     variants: {
       variant: {
@@ -62,7 +62,7 @@ const styles = cva(
         class: 'text-red-700 hover:text-red-600 disabled:opacity-50',
       },
     ],
-  }
+  },
 );
 
 export interface ButtonProps extends VariantProps<typeof styles> {
