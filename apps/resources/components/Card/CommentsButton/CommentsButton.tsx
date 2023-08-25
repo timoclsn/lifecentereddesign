@@ -21,7 +21,7 @@ export const CommentsButton = ({ resourceId, resourceType }: Props) => {
       {(commentsCount) => {
         return (
           <Link
-            href={`/resources/${resourceType}-${resourceId}#comments`}
+            href={`/resources/${resourceType}-${resourceId}#cmnts`}
             className="group"
           >
             <div className="ease flex items-center justify-center gap-2 disabled:opacity-80">

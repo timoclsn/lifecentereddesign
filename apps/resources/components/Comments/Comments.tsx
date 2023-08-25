@@ -15,7 +15,7 @@ interface Props {
 export const Comments = ({ resourceId, resourceType }: Props) => {
   const commentsPromise = getResourceCommentsCached(resourceId, resourceType);
   return (
-    <section id="comments">
+    <section id="cmnts">
       <Container>
         <div className="mx-auto flex w-full max-w-lg flex-col gap-12">
           <Heading level="2">Comments</Heading>
