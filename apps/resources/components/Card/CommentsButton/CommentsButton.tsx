@@ -1,10 +1,10 @@
 import { MessageCircle } from 'lucide-react';
+import Link from 'next/link';
 import {
   ContentType,
   getResourceCommentsCountCached,
 } from '../../../lib/resources';
 import { Await } from '../../Await/Await';
-import { CommentsLink } from './CommentsLink';
 
 interface Props {
   resourceId: number;
@@ -20,7 +20,10 @@ export const CommentsButton = ({ resourceId, resourceType }: Props) => {
     <Await promise={commentsCountPromise} loading={<Loading />}>
       {(commentsCount) => {
         return (
-          <CommentsLink resourceId={resourceId} resourceType={resourceType}>
+          <Link
+            href={`/resources/${resourceType}-${resourceId}#comments`}
+            className="group"
+          >
             <div className="ease flex items-center justify-center gap-2 disabled:opacity-80">
               <div className="animate-in slide-in-from-right-full fade-in transition-transform duration-100 ease-in">
                 {commentsCount}
@@ -30,7 +33,7 @@ export const CommentsButton = ({ resourceId, resourceType }: Props) => {
                 <MessageCircle className="ease transition-transform group-hover:scale-110 group-active:scale-90" />
               </div>
             </div>
-          </CommentsLink>
+          </Link>
         );
       }}
     </Await>

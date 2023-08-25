@@ -3,10 +3,8 @@
 import { cva } from 'class-variance-authority';
 import { Button, InfoBox } from 'design-system';
 import { AlertTriangle, Loader, MessageCircle } from 'lucide-react';
-import { useEffect } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
-import { useModal } from '../../app/@modal/(.)resources/[slug]/Modal';
 import { useZodForm } from '../../hooks/useZodForm';
 import { useAction } from '../../lib/actions/useAction';
 import { ContentType } from '../../lib/resources';
@@ -40,7 +38,6 @@ interface Props {
 }
 
 export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
-  const { setPreventAccidentalClose } = useModal();
   const { error, runAction, isRunning } = useAction(addComment, {
     onSuccess: () => {
       reset();
@@ -67,10 +64,6 @@ export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
       text: '',
     },
   });
-
-  useEffect(() => {
-    setPreventAccidentalClose(isDirty);
-  }, [isDirty, setPreventAccidentalClose]);
 
   const onSubmit: SubmitHandler<AddCommentFormSchema> = async ({ text }) => {
     await runAction({

@@ -18,6 +18,7 @@ export const Comments = ({ resourceId, resourceType }: Props) => {
     <section id="comments">
       <Container>
         <div className="mx-auto flex w-full max-w-lg flex-col gap-12">
+          <Heading level="2">Comments</Heading>
           <SignedIn>
             <AddCommentForm
               resourceId={resourceId}
