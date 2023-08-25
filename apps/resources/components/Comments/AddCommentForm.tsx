@@ -96,7 +96,6 @@ export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
       </Button>
 
       {/* Server messages */}
-
       {error && (
         <InfoBox
           variant="error"

@@ -17,7 +17,8 @@ interface Props {
 }
 
 export const Comment = ({
-  resourceId,resourceType,
+  resourceId,
+  resourceType,
   commentId,
   userId,
   username,
@@ -45,10 +46,12 @@ export const Comment = ({
           </div>
         </div>
         {isAuthedUser && (
-          <DeleteCommentButton 
-          resourceId={resourceId}
-                            resourceType={resourceType}
-          commentId={commentId} commentUserId={userId} />
+          <DeleteCommentButton
+            resourceId={resourceId}
+            resourceType={resourceType}
+            commentId={commentId}
+            commentUserId={userId}
+          />
         )}
       </div>
       <Text className="text-text-primary">{text}</Text>
