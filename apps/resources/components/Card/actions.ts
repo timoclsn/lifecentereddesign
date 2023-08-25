@@ -1,12 +1,13 @@
 'use server';
 
 import { auth } from '@clerk/nextjs';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 import { createAction } from '../../lib/actions/createAction';
 import {
   anonymousLikeResource,
   likeResource,
+  resourceLikesTag,
   resourceTypes,
   unlikeResource,
 } from '../../lib/resources';
@@ -27,7 +28,8 @@ export const like = createAction(inputSchema)(async ({ id, type }) => {
     await anonymousLikeResource(id, type);
   }
 
-  revalidatePath('/');
+  const tag = resourceLikesTag(id, type);
+  revalidateTag(tag);
 });
 
 export const unLike = createAction(inputSchema)(async ({ id, type }) => {
@@ -39,5 +41,6 @@ export const unLike = createAction(inputSchema)(async ({ id, type }) => {
 
   await unlikeResource(userId, id, type);
 
-  revalidatePath('/');
+  const tag = resourceLikesTag(id, type);
+  revalidateTag(tag);
 });

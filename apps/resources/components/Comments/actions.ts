@@ -1,14 +1,12 @@
 'use server';
 
 import { auth } from '@clerk/nextjs';
-
 import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 import { createAction } from '../../lib/actions/createAction';
 import {
   addResourceComment,
   deleteResourceComment,
-  resourceCommentsCountTag,
   resourceCommentsTag,
   resourceTypes,
 } from '../../lib/resources';
@@ -28,9 +26,8 @@ export const addComment = createAction(
   }
 
   await addResourceComment(userId, id, type, text);
-
-  revalidateTag(resourceCommentsTag(id, type));
-  revalidateTag(resourceCommentsCountTag(id, type));
+  const tag = resourceCommentsTag(id, type);
+  revalidateTag(tag);
 });
 
 export const deleteComment = createAction(
@@ -53,6 +50,6 @@ export const deleteComment = createAction(
 
   await deleteResourceComment(commentId, userId);
 
-  revalidateTag(resourceCommentsTag(resourceId, resourceType));
-  revalidateTag(resourceCommentsCountTag(resourceId, resourceType));
+  const tag = resourceCommentsTag(resourceId, resourceType);
+  revalidateTag(tag);
 });
