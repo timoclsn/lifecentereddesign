@@ -15,6 +15,7 @@ const reseourcesFilterSchema = z.object({
   sort: z.coerce.string().optional(),
   search: z.coerce.string().optional(),
   likes: z.coerce.boolean().optional(),
+  comments: z.coerce.boolean().optional(),
   from: z.coerce.string().optional(),
   till: z.coerce.string().optional(),
   limit: z.coerce.number().optional(),

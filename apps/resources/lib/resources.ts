@@ -523,3 +523,27 @@ export const deleteResourceComment = async (id: number, userId: string) => {
     },
   });
 };
+
+export type CommentedResources = Awaited<
+  ReturnType<typeof getCommentedResources>
+>;
+export const getCommentedResources = async (userId: string) => {
+  const comments = await prisma.comment.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      resourceId: true,
+      type: true,
+    },
+  });
+
+  // Remove duplicates
+  return comments.filter(
+    (comment, index, self) =>
+      index ===
+      self.findIndex(
+        (selfComment) => selfComment.resourceId === comment.resourceId,
+      ),
+  );
+};
