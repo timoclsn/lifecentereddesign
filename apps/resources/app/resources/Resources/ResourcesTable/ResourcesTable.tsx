@@ -1,10 +1,11 @@
 import { auth } from '@clerk/nextjs';
 import { Card, InfoBox, getRandomCardVariant } from 'design-system';
 import { AlertTriangle } from 'lucide-react';
-import { unstable_cache as cache } from 'next/cache';
+import { unstable_cache as nextCache } from 'next/cache';
 import { Await } from '../../../../components/Await/Await';
 import {
   getCategories,
+  getCommentedResources,
   getLikedResources,
   getResourcesCached,
   getTopics,
@@ -22,31 +23,43 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
   const { userId } = auth();
   const dataPromises = Promise.all([
     getResourcesCached(),
-    cache(getCategories, ['categroies'], {
+    nextCache(getCategories, ['categroies'], {
       revalidate: 60,
       tags: ['categroies'],
     })(),
-    cache(getTopics, ['topics'], { revalidate: 60, tags: ['topics'] })(),
-    cache(getLikedResources, ['liked-resources'], {
+    nextCache(getTopics, ['topics'], { revalidate: 60, tags: ['topics'] })(),
+    nextCache(getLikedResources, ['liked-resources'], {
       revalidate: 60,
       tags: ['liked-resources'],
+    })(userId ?? ''),
+    nextCache(getCommentedResources, ['commented-resources'], {
+      revalidate: 60,
+      tags: ['commented-resources'],
     })(userId ?? ''),
   ]);
 
   return (
     <Await promise={dataPromises} loading={<Loading />} error={<Error />}>
-      {([resources, categories, topics, likedResources]) => (
+      {([
+        resources,
+        categories,
+        topics,
+        likedResources,
+        commentedResources,
+      ]) => (
         <ResourcesTableProvider>
           <div>
             <ResourcesFilter
               topics={topics}
               categories={categories}
               likedResources={likedResources}
+              commentedResources={commentedResources}
             />
             <ResourcesList
               resources={resources}
               reseourcesFilter={reseourcesFilter}
               likedResources={likedResources}
+              commentedResources={commentedResources}
             />
           </div>
         </ResourcesTableProvider>

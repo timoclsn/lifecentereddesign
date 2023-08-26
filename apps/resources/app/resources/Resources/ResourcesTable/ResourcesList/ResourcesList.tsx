@@ -2,7 +2,11 @@ import { getCardComponent } from 'components/utils';
 import { Heading } from 'design-system';
 import { matchSorter } from 'match-sorter';
 import { AutoAnimate } from '../../../../../components/AutoAnimate/AutoAnimate';
-import { LikedResources, Resource } from '../../../../../lib/resources';
+import {
+  CommentedResources,
+  LikedResources,
+  Resource,
+} from '../../../../../lib/resources';
 import { ReseourcesFilter } from '../../../page';
 import { ClearAllButton } from './ClearAllButton';
 import { DownloadButton } from './DownloadButton/DownloadButton';
@@ -13,12 +17,14 @@ interface Props {
   resources: Array<Resource>;
   reseourcesFilter: ReseourcesFilter;
   likedResources: LikedResources;
+  commentedResources: CommentedResources;
 }
 
 export const ResourcesList = ({
   resources,
   reseourcesFilter,
   likedResources,
+  commentedResources,
 }: Props) => {
   const limit = reseourcesFilter.limit ?? 10;
   const searchQuery = reseourcesFilter.search ?? '';
@@ -93,6 +99,21 @@ export const ResourcesList = ({
         (likedResources) =>
           likedResources.resourceId === resource.id &&
           likedResources.type === resource.type,
+      );
+    })
+    // Filter by comments
+    .filter((resource) => {
+      if (
+        !reseourcesFilter.comments ||
+        !commentedResources ||
+        commentedResources.length === 0
+      ) {
+        return true;
+      }
+      return commentedResources.some(
+        (commentedResources) =>
+          commentedResources.resourceId === resource.id &&
+          commentedResources.type === resource.type,
       );
     })
     // Filter from

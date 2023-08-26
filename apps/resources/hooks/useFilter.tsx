@@ -16,7 +16,7 @@ export const useFilter = () => {
   const isFiltered = searchParams.toString() !== '';
 
   const filter = (
-    { scrollTop = true }: FilterOptions = { scrollTop: true }
+    { scrollTop = true }: FilterOptions = { scrollTop: true },
   ) => {
     const searchParamsString = searchParams.toString();
     startTransition(() => {
@@ -24,7 +24,7 @@ export const useFilter = () => {
         `${pathname}${searchParamsString ? '?' : ''}${searchParamsString}`,
         {
           scroll: false,
-        }
+        },
       );
     });
 
@@ -81,6 +81,10 @@ export const useFilter = () => {
 
     if (param === 'likes') {
       splitbee.track('Toggle filter resources by likes');
+    }
+
+    if (param === 'comments') {
+      splitbee.track('Toggle filter resources by comments');
     }
 
     if (param === 'limit') {
