@@ -17,16 +17,16 @@ export const withUser = async <
 >(
   data: Array<TData>,
 ) => {
-  const userId = data.map((element) => element.userId);
+  const userIds = data.map((element) => element.userId);
   const users = await clerkClient.users.getUserList({
-    userId: userId,
+    userId: userIds,
   });
 
   return data.map((element) => {
     const user = users.find((user) => user.id === element.userId);
 
     if (!user) {
-      throw new Error('User not found');
+      console.log(`User (${element.userId}) not found`);
     }
 
     return {
