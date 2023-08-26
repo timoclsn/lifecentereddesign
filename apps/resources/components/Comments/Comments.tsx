@@ -53,9 +53,9 @@ export const Comments = ({ resourceId, resourceType }: Props) => {
                               resourceType={resourceType}
                               commentId={comment.id}
                               userId={comment.userId}
-                              username={comment.user.username ?? 'anonymous'}
+                              username={comment.user?.username ?? 'anonymous'}
                               createdAt={comment.createdAt}
-                              avatarUrl={comment.user.imageUrl}
+                              avatarUrl={comment.user?.imageUrl}
                               text={comment.text}
                             />
                             {index !== comments.length - 1 && (

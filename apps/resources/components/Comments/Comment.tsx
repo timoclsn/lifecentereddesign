@@ -12,7 +12,7 @@ interface Props {
   userId: string;
   username: string;
   createdAt: Date;
-  avatarUrl: string;
+  avatarUrl?: string;
   text: string;
 }
 
