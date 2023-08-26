@@ -2,6 +2,7 @@
 
 import { Tag } from 'design-system';
 import { Loader } from 'lucide-react';
+import Link from 'next/link';
 import { ReactNode } from 'react';
 import { useResourcesTable } from '../../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
 import { useFilter } from '../../hooks/useFilter';
@@ -24,21 +25,24 @@ export const TypeButton = ({ children, type }: Props) => {
     handleValueChange('type', type);
   };
 
-  const getType = (type: ReactNode) => {
-    if (inContext) {
-      return (
-        <button onClick={handleClick} className="hover:opacity-80">
-          {type}
-        </button>
-      );
-    }
-    return type;
-  };
+  const tag = (children: ReactNode) => <Tag variant="outline">{children}</Tag>;
 
-  return getType(
-    <Tag variant="outline">
-      {children}
-      {isPending && <Loader className="animate-spin" />}
-    </Tag>
+  if (!inContext) {
+    return (
+      <Link href={`/resources?type=${type}`} className="hover:opacity-80">
+        {tag(children)}
+      </Link>
+    );
+  }
+
+  return (
+    <button onClick={handleClick} className="hover:opacity-80">
+      {tag(
+        <>
+          {children}
+          {isPending && <Loader className="animate-spin" />}
+        </>,
+      )}
+    </button>
   );
 };

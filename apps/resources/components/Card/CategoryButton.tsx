@@ -2,6 +2,7 @@
 
 import { Tag } from 'design-system';
 import { Loader } from 'lucide-react';
+import Link from 'next/link';
 import { ReactNode } from 'react';
 import { useResourcesTable } from '../../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
 import { useFilter } from '../../hooks/useFilter';
@@ -24,21 +25,27 @@ export const CategoryButton = ({ children, category }: Props) => {
     handleValueChange('category', category);
   };
 
-  const getCategory = (category: ReactNode) => {
-    if (inContext) {
-      return (
-        <button onClick={handleClick} className="hover:opacity-80">
-          {category}
-        </button>
-      );
-    }
-    return category;
-  };
+  const tag = (children: ReactNode) => <Tag variant="light">{children}</Tag>;
 
-  return getCategory(
-    <Tag variant="light">
-      {children}
-      {isPending && <Loader className="animate-spin" />}
-    </Tag>
+  if (!inContext) {
+    return (
+      <Link
+        href={`/resources?category=${category}`}
+        className="hover:opacity-80"
+      >
+        {tag(children)}
+      </Link>
+    );
+  }
+
+  return (
+    <button onClick={handleClick} className="hover:opacity-80">
+      {tag(
+        <>
+          {children}
+          {isPending && <Loader className="animate-spin" />}
+        </>,
+      )}
+    </button>
   );
 };
