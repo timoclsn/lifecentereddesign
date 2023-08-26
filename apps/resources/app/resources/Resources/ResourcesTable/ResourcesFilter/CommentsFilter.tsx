@@ -22,7 +22,9 @@ export const CommentsFilter = ({ commentedResources }: Props) => {
         content={
           filterByLikes
             ? 'Show all resources'
-            : `Only show ${commentedResourcesCount} commented resources`
+            : `Only show ${commentedResourcesCount} commented resource${
+                commentedResourcesCount > 1 ? 's' : ''
+              }`
         }
         delayDuration={500}
       >

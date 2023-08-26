@@ -22,7 +22,9 @@ export const LikesFilter = ({ likedResources }: Props) => {
         content={
           filterByLikes
             ? 'Show all resources'
-            : `Only show ${likedResourcesCount} liked resources`
+            : `Only show ${likedResourcesCount} liked resource${
+                likedResourcesCount > 1 ? 's' : ''
+              }`
         }
         delayDuration={500}
       >
