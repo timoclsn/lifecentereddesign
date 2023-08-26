@@ -2,8 +2,8 @@
 
 import { Tag } from 'design-system';
 import { Loader } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode } from 'react';
+import { useResourcesTable } from '../../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
 import { useFilter } from '../../hooks/useFilter';
 
 interface Props {
@@ -13,15 +13,9 @@ interface Props {
 
 export const TypeButton = ({ children, type }: Props) => {
   const { handleValueChange, searchParams, isPending } = useFilter();
-  const pathname = usePathname();
-  const { push } = useRouter();
+  const { inContext } = useResourcesTable();
 
   const handleClick = () => {
-    if (pathname !== '/resources') {
-      push(`/resources?type=${type}`);
-      return;
-    }
-
     const searchParamsType = searchParams.get('type');
     if (searchParamsType === type) {
       handleValueChange('type', '');
@@ -30,12 +24,21 @@ export const TypeButton = ({ children, type }: Props) => {
     handleValueChange('type', type);
   };
 
-  return (
-    <button onClick={handleClick} className="hover:opacity-80">
-      <Tag variant="outline">
-        {children}
-        {isPending && <Loader className="animate-spin" />}
-      </Tag>
-    </button>
+  const getType = (type: ReactNode) => {
+    if (inContext) {
+      return (
+        <button onClick={handleClick} className="hover:opacity-80">
+          {type}
+        </button>
+      );
+    }
+    return type;
+  };
+
+  return getType(
+    <Tag variant="outline">
+      {children}
+      {isPending && <Loader className="animate-spin" />}
+    </Tag>
   );
 };

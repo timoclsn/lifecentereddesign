@@ -2,8 +2,8 @@
 
 import { Tag } from 'design-system';
 import { Loader } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode } from 'react';
+import { useResourcesTable } from '../../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
 import { useFilter } from '../../hooks/useFilter';
 
 interface Props {
@@ -13,15 +13,9 @@ interface Props {
 
 export const CategoryButton = ({ children, category }: Props) => {
   const { handleValueChange, searchParams, isPending } = useFilter();
-  const pathname = usePathname();
-  const { push } = useRouter();
+  const { inContext } = useResourcesTable();
 
   const handleClick = () => {
-    if (pathname !== '/resources') {
-      push(`/resources?category=${category}`);
-      return;
-    }
-
     const searchParamsCategory = searchParams.get('category');
     if (searchParamsCategory === category) {
       handleValueChange('category', '');
@@ -30,12 +24,21 @@ export const CategoryButton = ({ children, category }: Props) => {
     handleValueChange('category', category);
   };
 
-  return (
-    <button onClick={handleClick} className="hover:opacity-80">
-      <Tag variant="light">
-        {children}
-        {isPending && <Loader className="animate-spin" />}
-      </Tag>
-    </button>
+  const getCategory = (category: ReactNode) => {
+    if (inContext) {
+      return (
+        <button onClick={handleClick} className="hover:opacity-80">
+          {category}
+        </button>
+      );
+    }
+    return category;
+  };
+
+  return getCategory(
+    <Tag variant="light">
+      {children}
+      {isPending && <Loader className="animate-spin" />}
+    </Tag>
   );
 };
