@@ -2,6 +2,7 @@ import { BookOpen, Link, Tag } from 'lucide-react';
 import { Newsletter } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
+import { topicsList } from '../utils';
 
 interface Props {
   newsletter: Newsletter;
@@ -37,7 +38,7 @@ export const NewsletterCard = ({ newsletter }: Props) => {
         ...(newsletter.topics.length
           ? [
               {
-                text: newsletter.topics.map((topic) => topic.name).join(', '),
+                text: topicsList(newsletter.topics),
                 icon: Tag,
               },
             ]

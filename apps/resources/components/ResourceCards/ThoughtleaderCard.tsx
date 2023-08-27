@@ -2,6 +2,7 @@ import { Briefcase, Link, Tag } from 'lucide-react';
 import { Thoughtleader } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
+import { topicsList } from '../utils';
 
 interface Props {
   thoughtleader: Thoughtleader;
@@ -27,9 +28,7 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
         ...(thoughtleader.topics.length
           ? [
               {
-                text: thoughtleader.topics
-                  .map((topic) => topic.name)
-                  .join(', '),
+                text: topicsList(thoughtleader.topics),
                 icon: Tag,
               },
             ]

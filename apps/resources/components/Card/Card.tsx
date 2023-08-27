@@ -15,6 +15,7 @@ import { ResourceLink } from './ResourceLink';
 import { ShareButton } from './ShareButton';
 import { TypeButton } from './TypeButton';
 import { CommentsButton } from './CommentsButton/CommentsButton';
+import { ReactNode } from 'react';
 
 interface Props {
   resourceId: number;
@@ -25,8 +26,7 @@ interface Props {
   showType?: boolean;
   metaInfos?: Array<{
     icon: any;
-    text: string;
-    url?: string;
+    text: string | ReactNode;
   }>;
   category?: string;
   tags?: Array<{
@@ -152,22 +152,10 @@ export const Card = ({
           {metaInfos && (
             <ul className="text-text-secondary -mt-1 flex flex-wrap gap-x-2 gap-y-1 sm:gap-x-8 sm:gap-y-3">
               {metaInfos.map((metaInfo, idx) => {
-                const Element = metaInfo.url ? 'a' : 'span';
                 return (
-                  <li key={idx}>
-                    <Element
-                      className={`flex items-center gap-1${
-                        metaInfo.url ? ' underline' : ''
-                      }${Element === 'a' ? ' hover:opacity-80' : ''}`}
-                      {...(metaInfo.url && {
-                        href: metaInfo.url,
-                        target: '_blank',
-                        rel: 'noopener noreferrer',
-                      })}
-                    >
-                      <metaInfo.icon size="18" className="flex-none" />
-                      <Text>{metaInfo.text}</Text>
-                    </Element>
+                  <li key={idx} className="flex items-center gap-1">
+                    <metaInfo.icon size="18" className="flex-none" />
+                    <Text>{metaInfo.text}</Text>
                   </li>
                 );
               })}

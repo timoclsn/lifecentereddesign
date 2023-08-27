@@ -2,6 +2,7 @@ import { CalendarDays, Clock3, Link, Tag, VideoIcon } from 'lucide-react';
 import { Video } from '../../lib/resources';
 import { formateDate, getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
+import { topicsList } from '../utils';
 
 interface Props {
   video: Video;
@@ -51,7 +52,7 @@ export const VideoCard = ({ video }: Props) => {
         ...(video.topics.length
           ? [
               {
-                text: video.topics.map((topic) => topic.name).join(', '),
+                text: topicsList(video.topics),
                 icon: Tag,
               },
             ]

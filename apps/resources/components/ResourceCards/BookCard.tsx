@@ -9,6 +9,7 @@ import {
 import { Book } from '../../lib/resources';
 import { formateDate, getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
+import { topicsList } from '../utils';
 
 interface Props {
   book: Book;
@@ -58,7 +59,7 @@ export const BookCard = ({ book }: Props) => {
         ...(book.topics.length
           ? [
               {
-                text: book.topics.map((topic) => topic.name).join(', '),
+                text: topicsList(book.topics),
                 icon: Tag,
               },
             ]

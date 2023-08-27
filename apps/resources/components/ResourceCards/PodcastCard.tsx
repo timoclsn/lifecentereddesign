@@ -2,6 +2,7 @@ import { Smile, Link, Tag } from 'lucide-react';
 import { Podcast } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
+import { topicsList } from '../utils';
 
 interface Props {
   podcast: Podcast;
@@ -35,7 +36,7 @@ export const PodcastCard = ({ podcast }: Props) => {
         ...(podcast.topics.length
           ? [
               {
-                text: podcast.topics.map((topic) => topic.name).join(', '),
+                text: topicsList(podcast.topics),
                 icon: Tag,
               },
             ]

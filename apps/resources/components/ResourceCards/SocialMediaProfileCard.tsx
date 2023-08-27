@@ -2,6 +2,7 @@ import { AtSign, Link, Tag } from 'lucide-react';
 import { SocialMediaProfile } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
+import { topicsList } from '../utils';
 
 interface Props {
   socielaMediaProfile: SocialMediaProfile;
@@ -27,9 +28,7 @@ export const SocialMediaProfileCard = ({ socielaMediaProfile }: Props) => {
         ...(socielaMediaProfile.topics.length
           ? [
               {
-                text: socielaMediaProfile.topics
-                  .map((topic) => topic.name)
-                  .join(', '),
+                text: topicsList(socielaMediaProfile.topics),
                 icon: Tag,
               },
             ]

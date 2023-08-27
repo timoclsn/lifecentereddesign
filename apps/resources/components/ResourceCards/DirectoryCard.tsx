@@ -2,6 +2,7 @@ import { Link, Tag } from 'lucide-react';
 import { Directory } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
+import { topicsList } from '../utils';
 
 interface Props {
   directory: Directory;
@@ -19,7 +20,7 @@ export const DirectoryCard = ({ directory }: Props) => {
         ...(directory.topics.length
           ? [
               {
-                text: directory.topics.map((topic) => topic.name).join(', '),
+                text: topicsList(directory.topics),
                 icon: Tag,
               },
             ]
