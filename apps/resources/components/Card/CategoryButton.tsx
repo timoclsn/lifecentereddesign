@@ -30,7 +30,7 @@ export const CategoryButton = ({ children, category }: Props) => {
   if (!inContext) {
     return (
       <Link
-        href={`/resources?category=${category}`}
+        href={`/resources?category=${category}#resources`}
         className="hover:opacity-80"
       >
         {tag(children)}

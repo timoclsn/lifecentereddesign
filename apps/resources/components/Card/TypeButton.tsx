@@ -29,7 +29,10 @@ export const TypeButton = ({ children, type }: Props) => {
 
   if (!inContext) {
     return (
-      <Link href={`/resources?type=${type}`} className="hover:opacity-80">
+      <Link
+        href={`/resources?type=${type}#resources`}
+        className="hover:opacity-80"
+      >
         {tag(children)}
       </Link>
     );

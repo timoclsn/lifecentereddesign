@@ -25,7 +25,10 @@ export const TopicsButton = ({ children, topic }: Props) => {
 
   if (!inContext) {
     return (
-      <Link href={`/resources?topic=${topic}`} className="hover:opacity-80">
+      <Link
+        href={`/resources?topic=${topic}#resources`}
+        className="hover:opacity-80"
+      >
         {children}
       </Link>
     );
