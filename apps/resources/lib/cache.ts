@@ -3,7 +3,9 @@ import { cache as reactCache } from 'react';
 import {
   ContentType,
   getCategories,
+  getCommentedResources,
   getCommentsCount,
+  getLikedResources,
   getResource,
   getResourceComments,
   getResourceLikesData,
@@ -31,6 +33,14 @@ export const getResourceCached = reactCache(
       tags: [tag],
     })(resourceId, resourceType);
   },
+);
+
+export const getLikedResourcesCached = reactCache((userId: string) =>
+  getLikedResources(userId),
+);
+
+export const getCommentedResourcesCached = reactCache((userId: string) =>
+  getCommentedResources(userId),
 );
 
 // Categories

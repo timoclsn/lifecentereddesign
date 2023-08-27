@@ -4,13 +4,11 @@ import { AlertTriangle } from 'lucide-react';
 import { Await } from '../../../../components/Await/Await';
 import {
   getCategoriesCached,
+  getCommentedResourcesCached,
+  getLikedResourcesCached,
   getResourcesCached,
   getTopicsCached,
 } from '../../../../lib/cache';
-import {
-  getCommentedResources,
-  getLikedResources,
-} from '../../../../lib/resources';
 import { ReseourcesFilter } from '../../page';
 import { ResourcesFilter } from './ResourcesFilter/ResourcesFilter';
 import { ResourcesList } from './ResourcesList/ResourcesList';
@@ -26,8 +24,8 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
     getResourcesCached(),
     getCategoriesCached(),
     getTopicsCached(),
-    getLikedResources(userId ?? ''),
-    getCommentedResources(userId ?? ''),
+    getLikedResourcesCached(userId ?? ''),
+    getCommentedResourcesCached(userId ?? ''),
   ]);
 
   return (
