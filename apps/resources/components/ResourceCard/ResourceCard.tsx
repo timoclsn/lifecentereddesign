@@ -1,8 +1,9 @@
 import { Card, getRandomCardVariant } from 'design-system';
-import { ContentType, getResourceCached } from '../../lib/resources';
+import { AlertTriangle } from 'lucide-react';
+import { getResourceCached } from '../../lib/cache';
+import { ContentType } from '../../lib/resources';
 import { Await } from '../Await/Await';
 import { getCardComponent } from '../utils';
-import { AlertTriangle } from 'lucide-react';
 
 interface Props {
   resourceId: number;

@@ -8,7 +8,7 @@ import {
 import { AlertTriangle, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getResourcesCached } from '../../lib/resources';
+import { getResourcesCached } from '../../lib/cache';
 import { Await } from '../Await/Await';
 import { getCardComponent } from '../utils';
 import groundImg from './ground.jpg';

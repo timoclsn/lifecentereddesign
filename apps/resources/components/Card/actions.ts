@@ -4,10 +4,10 @@ import { auth } from '@clerk/nextjs';
 import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 import { createAction } from '../../lib/actions/createAction';
+import { resourceLikesTag } from '../../lib/cache';
 import {
   anonymousLikeResource,
   likeResource,
-  resourceLikesTag,
   resourceTypes,
   unlikeResource,
 } from '../../lib/resources';

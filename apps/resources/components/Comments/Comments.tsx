@@ -1,7 +1,8 @@
 import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
 import { Button, Container, Heading, InfoBox, Text } from 'design-system';
 import { AlertTriangle } from 'lucide-react';
-import { ContentType, getResourceCommentsCached } from '../../lib/resources';
+import { getResourceCommentsCached } from '../../lib/cache';
+import { ContentType } from '../../lib/resources';
 import { AutoAnimate } from '../AutoAnimate/AutoAnimate';
 import { Await } from '../Await/Await';
 import { AddCommentForm } from './AddCommentForm';
