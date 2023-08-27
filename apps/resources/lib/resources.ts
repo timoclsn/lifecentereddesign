@@ -1,6 +1,4 @@
 import { Prisma } from 'database';
-import { unstable_cache as nextCache } from 'next/cache';
-import { cache as reactCache } from 'react';
 import { prisma } from './prisma';
 import { withUser } from './users';
 
@@ -252,14 +250,9 @@ export const getResources = async () => {
   return enhancedResources;
 };
 
-export const getResourcesCached = reactCache(async () => {
-  return await nextCache(getResources, ['resources'], {
-    revalidate: 60,
-    tags: ['resources'],
-  })();
-});
+// Single resource
 
-const getResource = async (id: number, type: ContentType) => {
+export const getResource = async (id: number, type: ContentType) => {
   // @ts-expect-error: Dynamic table access doesn't work on type level
   const resource = (await prisma[type].findUnique({
     where: {
@@ -277,16 +270,6 @@ const getResource = async (id: number, type: ContentType) => {
     likes: resource.likes + newLikesCount,
   };
 };
-
-export const getResourceCached = reactCache(
-  async (resourceId: number, resourceType: ContentType) => {
-    const tag = `resource-${resourceType}-${resourceId}`;
-    return await nextCache(getResource, [tag], {
-      revalidate: 60,
-      tags: [tag],
-    })(resourceId, resourceType);
-  },
-);
 
 // Likes
 
@@ -322,7 +305,7 @@ const getResourceNewLikes = async (id: number, type: ContentType) => {
   });
 };
 
-const getResourceLikesData = async (
+export const getResourceLikesData = async (
   resourceId: number,
   resourceType: ContentType,
 ) => {
@@ -335,19 +318,6 @@ const getResourceLikesData = async (
     newLikes,
   };
 };
-
-export const resourceLikesTag = (resourceId: number, type: ContentType) =>
-  `likes-${type}-${resourceId}`;
-
-export const getResourceLikesDataCached = reactCache(
-  async (resourceId: number, resourceType: ContentType) => {
-    const tag = resourceLikesTag(resourceId, resourceType);
-    return await nextCache(getResourceLikesData, [tag], {
-      revalidate: 60,
-      tags: [tag],
-    })(resourceId, resourceType);
-  },
-);
 
 export const likeResource = async (
   userId: string,
@@ -449,7 +419,7 @@ export const deleteUserData = async (userId: string) => {
 
 // Comments
 
-const getResourceComments = async (id: number, type: ContentType) => {
+export const getResourceComments = async (id: number, type: ContentType) => {
   const comments = await prisma.comment.findMany({
     where: {
       resourceId: id,
@@ -463,20 +433,7 @@ const getResourceComments = async (id: number, type: ContentType) => {
   return withUser(comments);
 };
 
-export const resourceCommentsTag = (resourceId: number, type: ContentType) =>
-  `comments-${type}-${resourceId}`;
-
-export const getResourceCommentsCached = reactCache(
-  async (resourceId: number, resourceType: ContentType) => {
-    const tag = resourceCommentsTag(resourceId, resourceType);
-    return await nextCache(getResourceComments, [tag], {
-      revalidate: 60,
-      tags: [tag],
-    })(resourceId, resourceType);
-  },
-);
-
-const getCommentsCount = async (id: number, type: ContentType) => {
+export const getCommentsCount = async (id: number, type: ContentType) => {
   return await prisma.comment.count({
     where: {
       resourceId: id,
@@ -484,20 +441,6 @@ const getCommentsCount = async (id: number, type: ContentType) => {
     },
   });
 };
-
-export const getResourceCommentsCountCached = reactCache(
-  async (resourceId: number, resourceType: ContentType) => {
-    const tag = resourceCommentsTag(resourceId, resourceType);
-    return await nextCache(
-      getCommentsCount,
-      [`commentscount-${resourceType}-${resourceId}`],
-      {
-        revalidate: 60,
-        tags: [tag],
-      },
-    )(resourceId, resourceType);
-  },
-);
 
 export const addResourceComment = async (
   userId: string,

@@ -4,10 +4,10 @@ import { auth } from '@clerk/nextjs';
 import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 import { createAction } from '../../lib/actions/createAction';
+import { resourceCommentsTag } from '../../lib/cache';
 import {
   addResourceComment,
   deleteResourceComment,
-  resourceCommentsTag,
   resourceTypes,
 } from '../../lib/resources';
 import { textSchema } from './schemas';

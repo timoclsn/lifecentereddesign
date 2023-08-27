@@ -1,9 +1,7 @@
 import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
-import {
-  ContentType,
-  getResourceCommentsCountCached,
-} from '../../../lib/resources';
+import { getResourceCommentsCountCached } from '../../../lib/cache';
+import { ContentType } from '../../../lib/resources';
 import { Await } from '../../Await/Await';
 
 interface Props {

@@ -2,8 +2,8 @@ import { Comments } from '../../../components/Comments/Comments';
 import { NewResources } from '../../../components/NewResources/NewResources';
 import { Newsletter } from '../../../components/Newsletter/Newsletter';
 import { ResourceCard } from '../../../components/ResourceCard/ResourceCard';
+import { getResourceCached } from '../../../lib/cache';
 import { createGenerateMetadata } from '../../../lib/metadata';
-import { getResourceCached } from '../../../lib/resources';
 import { getBaseUrl, parseResourceSlug } from '../../../lib/utils';
 
 export const generateMetadata = createGenerateMetadata(async ({ params }) => {

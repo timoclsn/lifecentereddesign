@@ -1,9 +1,7 @@
 import { auth } from '@clerk/nextjs';
 import { Heart } from 'lucide-react';
-import {
-  ContentType,
-  getResourceLikesDataCached,
-} from '../../../lib/resources';
+import { getResourceLikesDataCached } from '../../../lib/cache';
+import { ContentType } from '../../../lib/resources';
 import { Await } from '../../Await/Await';
 import { LikesButtonClient } from './LikesButtonClient';
 

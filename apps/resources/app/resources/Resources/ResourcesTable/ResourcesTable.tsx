@@ -1,14 +1,15 @@
 import { auth } from '@clerk/nextjs';
 import { Card, InfoBox, getRandomCardVariant } from 'design-system';
 import { AlertTriangle } from 'lucide-react';
-import { unstable_cache as nextCache } from 'next/cache';
 import { Await } from '../../../../components/Await/Await';
 import {
-  getCategories,
+  getCategoriesCached,
+  getResourcesCached,
+  getTopicsCached,
+} from '../../../../lib/cache';
+import {
   getCommentedResources,
   getLikedResources,
-  getResourcesCached,
-  getTopics,
 } from '../../../../lib/resources';
 import { ReseourcesFilter } from '../../page';
 import { ResourcesFilter } from './ResourcesFilter/ResourcesFilter';
@@ -23,19 +24,10 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
   const { userId } = auth();
   const dataPromises = Promise.all([
     getResourcesCached(),
-    nextCache(getCategories, ['categroies'], {
-      revalidate: 60,
-      tags: ['categroies'],
-    })(),
-    nextCache(getTopics, ['topics'], { revalidate: 60, tags: ['topics'] })(),
-    nextCache(getLikedResources, ['liked-resources'], {
-      revalidate: 60,
-      tags: ['liked-resources'],
-    })(userId ?? ''),
-    nextCache(getCommentedResources, ['commented-resources'], {
-      revalidate: 60,
-      tags: ['commented-resources'],
-    })(userId ?? ''),
+    getCategoriesCached(),
+    getTopicsCached(),
+    getLikedResources(userId ?? ''),
+    getCommentedResources(userId ?? ''),
   ]);
 
   return (
