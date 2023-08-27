@@ -17,8 +17,10 @@ import {
   SocialMediaProfile,
   Thoughtleader,
   Tool,
+  Topics,
   Video,
 } from '../lib/resources';
+import { TopicsButton } from './Card/TopicsButton';
 import { AgencyCard } from './ResourceCards/AgencyCard';
 import { ArticleCard } from './ResourceCards/ArticleCard';
 import { BookCard } from './ResourceCards/BookCard';
@@ -83,4 +85,17 @@ export const getCardComponent = (resource: Resources[0]) => {
     default:
       throw new Error(`Unknown resource type: ${resource.type}`);
   }
+};
+
+export const topicsList = (topics: Topics) => {
+  return topics.map((topic, index) => {
+    return (
+      <>
+        <TopicsButton key={topic.id} topic={topic.name}>
+          {topic.name}
+        </TopicsButton>
+        {index !== topics.length - 1 && ', '}
+      </>
+    );
+  });
 };

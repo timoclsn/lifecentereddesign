@@ -2,6 +2,7 @@ import { Link, Tag } from 'lucide-react';
 import { Magazine } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
+import { topicsList } from '../utils';
 
 interface Props {
   magazine: Magazine;
@@ -19,7 +20,7 @@ export const MagazineCard = ({ magazine }: Props) => {
         ...(magazine.topics.length
           ? [
               {
-                text: magazine.topics.map((topic) => topic.name).join(', '),
+                text: topicsList(magazine.topics),
                 icon: Tag,
               },
             ]

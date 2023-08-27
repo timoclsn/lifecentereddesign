@@ -2,6 +2,7 @@ import { Link, Tag } from 'lucide-react';
 import { Tool } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
+import { topicsList } from '../utils';
 
 interface Props {
   tool: Tool;
@@ -19,7 +20,7 @@ export const ToolCard = ({ tool }: Props) => {
         ...(tool.topics.length
           ? [
               {
-                text: tool.topics.map((topic) => topic.name).join(', '),
+                text: topicsList(tool.topics),
                 icon: Tag,
               },
             ]

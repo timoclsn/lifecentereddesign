@@ -2,6 +2,7 @@ import { CalendarDays, Clock3, Link, Mic, Smile, Tag } from 'lucide-react';
 import { PodcastEpisode } from '../../lib/resources';
 import { formateDate, getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
+import { topicsList } from '../utils';
 
 interface Props {
   podcastEpisode: PodcastEpisode;
@@ -61,9 +62,7 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
         ...(podcastEpisode.topics.length
           ? [
               {
-                text: podcastEpisode.topics
-                  .map((topic) => topic.name)
-                  .join(', '),
+                text: topicsList(podcastEpisode.topics),
                 icon: Tag,
               },
             ]

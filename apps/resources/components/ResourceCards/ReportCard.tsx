@@ -2,6 +2,7 @@ import { BookOpen, CalendarDays, Link, Tag } from 'lucide-react';
 import { Report } from '../../lib/resources';
 import { formateDate, getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
+import { topicsList } from '../utils';
 
 interface Props {
   report: Report;
@@ -51,7 +52,7 @@ export const ReportCard = ({ report }: Props) => {
         ...(report.topics.length
           ? [
               {
-                text: report.topics.map((topic) => topic.name).join(', '),
+                text: topicsList(report.topics),
                 icon: Tag,
               },
             ]
