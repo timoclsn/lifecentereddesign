@@ -2,7 +2,7 @@ import { CalendarDays, Clock3, Link, Tag, VideoIcon } from 'lucide-react';
 import { Video } from '../../lib/resources';
 import { formateDate, getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
-import { topicsList } from '../utils';
+import { thoughtleadersList, topicsList } from '../utils';
 
 interface Props {
   video: Video;
@@ -20,7 +20,7 @@ export const VideoCard = ({ video }: Props) => {
         ...(video.creators.length
           ? [
               {
-                text: video.creators.map((creator) => creator.name).join(', '),
+                text: thoughtleadersList(video.creators),
                 icon: VideoIcon,
               },
             ]

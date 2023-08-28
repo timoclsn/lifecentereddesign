@@ -9,7 +9,7 @@ import {
 import { Book } from '../../lib/resources';
 import { formateDate, getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
-import { topicsList } from '../utils';
+import { thoughtleadersList, topicsList } from '../utils';
 
 interface Props {
   book: Book;
@@ -27,7 +27,7 @@ export const BookCard = ({ book }: Props) => {
         ...(book.authors.length
           ? [
               {
-                text: book.authors.map((author) => author.name).join(', '),
+                text: thoughtleadersList(book.authors),
                 icon: BookOpen,
               },
             ]

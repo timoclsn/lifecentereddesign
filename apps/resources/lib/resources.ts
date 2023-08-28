@@ -23,6 +23,7 @@ export const resourceTypes = [
   'report',
 ] as const;
 
+export type ThoughtleaderBasic = Prisma.ThoughtleaderGetPayload<{}>;
 export type Thoughtleader = Prisma.ThoughtleaderGetPayload<{
   include: {
     category: true;

@@ -1,3 +1,5 @@
+import { ExternalLink } from 'lucide-react';
+import Link from 'next/link';
 import {
   Agency,
   Article,
@@ -16,6 +18,7 @@ import {
   Slide,
   SocialMediaProfile,
   Thoughtleader,
+  ThoughtleaderBasic,
   Tool,
   Topics,
   Video,
@@ -95,6 +98,32 @@ export const topicsList = (topics: Topics) => {
           {topic.name}
         </TopicsButton>
         {index !== topics.length - 1 && ', '}
+      </>
+    );
+  });
+};
+
+export const thoughtleadersList = (
+  thoughtleaders: Array<ThoughtleaderBasic>,
+) => {
+  return thoughtleaders.map((thoughtleader, index) => {
+    return (
+      <>
+        {!thoughtleader.link ? (
+          thoughtleader.name
+        ) : (
+          <Link
+            key={index}
+            href={thoughtleader.link ?? ''}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-0.5 hover:opacity-80"
+          >
+            {thoughtleader.name}
+            <ExternalLink size={12} />
+          </Link>
+        )}
+        {index !== thoughtleaders.length - 1 && ', '}
       </>
     );
   });
