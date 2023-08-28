@@ -20,7 +20,7 @@ export const ArticleCard = ({ article }: Props) => {
         ...(article.authors.length
           ? [
               {
-                text: topicsList(article.topics),
+                text: article.authors.map((author) => author?.name).join(', '),
                 icon: BookOpen,
               },
             ]
@@ -60,7 +60,7 @@ export const ArticleCard = ({ article }: Props) => {
         ...(article.topics.length
           ? [
               {
-                text: article.topics.map((topic) => topic.name).join(', '),
+                text: topicsList(article.topics),
                 icon: Tag,
               },
             ]

@@ -20,7 +20,7 @@ export const PaperCard = ({ paper }: Props) => {
         ...(paper.authors.length
           ? [
               {
-                text: topicsList(paper.topics),
+                text: paper.authors.map((author) => author?.name).join(', '),
                 icon: BookOpen,
               },
             ]
@@ -60,7 +60,7 @@ export const PaperCard = ({ paper }: Props) => {
         ...(paper.topics.length
           ? [
               {
-                text: paper.topics.map((topic) => topic.name).join(', '),
+                text: topicsList(paper.topics),
                 icon: Tag,
               },
             ]
