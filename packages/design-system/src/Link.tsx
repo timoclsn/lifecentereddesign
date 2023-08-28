@@ -23,7 +23,7 @@ export const Link = ({
       {...(external
         ? {
             target: '_blank',
-            rel: 'noopener noreferrer',
+            rel: 'noopener',
           }
         : {})}
       className={styles}

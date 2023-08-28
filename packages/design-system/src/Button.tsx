@@ -99,7 +99,7 @@ export function Button({
       disabled={disabled}
       href={href}
       target={external ? '_blank' : undefined}
-      rel={external ? 'noopener noreferrer' : undefined}
+      rel={external ? 'noopener' : undefined}
     >
       {children}
     </Element>

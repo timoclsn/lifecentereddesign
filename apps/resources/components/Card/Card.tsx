@@ -187,7 +187,7 @@ export const Card = ({
                 key={idx}
                 href={tag.url}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener"
                 className="hover:opacity-80"
               >
                 <Tag variant="dark">

@@ -42,7 +42,7 @@ export function ProfileCard({
           <ul className="flex space-x-4">
             {websiteUrl && (
               <li>
-                <a href={websiteUrl} target="_blank" rel="noopener noreferrer">
+                <a href={websiteUrl} target="_blank" rel="noopener">
                   <span className="sr-only">Website of {name}</span>
                   <Globe size={24} />
                 </a>
