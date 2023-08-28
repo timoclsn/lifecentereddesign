@@ -2,7 +2,7 @@ import { BookOpen, CalendarDays, Link, Tag } from 'lucide-react';
 import { Slide } from '../../lib/resources';
 import { formateDate, getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
-import { topicsList } from '../utils';
+import { thoughtleadersList, topicsList } from '../utils';
 
 interface Props {
   slide: Slide;
@@ -20,7 +20,7 @@ export const SlideCard = ({ slide }: Props) => {
         ...(slide.authors.length
           ? [
               {
-                text: slide.authors.map((author) => author.name).join(', '),
+                text: thoughtleadersList(slide.authors),
                 icon: BookOpen,
               },
             ]

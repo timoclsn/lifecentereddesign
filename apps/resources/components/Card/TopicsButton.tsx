@@ -1,5 +1,6 @@
 'use client';
 
+import { Filter, Loader } from 'lucide-react';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { useResourcesTable } from '../../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
@@ -27,9 +28,10 @@ export const TopicsButton = ({ children, topic }: Props) => {
     return (
       <Link
         href={`/resources?topic=${topic}#resources`}
-        className="hover:opacity-80"
+        className="inline-flex items-center justify-center gap-0.5 hover:opacity-80 "
       >
         {children}
+        <Filter size={12} />
       </Link>
     );
   }
@@ -37,9 +39,11 @@ export const TopicsButton = ({ children, topic }: Props) => {
   return (
     <button
       onClick={handleClick}
-      className={`hover:opacity-80${isPending ? ' animate-pulse' : ''}`}
+      className="inline-flex items-center justify-center gap-0.5 hover:opacity-80"
     >
       {children}
+      {!isPending && <Filter size={12} />}
+      {isPending && <Loader size={12} className="animate-spin" />}
     </button>
   );
 };

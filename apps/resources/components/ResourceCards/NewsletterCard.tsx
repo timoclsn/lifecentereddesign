@@ -2,7 +2,7 @@ import { BookOpen, Link, Tag } from 'lucide-react';
 import { Newsletter } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
-import { topicsList } from '../utils';
+import { thoughtleadersList, topicsList } from '../utils';
 
 interface Props {
   newsletter: Newsletter;
@@ -20,9 +20,7 @@ export const NewsletterCard = ({ newsletter }: Props) => {
         ...(newsletter.authors.length
           ? [
               {
-                text: newsletter.authors
-                  .map((author) => author.name)
-                  .join(', '),
+                text: thoughtleadersList(newsletter.authors),
                 icon: BookOpen,
               },
             ]
