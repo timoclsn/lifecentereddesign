@@ -116,7 +116,7 @@ export const thoughtleadersList = (
             key={index}
             href={thoughtleader.link ?? ''}
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener"
             className="inline-flex items-center justify-center gap-0.5 hover:opacity-80"
           >
             {thoughtleader.name}
