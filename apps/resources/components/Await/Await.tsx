@@ -5,7 +5,7 @@ interface AwaitProps<T> {
   promise: Promise<T>;
   loading?: ReactNode;
   error?: ReactNode;
-  children: (value: T) => JSX.Element;
+  children: (value: T) => JSX.Element | null;
 }
 
 export const Await = <T extends unknown>({

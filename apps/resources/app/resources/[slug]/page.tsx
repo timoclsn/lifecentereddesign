@@ -1,6 +1,7 @@
 import { Comments } from '../../../components/Comments/Comments';
 import { NewResources } from '../../../components/NewResources/NewResources';
 import { Newsletter } from '../../../components/Newsletter/Newsletter';
+import { RelatedResources } from '../../../components/RelatedResources/RelatedResources';
 import { ResourceCard } from '../../../components/ResourceCard/ResourceCard';
 import { getResourceCached } from '../../../lib/cache';
 import { createGenerateMetadata } from '../../../lib/metadata';
@@ -64,6 +65,7 @@ const ResourcePage = async ({ params }: Props) => {
     <>
       <ResourceCard resourceId={resourceId} resourceType={resourceType} />
       <Comments resourceId={resourceId} resourceType={resourceType} />
+      <RelatedResources resourceId={resourceId} resourceType={resourceType} />
       <NewResources />
       <Newsletter />
     </>
