@@ -59,7 +59,6 @@ interface Props {
 
 const ResourcePage = async ({ params }: Props) => {
   const { slug } = params;
-  console.log(slug);
   const { resourceId, resourceType } = parseResourceSlug(slug);
 
   return (
