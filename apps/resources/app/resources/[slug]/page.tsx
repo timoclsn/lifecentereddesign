@@ -73,3 +73,5 @@ const ResourcePage = async ({ params }: Props) => {
 };
 
 export default ResourcePage;
+
+// test
