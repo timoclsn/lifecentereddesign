@@ -56,7 +56,7 @@ const createReducer =
 export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
   inputAction: BrandedServerAction<TInput, TResponse>,
   options: {
-    onRunAction?: (input?: z.input<TInput>) => void;
+    onRunAction?: (input: z.input<TInput>) => void;
     onSuccess?: (data: TResponse | null) => void;
     onError?: (error: string) => void;
     onSettled?: () => void;
@@ -68,7 +68,7 @@ export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
   const [isRunning, startTransition] = useTransition();
 
   const runAction = useCallback(
-    async (input?: z.input<TInput>) => {
+    async (input: z.input<TInput>) => {
       startTransition(async () => {
         dispatch({
           type: 'RUN_ACTION',

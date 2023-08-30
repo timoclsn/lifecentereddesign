@@ -20,7 +20,7 @@ export const DeleteAccountButton = () => {
         "Do you really want to delete your account? This action can't be undone.",
       )
     ) {
-      runAction();
+      runAction({});
     }
   };
 

@@ -6,7 +6,7 @@ declare const brand: unique symbol;
 type Brand<T, TBrand extends string> = T & { [brand]: TBrand };
 
 type ServerAction<TInput extends z.ZodTypeAny, TResponse extends any> = (
-  input?: z.input<TInput>,
+  input: z.input<TInput>,
 ) => Promise<{
   data: TResponse | null;
   error: string | null;
