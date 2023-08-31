@@ -29,8 +29,6 @@ export const createAction = <
   }) => void | TResponse | Promise<void> | Promise<TResponse>;
 }) => {
   const serverAction: ServerAction<TInputSchema, TResponse> = async (input) => {
-    const { userId } = auth();
-
     let parsedInput = input;
     if (opts.input) {
       const result = opts.input.safeParse(input);
@@ -44,6 +42,7 @@ export const createAction = <
     }
 
     try {
+      const { userId } = auth();
       const response = await opts.action({
         input: parsedInput,
         ctx: { userId },
