@@ -1,6 +1,5 @@
 'use server';
 
-import { auth } from '@clerk/nextjs';
 import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 import { createAction } from '../../lib/actions/createAction';
@@ -19,28 +18,36 @@ const inputSchema = z.object({
   type: typeSchema,
 });
 
-export const like = createAction(inputSchema)(async ({ id, type }) => {
-  const { userId } = auth();
+export const like = createAction({
+  input: inputSchema,
+  action: async ({ input, ctx }) => {
+    const { id, type } = input;
+    const { userId } = ctx;
 
-  if (userId) {
-    await likeResource(userId, id, type);
-  } else {
-    await anonymousLikeResource(id, type);
-  }
+    if (userId) {
+      await likeResource(userId, id, type);
+    } else {
+      await anonymousLikeResource(id, type);
+    }
 
-  const tag = resourceLikesTag(id, type);
-  revalidateTag(tag);
+    const tag = resourceLikesTag(id, type);
+    revalidateTag(tag);
+  },
 });
 
-export const unLike = createAction(inputSchema)(async ({ id, type }) => {
-  const { userId } = auth();
+export const unLike = createAction({
+  input: inputSchema,
+  action: async ({ input, ctx }) => {
+    const { id, type } = input;
+    const { userId } = ctx;
 
-  if (!userId) {
-    throw new Error('Unauthorized');
-  }
+    if (!userId) {
+      throw new Error('Unauthorized');
+    }
 
-  await unlikeResource(userId, id, type);
+    await unlikeResource(userId, id, type);
 
-  const tag = resourceLikesTag(id, type);
-  revalidateTag(tag);
+    const tag = resourceLikesTag(id, type);
+    revalidateTag(tag);
+  },
 });

@@ -28,52 +28,54 @@ const apiErrorSchema = z.object({
   instance: z.string(),
 });
 
-export const subscribe = createAction(newsletterFormSchema)(async ({
-  consens,
-  email,
-}) => {
-  const data = {
-    email_address: email,
-    status: 'pending',
-    marketing_permissions: [
-      {
-        marketing_permission_id: marketingPermissionId,
-        enabled: consens,
-      },
-    ],
-  };
+export const subscribe = createAction({
+  input: newsletterFormSchema,
+  action: async ({ input }) => {
+    const { consens, email } = input;
 
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `api_key ${apiKey}`,
-      },
-      body: JSON.stringify(data),
-    });
+    const data = {
+      email_address: email,
+      status: 'pending',
+      marketing_permissions: [
+        {
+          marketing_permission_id: marketingPermissionId,
+          enabled: consens,
+        },
+      ],
+    };
 
-    if (!response.ok) {
-      const responseJson = await response.json();
-      const result = apiErrorSchema.safeParse(responseJson);
-      if (!result.success) throw new Error();
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `api_key ${apiKey}`,
+        },
+        body: JSON.stringify(data),
+      });
 
-      const { title } = result.data;
+      if (!response.ok) {
+        const responseJson = await response.json();
+        const result = apiErrorSchema.safeParse(responseJson);
+        if (!result.success) throw new Error();
 
-      if (title === 'Member Exists') {
-        throw new Error(title);
+        const { title } = result.data;
+
+        if (title === 'Member Exists') {
+          throw new Error(title);
+        }
+
+        throw new Error();
+      }
+    } catch (error) {
+      const message = getErrorMessage(error);
+      if (message === 'Member Exists') {
+        throw new Error(`${email} is already subscribed to our newsletter.`);
       }
 
-      throw new Error();
+      throw new Error(
+        "There was an error subscribing to the newsletter. Send us an email at hello@lifecentereddesign.net and we'll add you to the list.",
+      );
     }
-  } catch (error) {
-    const message = getErrorMessage(error);
-    if (message === 'Member Exists') {
-      throw new Error(`${email} is already subscribed to our newsletter.`);
-    }
-
-    throw new Error(
-      "There was an error subscribing to the newsletter. Send us an email at hello@lifecentereddesign.net and we'll add you to the list.",
-    );
-  }
+  },
 });

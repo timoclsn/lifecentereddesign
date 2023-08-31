@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { getErrorMessage } from '../utils';
+import { auth } from '@clerk/nextjs';
 
 declare const brand: unique symbol;
 
@@ -17,46 +18,47 @@ export type BrandedServerAction<
   TResponse extends any,
 > = Brand<ServerAction<TInput, TResponse>, 'ServerAction'>;
 
-export const createAction = <TInputSchema extends z.ZodTypeAny>(
-  inputSchema?: TInputSchema,
-) => {
-  // Second function accepts the action
-  return <TResponse extends any>(
-    action: (
-      input: z.input<TInputSchema>,
-    ) => void | TResponse | Promise<void | TResponse>,
-  ) => {
-    // The actual returned serven action
-    const serverAction: ServerAction<TInputSchema, TResponse> = async (
-      input,
-    ) => {
-      let parsedInput = input;
+export const createAction = <
+  TInputSchema extends z.ZodTypeAny,
+  TResponse extends any,
+>(opts: {
+  input?: TInputSchema;
+  action: (args: {
+    input: z.input<TInputSchema>;
+    ctx: { userId: string | null };
+  }) => void | TResponse | Promise<void> | Promise<TResponse>;
+}) => {
+  const serverAction: ServerAction<TInputSchema, TResponse> = async (input) => {
+    const { userId } = auth();
 
-      if (inputSchema) {
-        const result = inputSchema.safeParse(input);
-        if (!result.success) {
-          return {
-            data: null,
-            error: result.error.message,
-          };
-        }
-        parsedInput = result.data;
-      }
-
-      try {
-        const response = await action(input);
-        return {
-          data: response ?? null,
-          error: null,
-        };
-      } catch (error) {
+    let parsedInput = input;
+    if (opts.input) {
+      const result = opts.input.safeParse(input);
+      if (!result.success) {
         return {
           data: null,
-          error: getErrorMessage(error),
+          error: result.error.message,
         };
       }
-    };
+      parsedInput = result.data;
+    }
 
-    return serverAction as BrandedServerAction<TInputSchema, TResponse>;
+    try {
+      const response = await opts.action({
+        input: parsedInput,
+        ctx: { userId },
+      });
+      return {
+        data: response ?? null,
+        error: null,
+      };
+    } catch (error) {
+      return {
+        data: null,
+        error: getErrorMessage(error),
+      };
+    }
   };
+
+  return serverAction as BrandedServerAction<TInputSchema, TResponse>;
 };
