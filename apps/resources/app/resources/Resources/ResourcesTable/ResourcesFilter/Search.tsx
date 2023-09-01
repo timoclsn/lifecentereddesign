@@ -1,6 +1,6 @@
 'use client';
 
-import { Loader, Search as SearchIcon } from 'lucide-react';
+import { Loader2, Search as SearchIcon } from 'lucide-react';
 import { useDebouncedCallback } from 'use-debounce';
 import { useFilter } from '../../../../../hooks/useFilter';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -44,7 +44,7 @@ export const Search = () => {
         onChange={handleChange}
         className="text-text-primary w-full bg-transparent outline-none"
       />
-      <Loader
+      <Loader2
         className={`flex-none animate-spin ${
           isPending ? 'opacity-60' : 'opacity-0'
         }`}

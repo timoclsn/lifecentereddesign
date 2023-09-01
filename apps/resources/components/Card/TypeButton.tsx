@@ -1,7 +1,7 @@
 'use client';
 
 import { Tag } from 'design-system';
-import { Loader } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { useResourcesTable } from '../../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
@@ -43,7 +43,7 @@ export const TypeButton = ({ children, type }: Props) => {
       {tag(
         <>
           {children}
-          {isPending && <Loader className="animate-spin" />}
+          {isPending && <Loader2 className="animate-spin" />}
         </>,
       )}
     </button>

@@ -2,7 +2,7 @@
 
 import { useUser } from '@clerk/nextjs';
 import { Button, InfoBox } from 'design-system';
-import { AlertTriangle, CheckCircle2, Loader, Mail } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Loader2, Mail } from 'lucide-react';
 import { useEffect } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import {
@@ -126,7 +126,7 @@ export const SuggestionForm = () => {
 
       {/* Submit button */}
       <Button type="submit" size="large">
-        {isRunning ? <Loader className="animate-spin" /> : <Mail />}
+        {isRunning ? <Loader2 className="animate-spin" /> : <Mail />}
         Submit
       </Button>
 

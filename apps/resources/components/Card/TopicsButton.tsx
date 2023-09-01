@@ -1,6 +1,6 @@
 'use client';
 
-import { Filter, Loader } from 'lucide-react';
+import { Filter, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { useResourcesTable } from '../../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
@@ -43,7 +43,7 @@ export const TopicsButton = ({ children, topic }: Props) => {
     >
       {children}
       {!isPending && <Filter size={12} />}
-      {isPending && <Loader size={12} className="animate-spin" />}
+      {isPending && <Loader2 size={12} className="animate-spin" />}
     </button>
   );
 };

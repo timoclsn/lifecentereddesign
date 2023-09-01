@@ -2,7 +2,7 @@
 
 import { useAuth } from '@clerk/nextjs';
 import { Button, InfoBox } from 'design-system';
-import { AlertTriangle, CheckCircle2, Loader, XCircle } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Loader2, XCircle } from 'lucide-react';
 import { useAction } from '../../lib/actions/useAction';
 import { deleteAccount } from './actions';
 
@@ -27,7 +27,7 @@ export const DeleteAccountButton = () => {
   return (
     <>
       <Button color="danger" onClick={handleDeleteAccount} disabled={isRunning}>
-        {isRunning ? <Loader className="animate-spin" /> : <XCircle />}
+        {isRunning ? <Loader2 className="animate-spin" /> : <XCircle />}
         Delete account
       </Button>
 

@@ -2,7 +2,7 @@
 
 import * as Toggle from '@radix-ui/react-toggle';
 import { Tooltip } from 'design-system';
-import { Loader, MessageCircle } from 'lucide-react';
+import { Loader2, MessageCircle } from 'lucide-react';
 import { SolidMessageCircle } from '../../../../../components/Icons/SolidMessageCircle';
 import { useFilter } from '../../../../../hooks/useFilter';
 import { CommentedResources } from '../../../../../lib/resources';
@@ -41,7 +41,7 @@ export const CommentsFilter = ({ commentedResources }: Props) => {
             handleValueChange('comments', 'true');
           }}
         >
-          {isPending && <Loader size={18} className="animate-spin" />}
+          {isPending && <Loader2 className="animate-spin" />}
           {!isPending && filterByLikes && <SolidMessageCircle />}
           {!isPending && !filterByLikes && <MessageCircle />}
         </Toggle.Root>

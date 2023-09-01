@@ -2,7 +2,7 @@
 
 import { cva } from 'class-variance-authority';
 import { Button, InfoBox } from 'design-system';
-import { AlertTriangle, Loader, MessageCircle } from 'lucide-react';
+import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { useZodForm } from '../../hooks/useZodForm';
@@ -91,7 +91,7 @@ export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
       </div>
       {/* Submit button */}
       <Button type="submit" size="medium" disabled={isRunning}>
-        {isRunning ? <Loader className="animate-spin" /> : <MessageCircle />}
+        {isRunning ? <Loader2 className="animate-spin" /> : <MessageCircle />}
         Post
       </Button>
 

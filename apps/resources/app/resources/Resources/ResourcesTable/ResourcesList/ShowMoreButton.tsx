@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from 'design-system';
-import { ArrowDown, Check, Loader } from 'lucide-react';
+import { ArrowDown, Check, Loader2 } from 'lucide-react';
 import { useFilter } from '../../../../../hooks/useFilter';
 
 interface Props {
@@ -20,7 +20,7 @@ export const ShowMoreButton = ({ moreToShow }: Props) => {
       }}
       disabled={!moreToShow}
     >
-      {isPending && <Loader className="animate-spin" />}
+      {isPending && <Loader2 className="animate-spin" />}
       {!isPending && moreToShow && <ArrowDown />}
       {!isPending && !moreToShow && <Check />}
       {moreToShow ? 'Show more' : 'Showing all'}
