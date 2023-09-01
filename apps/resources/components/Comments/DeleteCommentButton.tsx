@@ -1,6 +1,6 @@
 'use client';
 
-import { Loader, Trash2 } from 'lucide-react';
+import { Loader2, Trash2 } from 'lucide-react';
 import { useAction } from '../../lib/actions/useAction';
 import { deleteComment } from './actions';
 import { ContentType } from '../../lib/resources';
@@ -43,7 +43,7 @@ export const DeleteCommentButton = ({
       onClick={handleDeleteAccount}
       disabled={isRunning}
     >
-      {isRunning && <Loader size={16} className="animate-spin" />}
+      {isRunning && <Loader2 size={16} className="animate-spin" />}
       {!isRunning && <Trash2 size={16} />}
       <span className="sr-only">Delete comment</span>
     </button>

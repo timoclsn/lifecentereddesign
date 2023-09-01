@@ -161,14 +161,12 @@ export const ResourcesList = ({
           </div>
         )}
       </div>
-      {(showShowMoreBtn || showDownloadButton) && (
-        <div className="mt-10 flex flex-col justify-center gap-4 sm:items-center">
-          {showShowMoreBtn && <ShowMoreButton />}
-          {showDownloadButton && (
-            <DownloadButton resources={processedResources} />
-          )}
-        </div>
-      )}
+      <div className="mt-10 flex flex-col justify-center gap-4 sm:items-center">
+        <ShowMoreButton moreToShow={showShowMoreBtn} />
+        {showDownloadButton && (
+          <DownloadButton resources={processedResources} />
+        )}
+      </div>
     </>
   );
 };

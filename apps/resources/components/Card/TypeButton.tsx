@@ -1,7 +1,7 @@
 'use client';
 
-import { Tag } from 'design-system';
-import { Loader } from 'lucide-react';
+import { Tag, Tooltip } from 'design-system';
+import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { useResourcesTable } from '../../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
@@ -14,11 +14,12 @@ interface Props {
 
 export const TypeButton = ({ children, type }: Props) => {
   const { handleValueChange, searchParams, isPending } = useFilter();
+  const searchParamsType = searchParams.get('type');
+  const isFiltered = searchParamsType === type;
   const { inContext } = useResourcesTable();
 
   const handleClick = () => {
-    const searchParamsType = searchParams.get('type');
-    if (searchParamsType === type) {
+    if (isFiltered) {
       handleValueChange('type', '');
       return;
     }
@@ -39,13 +40,20 @@ export const TypeButton = ({ children, type }: Props) => {
   }
 
   return (
-    <button onClick={handleClick} className="hover:opacity-80">
-      {tag(
-        <>
-          {children}
-          {isPending && <Loader className="animate-spin" />}
-        </>,
-      )}
-    </button>
+    <Tooltip
+      content={
+        !isFiltered ? `Filter by type: ${children}` : 'Clear type filter'
+      }
+      delayDuration={500}
+    >
+      <button onClick={handleClick} className="hover:opacity-80">
+        {tag(
+          <>
+            {children}
+            {isPending && <Loader2 className="animate-spin" />}
+          </>,
+        )}
+      </button>
+    </Tooltip>
   );
 };

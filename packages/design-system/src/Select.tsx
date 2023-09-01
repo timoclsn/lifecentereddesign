@@ -9,7 +9,7 @@ import {
   ArrowUp,
   Check,
   ChevronDown,
-  Loader,
+  Loader2,
   XCircle,
 } from 'lucide-react';
 import {
@@ -36,7 +36,7 @@ Select.FilterTrigger = forwardRef<
   }
 >(function SelectFilterTrigger(
   { className, disabled, label, isLoading, isResettable, onReset, ...props },
-  ref
+  ref,
 ) {
   const id = useId();
   return (
@@ -52,7 +52,7 @@ Select.FilterTrigger = forwardRef<
         disabled={disabled}
         className={cx(
           'border-ghost-main-dark-bg focus-visible:border-text-secondary flex w-full items-center justify-between rounded-full border-2 px-2 py-2 text-left text-lg font-bold leading-none outline-none disabled:opacity-50 sm:gap-1 sm:px-6 [&>span]:truncate [&>span]:whitespace-nowrap',
-          className
+          className,
         )}
         {...props}
         ref={ref}
@@ -63,7 +63,7 @@ Select.FilterTrigger = forwardRef<
         {/* Icon */}
         <div className="flex items-center justify-center">
           {isLoading && (
-            <Loader className="flex-none animate-spin opacity-60" />
+            <Loader2 className="flex-none animate-spin opacity-60" />
           )}
           {!isLoading && (
             <SelectPrimitive.Icon
@@ -107,7 +107,7 @@ Select.SortTrigger = forwardRef<
         id={id}
         className={cx(
           'flex h-full items-center gap-1 outline-none focus-visible:underline disabled:opacity-50 [&>span]:truncate [&>span]:whitespace-nowrap',
-          className
+          className,
         )}
         {...props}
         ref={ref}
@@ -115,7 +115,7 @@ Select.SortTrigger = forwardRef<
         <ArrowDownWideNarrow className="text-text-secondary" />
         <SelectPrimitive.Value />
         {isLoading ? (
-          <Loader size={20} className="flex-none animate-spin opacity-60" />
+          <Loader2 size={20} className="flex-none animate-spin opacity-60" />
         ) : (
           <SelectPrimitive.Icon className="text-text-secondary flex-none">
             <ChevronDown />
@@ -135,7 +135,7 @@ Select.Content = forwardRef<
       <SelectPrimitive.Content
         className={cx(
           'bg-primary-main-bg text-primary-contrast-text animate-in fade-in-75 zoom-in-90 z-20 rounded-2xl px-4 py-6 duration-100 ease-out',
-          className
+          className,
         )}
         {...props}
         ref={ref}
@@ -162,7 +162,7 @@ Select.Item = forwardRef<
     <SelectPrimitive.Item
       className={cx(
         'hover:bg-primary-contrast-text hover:text-primary-main-bg focus-visible:bg-primary-contrast-text focus-visible:text-primary-main-bg cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none',
-        className
+        className,
       )}
       {...props}
       ref={ref}

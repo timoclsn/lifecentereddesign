@@ -1,7 +1,7 @@
 'use client';
 
-import { Tag } from 'design-system';
-import { Loader } from 'lucide-react';
+import { Tag, Tooltip } from 'design-system';
+import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { useResourcesTable } from '../../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
@@ -14,11 +14,12 @@ interface Props {
 
 export const CategoryButton = ({ children, category }: Props) => {
   const { handleValueChange, searchParams, isPending } = useFilter();
+  const searchParamsCategory = searchParams.get('category');
+  const isFiltered = searchParamsCategory === category;
   const { inContext } = useResourcesTable();
 
   const handleClick = () => {
-    const searchParamsCategory = searchParams.get('category');
-    if (searchParamsCategory === category) {
+    if (isFiltered) {
       handleValueChange('category', '');
       return;
     }
@@ -39,13 +40,22 @@ export const CategoryButton = ({ children, category }: Props) => {
   }
 
   return (
-    <button onClick={handleClick} className="hover:opacity-80">
-      {tag(
-        <>
-          {children}
-          {isPending && <Loader className="animate-spin" />}
-        </>,
-      )}
-    </button>
+    <Tooltip
+      content={
+        !isFiltered
+          ? `Filter by category: ${children}`
+          : 'Clear category filter'
+      }
+      delayDuration={500}
+    >
+      <button onClick={handleClick} className="hover:opacity-80">
+        {tag(
+          <>
+            {children}
+            {isPending && <Loader2 className="animate-spin" />}
+          </>,
+        )}
+      </button>
+    </Tooltip>
   );
 };

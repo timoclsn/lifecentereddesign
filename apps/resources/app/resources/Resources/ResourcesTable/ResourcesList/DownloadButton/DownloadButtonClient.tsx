@@ -11,6 +11,7 @@ export const DownloadButtonClient = ({ csv }: Props) => {
   return (
     <Button
       variant="outline"
+      size="large"
       onClick={() => {
         downloadCsv(csv, 'lifecentereddesign-net-resources.csv');
         splitbee.track('Download Resources');

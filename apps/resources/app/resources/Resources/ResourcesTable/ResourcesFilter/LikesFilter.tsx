@@ -2,7 +2,7 @@
 
 import * as Toggle from '@radix-ui/react-toggle';
 import { Tooltip } from 'design-system';
-import { Heart, Loader } from 'lucide-react';
+import { Heart, Loader2 } from 'lucide-react';
 import { SolidHeart } from '../../../../../components/Icons/SolidHeart';
 import { useFilter } from '../../../../../hooks/useFilter';
 import { LikedResources } from '../../../../../lib/resources';
@@ -41,7 +41,7 @@ export const LikesFilter = ({ likedResources }: Props) => {
             handleValueChange('likes', 'true');
           }}
         >
-          {isPending && <Loader size={18} className="animate-spin" />}
+          {isPending && <Loader2 className="animate-spin" />}
           {!isPending && filterByLikes && <SolidHeart />}
           {!isPending && !filterByLikes && <Heart />}
         </Toggle.Root>

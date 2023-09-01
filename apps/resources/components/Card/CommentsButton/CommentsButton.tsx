@@ -1,3 +1,4 @@
+import { Tooltip } from 'design-system';
 import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 import { getResourceCommentsCountCached } from '../../../lib/cache';
@@ -28,7 +29,9 @@ export const CommentsButton = ({ resourceId, resourceType }: Props) => {
               </div>
 
               <div>
-                <MessageCircle className="ease transition-transform group-hover:scale-110 group-active:scale-90" />
+                <Tooltip content="Comment resource" delayDuration={500}>
+                  <MessageCircle className="ease transition-transform group-hover:scale-110 group-active:scale-90" />
+                </Tooltip>
               </div>
             </div>
           </Link>
