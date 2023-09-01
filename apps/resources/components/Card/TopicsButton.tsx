@@ -1,6 +1,7 @@
 'use client';
 
-import { Filter, Loader2 } from 'lucide-react';
+import { Tooltip } from 'design-system';
+import { Filter, Loader2, XCircle } from 'lucide-react';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { useResourcesTable } from '../../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
@@ -13,11 +14,12 @@ interface Props {
 
 export const TopicsButton = ({ children, topic }: Props) => {
   const { handleValueChange, searchParams, isPending } = useFilter();
+  const searchParamsTopic = searchParams.get('topic');
+  const isFiltered = searchParamsTopic === topic;
   const { inContext } = useResourcesTable();
 
   const handleClick = () => {
-    const searchParamsType = searchParams.get('topic');
-    if (searchParamsType === topic) {
+    if (isFiltered) {
       handleValueChange('topic', '');
       return;
     }
@@ -37,13 +39,21 @@ export const TopicsButton = ({ children, topic }: Props) => {
   }
 
   return (
-    <button
-      onClick={handleClick}
-      className="inline-flex items-center justify-center gap-0.5 hover:opacity-80"
+    <Tooltip
+      content={
+        !isFiltered ? `Filter by topic: ${children}` : 'Clear topic filter'
+      }
+      delayDuration={500}
     >
-      {children}
-      {!isPending && <Filter size={12} />}
-      {isPending && <Loader2 size={12} className="animate-spin" />}
-    </button>
+      <button
+        onClick={handleClick}
+        className="inline-flex items-center justify-center gap-0.5 hover:opacity-80"
+      >
+        {children}
+        {isPending && <Loader2 size={12} className="animate-spin" />}
+        {!isPending && !isFiltered && <Filter size={12} />}
+        {!isPending && isFiltered && <XCircle size={12} />}
+      </button>
+    </Tooltip>
   );
 };
