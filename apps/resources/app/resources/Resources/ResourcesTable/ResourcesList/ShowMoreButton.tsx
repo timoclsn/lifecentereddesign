@@ -1,10 +1,14 @@
 'use client';
 
 import { Button } from 'design-system';
-import { ArrowDown, Loader } from 'lucide-react';
+import { ArrowDown, Check, Loader } from 'lucide-react';
 import { useFilter } from '../../../../../hooks/useFilter';
 
-export const ShowMoreButton = () => {
+interface Props {
+  moreToShow: boolean;
+}
+
+export const ShowMoreButton = ({ moreToShow }: Props) => {
   const { searchParams, handleValueChange, isPending } = useFilter();
   const limit = parseInt(searchParams.get('limit') ?? '') || 10;
   return (
@@ -14,9 +18,12 @@ export const ShowMoreButton = () => {
         const newLimit = limit + 10;
         handleValueChange('limit', newLimit.toString());
       }}
+      disabled={!moreToShow}
     >
-      {isPending ? <Loader className="animate-spin" /> : <ArrowDown />}
-      Show More
+      {isPending && <Loader className="animate-spin" />}
+      {!isPending && moreToShow && <ArrowDown />}
+      {!isPending && !moreToShow && <Check />}
+      {moreToShow ? 'Show more' : 'Showing all'}
     </Button>
   );
 };
