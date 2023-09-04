@@ -53,10 +53,14 @@ const createReducer =
     }
   };
 
-export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
-  inputAction: BrandedServerAction<TInput, TResponse>,
+export const useAction = <
+  TInputSchema extends z.ZodTypeAny,
+  TInput extends TInputSchema | undefined,
+  TResponse extends any,
+>(
+  inputAction: BrandedServerAction<TInputSchema, TInput, TResponse>,
   options: {
-    onRunAction?: (input: z.input<TInput>) => void;
+    onRunAction?: (input: z.input<TInputSchema>) => void;
     onSuccess?: (data: TResponse | null) => void;
     onError?: (error: string) => void;
     onSettled?: () => void;
@@ -68,7 +72,9 @@ export const useAction = <TInput extends z.ZodTypeAny, TResponse extends any>(
   const [isRunning, startTransition] = useTransition();
 
   const runAction = useCallback(
-    async (input: z.input<TInput>) => {
+    async (
+      input: z.ZodTypeAny extends TInput ? void : z.input<TInputSchema>,
+    ) => {
       startTransition(async () => {
         dispatch({
           type: 'RUN_ACTION',
