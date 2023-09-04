@@ -15,6 +15,7 @@ type ServerAction<
 
 declare const brand: unique symbol;
 type Brand<T, TBrand extends string> = T & { [brand]: TBrand };
+
 export type BrandedServerAction<
   TInputSchema extends z.ZodTypeAny,
   TInput extends TInputSchema | undefined,
