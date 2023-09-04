@@ -2,13 +2,16 @@ import { auth } from '@clerk/nextjs';
 import { z } from 'zod';
 import { getErrorMessage } from '../utils';
 
+export type InferInputType<
+  TInputSchema extends z.ZodTypeAny,
+  TInput extends TInputSchema | undefined,
+> = z.ZodTypeAny extends TInput ? void : z.input<TInputSchema>;
+
 type ServerAction<
   TInputSchema extends z.ZodTypeAny,
   TInput extends TInputSchema | undefined,
   TResponse,
-> = (
-  input: z.ZodTypeAny extends TInput ? void : z.input<TInputSchema>,
-) => Promise<{
+> = (input: InferInputType<TInputSchema, TInput>) => Promise<{
   data: TResponse | null;
   error: string | null;
 }>;
@@ -22,17 +25,24 @@ export type BrandedServerAction<
   TResponse extends any,
 > = Brand<ServerAction<TInputSchema, TInput, TResponse>, 'ServerAction'>;
 
-export const createAction = <
+interface CreateActionOptions<
   TInputSchema extends z.ZodTypeAny,
-  TInput extends TInputSchema | undefined,
   TResponse extends any,
->(opts: {
+> {
   input?: TInputSchema;
   action: (args: {
     input: z.input<TInputSchema>;
     ctx: { userId: string | null };
   }) => void | TResponse | Promise<void> | Promise<TResponse>;
-}) => {
+}
+
+export const createAction = <
+  TInputSchema extends z.ZodTypeAny,
+  TInput extends TInputSchema | undefined,
+  TResponse extends any,
+>(
+  opts: CreateActionOptions<TInputSchema, TResponse>,
+) => {
   const serverAction: ServerAction<TInputSchema, TInput, TResponse> = async (
     input,
   ) => {

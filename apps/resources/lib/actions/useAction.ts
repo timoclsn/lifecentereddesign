@@ -1,7 +1,7 @@
 import { useCallback, useReducer, useTransition } from 'react';
 import { z } from 'zod';
 import { getErrorMessage } from '../utils';
-import { BrandedServerAction } from './createAction';
+import { BrandedServerAction, InferInputType } from './createAction';
 
 interface State<TResponse extends any> {
   isIdle: boolean;
@@ -60,7 +60,7 @@ export const useAction = <
 >(
   inputAction: BrandedServerAction<TInputSchema, TInput, TResponse>,
   options: {
-    onRunAction?: (input: z.input<TInputSchema>) => void;
+    onRunAction?: (input: InferInputType<TInputSchema, TInput>) => void;
     onSuccess?: (data: TResponse | null) => void;
     onError?: (error: string) => void;
     onSettled?: () => void;
@@ -72,9 +72,7 @@ export const useAction = <
   const [isRunning, startTransition] = useTransition();
 
   const runAction = useCallback(
-    async (
-      input: z.ZodTypeAny extends TInput ? void : z.input<TInputSchema>,
-    ) => {
+    async (input: InferInputType<TInputSchema, TInput>) => {
       startTransition(async () => {
         dispatch({
           type: 'RUN_ACTION',
