@@ -1,25 +1,30 @@
+import { auth } from '@clerk/nextjs';
 import { z } from 'zod';
 import { getErrorMessage } from '../utils';
-import { auth } from '@clerk/nextjs';
 
-declare const brand: unique symbol;
-
-type Brand<T, TBrand extends string> = T & { [brand]: TBrand };
-
-type ServerAction<TInput extends z.ZodTypeAny, TResponse extends any> = (
-  input: z.input<TInput>,
+type ServerAction<
+  TInputSchema extends z.ZodTypeAny,
+  TInput extends TInputSchema | undefined,
+  TResponse,
+> = (
+  input: z.ZodTypeAny extends TInput ? void : z.input<TInputSchema>,
 ) => Promise<{
   data: TResponse | null;
   error: string | null;
 }>;
 
+declare const brand: unique symbol;
+type Brand<T, TBrand extends string> = T & { [brand]: TBrand };
+
 export type BrandedServerAction<
-  TInput extends z.ZodTypeAny,
+  TInputSchema extends z.ZodTypeAny,
+  TInput extends TInputSchema | undefined,
   TResponse extends any,
-> = Brand<ServerAction<TInput, TResponse>, 'ServerAction'>;
+> = Brand<ServerAction<TInputSchema, TInput, TResponse>, 'ServerAction'>;
 
 export const createAction = <
   TInputSchema extends z.ZodTypeAny,
+  TInput extends TInputSchema | undefined,
   TResponse extends any,
 >(opts: {
   input?: TInputSchema;
@@ -28,7 +33,9 @@ export const createAction = <
     ctx: { userId: string | null };
   }) => void | TResponse | Promise<void> | Promise<TResponse>;
 }) => {
-  const serverAction: ServerAction<TInputSchema, TResponse> = async (input) => {
+  const serverAction: ServerAction<TInputSchema, TInput, TResponse> = async (
+    input,
+  ) => {
     let parsedInput = input;
     if (opts.input) {
       const result = opts.input.safeParse(input);
@@ -59,5 +66,5 @@ export const createAction = <
     }
   };
 
-  return serverAction as BrandedServerAction<TInputSchema, TResponse>;
+  return serverAction as BrandedServerAction<TInputSchema, TInput, TResponse>;
 };
