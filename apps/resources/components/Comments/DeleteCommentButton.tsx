@@ -35,8 +35,10 @@ export const DeleteCommentButton = ({
   return (
     <Alert
       title="Delete comment"
+      description="Are you sure you want to delete this comment? This action cannot be undone."
       actionText="Delete"
       onAction={handleDeleteAccount}
+      destructive
     >
       <button
         className="text-text-secondary ease flex items-center justify-center transition-transform hover:scale-110 active:scale-90 disabled:opacity-80"

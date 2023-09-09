@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@clerk/nextjs';
-import { Button, InfoBox } from 'design-system';
+import { Alert, Button, InfoBox } from 'design-system';
 import { AlertTriangle, CheckCircle2, Loader2, XCircle } from 'lucide-react';
 import { useAction } from '../../lib/actions/useAction';
 import { deleteAccount } from './actions';
@@ -16,21 +16,23 @@ export const DeleteAccountButton = () => {
   const { signOut } = useAuth();
 
   const handleDeleteAccount = () => {
-    if (
-      window.confirm(
-        "Do you really want to delete your account? This action can't be undone.",
-      )
-    ) {
-      runAction();
-    }
+    runAction();
   };
 
   return (
     <>
-      <Button color="danger" onClick={handleDeleteAccount} disabled={isRunning}>
-        {isRunning ? <Loader2 className="animate-spin" /> : <XCircle />}
-        Delete account
-      </Button>
+      <Alert
+        title="Delete account"
+        description="Are you sure you want to delete your account? This action can't be undone."
+        actionText="Delete"
+        onAction={handleDeleteAccount}
+        destructive
+      >
+        <Button color="danger" disabled={isRunning}>
+          {isRunning ? <Loader2 className="animate-spin" /> : <XCircle />}
+          Delete account
+        </Button>
+      </Alert>
 
       {isSuccess && (
         <InfoBox
