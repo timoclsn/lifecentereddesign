@@ -38,7 +38,7 @@ export const Alert = ({
               </Heading>
             </AlertDialog.Title>
             <AlertDialog.Description asChild>
-              <Text>{description}</Text>
+              <Text as="p">{description}</Text>
             </AlertDialog.Description>
           </div>
           <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
