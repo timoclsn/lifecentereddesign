@@ -2,7 +2,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { ElementType, ReactNode } from 'react';
 
 const styles = cva(
-  'inline-flex items-center justify-center gap-2 leading-none whitespace-nowrap',
+  'inline-flex items-center justify-center gap-2 leading-none whitespace-nowrap focus-visible:outline-2 outline-offset-2',
   {
     variants: {
       variant: {
@@ -30,36 +30,37 @@ const styles = cva(
         variant: 'contained',
         color: 'primary',
         class:
-          'text-primary-contrast-text bg-primary-main-bg hover:bg-primary-hover-bg disabled:bg-primary-disabled-bg',
+          'text-primary-contrast-text bg-primary-main-bg hover:bg-primary-hover-bg disabled:bg-primary-disabled-bg outline-primary-main-bg',
       },
       {
         variant: 'outline',
         color: 'primary',
         class:
-          'text-primary-main-text ring-2 ring-primary-main-bg ring-inset hover:opacity-70',
+          'text-primary-main-text ring-2 ring-primary-main-bg ring-inset hover:opacity-70 outline-primary-main-bg',
       },
       {
         variant: 'text',
         color: 'primary',
         class:
-          'text-primary-main-text hover:text-primary-hover-text hover:bg-primary-ghost-bg disabled:text-primary-disabled-text disabled:bg-transparent',
+          'text-primary-main-text hover:text-primary-hover-text hover:bg-primary-ghost-bg disabled:text-primary-disabled-text disabled:bg-transparent outline-primary-main-bg',
       },
       {
         variant: 'contained',
         color: 'danger',
         class:
-          'text-primary-contrast-text bg-red-700 hover:bg-red-600 disabled:opacity-50',
+          'text-primary-contrast-text bg-red-700 hover:bg-red-600 disabled:opacity-50 outline-red-700',
       },
       {
         variant: 'outline',
         color: 'danger',
         class:
-          'text-primary-main-text ring-2 ring-red-700 ring-inset hover:opacity-70',
+          'text-primary-main-text ring-2 ring-red-700 ring-inset hover:opacity-70 outline-red-700',
       },
       {
         variant: 'text',
         color: 'danger',
-        class: 'text-red-700 hover:text-red-600 disabled:opacity-50',
+        class:
+          'text-red-700 hover:text-red-600 disabled:opacity-50 outline-red-700',
       },
     ],
   },
