@@ -5,11 +5,11 @@ import { formatType, getHostname } from '../../lib/utils';
 export const runtime = 'edge';
 
 const sourceSerif4Promise = fetch(
-  new URL('./source-serif-4-latin-700-normal.ttf', import.meta.url)
+  new URL('./source-serif-4-latin-700-normal.ttf', import.meta.url),
 ).then((res) => res.arrayBuffer());
 
 const dmSansPromise = fetch(
-  new URL('./dm-sans-latin-700-normal.ttf', import.meta.url)
+  new URL('./dm-sans-latin-700-normal.ttf', import.meta.url),
 ).then((res) => res.arrayBuffer());
 
 export const GET = async (request: Request) => {
@@ -189,7 +189,7 @@ export const GET = async (request: Request) => {
           style: 'normal',
         },
       ],
-    }
+    },
   );
 };
 

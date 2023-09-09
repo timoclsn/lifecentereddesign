@@ -5,7 +5,7 @@ export const createGenerateMetadata = (
     params,
   }: {
     params: { slug: string };
-  }) => Promise<Metadata>
+  }) => Promise<Metadata>,
 ) => generateMetadata;
 
 export const title = 'LifeCenteredDesign.Net';

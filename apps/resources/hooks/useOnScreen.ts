@@ -2,7 +2,7 @@ import { RefObject, useEffect, useState } from 'react';
 
 export function useOnScreen<T extends Element>(
   ref: RefObject<T>,
-  rootMargin = '0px'
+  rootMargin = '0px',
 ) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -15,7 +15,7 @@ export function useOnScreen<T extends Element>(
       },
       {
         rootMargin,
-      }
+      },
     );
 
     currentElement && observer.observe(currentElement);

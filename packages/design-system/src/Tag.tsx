@@ -11,7 +11,7 @@ const styles = cva(
         outline: 'border-2 border-ghost-main-dark-bg',
       },
     },
-  }
+  },
 );
 
 interface Props extends VariantProps<typeof styles> {

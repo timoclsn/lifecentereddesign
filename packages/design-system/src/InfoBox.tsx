@@ -10,7 +10,7 @@ const styles = cva(
         error: 'bg-red-700',
       },
     },
-  }
+  },
 );
 
 interface Props extends VariantProps<typeof styles> {
@@ -23,7 +23,7 @@ export const InfoBox = ({ children, icon, className, variant }: Props) => {
   return (
     <div className={styles({ variant, className })}>
       {icon && (
-        <div className="flex-none flex justify-center mt-0.5">{icon}</div>
+        <div className="mt-0.5 flex flex-none justify-center">{icon}</div>
       )}
       {children}
     </div>

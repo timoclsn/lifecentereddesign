@@ -20,7 +20,7 @@ const convertToCsv = (
   resources: Array<{
     title: string;
     link: string;
-  }>
+  }>,
 ) => {
   const headers = ['Title', 'Link'];
   const rows = resources.map((resource) => [resource.title, resource.link]);

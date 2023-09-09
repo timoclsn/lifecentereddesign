@@ -13,7 +13,7 @@ export const inputStyles = cva(
         false: 'focus-visible:ring-2 focus-visible:ring-ghost-contrast-text',
       },
     },
-  }
+  },
 );
 
 export const checkboxStyles = cva(
@@ -25,7 +25,7 @@ export const checkboxStyles = cva(
         false: 'focus-visible:ring-2 focus-visible:ring-ghost-contrast-text',
       },
     },
-  }
+  },
 );
 
 export const errorStyles =
