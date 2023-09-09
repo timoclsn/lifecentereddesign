@@ -14,6 +14,8 @@ interface Props {
   actionText?: string;
   onAction?: () => void;
   destructive?: boolean;
+  open?: boolean;
+  onOpenChange?: (value: boolean) => void;
 }
 
 export const Alert = ({
@@ -24,9 +26,11 @@ export const Alert = ({
   actionText = 'Ok',
   onAction,
   destructive,
+  open,
+  onOpenChange,
 }: Props) => {
   return (
-    <AlertDialog.Root>
+    <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="bg-stone data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 opacity-60" />
