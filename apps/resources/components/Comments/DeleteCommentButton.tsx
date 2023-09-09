@@ -4,6 +4,7 @@ import { Loader2, Trash2 } from 'lucide-react';
 import { useAction } from '../../lib/actions/useAction';
 import { deleteComment } from './actions';
 import { ContentType } from '../../lib/resources';
+import { Alert } from 'design-system';
 
 interface Props {
   resourceId: number;
@@ -24,28 +25,29 @@ export const DeleteCommentButton = ({
     },
   });
   const handleDeleteAccount = () => {
-    if (
-      window.confirm(
-        "Do you really want to delete your comment? This action can't be undone.",
-      )
-    ) {
-      runAction({
-        resourceId,
-        resourceType,
-        commentId,
-        commentUserId,
-      });
-    }
+    runAction({
+      resourceId,
+      resourceType,
+      commentId,
+      commentUserId,
+    });
   };
   return (
-    <button
-      className="text-text-secondary ease flex items-center justify-center transition-transform hover:scale-110 active:scale-90 disabled:opacity-80"
-      onClick={handleDeleteAccount}
-      disabled={isRunning}
+    <Alert
+      title="Delete comment"
+      description="Are you sure you want to delete this comment? This action cannot be undone."
+      actionText="Delete"
+      onAction={handleDeleteAccount}
+      destructive
     >
-      {isRunning && <Loader2 size={16} className="animate-spin" />}
-      {!isRunning && <Trash2 size={16} />}
-      <span className="sr-only">Delete comment</span>
-    </button>
+      <button
+        className="text-text-secondary ease flex items-center justify-center transition-transform hover:scale-110 active:scale-90 disabled:opacity-80"
+        disabled={isRunning}
+      >
+        {isRunning && <Loader2 size={16} className="animate-spin" />}
+        {!isRunning && <Trash2 size={16} />}
+        <span className="sr-only">Delete comment</span>
+      </button>
+    </Alert>
   );
 };
