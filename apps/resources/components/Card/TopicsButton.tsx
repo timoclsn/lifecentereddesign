@@ -30,7 +30,7 @@ export const TopicsButton = ({ children, topic }: Props) => {
     return (
       <Link
         href={`/resources?topic=${topic}#resources`}
-        className="inline-flex items-center justify-center gap-0.5 hover:opacity-80 "
+        className="relative inline-flex items-center justify-center gap-0.5 hover:opacity-80"
       >
         {children}
         <Filter size={12} />
@@ -47,7 +47,7 @@ export const TopicsButton = ({ children, topic }: Props) => {
     >
       <button
         onClick={handleClick}
-        className="inline-flex items-center justify-center gap-0.5 hover:opacity-80"
+        className="relative inline-flex items-center justify-center gap-0.5 hover:opacity-80"
       >
         {children}
         {isPending && <Loader2 size={12} className="animate-spin" />}

@@ -22,7 +22,7 @@ export const ResourceLink = ({
       href={href}
       target="_blank"
       rel="noopener"
-      className="hover:opacity-80"
+      className="relative hover:opacity-80"
       onClick={() => {
         splitbee.track('Open resource', {
           type: resourceType,

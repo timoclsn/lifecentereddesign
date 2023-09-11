@@ -25,7 +25,7 @@ export const CopyButton = ({ link }: Props) => {
   return (
     <Tooltip content={tooltip} delayDuration={500}>
       <button
-        className="flex items-stretch hover:opacity-80"
+        className="relative flex items-stretch hover:opacity-80"
         onClick={handleClick}
       >
         <Tag variant="dark">
