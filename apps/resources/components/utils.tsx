@@ -117,7 +117,7 @@ export const thoughtleadersList = (
             href={thoughtleader.link ?? ''}
             target="_blank"
             rel="noopener"
-            className="inline-flex items-center justify-center gap-0.5 hover:opacity-80"
+            className="relative inline-flex items-center justify-center gap-0.5 hover:opacity-80"
           >
             {thoughtleader.name}
             <ExternalLink size={12} />

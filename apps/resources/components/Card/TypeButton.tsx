@@ -32,7 +32,7 @@ export const TypeButton = ({ children, type }: Props) => {
     return (
       <Link
         href={`/resources?type=${type}#resources`}
-        className="hover:opacity-80"
+        className="relative hover:opacity-80"
       >
         {tag(children)}
       </Link>
@@ -46,7 +46,7 @@ export const TypeButton = ({ children, type }: Props) => {
       }
       delayDuration={500}
     >
-      <button onClick={handleClick} className="hover:opacity-80">
+      <button onClick={handleClick} className="relative hover:opacity-80">
         {tag(
           <>
             {children}

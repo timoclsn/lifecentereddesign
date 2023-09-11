@@ -102,7 +102,7 @@ export const LikesButtonClient = ({
     <button
       onClick={handleClick}
       disabled={isRunning}
-      className="ease group flex items-center justify-center gap-2 disabled:opacity-80"
+      className="ease group relative flex items-center justify-center gap-2 disabled:opacity-80"
     >
       <div className="animate-in slide-in-from-right-full fade-in transition-transform duration-100 ease-in">
         {optimisticCount}
