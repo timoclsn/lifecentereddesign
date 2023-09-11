@@ -123,7 +123,7 @@ export const Card = ({
             <Heading
               level="3"
               title={title}
-              className="group-hover/card:pointer-events-none group-hover/card:cursor-pointer group-hover/card:opacity-80"
+              className="group-hover/card:pointer-events-none group-hover/card:cursor-pointer group-hover/card:underline"
             >
               {title}
             </Heading>
