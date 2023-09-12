@@ -5,7 +5,7 @@ import {
   Text,
   getRandomCardVariant,
 } from 'design-system';
-import { AlertTriangle, ArrowRight, SearchX } from 'lucide-react';
+import { AlertTriangle, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getResourceCached, getResourcesCached } from '../../lib/cache';
@@ -47,29 +47,17 @@ export const RelatedResources = ({ resourceId, resourceType }: Props) => {
 
               return (
                 <>
-                  {resourcesToDisplay.length > 0 ? (
-                    resourcesToDisplay.map((resource) => {
-                      const component = getCardComponent(resource);
-                      return (
-                        <li
-                          key={`${resource.type}-${resource.id}`}
-                          className="relative w-[330px] flex-none snap-center sm:w-[600px]"
-                        >
-                          {component}
-                        </li>
-                      );
-                    })
-                  ) : (
-                    <li className="h-[492px] w-[330px] flex-none sm:w-[600px]">
-                      <Card
-                        variant="stone"
-                        className="flex h-full items-center justify-center gap-2 text-xl"
+                  {resourcesToDisplay.map((resource) => {
+                    const component = getCardComponent(resource);
+                    return (
+                      <li
+                        key={`${resource.type}-${resource.id}`}
+                        className="relative w-[330px] flex-none snap-center sm:w-[600px]"
                       >
-                        <SearchX />
-                        No related resources found.
-                      </Card>
-                    </li>
-                  )}
+                        {component}
+                      </li>
+                    );
+                  })}
                 </>
               );
             }}
@@ -209,27 +197,41 @@ const getRelatedResources = (resource: Resource, resources: Resources) => {
     ];
   }
 
-  return (
-    relatedResources
-      .filter(
-        // Remove duplicates
-        (relatedResource, index, self) =>
-          index ===
-          self.findIndex(
-            (selfResource) =>
-              selfResource.id === relatedResource.id &&
-              selfResource.type === relatedResource.type,
-          ),
-      )
-      .filter(
-        // Remove current resource
-        (relatedResource) =>
-          relatedResource.id !== resource.id &&
-          relatedResource.type !== resource.type,
-      )
-      // Only show 10
-      .slice(0, 10)
+  // Clean up
+  relatedResources = removeDuplicateResources(relatedResources);
+  relatedResources = removeCurrentResource(resource, relatedResources);
+
+  // Fallback
+  if (relatedResources.length === 0) {
+    relatedResources = sortRelatedRsources(getRandomResources(resources));
+    relatedResources = removeCurrentResource(resource, relatedResources);
+  }
+
+  return relatedResources.slice(0, 10);
+};
+
+const removeDuplicateResources = (resources: Resources) => {
+  return resources.filter(
+    (filteredResource, index, self) =>
+      index ===
+      self.findIndex(
+        (selfResource) =>
+          selfResource.id === filteredResource.id &&
+          selfResource.type === filteredResource.type,
+      ),
   );
+};
+
+const removeCurrentResource = (resource: Resource, resources: Resources) => {
+  return resources.filter(
+    (filteredResource) =>
+      filteredResource.id !== resource.id &&
+      filteredResource.type !== resource.type,
+  );
+};
+
+const getRandomResources = (resources: Resources) => {
+  return resources.sort(() => Math.random() - 0.5);
 };
 
 // Sort by likes, then comments, and then date
