@@ -1,4 +1,4 @@
-import { BookOpen, Link, Tag } from 'lucide-react';
+import { BookOpen, Tag } from 'lucide-react';
 import { Newsletter } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -47,7 +47,6 @@ export const NewsletterCard = ({ newsletter }: Props) => {
         ...(newsletter.link
           ? [
               {
-                icon: Link,
                 text: getHostname(newsletter.link),
                 url: newsletter.link,
               },

@@ -2,7 +2,6 @@ import {
   Book as BookIcon,
   BookOpen,
   CalendarDays,
-  Link,
   QrCode,
   Tag,
 } from 'lucide-react';
@@ -70,7 +69,6 @@ export const BookCard = ({ book }: Props) => {
         ...(book.link
           ? [
               {
-                icon: Link,
                 text: getHostname(book.link),
                 url: book.link,
               },

@@ -6,6 +6,7 @@ import {
   Text,
   Tooltip,
 } from 'design-system';
+import { isExternalUrl } from 'lib/utils';
 import { ExternalLink, LucideIcon, StickyNote, Users2 } from 'lucide-react';
 import { ReactNode } from 'react';
 import { ContentType } from '../../lib/resources';
@@ -15,9 +16,9 @@ import { CopyButton } from './CopyButton';
 import { DetailsLink } from './DetailsLink';
 import { HoverProvider } from './HoverProvider';
 import { LikesButton } from './LikesButton/LikesButton';
+import { ResourceLink } from './ResourceLink';
 import { ShareButton } from './ShareButton';
 import { TypeButton } from './TypeButton';
-import { ResourceLink } from './ResourceLink';
 
 interface Props {
   resourceId: number;
@@ -32,7 +33,7 @@ interface Props {
   }>;
   category?: string;
   tags?: Array<{
-    icon: LucideIcon;
+    icon?: LucideIcon;
     text: string;
     url: string;
   }>;
@@ -171,9 +172,14 @@ export const Card = ({
                 >
                   <Tag variant="dark">
                     <div className="flex items-center gap-1">
-                      <tag.icon size="18" />
+                      {tag.icon && <tag.icon size="18" />}
                       <span>{tag.text}</span>
-                      <ExternalLink size={14} className="text-text-secondary" />
+                      {isExternalUrl(tag.url) && (
+                        <ExternalLink
+                          size={16}
+                          className="text-text-secondary"
+                        />
+                      )}
                     </div>
                   </Tag>
                 </ResourceLink>

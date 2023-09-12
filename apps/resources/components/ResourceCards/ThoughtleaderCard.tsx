@@ -1,4 +1,4 @@
-import { Briefcase, Link, Tag } from 'lucide-react';
+import { Briefcase, Tag } from 'lucide-react';
 import { Thoughtleader } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -39,7 +39,6 @@ export const ThoughtleaderCard = ({ thoughtleader }: Props) => {
         ...(thoughtleader.link
           ? [
               {
-                icon: Link,
                 text: getHostname(thoughtleader.link),
                 url: thoughtleader.link,
               },

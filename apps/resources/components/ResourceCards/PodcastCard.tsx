@@ -1,4 +1,4 @@
-import { Link, Smile, Tag } from 'lucide-react';
+import { Smile, Tag } from 'lucide-react';
 import { Podcast } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -47,7 +47,6 @@ export const PodcastCard = ({ podcast }: Props) => {
         ...(podcast.link
           ? [
               {
-                icon: Link,
                 text: getHostname(podcast.link),
                 url: podcast.link,
               },

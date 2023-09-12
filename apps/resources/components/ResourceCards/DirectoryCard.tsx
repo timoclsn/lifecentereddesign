@@ -1,4 +1,4 @@
-import { Link, Tag } from 'lucide-react';
+import { Tag } from 'lucide-react';
 import { Directory } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -31,7 +31,6 @@ export const DirectoryCard = ({ directory }: Props) => {
         ...(directory.link
           ? [
               {
-                icon: Link,
                 text: getHostname(directory.link),
                 url: directory.link,
               },

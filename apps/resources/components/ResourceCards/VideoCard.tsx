@@ -1,4 +1,4 @@
-import { CalendarDays, Clock3, Link, Tag, VideoIcon } from 'lucide-react';
+import { CalendarDays, Clock3, Tag, VideoIcon } from 'lucide-react';
 import { Video } from '../../lib/resources';
 import { formateDate, getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -63,7 +63,6 @@ export const VideoCard = ({ video }: Props) => {
         ...(video.link
           ? [
               {
-                icon: Link,
                 text: getHostname(video.link),
                 url: video.link,
               },
