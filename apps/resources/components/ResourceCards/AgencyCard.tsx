@@ -1,4 +1,4 @@
-import { Link, Tag } from 'lucide-react';
+import { Tag } from 'lucide-react';
 import { Agency } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -31,7 +31,6 @@ export const AgencyCard = ({ agency }: Props) => {
         ...(agency.link
           ? [
               {
-                icon: Link,
                 text: getHostname(agency.link),
                 url: agency.link,
               },

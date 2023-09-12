@@ -52,3 +52,7 @@ export const parseResourceSlug = (slug: string) => {
     resourceType: resourceType as ContentType,
   };
 };
+
+export const isExternalUrl = (url: string) => {
+  return url.startsWith('http');
+};

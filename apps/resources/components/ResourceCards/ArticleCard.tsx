@@ -1,4 +1,4 @@
-import { BookOpen, CalendarDays, Clock3, Link, Tag } from 'lucide-react';
+import { BookOpen, CalendarDays, Clock3, Tag } from 'lucide-react';
 import { Article } from '../../lib/resources';
 import { formateDate, getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -71,7 +71,6 @@ export const ArticleCard = ({ article }: Props) => {
         ...(article.link
           ? [
               {
-                icon: Link,
                 text: getHostname(article.link),
                 url: article.link,
               },

@@ -1,4 +1,4 @@
-import { AtSign, Link, Tag } from 'lucide-react';
+import { AtSign, Tag } from 'lucide-react';
 import { SocialMediaProfile } from '../../lib/resources';
 import { getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -39,7 +39,6 @@ export const SocialMediaProfileCard = ({ socielaMediaProfile }: Props) => {
         ...(socielaMediaProfile.link
           ? [
               {
-                icon: Link,
                 text: getHostname(socielaMediaProfile.link),
                 url: socielaMediaProfile.link,
               },

@@ -1,4 +1,4 @@
-import { BookOpen, CalendarDays, Link, Tag } from 'lucide-react';
+import { BookOpen, CalendarDays, Tag } from 'lucide-react';
 import { Report } from '../../lib/resources';
 import { formateDate, getHostname } from '../../lib/utils';
 import { Card } from '../Card/Card';
@@ -63,7 +63,6 @@ export const ReportCard = ({ report }: Props) => {
         ...(report.link
           ? [
               {
-                icon: Link,
                 text: getHostname(report.link),
                 url: report.link,
               },
