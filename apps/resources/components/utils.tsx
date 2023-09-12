@@ -111,7 +111,7 @@ export const thoughtleadersList = (
         <Link
           key={index}
           href={`/resources/thoughtleader-${thoughtleader.id}`}
-          className="relative inline-flex items-center justify-center gap-0.5 hover:opacity-80"
+          className="relative inline-flex items-center justify-center gap-0.5 hover:underline"
         >
           {thoughtleader.name}
         </Link>
