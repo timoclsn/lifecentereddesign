@@ -5,7 +5,7 @@ import {
   Text,
   getRandomCardVariant,
 } from 'design-system';
-import { AlertTriangle, ArrowRight } from 'lucide-react';
+import { AlertTriangle, ArrowRight, SearchX } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getResourceCached, getResourcesCached } from '../../lib/cache';
@@ -47,17 +47,29 @@ export const RelatedResources = ({ resourceId, resourceType }: Props) => {
 
               return (
                 <>
-                  {resourcesToDisplay.map((resource) => {
-                    const component = getCardComponent(resource);
-                    return (
-                      <li
-                        key={`${resource.type}-${resource.id}`}
-                        className="relative w-[330px] flex-none snap-center sm:w-[600px]"
+                  {resourcesToDisplay.length > 0 ? (
+                    resourcesToDisplay.map((resource) => {
+                      const component = getCardComponent(resource);
+                      return (
+                        <li
+                          key={`${resource.type}-${resource.id}`}
+                          className="relative w-[330px] flex-none snap-center sm:w-[600px]"
+                        >
+                          {component}
+                        </li>
+                      );
+                    })
+                  ) : (
+                    <li className="h-[492px] w-[330px] flex-none sm:w-[600px]">
+                      <Card
+                        variant="stone"
+                        className="flex h-full items-center justify-center gap-2 text-xl"
                       >
-                        {component}
-                      </li>
-                    );
-                  })}
+                        <SearchX />
+                        No related resources found.
+                      </Card>
+                    </li>
+                  )}
                 </>
               );
             }}
