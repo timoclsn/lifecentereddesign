@@ -1,4 +1,3 @@
-import { ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import {
   Agency,
@@ -109,20 +108,13 @@ export const thoughtleadersList = (
   return thoughtleaders.map((thoughtleader, index) => {
     return (
       <>
-        {!thoughtleader.link ? (
-          thoughtleader.name
-        ) : (
-          <Link
-            key={index}
-            href={thoughtleader.link ?? ''}
-            target="_blank"
-            rel="noopener"
-            className="relative inline-flex items-center justify-center gap-0.5 hover:opacity-80"
-          >
-            {thoughtleader.name}
-            <ExternalLink size={12} />
-          </Link>
-        )}
+        <Link
+          key={index}
+          href={`/resources/thoughtleader-${thoughtleader.id}`}
+          className="relative inline-flex items-center justify-center gap-0.5 hover:underline"
+        >
+          {thoughtleader.name}
+        </Link>
         {index !== thoughtleaders.length - 1 && ', '}
       </>
     );
