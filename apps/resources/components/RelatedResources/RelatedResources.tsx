@@ -225,7 +225,7 @@ const removeDuplicateResources = (resources: Resources) => {
 const removeCurrentResource = (resource: Resource, resources: Resources) => {
   return resources.filter(
     (filteredResource) =>
-      filteredResource.id !== resource.id &&
+      filteredResource.id !== resource.id ||
       filteredResource.type !== resource.type,
   );
 };
