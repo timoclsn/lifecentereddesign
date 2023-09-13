@@ -28,7 +28,7 @@ export const RelatedResources = ({ resourceId, resourceType }: Props) => {
     <Bleed>
       <section id="related-resources">
         <Heading level="2" className="text-primary mb-10 px-6 sm:px-8 xl:px-10">
-          Related resources
+          Related Resources
         </Heading>
         <ul className="mb-14 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 sm:snap-none sm:px-8 xl:px-10">
           <li className="hidden flex-none snap-center sm:block">
