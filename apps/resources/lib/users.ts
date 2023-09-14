@@ -1,5 +1,10 @@
-import { User } from '@clerk/nextjs/dist/types/server';
 import { clerkClient } from '@clerk/nextjs';
+import { User } from '@clerk/nextjs/dist/types/server';
+
+interface Data {
+  userId: string;
+  [key: string]: any;
+}
 
 export const filterUserForClient = (user: User) => {
   return {
@@ -9,12 +14,24 @@ export const filterUserForClient = (user: User) => {
   };
 };
 
-export const withUser = async <
-  TData extends {
-    userId: string;
-    [key: string]: any;
-  },
->(
+export const withUser = async <TData extends Data>(data: TData) => {
+  const users = await clerkClient.users.getUserList({
+    userId: [data.userId],
+  });
+
+  const user = users.find((user) => user.id === data.userId);
+
+  if (!user) {
+    console.log(`User (${data.userId}) not found`);
+  }
+
+  return {
+    ...data,
+    user,
+  };
+};
+
+export const withUserCollection = async <TData extends Data>(
   data: Array<TData>,
 ) => {
   const userIds = data.map((element) => element.userId);

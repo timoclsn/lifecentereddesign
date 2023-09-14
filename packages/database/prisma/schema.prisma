@@ -82,7 +82,7 @@ model Like {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  userId     String
+  userId     String @db.VarChar(255)
   type       Type
   resourceId Int
 
@@ -97,10 +97,10 @@ model Comment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId     String
+  userId     String @db.VarChar(255)
   type       Type
   resourceId Int
-  text       String
+  text       String @db.Text
 
   @@index([userId])
   @@index([type])
@@ -494,4 +494,64 @@ model Report {
   topics     Topic[]
 
   @@index([categoryId])
+}
+
+// Collections
+
+model Collection {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId      String @db.VarChar(255)
+  title       String @db.VarChar(255)
+  description String @db.Text
+
+  collectionItem    CollectionItem[]
+  collectionComment CollectionComment[]
+  collectionLikes   CollectionLikes[]
+}
+
+model CollectionItem {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  collectionId Int
+  collection   Collection @relation(fields: [collectionId], references: [id])
+
+  resourceType Type
+  resourceId   Int
+
+  @@unique([resourceId, resourceType])
+  @@index([collectionId])
+}
+
+model CollectionLikes {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @db.VarChar(255)
+
+  collectionId Int
+  collection   Collection @relation(fields: [collectionId], references: [id])
+
+  @@unique([userId, collectionId])
+  @@index([collectionId])
+}
+
+model CollectionComment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @db.VarChar(255)
+  text   String @db.Text
+
+  collectionId Int
+  collection   Collection @relation(fields: [collectionId], references: [id])
+
+  @@index([userId])
+  @@index([collectionId])
 }
