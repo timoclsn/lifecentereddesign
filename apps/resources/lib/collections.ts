@@ -34,6 +34,16 @@ export const getCollection = async (id: number) => {
   };
 };
 
+export const createCollection = async (data: {
+  userId: string;
+  title: string;
+  description: string;
+}) => {
+  await prisma.collection.create({
+    data,
+  });
+};
+
 export const updateCollection = async (
   id: number,
   data: {
