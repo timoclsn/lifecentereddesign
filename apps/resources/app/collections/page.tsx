@@ -1,10 +1,10 @@
 import { Await } from 'components/Await/Await';
 import { Heading, Text } from 'design-system';
+import { getCollectionsCached } from 'lib/cache';
 import Link from 'next/link';
-import { getCollections } from '../../lib/collections';
 
 const CollectionsPage = async () => {
-  const promise = getCollections();
+  const promise = getCollectionsCached();
   return (
     <div>
       <Heading level="2">Collections</Heading>

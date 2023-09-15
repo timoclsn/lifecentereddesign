@@ -1,6 +1,6 @@
 import { Await } from 'components/Await/Await';
 import { Heading, Text } from 'design-system';
-import { getCollection } from 'lib/collections';
+import { getCollectionCached } from 'lib/cache';
 
 interface Props {
   params: {
@@ -10,7 +10,7 @@ interface Props {
 
 const CollectionPage = async ({ params }: Props) => {
   const { id } = params;
-  const promise = getCollection(Number(id));
+  const promise = getCollectionCached(Number(id));
 
   return (
     <div>
