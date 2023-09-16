@@ -7,6 +7,31 @@ export const getCollections = async () => {
   return withUserCollection(collections);
 };
 
+export const getUserCollections = (userId: string) => {
+  return prisma.collection.findMany({
+    where: {
+      userId,
+    },
+  });
+};
+
+export const getResourceCollections = async (
+  resourceId: number,
+  resourceType: ContentType,
+) => {
+  const collectionItems = await prisma.collectionItem.findMany({
+    where: {
+      resourceId,
+      resourceType,
+    },
+    include: {
+      collection: true,
+    },
+  });
+
+  return collectionItems.map((collectionItem) => collectionItem.collection);
+};
+
 export const getCollection = async (id: number) => {
   const collection = await prisma.collection.findUnique({
     where: {
@@ -73,10 +98,34 @@ export const addCollectionItem = async (
   });
 };
 
-export const removeCollectionItem = async (id: number) => {
+export const getCollectionItem = (
+  collectionId: number,
+  resourceId: number,
+  resourceType: ContentType,
+) => {
+  return prisma.collectionItem.findUnique({
+    where: {
+      collectionId,
+      resourceId_resourceType: {
+        resourceId,
+        resourceType,
+      },
+    },
+  });
+};
+
+export const removeCollectionItem = async (
+  collectionId: number,
+  resourceId: number,
+  resourceType: ContentType,
+) => {
   await prisma.collectionItem.delete({
     where: {
-      id,
+      collectionId,
+      resourceId_resourceType: {
+        resourceId,
+        resourceType,
+      },
     },
   });
 };

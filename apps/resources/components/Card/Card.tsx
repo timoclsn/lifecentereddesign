@@ -19,6 +19,8 @@ import { LikesButton } from './LikesButton/LikesButton';
 import { ResourceLink } from './ResourceLink';
 import { ShareButton } from './ShareButton';
 import { TypeButton } from './TypeButton';
+import Link from 'next/link';
+import { OpenServerDialog } from 'components/OpenServerDialog/OpenServerDialog';
 
 interface Props {
   resourceId: number;
@@ -147,6 +149,13 @@ export const Card = ({
             {description && (
               <Text className="text-text-secondary">{description}</Text>
             )}
+            <OpenServerDialog
+              dialog="add-to-collection"
+              params={{ resourceId, resourceType }}
+              className="relative"
+            >
+              Add to Collection
+            </OpenServerDialog>
           </div>
         </div>
 

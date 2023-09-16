@@ -1,3 +1,4 @@
+import { Dialogs } from 'components/Dialogs/Dialogs';
 import { Comments } from '../../../components/Comments/Comments';
 import { NewResources } from '../../../components/NewResources/NewResources';
 import { Newsletter } from '../../../components/Newsletter/Newsletter';
@@ -55,9 +56,12 @@ interface Props {
   params: {
     slug: string;
   };
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
 }
 
-const ResourcePage = async ({ params }: Props) => {
+const ResourcePage = async ({ params, searchParams }: Props) => {
   const { slug } = params;
   const { resourceId, resourceType } = parseResourceSlug(slug);
 
@@ -68,6 +72,7 @@ const ResourcePage = async ({ params }: Props) => {
       <RelatedResources resourceId={resourceId} resourceType={resourceType} />
       <NewResources />
       <Newsletter />
+      <Dialogs searchParams={searchParams} />
     </>
   );
 };

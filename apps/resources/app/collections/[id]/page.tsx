@@ -1,4 +1,5 @@
 import { Await } from 'components/Await/Await';
+import { Dialogs } from 'components/Dialogs/Dialogs';
 import { Heading, Text } from 'design-system';
 import { getCollectionCached } from 'lib/cache';
 
@@ -6,9 +7,12 @@ interface Props {
   params: {
     id: string;
   };
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
 }
 
-const CollectionPage = async ({ params }: Props) => {
+const CollectionPage = async ({ params, searchParams }: Props) => {
   const { id } = params;
   const promise = getCollectionCached(Number(id));
 
@@ -34,9 +38,14 @@ const CollectionPage = async ({ params }: Props) => {
                   <ul className="flex flex-col gap-2">
                     {collection.resources.map((resource) => {
                       return (
-                        <li key={resource.id}>
-                          {'title' in resource ? resource.title : resource.name}
-                        </li>
+                        <>
+                          <li key={`${resource.id}-${resource.type}`}>
+                            {'title' in resource
+                              ? resource.title
+                              : resource.name}
+                          </li>
+                          <div>----------------------------------</div>
+                        </>
                       );
                     })}
                   </ul>
@@ -46,6 +55,7 @@ const CollectionPage = async ({ params }: Props) => {
           );
         }}
       </Await>
+      <Dialogs searchParams={searchParams} />
     </div>
   );
 };
