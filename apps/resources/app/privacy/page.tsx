@@ -9,13 +9,13 @@ export const metadata: Metadata = {
 };
 
 interface Props {
-  seachParams: SearchParams;
+  searchParams: SearchParams;
 }
 
-const PrivacyPage = ({ seachParams }: Props) => {
+const PrivacyPage = ({ searchParams }: Props) => {
   const content = allPages.find((page) => page.title === 'Privacy');
   return (
-    <Page searchParams={seachParams}>
+    <Page searchParams={searchParams}>
       <section className="mx-auto max-w-prose space-y-20">
         <Heading level="1" className="mb-6">
           {content?.title}
