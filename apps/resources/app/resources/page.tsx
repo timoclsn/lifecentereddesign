@@ -1,8 +1,9 @@
+import { Page } from 'components/Page/Page';
+import { SearchParams } from 'lib/types';
 import { Metadata } from 'next';
 import { z } from 'zod';
 import { Resources } from './Resources/Resources';
 import { Suggestion } from './Suggestion/Suggestion';
-import { Dialogs } from 'components/Dialogs/Dialogs';
 
 export const metadata: Metadata = {
   title: 'Resources',
@@ -24,19 +25,16 @@ const reseourcesFilterSchema = z.object({
 });
 
 interface Props {
-  searchParams: {
-    [key: string]: string | string[] | undefined;
-  };
+  searchParams: SearchParams;
 }
 
 const ResourcesPage = ({ searchParams }: Props) => {
   const resourcesFilter = reseourcesFilterSchema.parse(searchParams);
   return (
-    <>
+    <Page searchParams={searchParams}>
       <Resources resourcesFilter={resourcesFilter} />
       <Suggestion />
-      <Dialogs searchParams={searchParams} />
-    </>
+    </Page>
   );
 };
 

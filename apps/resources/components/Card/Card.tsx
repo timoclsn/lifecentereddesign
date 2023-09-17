@@ -1,3 +1,4 @@
+import { OpenServerDialog } from 'components/ServerDialog/OpenServerDialog';
 import {
   Card as CardPrimitive,
   CardProps,
@@ -19,8 +20,6 @@ import { LikesButton } from './LikesButton/LikesButton';
 import { ResourceLink } from './ResourceLink';
 import { ShareButton } from './ShareButton';
 import { TypeButton } from './TypeButton';
-import Link from 'next/link';
-import { OpenServerDialog } from 'components/OpenServerDialog/OpenServerDialog';
 
 interface Props {
   resourceId: number;

@@ -20,7 +20,13 @@ type ConditionalProps =
     }
   | {
       dialog: 'add-collection';
-      params: never;
+      params?: never;
+    }
+  | {
+      dialog: 'update-collection';
+      params: {
+        collectionId: number;
+      };
     };
 
 type Props = CommonProps & ConditionalProps;
@@ -37,8 +43,10 @@ export const OpenServerDialog = ({
   const searchParams = new URLSearchParams(nextSearchParams.toString());
   searchParams.set('dialog', dialog);
 
-  for (const [key, value] of Object.entries(params)) {
-    searchParams.set(key, String(value));
+  if (params) {
+    for (const [key, value] of Object.entries(params)) {
+      searchParams.set(key, String(value));
+    }
   }
 
   const searchPath = searchParams.toString() ? `?${searchParams}` : '';

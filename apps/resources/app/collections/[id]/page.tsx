@@ -1,15 +1,15 @@
 import { Await } from 'components/Await/Await';
-import { Dialogs } from 'components/Dialogs/Dialogs';
+import { Page } from 'components/Page/Page';
+import { OpenServerDialog } from 'components/ServerDialog/OpenServerDialog';
 import { Heading, Text } from 'design-system';
 import { getCollectionCached } from 'lib/cache';
+import { SearchParams } from 'lib/types';
 
 interface Props {
   params: {
     id: string;
   };
-  searchParams: {
-    [key: string]: string | string[] | undefined;
-  };
+  searchParams: SearchParams;
 }
 
 const CollectionPage = async ({ params, searchParams }: Props) => {
@@ -17,8 +17,16 @@ const CollectionPage = async ({ params, searchParams }: Props) => {
   const promise = getCollectionCached(Number(id));
 
   return (
-    <div>
+    <Page searchParams={searchParams}>
       <Heading>Collection Page</Heading>
+      <OpenServerDialog
+        dialog="update-collection"
+        params={{
+          collectionId: Number(id),
+        }}
+      >
+        Update Collection
+      </OpenServerDialog>
       <Await promise={promise}>
         {(collection) => {
           if (!collection) return <div>No collection found</div>;
@@ -55,8 +63,7 @@ const CollectionPage = async ({ params, searchParams }: Props) => {
           );
         }}
       </Await>
-      <Dialogs searchParams={searchParams} />
-    </div>
+    </Page>
   );
 };
 

@@ -2,14 +2,13 @@
 
 import { cva } from 'class-variance-authority';
 import { Button, InfoBox } from 'design-system';
+import { useZodForm } from 'hooks/useZodForm';
+import { useAction } from 'lib/actions/useAction';
 import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { SubmitHandler } from 'react-hook-form';
-import { z } from 'zod';
-import { useZodForm } from '../../hooks/useZodForm';
-import { useAction } from '../../lib/actions/useAction';
-import { ContentType } from '../../lib/resources';
-import { addComment } from './actions';
-import { textSchema } from './schemas';
+import { addCollection } from './actions';
+import { AddCollectionSchema, addCollectionSchema } from './schemas';
+import { useRouter } from 'next/navigation';
 
 const inputStyles = cva(
   'px-8 py-4 text-base text-text-secondary bg-ghost-main-dark-bg outline-none w-full ring-inset',
@@ -26,73 +25,69 @@ const inputStyles = cva(
 const errorStyles =
   'absolute left-0 bottom-0 -mb-4 text-red-700 text-sm slide-in-from-top-full duration-100 ease-in-out fade-in animate-in';
 
-export type AddCommentFormSchema = z.infer<typeof addCommentFormSchema>;
-
-export const addCommentFormSchema = z.object({
-  text: textSchema,
-});
-
-interface Props {
-  resourceId: number;
-  resourceType: ContentType;
-}
-
-export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
-  const { error, runAction, isRunning } = useAction(addComment, {
+export const AddCollectionForm = () => {
+  const { back } = useRouter();
+  const { error, runAction, isRunning } = useAction(addCollection, {
     onSuccess: () => {
-      reset();
-
-      if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
-      }
-
-      splitbee.track('Comment Added');
-    },
-    onError: () => {
-      setFocus('text', { shouldSelect: true });
+      back();
     },
   });
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
-    setFocus,
   } = useZodForm({
-    schema: addCommentFormSchema,
-    defaultValues: {
-      text: '',
-    },
+    schema: addCollectionSchema,
   });
 
-  const onSubmit: SubmitHandler<AddCommentFormSchema> = async ({ text }) => {
+  const onSubmit: SubmitHandler<AddCollectionSchema> = async ({
+    title,
+    description,
+  }) => {
     await runAction({
-      id: resourceId,
-      type: resourceType,
-      text,
+      title,
+      description,
     });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* Text input */}
+      {/* Title input */}
       <div className="relative mb-6 w-full">
-        <label htmlFor="text" className="sr-only">
-          Comment
+        <label htmlFor="title" className="sr-only">
+          Title
+        </label>
+        <input
+          id="title"
+          placeholder="Title"
+          type="text"
+          className={inputStyles({ error: !!errors.title })}
+          {...register('title')}
+        />
+        {errors.title && <p className={errorStyles}>{errors.title.message}</p>}
+      </div>
+
+      {/* Description input */}
+      <div className="relative mb-6 w-full">
+        <label htmlFor="description" className="sr-only">
+          Description
         </label>
         <textarea
-          id="text"
-          placeholder="Post a comment…"
+          id="description"
+          placeholder="Description"
           rows={4}
-          className={inputStyles({ error: !!errors.text })}
-          {...register('text')}
+          className={inputStyles({ error: !!errors.description })}
+          {...register('description')}
         />
-        {errors.text && <p className={errorStyles}>{errors.text.message}</p>}
+        {errors.description && (
+          <p className={errorStyles}>{errors.description.message}</p>
+        )}
       </div>
+
       {/* Submit button */}
       <Button type="submit" size="medium" disabled={isRunning}>
         {isRunning ? <Loader2 className="animate-spin" /> : <MessageCircle />}
-        Post
+        Add
       </Button>
 
       {/* Server messages */}

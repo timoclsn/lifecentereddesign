@@ -4,11 +4,10 @@ import * as Checkbox from '@radix-ui/react-checkbox';
 import { cva } from 'class-variance-authority';
 import { Collection } from 'database';
 import { useAction } from 'lib/actions/useAction';
+import { ContentType } from 'lib/resources';
 import { Check } from 'lucide-react';
 import { useState } from 'react';
 import { addToCollection, removeFromCollection } from './actions';
-import { ContentType } from 'lib/resources';
-import { add } from 'date-fns';
 
 export const checkboxStyles = cva(
   'flex h-[25px] w-[25px] items-center justify-center bg-ghost-main-dark-bg outline-none ring-inset flex-none',

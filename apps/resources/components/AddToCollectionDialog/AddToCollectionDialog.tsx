@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs';
 import { Await } from 'components/Await/Await';
-import { ServerDialog } from 'components/DialogServerRoot/DialogServerRoot';
+import { ServerDialogRoot } from 'components/ServerDialog/ServerDialogRoot';
 import {
   DialogContent,
   DialogOverlay,
@@ -26,14 +26,13 @@ export const AddToCollectionDialog = ({ resourceId, resourceType }: Props) => {
   ]);
 
   return (
-    <ServerDialog>
+    <ServerDialogRoot>
       <DialogPortal>
         <DialogOverlay />
         <DialogContent>
           <Heading level="3">Add to Collection</Heading>
           <Await promise={dataPromises}>
             {([userCollections, resourceCollections]) => {
-              console.log();
               return (
                 <div>
                   {userCollections.map((collection) => {
@@ -56,6 +55,6 @@ export const AddToCollectionDialog = ({ resourceId, resourceType }: Props) => {
           </Await>
         </DialogContent>
       </DialogPortal>
-    </ServerDialog>
+    </ServerDialogRoot>
   );
 };
