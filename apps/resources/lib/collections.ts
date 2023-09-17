@@ -84,6 +84,20 @@ export const updateCollection = async (
   });
 };
 
+export const removeCollection = async (id: number) => {
+  await prisma.collectionItem.deleteMany({
+    where: {
+      collectionId: id,
+    },
+  });
+
+  await prisma.collection.delete({
+    where: {
+      id,
+    },
+  });
+};
+
 export const addCollectionItem = async (
   collectionId: number,
   resourceId: number,
