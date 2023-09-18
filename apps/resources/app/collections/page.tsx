@@ -1,3 +1,4 @@
+import { auth } from '@clerk/nextjs';
 import { Await } from 'components/Await/Await';
 import { Page } from 'components/Page/Page';
 import { OpenServerDialog } from 'components/ServerDialog/OpenServerDialog';
@@ -12,12 +13,15 @@ interface Props {
 
 const CollectionsPage = async ({ searchParams }: Props) => {
   const promise = getCollectionsCached();
+  const { userId } = auth();
   return (
     <Page searchParams={searchParams}>
       <Heading level="2">Collections</Heading>
-      <OpenServerDialog dialog="add-collection">
-        Add Collection
-      </OpenServerDialog>
+      {userId && (
+        <OpenServerDialog dialog="add-collection">
+          Add Collection
+        </OpenServerDialog>
+      )}
       <Await promise={promise}>
         {(collections) => {
           return (

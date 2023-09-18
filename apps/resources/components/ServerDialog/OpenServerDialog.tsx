@@ -2,8 +2,8 @@
 
 import { ContentType } from 'lib/resources';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { ReactNode } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { ReactNode, useTransition } from 'react';
 
 interface CommonProps {
   children: ReactNode;
@@ -37,8 +37,10 @@ export const OpenServerDialog = ({
   dialog,
   params,
 }: Props) => {
+  const { push } = useRouter();
   const pathname = usePathname();
   const nextSearchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   const searchParams = new URLSearchParams(nextSearchParams.toString());
   searchParams.set('dialog', dialog);
@@ -50,13 +52,16 @@ export const OpenServerDialog = ({
   }
 
   const searchPath = searchParams.toString() ? `?${searchParams}` : '';
+
+  const handleClick = () => {
+    startTransition(() => {
+      push(`${pathname}${searchPath}`, { scroll: false });
+    });
+  };
+
   return (
-    <Link
-      href={`${pathname}${searchPath}`}
-      className={className}
-      scroll={false}
-    >
+    <button disabled={isPending} onClick={handleClick} className={className}>
       {children}
-    </Link>
+    </button>
   );
 };

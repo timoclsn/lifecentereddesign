@@ -26,7 +26,7 @@
     "esbuild": "^0.19.2",
     "lucide-react": "^0.269.0",
     "match-sorter": "6.3.1",
-    "next": "13.4.20-canary.33",
+    "next": "13.4.20-canary.36",
     "next-contentlayer": "0.3.4",
     "nodemailer": "^6.9.4",
     "react": "18.2.0",

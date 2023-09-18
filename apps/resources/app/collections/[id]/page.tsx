@@ -5,6 +5,8 @@ import { Heading, Text } from 'design-system';
 import { getCollectionCached } from 'lib/cache';
 import { SearchParams } from 'lib/types';
 import { DeleteCollectionButton } from './DeleteCollectionButton/DeleteCollectionButton';
+import { auth } from '@clerk/nextjs';
+import { Resources } from 'app/resources/Resources/Resources';
 
 interface Props {
   params: {
@@ -16,24 +18,30 @@ interface Props {
 const CollectionPage = async ({ params, searchParams }: Props) => {
   const { id } = params;
   const promise = getCollectionCached(Number(id));
+  const { userId } = auth();
 
   return (
     <Page searchParams={searchParams}>
       <div>
         <Heading>Collection Page</Heading>
-        <OpenServerDialog
-          dialog="update-collection"
-          params={{
-            collectionId: Number(id),
-          }}
-        >
-          Update Collection
-        </OpenServerDialog>
-        <DeleteCollectionButton collectionId={Number(id)} />
+        {userId && (
+          <>
+            <OpenServerDialog
+              dialog="update-collection"
+              params={{
+                collectionId: Number(id),
+              }}
+            >
+              Update Collection
+            </OpenServerDialog>
+            <DeleteCollectionButton collectionId={Number(id)} />
+          </>
+        )}
       </div>
       <Await promise={promise}>
         {(collection) => {
           if (!collection) return <div>No collection found</div>;
+          const isOwnCollection = collection.user?.id === userId;
 
           return (
             <div className="flex flex-col gap-4">
@@ -63,6 +71,7 @@ const CollectionPage = async ({ params, searchParams }: Props) => {
                   </ul>
                 </div>
               )}
+              {isOwnCollection && <Resources searchParams={searchParams} />}
             </div>
           );
         }}

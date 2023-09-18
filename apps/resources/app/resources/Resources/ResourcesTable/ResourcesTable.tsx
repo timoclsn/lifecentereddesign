@@ -9,7 +9,7 @@ import {
   getResourcesCached,
   getTopicsCached,
 } from '../../../../lib/cache';
-import { ReseourcesFilter } from '../../page';
+import { ReseourcesFilter } from '../Resources';
 import { ResourcesFilter } from './ResourcesFilter/ResourcesFilter';
 import { ResourcesList } from './ResourcesList/ResourcesList';
 import { ResourcesTableProvider } from './ResourcesTableProvider';

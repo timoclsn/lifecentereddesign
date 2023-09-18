@@ -9,11 +9,20 @@ export const ServerDialogRoot = ({
 }: ComponentPropsWithoutRef<typeof Dialog>) => {
   const [open, setOpen] = useState(true);
   const { back } = useRouter();
+
   const onOpenChange = (open: boolean) => {
     if (!open) {
       back();
+      return;
     }
     setOpen(open);
   };
-  return <Dialog open={open} onOpenChange={onOpenChange} {...props} />;
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={onOpenChange}
+      defaultOpen={true}
+      {...props}
+    />
+  );
 };

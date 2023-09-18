@@ -10,6 +10,7 @@ import {
 import { getResourceCollections, getUserCollections } from 'lib/collections';
 import { ContentType } from 'lib/resources';
 import { AddToCollectionItem } from './AddToCollectionItem';
+import { OpenServerDialog } from 'components/ServerDialog/OpenServerDialog';
 
 interface Props {
   resourceId: number;
@@ -35,20 +36,26 @@ export const AddToCollectionDialog = ({ resourceId, resourceType }: Props) => {
             {([userCollections, resourceCollections]) => {
               return (
                 <div>
-                  {userCollections.map((collection) => {
-                    const state = resourceCollections.find(
-                      (rc) => rc.id === collection.id,
-                    );
-                    return (
-                      <AddToCollectionItem
-                        key={collection.id}
-                        collection={collection}
-                        initialState={!!state}
-                        resourceId={resourceId}
-                        resourceType={resourceType}
-                      />
-                    );
-                  })}
+                  <OpenServerDialog dialog="add-collection">
+                    Add Collection
+                  </OpenServerDialog>
+                  <ul className="flex flex-col gap-4">
+                    {userCollections.map((collection) => {
+                      const state = resourceCollections.find(
+                        (rc) => rc.id === collection.id,
+                      );
+                      return (
+                        <li key={collection.id}>
+                          <AddToCollectionItem
+                            collection={collection}
+                            initialState={!!state}
+                            resourceId={resourceId}
+                            resourceType={resourceType}
+                          />
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
               );
             }}

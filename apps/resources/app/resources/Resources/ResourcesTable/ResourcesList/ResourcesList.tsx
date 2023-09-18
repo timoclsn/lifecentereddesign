@@ -7,7 +7,7 @@ import {
   LikedResources,
   Resource,
 } from '../../../../../lib/resources';
-import { ReseourcesFilter } from '../../../page';
+import { ReseourcesFilter } from '../../Resources';
 import { ClearAllButton } from './ClearAllButton';
 import { DownloadButton } from './DownloadButton/DownloadButton';
 import { ResourcesListTop } from './ResourcesListTop';

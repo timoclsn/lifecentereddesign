@@ -20,6 +20,8 @@ import { LikesButton } from './LikesButton/LikesButton';
 import { ResourceLink } from './ResourceLink';
 import { ShareButton } from './ShareButton';
 import { TypeButton } from './TypeButton';
+import { auth } from '@clerk/nextjs';
+import { CollectionButton } from './CollectionButton';
 
 interface Props {
   resourceId: number;
@@ -58,6 +60,7 @@ export const Card = ({
   note,
 }: Props) => {
   const resourceLink = tags?.at(0)?.url;
+  const { userId } = auth();
 
   return (
     <HoverProvider resourceId={resourceId} resourceType={resourceType}>
@@ -148,13 +151,14 @@ export const Card = ({
             {description && (
               <Text className="text-text-secondary">{description}</Text>
             )}
-            <OpenServerDialog
-              dialog="add-to-collection"
-              params={{ resourceId, resourceType }}
-              className="relative"
-            >
-              Add to Collection
-            </OpenServerDialog>
+
+            {/* Add to collection */}
+            {userId && (
+              <CollectionButton
+                resourceId={resourceId}
+                resourceType={resourceType}
+              />
+            )}
           </div>
         </div>
 
