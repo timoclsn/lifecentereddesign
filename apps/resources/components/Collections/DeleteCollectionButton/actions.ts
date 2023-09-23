@@ -3,6 +3,7 @@
 import { createAction } from 'lib/actions/createAction';
 import { getCollection, removeCollection } from 'lib/collections';
 import { revalidateTag } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 export const deleteCollection = createAction({
@@ -28,7 +29,9 @@ export const deleteCollection = createAction({
     }
 
     await removeCollection(collectionId);
-
+  },
+  onSuccess: () => {
     revalidateTag('collections');
+    redirect('/collections');
   },
 });

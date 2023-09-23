@@ -1,5 +1,6 @@
 import { auth } from '@clerk/nextjs';
 import { Await } from 'components/Await/Await';
+import { AddCollectionButton } from 'components/Collections/AddCollectionButton';
 import { ServerDialogRoot } from 'components/ServerDialog/ServerDialogRoot';
 import {
   DialogContent,
@@ -7,10 +8,9 @@ import {
   DialogPortal,
   Heading,
 } from 'design-system';
-import { getResourceCollections, getUserCollections } from 'lib/collections';
+import { getCollectionsCached, getResourceCollectionsCached } from 'lib/cache';
 import { ContentType } from 'lib/resources';
 import { AddToCollectionItem } from './AddToCollectionItem';
-import { OpenServerDialog } from 'components/ServerDialog/OpenServerDialog';
 
 interface Props {
   resourceId: number;
@@ -21,9 +21,9 @@ export const AddToCollectionDialog = ({ resourceId, resourceType }: Props) => {
   const { userId } = auth();
   if (!userId) return null;
 
-  const dataPromises = Promise.all([
-    getUserCollections(userId),
-    getResourceCollections(resourceId, resourceType),
+  const promise = Promise.all([
+    getCollectionsCached(),
+    getResourceCollectionsCached(resourceId, resourceType),
   ]);
 
   return (
@@ -32,13 +32,15 @@ export const AddToCollectionDialog = ({ resourceId, resourceType }: Props) => {
         <DialogOverlay />
         <DialogContent>
           <Heading level="3">Add to Collection</Heading>
-          <Await promise={dataPromises}>
-            {([userCollections, resourceCollections]) => {
+          <Await promise={promise}>
+            {([collections, resourceCollections]) => {
+              const userCollections = collections.filter(
+                (collection) => collection.userId === userId,
+              );
+
               return (
                 <div>
-                  <OpenServerDialog dialog="add-collection">
-                    Add Collection
-                  </OpenServerDialog>
+                  <AddCollectionButton />
                   <ul className="flex flex-col gap-4">
                     {userCollections.map((collection) => {
                       const state = resourceCollections.find(
@@ -47,8 +49,9 @@ export const AddToCollectionDialog = ({ resourceId, resourceType }: Props) => {
                       return (
                         <li key={collection.id}>
                           <AddToCollectionItem
-                            collection={collection}
-                            initialState={!!state}
+                            collectionId={collection.id}
+                            collectionTitle={collection.title}
+                            checked={!!state}
                             resourceId={resourceId}
                             resourceType={resourceType}
                           />

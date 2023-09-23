@@ -520,10 +520,10 @@ model CollectionItem {
   collectionId Int
   collection   Collection @relation(fields: [collectionId], references: [id])
 
-  resourceType Type
   resourceId   Int
+  resourceType Type
 
-  @@unique([resourceId, resourceType])
+  @@unique([collectionId, resourceId, resourceType])
   @@index([collectionId])
 }
 

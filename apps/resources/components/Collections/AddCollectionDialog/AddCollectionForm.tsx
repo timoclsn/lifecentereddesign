@@ -8,7 +8,6 @@ import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { SubmitHandler } from 'react-hook-form';
 import { addCollection } from './actions';
 import { AddCollectionSchema, addCollectionSchema } from './schemas';
-import { useRouter } from 'next/navigation';
 
 const inputStyles = cva(
   'px-8 py-4 text-base text-text-secondary bg-ghost-main-dark-bg outline-none w-full ring-inset',
@@ -26,12 +25,7 @@ const errorStyles =
   'absolute left-0 bottom-0 -mb-4 text-red-700 text-sm slide-in-from-top-full duration-100 ease-in-out fade-in animate-in';
 
 export const AddCollectionForm = () => {
-  const { back } = useRouter();
-  const { error, runAction, isRunning } = useAction(addCollection, {
-    onSuccess: () => {
-      back();
-    },
-  });
+  const { error, runAction, isRunning } = useAction(addCollection);
   const {
     register,
     handleSubmit,

@@ -1,12 +1,12 @@
+import { auth } from '@clerk/nextjs';
+import { Resources } from 'app/resources/Resources/Resources';
 import { Await } from 'components/Await/Await';
 import { Page } from 'components/Page/Page';
-import { OpenServerDialog } from 'components/ServerDialog/OpenServerDialog';
 import { Heading, Text } from 'design-system';
 import { getCollectionCached } from 'lib/cache';
 import { SearchParams } from 'lib/types';
-import { DeleteCollectionButton } from './DeleteCollectionButton/DeleteCollectionButton';
-import { auth } from '@clerk/nextjs';
-import { Resources } from 'app/resources/Resources/Resources';
+import { DeleteCollectionButton } from '../../../components/Collections/DeleteCollectionButton/DeleteCollectionButton';
+import { UpdateBollectionButton } from '../../../components/Collections/UpdateBollectionButton';
 
 interface Props {
   params: {
@@ -25,17 +25,10 @@ const CollectionPage = async ({ params, searchParams }: Props) => {
       <div>
         <Heading>Collection Page</Heading>
         {userId && (
-          <>
-            <OpenServerDialog
-              dialog="update-collection"
-              params={{
-                collectionId: Number(id),
-              }}
-            >
-              Update Collection
-            </OpenServerDialog>
+          <div className="flex flex-col items-start gap-4">
+            <UpdateBollectionButton collectionId={Number(id)} />
             <DeleteCollectionButton collectionId={Number(id)} />
-          </>
+          </div>
         )}
       </div>
       <Await promise={promise}>

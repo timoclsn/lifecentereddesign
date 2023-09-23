@@ -7,14 +7,6 @@ export const getCollections = async () => {
   return withUserCollection(collections);
 };
 
-export const getUserCollections = (userId: string) => {
-  return prisma.collection.findMany({
-    where: {
-      userId,
-    },
-  });
-};
-
 export const getResourceCollections = async (
   resourceId: number,
   resourceType: ContentType,
@@ -64,7 +56,7 @@ export const createCollection = async (data: {
   title: string;
   description: string;
 }) => {
-  await prisma.collection.create({
+  return prisma.collection.create({
     data,
   });
 };
@@ -119,8 +111,8 @@ export const getCollectionItem = (
 ) => {
   return prisma.collectionItem.findUnique({
     where: {
-      collectionId,
-      resourceId_resourceType: {
+      collectionId_resourceId_resourceType: {
+        collectionId,
         resourceId,
         resourceType,
       },
@@ -135,8 +127,8 @@ export const removeCollectionItem = async (
 ) => {
   await prisma.collectionItem.delete({
     where: {
-      collectionId,
-      resourceId_resourceType: {
+      collectionId_resourceId_resourceType: {
+        collectionId,
         resourceId,
         resourceType,
       },

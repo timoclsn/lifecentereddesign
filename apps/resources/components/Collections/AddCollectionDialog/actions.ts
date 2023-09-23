@@ -3,6 +3,7 @@
 import { createAction } from 'lib/actions/createAction';
 import { createCollection } from 'lib/collections';
 import { revalidateTag } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { addCollectionSchema } from './schemas';
 
 export const addCollection = createAction({
@@ -15,12 +16,15 @@ export const addCollection = createAction({
       throw new Error('Unauthorized');
     }
 
-    await createCollection({
+    return createCollection({
       userId,
       title,
       description,
     });
-
+  },
+  onSuccess: (collection) => {
+    if (!collection) return;
     revalidateTag('collections');
+    redirect(`/collections/${collection.id}`);
   },
 });

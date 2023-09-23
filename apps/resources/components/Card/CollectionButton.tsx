@@ -1,9 +1,7 @@
 'use client';
 
-import { addToCollection } from 'components/AddToCollectionDialog/actions';
-import { OpenServerDialog } from 'components/ServerDialog/OpenServerDialog';
-import { Button } from 'design-system';
-import { useAction } from 'lib/actions/useAction';
+import { AddToCollectionButton } from 'components/Collections/AddToCollectionButton';
+import { AddToThisCollectionButton } from 'components/Collections/AddToThisCollectionButton';
 import { ContentType } from 'lib/resources';
 import { usePathname } from 'next/navigation';
 
@@ -13,33 +11,26 @@ interface Props {
 }
 
 export const CollectionButton = ({ resourceId, resourceType }: Props) => {
-  const { runAction, isRunning } = useAction(addToCollection);
   const pathname = usePathname();
+
   const collectionId = pathname.includes('/collections/')
     ? pathname.split('/').pop()
     : undefined;
 
-  return collectionId ? (
-    <Button
-      className="relative"
-      onClick={() => {
-        runAction({
-          collectionId: Number(collectionId),
-          resourceId,
-          resourceType,
-        });
-      }}
-      disabled={isRunning}
-    >
-      Add to this collection
-    </Button>
-  ) : (
-    <OpenServerDialog
-      dialog="add-to-collection"
-      params={{ resourceId, resourceType }}
-      className="relative"
-    >
-      Add to Collection
-    </OpenServerDialog>
+  return (
+    <div className="relative">
+      {collectionId ? (
+        <AddToThisCollectionButton
+          collectionId={Number(collectionId)}
+          resourceId={resourceId}
+          resourceType={resourceType}
+        />
+      ) : (
+        <AddToCollectionButton
+          resourceId={resourceId}
+          resourceType={resourceType}
+        />
+      )}
+    </div>
   );
 };

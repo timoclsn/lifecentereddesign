@@ -1,6 +1,6 @@
 'use server';
 
-import { addCollectionSchema } from 'components/AddCollectionDialog/schemas';
+import { addCollectionSchema } from 'components/Collections/AddCollectionDialog/schemas';
 import { createAction } from 'lib/actions/createAction';
 import {
   getCollection,

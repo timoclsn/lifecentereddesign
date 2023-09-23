@@ -1,4 +1,4 @@
-import { OpenServerDialog } from 'components/ServerDialog/OpenServerDialog';
+import { auth } from '@clerk/nextjs';
 import {
   Card as CardPrimitive,
   CardProps,
@@ -12,6 +12,7 @@ import { ExternalLink, LucideIcon, StickyNote, Users2 } from 'lucide-react';
 import { ReactNode } from 'react';
 import { ContentType } from '../../lib/resources';
 import { CategoryButton } from './CategoryButton';
+import { CollectionButton } from './CollectionButton';
 import { CommentsButton } from './CommentsButton/CommentsButton';
 import { CopyButton } from './CopyButton';
 import { DetailsLink } from './DetailsLink';
@@ -20,8 +21,6 @@ import { LikesButton } from './LikesButton/LikesButton';
 import { ResourceLink } from './ResourceLink';
 import { ShareButton } from './ShareButton';
 import { TypeButton } from './TypeButton';
-import { auth } from '@clerk/nextjs';
-import { CollectionButton } from './CollectionButton';
 
 interface Props {
   resourceId: number;

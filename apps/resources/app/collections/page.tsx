@@ -1,11 +1,11 @@
 import { auth } from '@clerk/nextjs';
 import { Await } from 'components/Await/Await';
 import { Page } from 'components/Page/Page';
-import { OpenServerDialog } from 'components/ServerDialog/OpenServerDialog';
 import { Heading, Text } from 'design-system';
 import { getCollectionsCached } from 'lib/cache';
 import { SearchParams } from 'lib/types';
 import Link from 'next/link';
+import { AddCollectionButton } from '../../components/Collections/AddCollectionButton';
 
 interface Props {
   searchParams: SearchParams;
@@ -17,11 +17,7 @@ const CollectionsPage = async ({ searchParams }: Props) => {
   return (
     <Page searchParams={searchParams}>
       <Heading level="2">Collections</Heading>
-      {userId && (
-        <OpenServerDialog dialog="add-collection">
-          Add Collection
-        </OpenServerDialog>
-      )}
+      {userId && <AddCollectionButton />}
       <Await promise={promise}>
         {(collections) => {
           return (

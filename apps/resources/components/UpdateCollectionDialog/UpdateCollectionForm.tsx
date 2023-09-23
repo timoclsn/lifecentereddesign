@@ -4,7 +4,7 @@ import { cva } from 'class-variance-authority';
 import {
   AddCollectionSchema,
   addCollectionSchema,
-} from 'components/AddCollectionDialog/schemas';
+} from 'components/Collections/AddCollectionDialog/schemas';
 import { Button, InfoBox } from 'design-system';
 import { useZodForm } from 'hooks/useZodForm';
 import { useAction } from 'lib/actions/useAction';

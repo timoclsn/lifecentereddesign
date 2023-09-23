@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Fragment } from 'react';
 import {
   Agency,
   Article,
@@ -92,12 +93,10 @@ export const getCardComponent = (resource: Resources[0]) => {
 export const topicsList = (topics: Topics) => {
   return topics.map((topic, index) => {
     return (
-      <>
-        <TopicsButton key={topic.id} topic={topic.name}>
-          {topic.name}
-        </TopicsButton>
+      <Fragment key={topic.id}>
+        <TopicsButton topic={topic.name}>{topic.name}</TopicsButton>
         {index !== topics.length - 1 && ', '}
-      </>
+      </Fragment>
     );
   });
 };
@@ -107,16 +106,15 @@ export const thoughtleadersList = (
 ) => {
   return thoughtleaders.map((thoughtleader, index) => {
     return (
-      <>
+      <Fragment key={index}>
         <Link
-          key={index}
           href={`/resources/thoughtleader-${thoughtleader.id}`}
           className="relative inline-flex items-center justify-center gap-0.5 hover:underline"
         >
           {thoughtleader.name}
         </Link>
         {index !== thoughtleaders.length - 1 && ', '}
-      </>
+      </Fragment>
     );
   });
 };

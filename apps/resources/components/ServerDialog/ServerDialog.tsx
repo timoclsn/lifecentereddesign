@@ -1,5 +1,5 @@
-import { AddCollectionDialog } from 'components/AddCollectionDialog/AddCollectionDialog';
-import { AddToCollectionDialog } from 'components/AddToCollectionDialog/AddToCollectionDialog';
+import { AddCollectionDialog } from 'components/Collections/AddCollectionDialog/AddCollectionDialog';
+import { AddToCollectionDialog } from 'components/Collections/AddToCollectionDialog/AddToCollectionDialog';
 import { UpdateCollectionDialog } from 'components/UpdateCollectionDialog/UpdateCollectionDialog';
 import { resourceTypes } from 'lib/resources';
 import { SearchParams } from 'lib/types';

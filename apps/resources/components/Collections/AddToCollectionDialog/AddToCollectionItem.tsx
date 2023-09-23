@@ -2,11 +2,10 @@
 
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { cva } from 'class-variance-authority';
-import { Collection } from 'database';
 import { useAction } from 'lib/actions/useAction';
 import { ContentType } from 'lib/resources';
 import { Check } from 'lucide-react';
-import { useState } from 'react';
+import { experimental_useOptimistic as useOptimistic } from 'react';
 import { addToCollection, removeFromCollection } from './actions';
 
 export const checkboxStyles = cva(
@@ -24,52 +23,57 @@ export const checkboxStyles = cva(
 export const errorStyles =
   'absolute left-0 bottom-0 -mb-6 text-red-700 text-sm slide-in-from-top-full duration-100 ease-in-out fade-in animate-in';
 
+type Checked = boolean | 'indeterminate';
+
 interface Props {
-  collection: Collection;
-  initialState: boolean;
+  collectionId: number;
+  collectionTitle: string;
+  checked: Checked;
   resourceId: number;
   resourceType: ContentType;
 }
 
 export const AddToCollectionItem = ({
-  collection,
-  initialState,
+  collectionId,
+  collectionTitle,
+  checked,
   resourceId,
   resourceType,
 }: Props) => {
+  const [optimisticChecked, updateOptimisticChecked] = useOptimistic(
+    checked,
+    (_, newState) => newState as Checked,
+  );
   const { runAction: runAddToCollection, isRunning: addIsRunning } =
     useAction(addToCollection);
   const { runAction: runRemoveFromCollection, isRunning: removeIsRunning } =
     useAction(removeFromCollection);
   const isRunning = addIsRunning || removeIsRunning;
-  const [checked, setChecked] = useState<boolean | 'indeterminate'>(
-    initialState,
-  );
 
-  const onCheckedChange = async (checked: boolean | 'indeterminate') => {
+  const onCheckedChange = async (checked: Checked) => {
     if (checked) {
       await runAddToCollection({
-        collectionId: collection.id,
+        collectionId,
         resourceId,
         resourceType,
       });
     } else {
       await runRemoveFromCollection({
-        collectionId: collection.id,
+        collectionId,
         resourceId,
         resourceType,
       });
     }
 
-    setChecked(checked);
+    updateOptimisticChecked(checked);
   };
 
   return (
     <div className="relative flex items-center gap-3">
       <Checkbox.Root
-        id={collection.id.toString()}
+        id={collectionId.toString()}
         value={undefined}
-        checked={checked}
+        checked={optimisticChecked}
         onCheckedChange={onCheckedChange}
         className={checkboxStyles()}
         disabled={isRunning}
@@ -79,8 +83,8 @@ export const AddToCollectionItem = ({
           <Check />
         </Checkbox.Indicator>
       </Checkbox.Root>
-      <label className="Label" htmlFor={collection.id.toString()}>
-        {collection.title}
+      <label className="Label" htmlFor={collectionId.toString()}>
+        {collectionTitle}
       </label>
     </div>
   );

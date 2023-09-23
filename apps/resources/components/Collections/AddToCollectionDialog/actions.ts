@@ -1,13 +1,14 @@
 'use server';
 
 import { createAction } from 'lib/actions/createAction';
+import { collectionTag, resourceCollectionsTag } from 'lib/cache';
 import {
   addCollectionItem,
   getCollection,
   removeCollectionItem,
 } from 'lib/collections';
 import { resourceTypes } from 'lib/resources';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 
 export const addToCollection = createAction({
@@ -35,7 +36,9 @@ export const addToCollection = createAction({
     }
 
     await addCollectionItem(collectionId, resourceId, resourceType);
-    revalidatePath('/');
+
+    revalidateTag(resourceCollectionsTag(resourceId, resourceType));
+    revalidateTag(collectionTag(collectionId));
   },
 });
 
@@ -64,6 +67,8 @@ export const removeFromCollection = createAction({
     }
 
     await removeCollectionItem(collectionId, resourceId, resourceType);
-    revalidatePath('/');
+
+    revalidateTag(resourceCollectionsTag(resourceId, resourceType));
+    revalidateTag(collectionTag(collectionId));
   },
 });

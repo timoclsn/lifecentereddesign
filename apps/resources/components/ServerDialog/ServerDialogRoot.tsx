@@ -1,19 +1,28 @@
 'use client';
 
 import { Dialog } from 'design-system';
-import { useRouter } from 'next/navigation';
-import { ComponentPropsWithoutRef, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { ComponentPropsWithoutRef, useState, useTransition } from 'react';
 
 export const ServerDialogRoot = ({
   ...props
 }: ComponentPropsWithoutRef<typeof Dialog>) => {
   const [open, setOpen] = useState(true);
-  const { back } = useRouter();
+  const { replace } = useRouter();
+  const pathname = usePathname();
+  const nextSearchParams = useSearchParams();
+  const [, startTransition] = useTransition();
 
   const onOpenChange = (open: boolean) => {
     if (!open) {
-      back();
-      return;
+      // FIXME: Calling router.back() would be better here, the transition doesn't work with that
+      const searchParams = new URLSearchParams(nextSearchParams.toString());
+      searchParams.delete('dialog');
+      const searchPath = searchParams.toString() ? `?${searchParams}` : '';
+
+      startTransition(() => {
+        replace(`${pathname}${searchPath}`, { scroll: false });
+      });
     }
     setOpen(open);
   };
