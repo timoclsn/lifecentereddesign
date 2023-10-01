@@ -1,7 +1,6 @@
 import {
   Card as CardPrimitive,
   CardProps,
-  Heading,
   Tag,
   Text,
   Tooltip,
@@ -14,10 +13,10 @@ import { CategoryButton } from './CategoryButton';
 import { CommentsButton } from './CommentsButton/CommentsButton';
 import { CopyButton } from './CopyButton';
 import { DetailsLink } from './DetailsLink';
-import { HoverProvider } from './HoverProvider';
 import { LikesButton } from './LikesButton/LikesButton';
 import { ResourceLink } from './ResourceLink';
 import { ShareButton } from './ShareButton';
+import { Title } from './Title';
 import { TypeButton } from './TypeButton';
 
 interface Props {
@@ -59,138 +58,137 @@ export const Card = ({
   const resourceLink = tags?.at(0)?.url;
 
   return (
-    <HoverProvider resourceId={resourceId} resourceType={resourceType}>
-      <CardPrimitive
-        variant={variant}
-        className="relative flex h-full w-full flex-col gap-8 sm:gap-24"
+    <CardPrimitive
+      variant={variant}
+      className="group/card relative flex h-full w-full flex-col gap-8 sm:gap-24"
+    >
+      <DetailsLink
+        resourceId={resourceId}
+        resourceType={resourceType}
+        resourceLink={resourceLink}
+      />
+
+      <div className="flex flex-1 flex-col items-start gap-9">
+        <div className="flex w-full flex-wrap justify-between gap-2">
+          <div className="flex items-center gap-2">
+            {/* Type */}
+            {showType && (
+              <TypeButton type={resourceType}>{displayType}</TypeButton>
+            )}
+
+            {/* Note */}
+            {note && (
+              <Tooltip content={`Editor's note: ${note}`} openOnClick>
+                <div>
+                  <StickyNote />
+                </div>
+              </Tooltip>
+            )}
+
+            {/* User suggestion */}
+            {suggestion && (
+              <Tooltip
+                content="Resource suggested by the community ❤️"
+                openOnClick
+              >
+                <div>
+                  <Users2 />
+                </div>
+              </Tooltip>
+            )}
+          </div>
+
+          <div className="flex items-center justify-center gap-3">
+            {/* Comments */}
+            <CommentsButton
+              resourceId={resourceId}
+              resourceType={resourceType}
+            />
+
+            {/* Likes */}
+            <LikesButton
+              resourceId={resourceId}
+              resourceType={resourceType}
+              resourceTitle={title}
+            />
+
+            {/* Copy Share Link */}
+            <ShareButton
+              title={title}
+              resourceId={resourceId}
+              resourceType={resourceType}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col items-start gap-4">
+          {/* Title */}
+          <Title
+            resourceId={resourceId}
+            resourceType={resourceType}
+            resourceLink={resourceLink}
+          >
+            {title}
+          </Title>
+
+          {/* Meta infos */}
+          {metaInfos && (
+            <ul className="text-text-secondary -mt-1 flex flex-wrap gap-x-2 gap-y-1 sm:gap-x-8 sm:gap-y-3">
+              {metaInfos.map((metaInfo, idx) => {
+                return (
+                  <li key={idx} className="flex items-center gap-1">
+                    <metaInfo.icon size="18" className="flex-none" />
+                    <Text>{metaInfo.text}</Text>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+
+          {/* Description */}
+          {description && (
+            <Text className="text-text-secondary">{description}</Text>
+          )}
+        </div>
+      </div>
+
+      <div
+        className={`flex flex-wrap gap-3 ${
+          category ? 'justify-between' : 'justify-end'
+        }`}
       >
-        <DetailsLink resourceId={resourceId} resourceType={resourceType} />
+        {/* Category */}
+        {category && (
+          <CategoryButton category={category}>{category}</CategoryButton>
+        )}
 
-        <div className="flex flex-1 flex-col items-start gap-9">
-          <div className="flex w-full flex-wrap justify-between gap-2">
-            <div className="flex items-center gap-2">
-              {/* Type */}
-              {showType && (
-                <TypeButton type={resourceType}>{displayType}</TypeButton>
-              )}
-
-              {/* Note */}
-              {note && (
-                <Tooltip content={`Editor's note: ${note}`} openOnClick>
-                  <div>
-                    <StickyNote />
-                  </div>
-                </Tooltip>
-              )}
-
-              {/* User suggestion */}
-              {suggestion && (
-                <Tooltip
-                  content="Resource suggested by the community ❤️"
-                  openOnClick
-                >
-                  <div>
-                    <Users2 />
-                  </div>
-                </Tooltip>
-              )}
-            </div>
-
-            <div className="flex items-center justify-center gap-3">
-              {/* Comments */}
-              <CommentsButton
-                resourceId={resourceId}
-                resourceType={resourceType}
-              />
-
-              {/* Likes */}
-              <LikesButton
-                resourceId={resourceId}
+        {/* Tags */}
+        {tags && tags.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag, idx) => (
+              <ResourceLink
+                key={idx}
+                href={tag.url}
                 resourceType={resourceType}
                 resourceTitle={title}
-              />
+              >
+                <Tag variant="dark">
+                  <div className="flex items-center gap-1">
+                    {tag.icon && <tag.icon size="18" />}
+                    <span>{tag.text}</span>
+                    {isExternalUrl(tag.url) && (
+                      <ExternalLink size={16} className="text-text-secondary" />
+                    )}
+                  </div>
+                </Tag>
+              </ResourceLink>
+            ))}
 
-              {/* Copy Share Link */}
-              <ShareButton
-                title={title}
-                resourceId={resourceId}
-                resourceType={resourceType}
-              />
-            </div>
+            {/* Copy Link Button*/}
+            {resourceLink && <CopyButton link={resourceLink} />}
           </div>
-
-          <div className="flex flex-col items-start gap-4">
-            {/* Title */}
-            <Heading
-              level="3"
-              title={title}
-              className="group-hover/card:pointer-events-none group-hover/card:cursor-pointer group-hover/card:underline"
-            >
-              {title}
-            </Heading>
-
-            {/* Meta infos */}
-            {metaInfos && (
-              <ul className="text-text-secondary -mt-1 flex flex-wrap gap-x-2 gap-y-1 sm:gap-x-8 sm:gap-y-3">
-                {metaInfos.map((metaInfo, idx) => {
-                  return (
-                    <li key={idx} className="flex items-center gap-1">
-                      <metaInfo.icon size="18" className="flex-none" />
-                      <Text>{metaInfo.text}</Text>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-
-            {/* Description */}
-            {description && (
-              <Text className="text-text-secondary">{description}</Text>
-            )}
-          </div>
-        </div>
-
-        <div
-          className={`flex flex-wrap gap-3 ${
-            category ? 'justify-between' : 'justify-end'
-          }`}
-        >
-          {/* Category */}
-          {category && (
-            <CategoryButton category={category}>{category}</CategoryButton>
-          )}
-
-          {/* Tags */}
-          {tags && tags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {tags.map((tag, idx) => (
-                <ResourceLink
-                  key={idx}
-                  href={tag.url}
-                  resourceType={resourceType}
-                  resourceTitle={title}
-                >
-                  <Tag variant="dark">
-                    <div className="flex items-center gap-1">
-                      {tag.icon && <tag.icon size="18" />}
-                      <span>{tag.text}</span>
-                      {isExternalUrl(tag.url) && (
-                        <ExternalLink
-                          size={16}
-                          className="text-text-secondary"
-                        />
-                      )}
-                    </div>
-                  </Tag>
-                </ResourceLink>
-              ))}
-
-              {/* Copy Link Button*/}
-              {resourceLink && <CopyButton link={resourceLink} />}
-            </div>
-          )}
-        </div>
-      </CardPrimitive>
-    </HoverProvider>
+        )}
+      </div>
+    </CardPrimitive>
   );
 };
