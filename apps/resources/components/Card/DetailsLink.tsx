@@ -7,11 +7,28 @@ import { ContentType } from '../../lib/resources';
 interface Props {
   resourceId: number;
   resourceType: ContentType;
+  resourceLink?: string;
 }
 
-export const DetailsLink = ({ resourceId, resourceType }: Props) => {
+export const DetailsLink = ({
+  resourceId,
+  resourceType,
+  resourceLink,
+}: Props) => {
   const pathname = usePathname();
-  if (pathname === `/resources/${resourceType}-${resourceId}`) return null;
+  const isDetailPage = pathname === `/resources/${resourceType}-${resourceId}`;
+  if (isDetailPage && !resourceLink) return null;
+  if (isDetailPage && resourceLink) {
+    return (
+      <Link
+        href={resourceLink}
+        target="_blank"
+        rel="noopener"
+        className="absolute inset-0"
+      />
+    );
+  }
+
   return (
     <Link
       href={`/resources/${resourceType}-${resourceId}`}
