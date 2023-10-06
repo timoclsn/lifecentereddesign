@@ -16,14 +16,12 @@ export const addCollection = createAction({
       throw new Error('Unauthorized');
     }
 
-    return createCollection({
+    const collection = await createCollection({
       userId,
       title,
       description,
     });
-  },
-  onSuccess: (collection) => {
-    if (!collection) return;
+
     revalidateTag('collections');
     redirect(`/collections/${collection.id}`);
   },

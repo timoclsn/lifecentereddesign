@@ -29,8 +29,7 @@ export const deleteCollection = createAction({
     }
 
     await removeCollection(collectionId);
-  },
-  onSuccess: () => {
+
     revalidateTag('collections');
     redirect('/collections');
   },

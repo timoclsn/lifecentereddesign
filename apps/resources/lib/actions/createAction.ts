@@ -36,8 +36,6 @@ interface CreateActionOptions<
     input: z.input<TInputSchema>;
     ctx: { userId: string | null };
   }) => void | TResponse | Promise<void> | Promise<TResponse>;
-  onSuccess?: (response: TResponse | null) => void;
-  onError?: (error: string) => void;
 }
 
 export const createAction = <
@@ -62,45 +60,30 @@ export const createAction = <
       parsedInput = result.data;
     }
 
-    let result: Result<TResponse> = {
-      data: null,
-      error: null,
-    };
-
     try {
       const { userId } = auth();
       const response = await opts.action({
         input: parsedInput,
         ctx: { userId },
       });
-      result = {
+      return {
         data: response ?? null,
         error: null,
       };
     } catch (error) {
       const errorString = getErrorMessage(error);
-      if (errorString === 'NEXT_REDIRECT') {
-        result = {
-          data: null,
-          error: null,
-        };
-      } else {
-        result = {
-          data: null,
-          error: errorString,
-        };
+
+      // next/navigation functions work by throwing an error that will be
+      // processed internally by Next.js. So, in this case we need to rethrow it.
+      if (errorString === 'NEXT_REDIRECT' || errorString == 'NEXT_NOT_FOUND') {
+        throw error;
       }
-    }
 
-    // Needed because calling redirect() in server action throws an error
-    // So we need a way to call redirect outise of the try catch block
-    if (!result.error) {
-      opts.onSuccess?.(result.data);
-    } else {
-      opts.onError?.(result.error);
+      return {
+        data: null,
+        error: errorString,
+      };
     }
-
-    return result;
   };
 
   return serverAction as BrandedServerAction<TInputSchema, TInput, TResponse>;
