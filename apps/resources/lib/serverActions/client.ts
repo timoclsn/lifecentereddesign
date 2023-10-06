@@ -97,13 +97,23 @@ export const useAction = <
             options.onSuccess?.(result.data);
           }
         } catch (error) {
-          const errorMessage = 'Something went wrong. Please try again.';
+          const errorMessage = getErrorMessage(error);
+          // next/navigation functions work by throwing an error that will be
+          // processed internally by Next.js. So, in this case we need to rethrow it.
+          if (
+            errorMessage === 'NEXT_REDIRECT' ||
+            errorMessage == 'NEXT_NOT_FOUND'
+          ) {
+            throw error;
+          }
+
+          const userErrorMessage = 'Something went wrong. Please try again.';
           dispatch({
             type: 'IS_ERROR',
-            error: errorMessage,
+            error: userErrorMessage,
           });
-          options.onError?.(errorMessage);
-          console.log(getErrorMessage(error));
+          options.onError?.(userErrorMessage);
+          console.log(errorMessage);
         }
 
         options.onSettled?.();
