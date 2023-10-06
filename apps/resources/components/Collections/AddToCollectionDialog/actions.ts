@@ -1,6 +1,6 @@
 'use server';
 
-import { createAction } from 'lib/actions/createAction';
+import { createProtectedAction } from 'lib/serverActions/create';
 import { collectionTag, resourceCollectionsTag } from 'lib/cache';
 import {
   addCollectionItem,
@@ -11,7 +11,7 @@ import { resourceTypes } from 'lib/resources';
 import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 
-export const addToCollection = createAction({
+export const addToCollection = createProtectedAction({
   input: z.object({
     collectionId: z.number(),
     resourceId: z.number(),
@@ -20,10 +20,6 @@ export const addToCollection = createAction({
   action: async ({ input, ctx }) => {
     const { collectionId, resourceId, resourceType } = input;
     const { userId } = ctx;
-
-    if (!userId) {
-      throw new Error('Unauthorized');
-    }
 
     const collection = await getCollection(collectionId);
 
@@ -42,7 +38,7 @@ export const addToCollection = createAction({
   },
 });
 
-export const removeFromCollection = createAction({
+export const removeFromCollection = createProtectedAction({
   input: z.object({
     collectionId: z.number(),
     resourceId: z.number(),
@@ -51,10 +47,6 @@ export const removeFromCollection = createAction({
   action: async ({ input, ctx }) => {
     const { collectionId, resourceId, resourceType } = input;
     const { userId } = ctx;
-
-    if (!userId) {
-      throw new Error('Unauthorized');
-    }
 
     const collection = await getCollection(collectionId);
 

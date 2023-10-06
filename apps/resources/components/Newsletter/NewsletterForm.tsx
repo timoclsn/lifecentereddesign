@@ -13,7 +13,7 @@ import {
 import { useEffect } from 'react';
 import { Controller, SubmitHandler } from 'react-hook-form';
 import { useZodForm } from '../../hooks/useZodForm';
-import { useAction } from '../../lib/actions/useAction';
+import { useAction } from '../../lib/serverActions/client';
 import {
   checkboxStyles,
   errorStyles,

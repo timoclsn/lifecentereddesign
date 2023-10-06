@@ -2,7 +2,7 @@
 
 import { addToCollection } from 'components/Collections/AddToCollectionDialog/actions';
 import { Button } from 'design-system';
-import { useAction } from 'lib/actions/useAction';
+import { useAction } from 'lib/serverActions/client';
 import { ContentType } from 'lib/resources';
 
 interface Props {

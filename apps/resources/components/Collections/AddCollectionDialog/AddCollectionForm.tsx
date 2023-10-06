@@ -3,7 +3,7 @@
 import { cva } from 'class-variance-authority';
 import { Button, InfoBox } from 'design-system';
 import { useZodForm } from 'hooks/useZodForm';
-import { useAction } from 'lib/actions/useAction';
+import { useAction } from 'lib/serverActions/client';
 import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { SubmitHandler } from 'react-hook-form';
 import { addCollection } from './actions';

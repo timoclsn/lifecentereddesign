@@ -1,7 +1,7 @@
 'use client';
 
 import { Loader2, Trash2 } from 'lucide-react';
-import { useAction } from '../../lib/actions/useAction';
+import { useAction } from '../../lib/serverActions/client';
 import { deleteComment } from './actions';
 import { ContentType } from '../../lib/resources';
 import { Alert } from 'design-system';

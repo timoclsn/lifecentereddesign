@@ -2,7 +2,7 @@
 
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { cva } from 'class-variance-authority';
-import { useAction } from 'lib/actions/useAction';
+import { useAction } from 'lib/serverActions/client';
 import { ContentType } from 'lib/resources';
 import { Check } from 'lucide-react';
 import { experimental_useOptimistic as useOptimistic } from 'react';

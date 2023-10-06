@@ -10,7 +10,7 @@ import {
   inputStyles,
 } from '../../../components/ForrestSection/ForrestSection';
 import { useZodForm } from '../../../hooks/useZodForm';
-import { useAction } from '../../../lib/actions/useAction';
+import { useAction } from '../../../lib/serverActions/client';
 import { submit } from './actions';
 import { SuggestionFormSchema, suggestionFormSchema } from './schemas';
 

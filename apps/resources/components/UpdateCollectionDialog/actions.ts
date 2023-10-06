@@ -1,15 +1,15 @@
 'use server';
 
 import { addCollectionSchema } from 'components/Collections/AddCollectionDialog/schemas';
-import { createAction } from 'lib/actions/createAction';
+import { createProtectedAction } from 'lib/serverActions/create';
 import {
-  getCollection,
   updateCollection as dbUpdateCollection,
+  getCollection,
 } from 'lib/collections';
 import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 
-export const updateCollection = createAction({
+export const updateCollection = createProtectedAction({
   input: addCollectionSchema.merge(
     z.object({
       collectionId: z.number(),
@@ -18,10 +18,6 @@ export const updateCollection = createAction({
   action: async ({ ctx, input }) => {
     const { collectionId, title, description } = input;
     const { userId } = ctx;
-
-    if (!userId) {
-      throw new Error('Unauthorized');
-    }
 
     const collection = await getCollection(collectionId);
 

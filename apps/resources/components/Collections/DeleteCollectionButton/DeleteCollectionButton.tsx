@@ -1,7 +1,7 @@
 'use client';
 
 import { Alert, Button } from 'design-system';
-import { useAction } from 'lib/actions/useAction';
+import { useAction } from 'lib/serverActions/client';
 import { useRouter } from 'next/navigation';
 import { deleteCollection } from './actions';
 

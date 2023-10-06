@@ -1,7 +1,7 @@
 import { useCallback, useReducer, useTransition } from 'react';
 import { z } from 'zod';
 import { getErrorMessage } from '../utils';
-import { BrandedServerAction, InferInputType } from './createAction';
+import { BrandedServerAction, InferInputType } from './server';
 
 interface State<TResponse extends any> {
   isIdle: boolean;

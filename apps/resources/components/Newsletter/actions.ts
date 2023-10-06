@@ -1,9 +1,9 @@
 'use server';
 
+import { createAction } from 'lib/serverActions/create';
 import { z } from 'zod';
-import { createAction } from '../../lib/actions/createAction';
-import { newsletterFormSchema } from './schemas';
 import { getErrorMessage } from '../../lib/utils';
+import { newsletterFormSchema } from './schemas';
 
 const envSchema = z.object({
   MAILCHIMP_API_KEY: z.string(),

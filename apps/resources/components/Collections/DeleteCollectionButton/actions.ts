@@ -1,22 +1,18 @@
 'use server';
 
-import { createAction } from 'lib/actions/createAction';
+import { createProtectedAction } from 'lib/serverActions/create';
 import { getCollection, removeCollection } from 'lib/collections';
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
-export const deleteCollection = createAction({
+export const deleteCollection = createProtectedAction({
   input: z.object({
     collectionId: z.number(),
   }),
   action: async ({ input, ctx }) => {
     const { collectionId } = input;
     const { userId } = ctx;
-
-    if (!userId) {
-      throw new Error('Unauthorized');
-    }
 
     const collection = await getCollection(collectionId);
 

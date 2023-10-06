@@ -1,7 +1,7 @@
 'use server';
 
+import { createAction } from 'lib/serverActions/create';
 import nodemailer from 'nodemailer';
-import { createAction } from '../../../lib/actions/createAction';
 import { envSchema, suggestionFormSchema } from './schemas';
 
 const { SUGGESTION_MAIL_PASSWORD } = envSchema.parse(process.env);
