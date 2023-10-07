@@ -1,5 +1,9 @@
 import { z } from 'zod';
-import { getErrorMessage } from '../utils';
+import {
+  getErrorMessage,
+  isNextNotFoundError,
+  isNextRedirectError,
+} from '../utils';
 
 type MaybePromise<T> = Promise<T> | T;
 
@@ -61,20 +65,20 @@ export const createActionClient = <Context>(createClientOpts?: {
           error: null,
         };
       } catch (error) {
-        const errorString = getErrorMessage(error);
+        const errorMessage = getErrorMessage(error);
 
         // next/navigation functions work by throwing an error that will be
         // processed internally by Next.js. So, in this case we need to rethrow it.
         if (
-          errorString === 'NEXT_REDIRECT' ||
-          errorString == 'NEXT_NOT_FOUND'
+          isNextRedirectError(errorMessage) ||
+          isNextNotFoundError(errorMessage)
         ) {
           throw error;
         }
 
         return {
           data: null,
-          error: errorString,
+          error: errorMessage,
         };
       }
     };

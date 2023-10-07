@@ -1,6 +1,10 @@
 import { useCallback, useReducer, useTransition } from 'react';
 import { z } from 'zod';
-import { getErrorMessage } from '../utils';
+import {
+  getErrorMessage,
+  isNextNotFoundError,
+  isNextRedirectError,
+} from '../utils';
 import { InferInputType, ServerAction } from './server';
 
 interface State<TResponse extends any> {
@@ -98,11 +102,12 @@ export const useAction = <
           }
         } catch (error) {
           const errorMessage = getErrorMessage(error);
+
           // next/navigation functions work by throwing an error that will be
           // processed internally by Next.js. So, in this case we need to rethrow it.
           if (
-            errorMessage === 'NEXT_REDIRECT' ||
-            errorMessage == 'NEXT_NOT_FOUND'
+            isNextRedirectError(errorMessage) ||
+            isNextNotFoundError(errorMessage)
           ) {
             throw error;
           }
