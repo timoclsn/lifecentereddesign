@@ -1,3 +1,4 @@
+import { track } from 'lib/tracking';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
 import { useResourcesTable } from '../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
@@ -56,39 +57,39 @@ export const useFilter = () => {
 
     // Tracking
     if (param === 'type') {
-      splitbee.track('Filter resources by type', {
+      track('Filter resources by type', {
         type: value,
       });
     }
 
     if (param === 'category') {
-      splitbee.track('Filter resources by category', {
+      track('Filter resources by category', {
         category: value,
       });
     }
 
     if (param === 'topic') {
-      splitbee.track('Filter resources by topic', {
+      track('Filter resources by topic', {
         topic: value,
       });
     }
 
     if (param === 'sort') {
-      splitbee.track('Sort resources', {
+      track('Sort resources', {
         by: value,
       });
     }
 
     if (param === 'likes') {
-      splitbee.track('Toggle filter resources by likes');
+      track('Toggle filter resources by likes', {});
     }
 
     if (param === 'comments') {
-      splitbee.track('Toggle filter resources by comments');
+      track('Toggle filter resources by comments', {});
     }
 
     if (param === 'limit') {
-      splitbee.track('Show more resources', {
+      track('Show more resources', {
         count: parseInt(value),
       });
     }

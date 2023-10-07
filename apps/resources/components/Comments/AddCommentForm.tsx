@@ -10,6 +10,7 @@ import { useAction } from '../../lib/serverActions/client';
 import { ContentType } from '../../lib/resources';
 import { addComment } from './actions';
 import { textSchema } from './schemas';
+import { track } from 'lib/tracking';
 
 const inputStyles = cva(
   'px-8 py-4 text-base text-text-secondary bg-ghost-main-dark-bg outline-none w-full ring-inset',
@@ -46,7 +47,10 @@ export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
         document.activeElement.blur();
       }
 
-      splitbee.track('Comment Added');
+      track('Comment Added', {
+        id: resourceId,
+        type: resourceType,
+      });
     },
     onError: () => {
       setFocus('text', { shouldSelect: true });

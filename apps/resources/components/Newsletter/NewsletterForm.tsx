@@ -3,6 +3,7 @@
 import { useUser } from '@clerk/nextjs';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { Button, InfoBox } from 'design-system';
+import { track } from 'lib/tracking';
 import {
   AlertTriangle,
   Check,
@@ -46,7 +47,7 @@ export const NewsletterForm = () => {
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur();
       }
-      splitbee.track('Newsletter Signup');
+      track('Newsletter Signup', {});
     },
     onError: () => {
       setFocus('email', { shouldSelect: true });

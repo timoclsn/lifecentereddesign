@@ -2,6 +2,7 @@
 
 import { useUser } from '@clerk/nextjs';
 import { Button, InfoBox } from 'design-system';
+import { track } from 'lib/tracking';
 import { AlertTriangle, CheckCircle2, Loader2, Mail } from 'lucide-react';
 import { useEffect } from 'react';
 import { SubmitHandler } from 'react-hook-form';
@@ -22,7 +23,7 @@ export const SuggestionForm = () => {
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur();
       }
-      splitbee.track('Resource Suggestion');
+      track('Resource Suggestion', {});
     },
     onError: () => {
       setFocus('link', { shouldSelect: true });

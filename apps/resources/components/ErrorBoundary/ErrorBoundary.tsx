@@ -1,5 +1,7 @@
 'use client';
 
+import { track } from 'lib/tracking';
+import { getErrorMessage } from 'lib/utils';
 import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
@@ -21,8 +23,9 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    const errorMEssage = getErrorMessage(error);
     console.error('Uncaught error:', error, errorInfo);
-    splitbee.track('Uncaught error', { error, errorInfo });
+    track('Uncaught error', { message: errorMEssage });
   }
 
   public render() {

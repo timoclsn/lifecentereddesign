@@ -1,5 +1,6 @@
 'use client';
 
+import { track } from 'lib/tracking';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { ContentType } from '../../lib/resources';
@@ -24,7 +25,7 @@ export const ResourceLink = ({
       rel="noopener"
       className="relative hover:opacity-80"
       onClick={() => {
-        splitbee.track('Open resource', {
+        track('Open resource', {
           type: resourceType,
           name: resourceTitle,
         });

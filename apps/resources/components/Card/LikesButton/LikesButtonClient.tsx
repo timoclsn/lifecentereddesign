@@ -4,6 +4,7 @@ import { useAuth } from '@clerk/nextjs';
 import { cva } from 'class-variance-authority';
 import { Tooltip } from 'design-system';
 import { useAction } from 'lib/serverActions/client';
+import { track } from 'lib/tracking';
 import { Heart } from 'lucide-react';
 import { experimental_useOptimistic as useOptimistic } from 'react';
 import { ContentType } from '../../../lib/resources';
@@ -50,7 +51,7 @@ export const LikesButtonClient = ({
         }
       },
       onSuccess: () => {
-        splitbee.track('Like resource', {
+        track('Like resource', {
           type: resourceType,
           name: resourceTitle,
         });
@@ -67,7 +68,7 @@ export const LikesButtonClient = ({
         }
       },
       onSuccess: () => {
-        splitbee.track('Un-like resource', {
+        track('Un-like resource', {
           type: resourceType,
           name: resourceTitle,
         });
