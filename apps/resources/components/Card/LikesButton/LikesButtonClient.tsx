@@ -3,7 +3,7 @@
 import { useAuth } from '@clerk/nextjs';
 import { cva } from 'class-variance-authority';
 import { Tooltip } from 'design-system';
-import { useAction } from 'lib/actions/useAction';
+import { useAction } from 'lib/serverActions/client';
 import { Heart } from 'lucide-react';
 import { experimental_useOptimistic as useOptimistic } from 'react';
 import { ContentType } from '../../../lib/resources';

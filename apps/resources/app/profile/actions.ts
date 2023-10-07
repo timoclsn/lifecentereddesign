@@ -1,17 +1,13 @@
 'use server';
 
 import { clerkClient } from '@clerk/nextjs';
+import { createProtectedAction } from 'lib/serverActions/create';
 import { revalidatePath } from 'next/cache';
-import { createAction } from '../../lib/actions/createAction';
 import { deleteUserData } from '../../lib/resources';
 
-export const deleteAccount = createAction({
+export const deleteAccount = createProtectedAction({
   action: async ({ ctx }) => {
     const { userId } = ctx;
-
-    if (!userId) {
-      throw new Error('You must be logged in to delete your account.');
-    }
 
     try {
       await clerkClient.users.deleteUser(userId);

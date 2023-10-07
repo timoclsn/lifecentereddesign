@@ -1,6 +1,6 @@
 import { Prisma } from 'database';
 import { prisma } from './prisma';
-import { withUser } from './users';
+import { withUserCollection } from './users';
 
 export const resourceTypes = [
   'thoughtleader',
@@ -431,7 +431,7 @@ export const getResourceComments = async (id: number, type: ContentType) => {
     },
   });
 
-  return withUser(comments);
+  return withUserCollection(comments);
 };
 
 export const getCommentsCount = async (id: number, type: ContentType) => {

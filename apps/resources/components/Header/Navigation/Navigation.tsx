@@ -25,6 +25,9 @@ export const Navigation = () => {
         <li>
           <NavigationLink href="/resources">Resources</NavigationLink>
         </li>
+        {/* <li>
+          <NavigationLink href="/collections">Collections</NavigationLink>
+        </li> */}
         <li>
           <UserButton />
         </li>

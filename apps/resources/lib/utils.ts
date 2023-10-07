@@ -45,6 +45,12 @@ export const getErrorMessage = (error: unknown): string => {
   }
 };
 
+export const isNextRedirectError = (message: string) =>
+  message === 'NEXT_REDIRECT';
+
+export const isNextNotFoundError = (message: string) =>
+  message === 'NEXT_NOT_FOUND';
+
 export const parseResourceSlug = (slug: string) => {
   const [resourceType, resourceId] = slug.split('-');
   return {

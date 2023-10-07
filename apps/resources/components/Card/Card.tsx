@@ -1,3 +1,4 @@
+import { auth } from '@clerk/nextjs';
 import {
   Card as CardPrimitive,
   CardProps,
@@ -10,6 +11,7 @@ import { ExternalLink, LucideIcon, StickyNote, Users2 } from 'lucide-react';
 import { ReactNode } from 'react';
 import { ContentType } from '../../lib/resources';
 import { CategoryButton } from './CategoryButton';
+import { CollectionButton } from './CollectionButton';
 import { CommentsButton } from './CommentsButton/CommentsButton';
 import { CopyButton } from './CopyButton';
 import { DetailsLink } from './DetailsLink';
@@ -56,6 +58,7 @@ export const Card = ({
   note,
 }: Props) => {
   const resourceLink = tags?.at(0)?.url;
+  const { userId } = auth();
 
   return (
     <CardPrimitive
@@ -149,6 +152,14 @@ export const Card = ({
           {description && (
             <Text className="text-text-secondary">{description}</Text>
           )}
+
+          {/* Add to collection */}
+          {/* {userId && (
+            <CollectionButton
+              resourceId={resourceId}
+              resourceType={resourceType}
+            />
+          )} */}
         </div>
       </div>
 

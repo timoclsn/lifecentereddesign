@@ -6,7 +6,7 @@ import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { useZodForm } from '../../hooks/useZodForm';
-import { useAction } from '../../lib/actions/useAction';
+import { useAction } from '../../lib/serverActions/client';
 import { ContentType } from '../../lib/resources';
 import { addComment } from './actions';
 import { textSchema } from './schemas';
@@ -55,7 +55,7 @@ export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors },
     reset,
     setFocus,
   } = useZodForm({

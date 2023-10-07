@@ -1,6 +1,11 @@
 import { unstable_cache as nextCache } from 'next/cache';
 import { cache as reactCache } from 'react';
 import {
+  getCollection,
+  getCollections,
+  getResourceCollections,
+} from './collections';
+import {
   ContentType,
   getCategories,
   getCommentedResources,
@@ -106,3 +111,40 @@ export const getResourceCommentsCountCached = reactCache(
     )(resourceId, resourceType);
   },
 );
+
+// All collections
+
+export const getCollectionsCached = reactCache(async () => {
+  const tag = 'collections';
+  return await nextCache(getCollections, [tag], {
+    revalidate: 60,
+    tags: [tag],
+  })();
+});
+
+export const resourceCollectionsTag = (resourceId: number, type: ContentType) =>
+  `resource-collections-${resourceId}-${type}`;
+
+export const getResourceCollectionsCached = reactCache(
+  async (resourceId: number, resourceType: ContentType) => {
+    return await nextCache(
+      getResourceCollections,
+      [resourceCollectionsTag(resourceId, resourceType)],
+      {
+        revalidate: 60,
+        tags: [resourceCollectionsTag(resourceId, resourceType)],
+      },
+    )(resourceId, resourceType);
+  },
+);
+
+// Single collection
+
+export const collectionTag = (id: number) => `collection-${id}`;
+
+export const getCollectionCached = reactCache(async (id: number) => {
+  return await nextCache(getCollection, [collectionTag(id)], {
+    revalidate: 60,
+    tags: [collectionTag(id)],
+  })(id);
+});
