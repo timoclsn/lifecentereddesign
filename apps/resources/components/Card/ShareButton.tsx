@@ -1,6 +1,7 @@
 'use client';
 
 import { Tag, Tooltip } from 'design-system';
+import { track } from 'lib/tracking';
 import { Check, Share } from 'lucide-react';
 import { useState } from 'react';
 import { ContentType } from '../../lib/resources';
@@ -35,7 +36,9 @@ export const ShareButton = ({ title, resourceId, resourceType }: Props) => {
       setCopied(false);
     }
 
-    splitbee.track(tooltip);
+    track('Share Resource Link', {
+      link,
+    });
   };
 
   return (

@@ -4,6 +4,7 @@ import { Tag, Tooltip } from 'design-system';
 import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
 import { wait } from '../../lib/utils';
+import { track } from 'lib/tracking';
 
 interface Props {
   link: string;
@@ -17,7 +18,9 @@ export const CopyButton = ({ link }: Props) => {
     if (!navigator.clipboard) return;
     setCopied(true);
     navigator.clipboard.writeText(link);
-    splitbee.track(tooltip);
+    track('Copy Resource Link', {
+      link,
+    });
     await wait(3000);
     setCopied(false);
   };

@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from 'design-system';
+import { track } from 'lib/tracking';
 import { Download } from 'lucide-react';
 
 interface Props {
@@ -14,7 +15,7 @@ export const DownloadButtonClient = ({ csv }: Props) => {
       size="large"
       onClick={() => {
         downloadCsv(csv, 'lifecentereddesign-net-resources.csv');
-        splitbee.track('Download Resources');
+        track('Download Resources', {});
       }}
     >
       <Download />
