@@ -1,7 +1,7 @@
 import { useCallback, useReducer, useTransition } from 'react';
 import { z } from 'zod';
 import { getErrorMessage } from '../utils';
-import { BrandedServerAction, InferInputType } from './server';
+import { InferInputType, ServerAction } from './server';
 
 interface State<TResponse extends any> {
   isIdle: boolean;
@@ -58,7 +58,7 @@ export const useAction = <
   TInput extends TInputSchema | undefined,
   TResponse extends any,
 >(
-  inputAction: BrandedServerAction<TInputSchema, TInput, TResponse>,
+  inputAction: ServerAction<TInputSchema, TInput, TResponse>,
   options: {
     onRunAction?: (input: InferInputType<TInputSchema, TInput>) => void;
     onSuccess?: (data: TResponse | null) => void;

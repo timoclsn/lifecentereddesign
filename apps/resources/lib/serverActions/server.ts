@@ -13,48 +13,27 @@ interface Result<TResponse> {
   error: string | null;
 }
 
-type ServerAction<
+export type ServerAction<
   TInputSchema extends z.ZodTypeAny,
   TInput extends TInputSchema | undefined,
   TResponse,
 > = (input: InferInputType<TInputSchema, TInput>) => Promise<Result<TResponse>>;
 
-declare const brand: unique symbol;
-type Brand<T, TBrand extends string> = T & { [brand]: TBrand };
-
-export type BrandedServerAction<
-  TInputSchema extends z.ZodTypeAny,
-  TInput extends TInputSchema | undefined,
-  TResponse extends any,
-> = Brand<ServerAction<TInputSchema, TInput, TResponse>, 'ServerAction'>;
-
-interface CreateActionClientOptions<Context> {
+export const createActionClient = <Context>(createClientOpts?: {
   middleware?: () => MaybePromise<Context>;
-}
-
-export interface ActionBuilderOptions<
-  TInputSchema extends z.ZodTypeAny,
-  TResponse extends any,
-  Context,
-> {
-  input?: TInputSchema;
-  action: (args: {
-    input: z.input<TInputSchema>;
-    ctx: Context;
-  }) => MaybePromise<void> | MaybePromise<TResponse>;
-}
-
-export const createActionClient = <Context>(
-  createClientOpts?: CreateActionClientOptions<Context>,
-) => {
+}) => {
   const actionBuilder = <
     TInputSchema extends z.ZodTypeAny,
     TInput extends TInputSchema | undefined,
     TResponse extends any,
-  >(
-    actionBuilderOpts: ActionBuilderOptions<TInputSchema, TResponse, Context>,
-  ) => {
-    const serverAction: ServerAction<TInputSchema, TInput, TResponse> = async (
+  >(actionBuilderOpts: {
+    input?: TInputSchema;
+    action: (args: {
+      input: z.input<TInputSchema>;
+      ctx: Context;
+    }) => MaybePromise<void> | MaybePromise<TResponse>;
+  }) => {
+    const createAction: ServerAction<TInputSchema, TInput, TResponse> = async (
       input,
     ) => {
       try {
@@ -76,6 +55,7 @@ export const createActionClient = <Context>(
           input: parsedInput,
           ctx,
         });
+
         return {
           data: response ?? null,
           error: null,
@@ -99,7 +79,7 @@ export const createActionClient = <Context>(
       }
     };
 
-    return serverAction as BrandedServerAction<TInputSchema, TInput, TResponse>;
+    return createAction;
   };
 
   return actionBuilder;
