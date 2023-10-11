@@ -2,21 +2,34 @@
 
 import * as Dialog from '@radix-ui/react-dialog';
 import { Heading, Link, Text } from 'design-system';
+import { track } from 'lib/tracking';
 import { ArrowRight, Leaf, X } from 'lucide-react';
-import { demoResult } from '../../../lib/co2';
+import { useState } from 'react';
 import styles from './CO2Badge.module.css';
 
-export function CO2Badge() {
-  const co2Consumption = demoResult;
+interface Props {
+  co2: number;
+  cleanerThan: number;
+}
+
+export const CO2Badge = ({ co2, cleanerThan }: Props) => {
+  const [open, setOpen] = useState(false);
+
+  const onOpenChange = (open: boolean) => {
+    if (open) {
+      track('Open CO2 Badge', {});
+    }
+    setOpen(open);
+  };
   return (
-    <Dialog.Root>
-      <Dialog.Trigger className="bg-lime group flex items-center gap-1 rounded-b-lg px-4 py-2 font-bold">
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+      <Dialog.Trigger className="bg-lime animate-in slide-in-from-top-full group flex items-center gap-1 rounded-b-lg px-4 py-2 font-bold transition-transform duration-200 ease-in-out">
         <Leaf
           size={22}
           className="transition-transform group-hover:scale-110"
         />
         <Text>
-          <span className="font-bold">{co2Consumption.co2} g</span> of CO
+          <span className="font-bold">{co2} g</span> of CO
           <sub>2</sub>
         </Text>
       </Dialog.Trigger>
@@ -37,10 +50,9 @@ export function CO2Badge() {
             <div className="prose text-text-primary">
               <p>
                 Everytime someone opens this website{' '}
-                <strong>{co2Consumption.co2} g of CO2</strong> are produced.
-                This site is{' '}
-                <strong>cleaner than {co2Consumption.cleanerThan} %</strong> of
-                web pages tested on the{' '}
+                <strong>{co2} g of CO2</strong> are produced. This site is{' '}
+                <strong>cleaner than {cleanerThan} %</strong> of web pages
+                tested on the{' '}
                 <Link url="https://www.websitecarbon.com" external>
                   Website Carbon Calculator
                 </Link>
@@ -66,4 +78,4 @@ export function CO2Badge() {
       </Dialog.Portal>
     </Dialog.Root>
   );
-}
+};

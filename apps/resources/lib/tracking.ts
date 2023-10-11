@@ -46,6 +46,7 @@ interface TrackingEvents {
   'Show more resources': {
     count: number;
   };
+  'Open CO2 Badge': {};
 }
 
 export const track = <TEventKey extends keyof TrackingEvents>(
