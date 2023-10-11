@@ -61,10 +61,10 @@ export const CO2Badge = ({ co2, cleanerThan }: Props) => {
               <p>What we considered to make this page as clean as possible:</p>
               <ul>
                 <li>Focus on text (instead of video or audio)</li>
-                <li>Use static page generation</li>
+                <li>Server rendered and streamed to the browser</li>
                 <li>Serve from edge CDN</li>
                 <li>Self-host optimized font file in modern file format</li>
-                <li>Focus on page speed</li>
+                <li>Focus on page speed and Core Web Vitals</li>
               </ul>
             </div>
             <div className="mt-4 flex gap-4 font-bold">
