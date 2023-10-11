@@ -1,15 +1,4 @@
 import { z } from 'zod';
-import { fetcher } from './fetcher';
-
-// eslint-disable-next-line turbo/no-undeclared-env-vars
-const env = z.string().parse(process.env.NODE_ENV);
-
-export const demoResult = {
-  co2: 0.14,
-  cleanerThan: 87,
-};
-
-export type CO2 = typeof demoResult;
 
 const wccSchema = z.object({
   url: z.string().url(),
@@ -33,25 +22,17 @@ const wccSchema = z.object({
   timestamp: z.number(),
 });
 
-export async function getCO2Consumtion(url: string) {
-  if (env === 'development') {
-    return demoResult;
-  }
+export const getCO2Consumtion = async (url: string) => {
+  const response = await fetch(`https://api.websitecarbon.com/site?url=${url}`);
+  const result = await response.json();
 
-  const result = await fetcher(`https://api.websitecarbon.com/site?url=${url}`);
-  const parsedResult = wccSchema.safeParse(result);
+  const parsedResult = wccSchema.parse(result);
 
-  if (!parsedResult.success) {
-    console.log(parsedResult.error);
-    return demoResult;
-  }
-
-  const co2 =
-    Math.round(parsedResult.data.statistics.co2.grid.grams * 100) / 100;
-  const cleanerThan = Math.round(parsedResult.data.cleanerThan * 100);
+  const co2 = Math.round(parsedResult.statistics.co2.grid.grams * 100) / 100;
+  const cleanerThan = Math.round(parsedResult.cleanerThan * 100);
 
   return {
     co2,
     cleanerThan,
   };
-}
+};
