@@ -154,12 +154,12 @@ export const Card = ({
           )}
 
           {/* Add to collection */}
-          {userId && (
+          {/* {userId && (
             <CollectionButton
               resourceId={resourceId}
               resourceType={resourceType}
             />
-          )}
+          )} */}
         </div>
       </div>
 

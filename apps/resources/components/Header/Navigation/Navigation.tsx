@@ -25,9 +25,9 @@ export const Navigation = () => {
         <li>
           <NavigationLink href="/resources">Resources</NavigationLink>
         </li>
-        <li>
+        {/* <li>
           <NavigationLink href="/collections">Collections</NavigationLink>
-        </li>
+        </li> */}
         <li>
           <UserButton />
         </li>
