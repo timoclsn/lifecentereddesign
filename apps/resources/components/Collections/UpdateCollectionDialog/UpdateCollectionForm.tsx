@@ -32,17 +32,19 @@ interface Props {
   collectionId: number;
   title: string;
   description: string;
+  onSuccess?: () => void;
 }
 
 export const UpdateCollectionForm = ({
   collectionId,
   title,
   description,
+  onSuccess,
 }: Props) => {
   const { back } = useRouter();
   const { error, runAction, isRunning } = useAction(updateCollection, {
     onSuccess: () => {
-      back();
+      onSuccess?.();
     },
   });
   const {
