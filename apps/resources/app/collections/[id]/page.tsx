@@ -1,12 +1,11 @@
 import { auth } from '@clerk/nextjs';
 import { Resources } from 'app/resources/Resources/Resources';
 import { Await } from 'components/Await/Await';
-import { Page } from 'components/Page/Page';
-import { Heading, Text } from 'design-system';
+import { UpdateCollectionDialog } from 'components/Collections/UpdateCollectionDialog/UpdateCollectionDialog';
+import { Button, Heading, Text } from 'design-system';
 import { getCollectionCached } from 'lib/cache';
 import { SearchParams } from 'lib/types';
 import { DeleteCollectionButton } from '../../../components/Collections/DeleteCollectionButton/DeleteCollectionButton';
-import { UpdateBollectionButton } from '../../../components/Collections/UpdateBollectionButton';
 
 interface Props {
   params: {
@@ -21,12 +20,14 @@ const CollectionPage = async ({ params, searchParams }: Props) => {
   const { userId } = auth();
 
   return (
-    <Page searchParams={searchParams}>
+    <>
       <div>
         <Heading>Collection Page</Heading>
         {userId && (
           <div className="flex flex-col items-start gap-4">
-            <UpdateBollectionButton collectionId={Number(id)} />
+            <UpdateCollectionDialog collectionId={Number(id)}>
+              <Button>Update Collection</Button>
+            </UpdateCollectionDialog>
             <DeleteCollectionButton collectionId={Number(id)} />
           </div>
         )}
@@ -69,7 +70,7 @@ const CollectionPage = async ({ params, searchParams }: Props) => {
           );
         }}
       </Await>
-    </Page>
+    </>
   );
 };
 

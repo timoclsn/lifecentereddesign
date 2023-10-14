@@ -1,7 +1,8 @@
 'use client';
 
-import { AddToCollectionButton } from 'components/Collections/AddToCollectionButton';
+import { AddToCollectionDialog } from 'components/Collections/AddToCollectionDialog/AddToCollectionDialog';
 import { AddToThisCollectionButton } from 'components/Collections/AddToThisCollectionButton';
+import { Button } from 'design-system';
 import { ContentType } from 'lib/resources';
 import { usePathname } from 'next/navigation';
 
@@ -26,10 +27,12 @@ export const CollectionButton = ({ resourceId, resourceType }: Props) => {
           resourceType={resourceType}
         />
       ) : (
-        <AddToCollectionButton
+        <AddToCollectionDialog
           resourceId={resourceId}
           resourceType={resourceType}
-        />
+        >
+          <Button>Add to collection</Button>
+        </AddToCollectionDialog>
       )}
     </div>
   );

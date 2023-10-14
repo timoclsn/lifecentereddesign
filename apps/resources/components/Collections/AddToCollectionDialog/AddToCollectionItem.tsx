@@ -31,6 +31,7 @@ interface Props {
   checked: Checked;
   resourceId: number;
   resourceType: ContentType;
+  onChange?: () => void;
 }
 
 export const AddToCollectionItem = ({
@@ -39,15 +40,22 @@ export const AddToCollectionItem = ({
   checked,
   resourceId,
   resourceType,
+  onChange,
 }: Props) => {
   const [optimisticChecked, updateOptimisticChecked] = useOptimistic(
     checked,
     (_, newState) => newState as Checked,
   );
-  const { runAction: runAddToCollection, isRunning: addIsRunning } =
-    useAction(addToCollection);
+  const { runAction: runAddToCollection, isRunning: addIsRunning } = useAction(
+    addToCollection,
+    {
+      onSettled: onChange,
+    },
+  );
   const { runAction: runRemoveFromCollection, isRunning: removeIsRunning } =
-    useAction(removeFromCollection);
+    useAction(removeFromCollection, {
+      onSettled: onChange,
+    });
   const isRunning = addIsRunning || removeIsRunning;
 
   const onCheckedChange = async (checked: Checked) => {

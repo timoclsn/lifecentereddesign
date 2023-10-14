@@ -5,11 +5,14 @@ import { createCollection } from 'lib/collections';
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { addCollectionSchema } from './schemas';
+import { z } from 'zod';
 
 export const addCollection = createProtectedAction({
-  input: addCollectionSchema,
+  input: addCollectionSchema.extend({
+    goToCollection: z.boolean().optional(),
+  }),
   action: async ({ input, ctx }) => {
-    const { title, description } = input;
+    const { title, description, goToCollection } = input;
     const { userId } = ctx;
 
     const collection = await createCollection({
@@ -19,6 +22,9 @@ export const addCollection = createProtectedAction({
     });
 
     revalidateTag('collections');
-    redirect(`/collections/${collection.id}`);
+
+    if (goToCollection) {
+      redirect(`/collections/${collection.id}`);
+    }
   },
 });
