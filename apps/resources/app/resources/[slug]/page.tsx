@@ -1,5 +1,3 @@
-import { Page } from 'components/Page/Page';
-import { SearchParams } from 'lib/types';
 import { Comments } from '../../../components/Comments/Comments';
 import { NewResources } from '../../../components/NewResources/NewResources';
 import { Newsletter } from '../../../components/Newsletter/Newsletter';
@@ -57,21 +55,20 @@ interface Props {
   params: {
     slug: string;
   };
-  searchParams: SearchParams;
 }
 
-const ResourcePage = async ({ params, searchParams }: Props) => {
+const ResourcePage = async ({ params }: Props) => {
   const { slug } = params;
   const { resourceId, resourceType } = parseResourceSlug(slug);
 
   return (
-    <Page searchParams={searchParams}>
+    <>
       <ResourceCard resourceId={resourceId} resourceType={resourceType} />
       <Comments resourceId={resourceId} resourceType={resourceType} />
       <RelatedResources resourceId={resourceId} resourceType={resourceType} />
       <NewResources />
       <Newsletter />
-    </Page>
+    </>
   );
 };
 

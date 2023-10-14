@@ -1,15 +1,49 @@
 'use server';
 
-import { createProtectedAction } from 'lib/serverActions/create';
-import { collectionTag, resourceCollectionsTag } from 'lib/cache';
+import {
+  collectionTag,
+  getCollectionsCached,
+  getResourceCollectionsCached,
+  resourceCollectionsTag,
+} from 'lib/cache';
 import {
   addCollectionItem,
   getCollection,
   removeCollectionItem,
 } from 'lib/collections';
 import { resourceTypes } from 'lib/resources';
+import { createProtectedAction } from 'lib/serverActions/create';
 import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
+
+export const getData = createProtectedAction({
+  input: z.object({
+    resourceId: z.number(),
+    resourceType: z.enum(resourceTypes),
+  }),
+  action: async ({ input, ctx }) => {
+    const { resourceId, resourceType } = input;
+    const { userId } = ctx;
+
+    const collections = await getCollectionsCached();
+    const resourceCollections = await getResourceCollectionsCached(
+      resourceId,
+      resourceType,
+    );
+    const userCollections = collections.filter(
+      (collection) => collection.userId === userId,
+    );
+
+    return userCollections.map((collection) => {
+      const state = resourceCollections.find((rc) => rc.id === collection.id);
+      return {
+        id: collection.id,
+        title: collection.title,
+        checked: !!state,
+      };
+    });
+  },
+});
 
 export const addToCollection = createProtectedAction({
   input: z.object({

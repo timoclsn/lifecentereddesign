@@ -9,6 +9,25 @@ import {
 import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 
+export const getData = createProtectedAction({
+  input: z.object({
+    collectionId: z.number(),
+  }),
+  action: async ({ input }) => {
+    const { collectionId } = input;
+    const collection = await getCollection(collectionId);
+
+    if (!collection) {
+      throw new Error('Collection not found');
+    }
+
+    return {
+      title: collection.title,
+      description: collection.description,
+    };
+  },
+});
+
 export const updateCollection = createProtectedAction({
   input: addCollectionSchema.merge(
     z.object({

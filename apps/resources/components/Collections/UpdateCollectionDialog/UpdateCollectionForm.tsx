@@ -1,13 +1,17 @@
 'use client';
 
 import { cva } from 'class-variance-authority';
+import {
+  AddCollectionSchema,
+  addCollectionSchema,
+} from 'components/Collections/AddCollectionDialog/schemas';
 import { Button, InfoBox } from 'design-system';
 import { useZodForm } from 'hooks/useZodForm';
 import { useAction } from 'lib/serverActions/client';
 import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { SubmitHandler } from 'react-hook-form';
-import { addCollection } from './actions';
-import { AddCollectionSchema, addCollectionSchema } from './schemas';
+import { updateCollection } from './actions';
 
 const inputStyles = cva(
   'px-8 py-4 text-base text-text-secondary bg-ghost-main-dark-bg outline-none w-full ring-inset',
@@ -24,14 +28,35 @@ const inputStyles = cva(
 const errorStyles =
   'absolute left-0 bottom-0 -mb-4 text-red-700 text-sm slide-in-from-top-full duration-100 ease-in-out fade-in animate-in';
 
-export const AddCollectionForm = () => {
-  const { error, runAction, isRunning } = useAction(addCollection);
+interface Props {
+  collectionId: number;
+  title: string;
+  description: string;
+  onSuccess?: () => void;
+}
+
+export const UpdateCollectionForm = ({
+  collectionId,
+  title,
+  description,
+  onSuccess,
+}: Props) => {
+  const { back } = useRouter();
+  const { error, runAction, isRunning } = useAction(updateCollection, {
+    onSuccess: () => {
+      onSuccess?.();
+    },
+  });
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useZodForm({
     schema: addCollectionSchema,
+    defaultValues: {
+      title,
+      description,
+    },
   });
 
   const onSubmit: SubmitHandler<AddCollectionSchema> = async ({
@@ -39,6 +64,7 @@ export const AddCollectionForm = () => {
     description,
   }) => {
     await runAction({
+      collectionId,
       title,
       description,
     });
@@ -81,7 +107,7 @@ export const AddCollectionForm = () => {
       {/* Submit button */}
       <Button type="submit" size="medium" disabled={isRunning}>
         {isRunning ? <Loader2 className="animate-spin" /> : <MessageCircle />}
-        Add
+        Update
       </Button>
 
       {/* Server messages */}

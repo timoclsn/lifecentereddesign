@@ -1,23 +1,21 @@
 import { auth } from '@clerk/nextjs';
 import { Await } from 'components/Await/Await';
-import { Page } from 'components/Page/Page';
-import { Heading, Text } from 'design-system';
+import { AddCollectionDialog } from 'components/Collections/AddCollectionDialog/AddCollectionDialog';
+import { Button, Heading, Text } from 'design-system';
 import { getCollectionsCached } from 'lib/cache';
-import { SearchParams } from 'lib/types';
 import Link from 'next/link';
-import { AddCollectionButton } from '../../components/Collections/AddCollectionButton';
 
-interface Props {
-  searchParams: SearchParams;
-}
-
-const CollectionsPage = async ({ searchParams }: Props) => {
+const CollectionsPage = async () => {
   const promise = getCollectionsCached();
   const { userId } = auth();
   return (
-    <Page searchParams={searchParams}>
+    <>
       <Heading level="2">Collections</Heading>
-      {userId && <AddCollectionButton />}
+      {userId && (
+        <AddCollectionDialog>
+          <Button>Add Collection</Button>
+        </AddCollectionDialog>
+      )}
       <Await promise={promise}>
         {(collections) => {
           return (
@@ -39,7 +37,7 @@ const CollectionsPage = async ({ searchParams }: Props) => {
           );
         }}
       </Await>
-    </Page>
+    </>
   );
 };
 
