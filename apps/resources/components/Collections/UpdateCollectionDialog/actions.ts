@@ -1,32 +1,13 @@
 'use server';
 
 import { addCollectionSchema } from 'components/Collections/AddCollectionDialog/schemas';
-import { createProtectedAction } from 'lib/serverActions/create';
 import {
   updateCollection as dbUpdateCollection,
   getCollection,
 } from 'lib/collections';
+import { createProtectedAction } from 'lib/serverActions/create';
 import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
-
-export const getData = createProtectedAction({
-  input: z.object({
-    collectionId: z.number(),
-  }),
-  action: async ({ input }) => {
-    const { collectionId } = input;
-    const collection = await getCollection(collectionId);
-
-    if (!collection) {
-      throw new Error('Collection not found');
-    }
-
-    return {
-      title: collection.title,
-      description: collection.description,
-    };
-  },
-});
 
 export const updateCollection = createProtectedAction({
   input: addCollectionSchema.merge(

@@ -6,6 +6,7 @@ import { Button, Heading, Text } from 'design-system';
 import { getCollectionCached } from 'lib/cache';
 import { SearchParams } from 'lib/types';
 import { DeleteCollectionButton } from '../../../components/Collections/DeleteCollectionButton/DeleteCollectionButton';
+import { notFound } from 'next/navigation';
 
 interface Props {
   params: {
@@ -21,24 +22,29 @@ const CollectionPage = async ({ params, searchParams }: Props) => {
 
   return (
     <>
-      <div>
-        <Heading>Collection Page</Heading>
-        {userId && (
-          <div className="flex flex-col items-start gap-4">
-            <UpdateCollectionDialog collectionId={Number(id)}>
-              <Button>Update Collection</Button>
-            </UpdateCollectionDialog>
-            <DeleteCollectionButton collectionId={Number(id)} />
-          </div>
-        )}
-      </div>
+      <Heading>Collection Page</Heading>
       <Await promise={promise}>
         {(collection) => {
-          if (!collection) return <div>No collection found</div>;
+          if (!collection) {
+            notFound();
+          }
           const isOwnCollection = collection.user?.id === userId;
 
           return (
             <div className="flex flex-col gap-4">
+              {isOwnCollection && (
+                <div className="flex flex-col items-start gap-4">
+                  <UpdateCollectionDialog
+                    collectionId={Number(id)}
+                    collectionTitle={collection.title}
+                    collectionDescription={collection.description}
+                  >
+                    <Button>Update Collection</Button>
+                  </UpdateCollectionDialog>
+                  <DeleteCollectionButton collectionId={Number(id)} />
+                </div>
+              )}
+
               <div className="flex flex-col gap-2">
                 <Heading>Title: {collection.title}</Heading>
                 <Text>Description: {collection.description}</Text>
