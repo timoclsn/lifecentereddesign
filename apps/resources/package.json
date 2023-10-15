@@ -18,6 +18,7 @@
     "@radix-ui/react-dialog": "1.0.5",
     "@radix-ui/react-select": "2.0.0",
     "@radix-ui/react-toggle": "^1.0.3",
+    "@vercel/edge-config": "^0.4.1",
     "class-variance-authority": "0.7.0",
     "contentlayer": "0.3.4",
     "database": "workspace:*",

@@ -20,6 +20,7 @@ import { ResourceLink } from './ResourceLink';
 import { ShareButton } from './ShareButton';
 import { Title } from './Title';
 import { TypeButton } from './TypeButton';
+import { featureFlags } from 'lib/featureFlags';
 
 interface Props {
   resourceId: number;
@@ -43,7 +44,7 @@ interface Props {
   note?: string | null;
 }
 
-export const Card = ({
+export const Card = async ({
   resourceId,
   resourceType,
   showType,
@@ -57,6 +58,7 @@ export const Card = ({
   suggestion = false,
   note,
 }: Props) => {
+  const { collections } = await featureFlags();
   const resourceLink = tags?.at(0)?.url;
   const { userId } = auth();
 
@@ -154,12 +156,12 @@ export const Card = ({
           )}
 
           {/* Add to collection */}
-          {/* {userId && (
+          {collections && userId && (
             <CollectionButton
               resourceId={resourceId}
               resourceType={resourceType}
             />
-          )} */}
+          )}
         </div>
       </div>
 
