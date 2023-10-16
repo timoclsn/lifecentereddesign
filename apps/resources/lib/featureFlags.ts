@@ -1,4 +1,5 @@
 import { getAll } from '@vercel/edge-config';
+import { cache } from 'react';
 import { z } from 'zod';
 
 const projectKey = 'lcdNet';
@@ -26,8 +27,8 @@ const flagsSchema = z.object({
   }),
 });
 
-export const featureFlags = async () => {
+export const featureFlags = cache(async () => {
   const flags = await getAll();
   const parsedFlags = flagsSchema.parse(flags);
   return parsedFlags[projectKey][env];
-};
+});

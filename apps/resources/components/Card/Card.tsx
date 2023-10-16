@@ -58,7 +58,7 @@ export const Card = async ({
   suggestion = false,
   note,
 }: Props) => {
-  const { collections } = await featureFlags();
+  const flags = await featureFlags();
   const resourceLink = tags?.at(0)?.url;
   const { userId } = auth();
 
@@ -156,7 +156,7 @@ export const Card = async ({
           )}
 
           {/* Add to collection */}
-          {collections && userId && (
+          {flags.collections && userId && (
             <CollectionButton
               resourceId={resourceId}
               resourceType={resourceType}

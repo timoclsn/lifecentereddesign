@@ -5,7 +5,7 @@ import { NavigationLink } from './NavigationLink';
 import { UserButton } from './UserButton';
 
 export const Navigation = async () => {
-  const { collections } = await featureFlags();
+  const flags = await featureFlags();
   return (
     <nav className="flex flex-wrap items-center justify-between gap-x-10 gap-y-4 px-6 py-6 sm:px-8 xl:px-10">
       <div className="font-serif text-2xl font-bold">
@@ -27,7 +27,7 @@ export const Navigation = async () => {
         <li>
           <NavigationLink href="/resources">Resources</NavigationLink>
         </li>
-        {collections && (
+        {flags.collections && (
           <li>
             <NavigationLink href="/collections">Collections</NavigationLink>
           </li>
