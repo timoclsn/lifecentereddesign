@@ -5,7 +5,7 @@ on:
     branches: [main]
 jobs:
   lint:
-    name: ESLint
+    name: Lint
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -32,7 +32,7 @@ jobs:
         run: pnpm lint
 
   typecheck:
-    name: TypeScript
+    name: Type check
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
