@@ -1,7 +1,7 @@
 import { Heading, Text } from 'design-system';
 import { SearchParams } from 'lib/types';
 import { z } from 'zod';
-import { formateDate } from '../../../lib/utils';
+import { formateDate } from '../../../lib/utils/utils';
 import { ResourcesTable } from './ResourcesTable/ResourcesTable';
 
 export type ReseourcesFilter = z.infer<typeof reseourcesFilterSchema>;

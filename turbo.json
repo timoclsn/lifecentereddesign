@@ -18,6 +18,9 @@
     "typecheck": {
       "cache": false
     },
+    "test": {
+      "cache": false
+    },
     "db:generate": {
       "cache": false
     },
@@ -34,6 +37,9 @@
     "MAILCHIMP_AUDIENCE_ID",
     "SUGGESTION_MAIL_PASSWORD",
     "NODE_ENV",
-    "VERCEL_ENV"
+    "VERCEL_ENV",
+    "NEXT_PUBLIC_VERCEL_ENV",
+    "NEXT_PUBLIC_VERCEL_URL",
+    "PORT"
   ]
 }

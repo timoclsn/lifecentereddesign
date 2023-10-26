@@ -5,7 +5,7 @@ import { RelatedResources } from '../../../components/RelatedResources/RelatedRe
 import { ResourceCard } from '../../../components/ResourceCard/ResourceCard';
 import { getResourceCached } from '../../../lib/cache';
 import { createGenerateMetadata } from '../../../lib/metadata';
-import { getBaseUrl, parseResourceSlug } from '../../../lib/utils';
+import { getBaseUrl, parseResourceSlug } from '../../../lib/utils/utils';
 
 export const generateMetadata = createGenerateMetadata(async ({ params }) => {
   const { slug } = params;

@@ -2,7 +2,7 @@
 
 import { createAction } from 'lib/serverActions/create';
 import { z } from 'zod';
-import { getErrorMessage } from '../../lib/utils';
+import { getErrorMessage } from '../../lib/utils/utils';
 import { newsletterFormSchema } from './schemas';
 
 const envSchema = z.object({

@@ -4,7 +4,7 @@ import {
   getErrorMessage,
   isNextNotFoundError,
   isNextRedirectError,
-} from '../utils';
+} from '../utils/utils';
 import { InferInputType, ServerAction } from './server';
 
 interface State<TResponse extends any> {

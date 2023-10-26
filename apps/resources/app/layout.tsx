@@ -9,7 +9,7 @@ import { Footer } from '../components/Footer/Footer';
 import { Header } from '../components/Header/Header';
 import { description, title } from '../lib/metadata';
 import '../lib/polyfills';
-import { getBaseUrl } from '../lib/utils';
+import { getBaseUrl } from '../lib/utils/utils';
 import '../styles/globals.css';
 
 const sans = DM_Sans({

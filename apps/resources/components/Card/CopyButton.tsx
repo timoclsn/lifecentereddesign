@@ -3,7 +3,7 @@
 import { Tag, Tooltip } from 'design-system';
 import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
-import { wait } from '../../lib/utils';
+import { wait } from '../../lib/utils/utils';
 import { track } from 'lib/tracking';
 
 interface Props {

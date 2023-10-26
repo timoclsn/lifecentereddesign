@@ -1,7 +1,5 @@
-/* eslint-disable turbo/no-undeclared-env-vars */
-
 import { format } from 'date-fns';
-import { ContentType } from './resources';
+import { ContentType } from '../resources';
 
 export const getHostname = (url: string) => {
   const urlPartsRegEx =
@@ -20,17 +18,21 @@ export const formateDate = (date: Date | string) =>
   format(new Date(date), 'L/d/yyyy');
 
 export const getBaseUrl = () => {
-  if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production')
+  if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
     return `https://lifecentereddesign.net`;
-  if (process.env.NEXT_PUBLIC_VERCEL_URL)
+  }
+  if (process.env.NEXT_PUBLIC_VERCEL_URL) {
     return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+  }
   return `http://localhost:${process.env.PORT ?? 3000}`;
 };
 
 export const formatType = (type: string) => {
-  const uppercaseFirstLetterType = type.charAt(0).toUpperCase() + type.slice(1);
-  const typeWithSpaces = uppercaseFirstLetterType.replace(/([A-Z])/g, ' $1');
-  return typeWithSpaces;
+  const words = type.replace(/([a-z])([A-Z])/g, '$1 $2').split(' ');
+  const formattedWords = words.map((word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+  return formattedWords.join(' ');
 };
 
 export const getErrorMessage = (error: unknown): string => {
