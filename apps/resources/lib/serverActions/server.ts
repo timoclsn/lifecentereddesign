@@ -3,7 +3,7 @@ import {
   getErrorMessage,
   isNextNotFoundError,
   isNextRedirectError,
-} from '../utils';
+} from '../utils/utils';
 
 type MaybePromise<T> = Promise<T> | T;
 

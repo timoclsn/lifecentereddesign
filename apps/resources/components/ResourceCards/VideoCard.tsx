@@ -1,6 +1,6 @@
 import { CalendarDays, Clock3, Tag, VideoIcon } from 'lucide-react';
 import { Video } from '../../lib/resources';
-import { formateDate, getHostname } from '../../lib/utils';
+import { formateDate, getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';
 import { thoughtleadersList, topicsList } from '../utils';
 

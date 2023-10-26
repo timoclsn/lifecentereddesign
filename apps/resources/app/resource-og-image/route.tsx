@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/server';
 import { ContentType } from '../../lib/resources';
-import { formatType, getHostname } from '../../lib/utils';
+import { formatType, getHostname } from '../../lib/utils/utils';
 
 export const runtime = 'edge';
 

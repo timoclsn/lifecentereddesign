@@ -6,7 +6,7 @@ import {
   Text,
   Tooltip,
 } from 'design-system';
-import { isExternalUrl } from 'lib/utils';
+import { isExternalUrl } from 'lib/utils/utils';
 import { ExternalLink, LucideIcon, StickyNote, Users2 } from 'lucide-react';
 import { ReactNode } from 'react';
 import { ContentType } from '../../lib/resources';

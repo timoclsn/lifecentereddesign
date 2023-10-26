@@ -1,6 +1,6 @@
 import { Tag } from 'lucide-react';
 import { Tool } from '../../lib/resources';
-import { getHostname } from '../../lib/utils';
+import { getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';
 import { topicsList } from '../utils';
 
