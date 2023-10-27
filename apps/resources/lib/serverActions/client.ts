@@ -5,32 +5,41 @@ import {
   isNextNotFoundError,
   isNextRedirectError,
 } from '../utils/utils';
-import { InferInputType, ServerAction } from './server';
+import { InferInputType, InferValidationErrors, ServerAction } from './server';
 
-interface State<TResponse extends any> {
+interface State<TResponse extends any, TInputSchema extends z.ZodTypeAny> {
   isIdle: boolean;
   isSuccess: boolean;
   isError: boolean;
   data: TResponse | null;
   error: string | null;
+  validationErrors: InferValidationErrors<TInputSchema> | null;
 }
 
-const initalState: State<any> = {
+const initalState: State<any, any> = {
   isIdle: true,
   isSuccess: false,
   isError: false,
   data: null,
   error: null,
+  validationErrors: null,
 };
 
-type Action<TResponse extends any> =
+type Action<TResponse extends any, TInputSchema extends z.ZodTypeAny> =
   | { type: 'RUN_ACTION' }
   | { type: 'IS_SUCCESS'; data: TResponse | null }
-  | { type: 'IS_ERROR'; error: string };
+  | {
+      type: 'IS_ERROR';
+      error: string | null;
+      validationErrors: InferValidationErrors<TInputSchema> | null;
+    };
 
 const createReducer =
-  <TResponse extends any>() =>
-  (state: State<TResponse>, action: Action<TResponse>): State<TResponse> => {
+  <TResponse extends any, TInputSchema extends z.ZodTypeAny>() =>
+  (
+    state: State<TResponse, TInputSchema>,
+    action: Action<TResponse, TInputSchema>,
+  ): State<TResponse, TInputSchema> => {
     switch (action.type) {
       case 'RUN_ACTION':
         return {
@@ -51,6 +60,7 @@ const createReducer =
           ...state,
           isError: true,
           error: action.error,
+          validationErrors: action.validationErrors,
         };
       default:
         throw new Error('Unknown action type');
@@ -66,13 +76,16 @@ export const useAction = <
   options: {
     onRunAction?: (input: InferInputType<TInputSchema, TInput>) => void;
     onSuccess?: (data: TResponse | null) => void;
-    onError?: (error: string) => void;
+    onError?: (
+      error: string | null,
+      validationErrors: InferValidationErrors<TInputSchema> | null,
+    ) => void;
     onSettled?: () => void;
   } = {},
 ) => {
-  const reducer = createReducer<TResponse>();
+  const reducer = createReducer<TResponse, TInputSchema>();
   const [state, dispatch] = useReducer(reducer, initalState);
-  const { isIdle, isSuccess, isError, data, error } = state;
+  const { isIdle, isSuccess, isError, data, error, validationErrors } = state;
   const [isRunning, startTransition] = useTransition();
 
   const runAction = useCallback(
@@ -87,12 +100,13 @@ export const useAction = <
         try {
           const result = await inputAction(input);
 
-          if (result.error) {
+          if (result.error || result.validationErrors) {
             dispatch({
               type: 'IS_ERROR',
               error: result.error,
+              validationErrors: result.validationErrors,
             });
-            options.onError?.(result.error);
+            options.onError?.(result.error, result.validationErrors);
           } else {
             dispatch({
               type: 'IS_SUCCESS',
@@ -116,8 +130,9 @@ export const useAction = <
           dispatch({
             type: 'IS_ERROR',
             error: userErrorMessage,
+            validationErrors: null,
           });
-          options.onError?.(userErrorMessage);
+          options.onError?.(userErrorMessage, null);
           console.log(errorMessage);
         }
 
@@ -135,5 +150,6 @@ export const useAction = <
     isError,
     data,
     error,
+    validationErrors,
   };
 };
