@@ -14,7 +14,6 @@
   "dependencies": {
     "@clerk/nextjs": "^4.25.3",
     "@formkit/auto-animate": "1.0.0-beta.6",
-    "@hookform/resolvers": "^3.3.1",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-dialog": "1.0.5",
     "@radix-ui/react-select": "2.0.0",
@@ -33,7 +32,6 @@
     "nodemailer": "^6.9.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.47.0",
     "sharp": "^0.32.6",
     "use-debounce": "^9.0.4",
     "zod": "3.22.4"

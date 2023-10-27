@@ -3,7 +3,6 @@
 import { createAction } from 'lib/serverActions/create';
 import { z } from 'zod';
 import { getErrorMessage } from '../../lib/utils/utils';
-import { newsletterFormSchema } from './schemas';
 
 const envSchema = z.object({
   MAILCHIMP_API_KEY: z.string(),
@@ -29,7 +28,14 @@ const apiErrorSchema = z.object({
 });
 
 export const subscribe = createAction({
-  input: newsletterFormSchema,
+  input: z.object({
+    email: z.string().min(1, { message: 'Email address is required' }).email({
+      message: 'Must be a valid email address',
+    }),
+    consens: z.boolean().refine((value) => value === true, {
+      message: 'You must confirm that you want to subscribe',
+    }),
+  }),
   action: async ({ input }) => {
     const { consens, email } = input;
 
