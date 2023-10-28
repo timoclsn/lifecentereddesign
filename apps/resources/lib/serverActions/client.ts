@@ -1,10 +1,5 @@
 import { useCallback, useReducer, useTransition } from 'react';
 import { z } from 'zod';
-import {
-  getErrorMessage,
-  isNextNotFoundError,
-  isNextRedirectError,
-} from '../utils/utils';
 import { InferInputType, InferValidationErrors, ServerAction } from './server';
 
 interface State<TResponse extends any, TInputSchema extends z.ZodTypeAny> {
@@ -108,6 +103,12 @@ export const useAction = <
         try {
           const result = await inputAction(input);
 
+          // If /next/navigation function (redirect() and notFound()) is called in the action, the result will be undefined
+          // Skip processing because the page will be redirected
+          if (!result) {
+            return;
+          }
+
           if (result.error || result.validationErrors) {
             dispatch({
               type: 'IS_ERROR',
@@ -123,17 +124,6 @@ export const useAction = <
             options.onSuccess?.(result.data);
           }
         } catch (error) {
-          const errorMessage = getErrorMessage(error);
-
-          // next/navigation functions work by throwing an error that will be
-          // processed internally by Next.js. So, in this case we need to rethrow it.
-          if (
-            isNextRedirectError(errorMessage) ||
-            isNextNotFoundError(errorMessage)
-          ) {
-            throw error;
-          }
-
           const userErrorMessage = 'Something went wrong. Please try again.';
           dispatch({
             type: 'IS_ERROR',
@@ -141,7 +131,7 @@ export const useAction = <
             validationErrors: null,
           });
           options.onError?.(userErrorMessage, null);
-          console.log(errorMessage);
+          console.error(error);
         }
 
         options.onSettled?.();

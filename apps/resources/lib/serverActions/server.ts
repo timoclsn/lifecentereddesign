@@ -27,7 +27,7 @@ export type ServerAction<
   TResponse,
 > = (
   input: InferInputType<TInputSchema, TInput>,
-) => Promise<Result<TInputSchema, TResponse>>;
+) => Promise<Result<TInputSchema, TResponse>> | void;
 
 export const createActionClient = <Context>(createClientOpts?: {
   middleware?: () => MaybePromise<Context>;
@@ -75,12 +75,14 @@ export const createActionClient = <Context>(createClientOpts?: {
       } catch (error) {
         const errorMessage = getErrorMessage(error);
 
-        // next/navigation functions work by throwing an error that will be
-        // processed internally by Next.js. So, in this case we need to rethrow it.
+        // The next/navigation functions (redirect() and notFound()) operate by deliberately triggering an error,
+        // which will then be handled internally by Next.js. In this specific scenario,
+        // we must intentionally propagate the error further.
         if (
           isNextRedirectError(errorMessage) ||
           isNextNotFoundError(errorMessage)
         ) {
+          console.log('is next errror');
           throw error;
         }
 
