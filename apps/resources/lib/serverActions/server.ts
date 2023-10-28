@@ -39,7 +39,7 @@ export const createActionClient = <Context>(createClientOpts?: {
   >(actionBuilderOpts: {
     input?: TInputSchema;
     action: (args: {
-      input: z.input<TInputSchema>;
+      input: z.output<TInputSchema>;
       ctx: Context;
     }) => MaybePromise<void> | MaybePromise<TResponse>;
   }) => {
