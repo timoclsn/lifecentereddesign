@@ -32,7 +32,8 @@ type Action<TResponse extends any, TInputSchema extends z.ZodTypeAny> =
       type: 'IS_ERROR';
       error: string | null;
       validationErrors: InferValidationErrors<TInputSchema> | null;
-    };
+    }
+  | { type: 'RESET' };
 
 const createReducer =
   <TResponse extends any, TInputSchema extends z.ZodTypeAny>() =>
@@ -62,6 +63,10 @@ const createReducer =
           error: action.error,
           validationErrors: action.validationErrors,
         };
+      case 'RESET':
+        return {
+          ...initalState,
+        };
       default:
         throw new Error('Unknown action type');
     }
@@ -81,6 +86,7 @@ export const useAction = <
       validationErrors: InferValidationErrors<TInputSchema> | null,
     ) => void;
     onSettled?: () => void;
+    reset?: () => void;
   } = {},
 ) => {
   const reducer = createReducer<TResponse, TInputSchema>();
@@ -142,6 +148,14 @@ export const useAction = <
     [inputAction, options],
   );
 
+  const reset = useCallback(() => {
+    () => {
+      dispatch({
+        type: 'RESET',
+      });
+    };
+  }, []);
+
   return {
     runAction,
     isIdle,
@@ -151,5 +165,6 @@ export const useAction = <
     data,
     error,
     validationErrors,
+    reset,
   };
 };
