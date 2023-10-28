@@ -2,12 +2,22 @@
 
 import { createAction } from 'lib/serverActions/create';
 import nodemailer from 'nodemailer';
-import { envSchema, suggestionFormSchema } from './schemas';
+import { z } from 'zod';
+
+const envSchema = z.object({
+  SUGGESTION_MAIL_PASSWORD: z.string(),
+});
 
 const { SUGGESTION_MAIL_PASSWORD } = envSchema.parse(process.env);
 
 export const submit = createAction({
-  input: suggestionFormSchema,
+  input: z.object({
+    link: z.string().min(1, { message: 'Link is required' }).url({
+      message: 'Must be a valid URL',
+    }),
+    message: z.string().optional(),
+    name: z.string().optional(),
+  }),
   action: async ({ input }) => {
     const { link, message, name } = input;
 

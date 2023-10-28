@@ -1,16 +1,18 @@
 'use server';
 
-import { createProtectedAction } from 'lib/serverActions/create';
 import { createCollection } from 'lib/collections';
+import { createProtectedAction } from 'lib/serverActions/create';
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { addCollectionSchema } from './schemas';
 import { z } from 'zod';
+import { addCollectionSchema } from './schemas';
 
 export const addCollection = createProtectedAction({
-  input: addCollectionSchema.extend({
-    goToCollection: z.boolean().optional(),
-  }),
+  input: addCollectionSchema.merge(
+    z.object({
+      goToCollection: z.boolean().optional(),
+    }),
+  ),
   action: async ({ input, ctx }) => {
     const { title, description, goToCollection } = input;
     const { userId } = ctx;

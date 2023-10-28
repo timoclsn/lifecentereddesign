@@ -12,16 +12,22 @@ export type InferInputType<
   TInput extends TInputSchema | undefined,
 > = z.ZodTypeAny extends TInput ? void : z.input<TInputSchema>;
 
-interface Result<TResponse> {
+export type InferValidationErrors<TInputSchema extends z.ZodTypeAny> =
+  z.inferFlattenedErrors<TInputSchema>['fieldErrors'];
+
+interface Result<TInputSchema extends z.ZodTypeAny, TResponse> {
   data: TResponse | null;
   error: string | null;
+  validationErrors: InferValidationErrors<TInputSchema> | null;
 }
 
 export type ServerAction<
   TInputSchema extends z.ZodTypeAny,
   TInput extends TInputSchema | undefined,
   TResponse,
-> = (input: InferInputType<TInputSchema, TInput>) => Promise<Result<TResponse>>;
+> = (
+  input: InferInputType<TInputSchema, TInput>,
+) => Promise<Result<TInputSchema, TResponse>> | void;
 
 export const createActionClient = <Context>(createClientOpts?: {
   middleware?: () => MaybePromise<Context>;
@@ -47,7 +53,8 @@ export const createActionClient = <Context>(createClientOpts?: {
           if (!result.success) {
             return {
               data: null,
-              error: result.error.message,
+              error: 'Invalid input',
+              validationErrors: result.error.flatten().fieldErrors,
             };
           }
           parsedInput = result.data;
@@ -63,22 +70,26 @@ export const createActionClient = <Context>(createClientOpts?: {
         return {
           data: response ?? null,
           error: null,
+          validationErrors: null,
         };
       } catch (error) {
         const errorMessage = getErrorMessage(error);
 
-        // next/navigation functions work by throwing an error that will be
-        // processed internally by Next.js. So, in this case we need to rethrow it.
+        // The next/navigation functions (redirect() and notFound()) operate by deliberately triggering an error,
+        // which will then be handled internally by Next.js. In this specific scenario,
+        // we must intentionally propagate the error further.
         if (
           isNextRedirectError(errorMessage) ||
           isNextNotFoundError(errorMessage)
         ) {
+          console.log('is next errror');
           throw error;
         }
 
         return {
           data: null,
           error: errorMessage,
+          validationErrors: null,
         };
       }
     };

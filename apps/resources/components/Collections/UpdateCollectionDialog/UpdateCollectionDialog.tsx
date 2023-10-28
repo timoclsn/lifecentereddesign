@@ -2,10 +2,6 @@
 
 import { cva } from 'class-variance-authority';
 import {
-  AddCollectionSchema,
-  addCollectionSchema,
-} from 'components/Collections/AddCollectionDialog/schemas';
-import {
   Button,
   Dialog,
   DialogContent,
@@ -15,11 +11,9 @@ import {
   Heading,
   InfoBox,
 } from 'design-system';
-import { useZodForm } from 'hooks/useZodForm';
 import { useAction } from 'lib/serverActions/client';
 import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { ReactNode, useState } from 'react';
-import { SubmitHandler } from 'react-hook-form';
 import { updateCollection } from './actions';
 
 const inputStyles = cva(
@@ -52,33 +46,14 @@ export const UpdateCollectionDialog = ({
 }: Props) => {
   const [open, setOpen] = useState(false);
 
-  const { error, runAction, isRunning } = useAction(updateCollection, {
-    onSuccess: () => {
-      setOpen(false);
+  const { error, validationErrors, runAction, isRunning } = useAction(
+    updateCollection,
+    {
+      onSuccess: () => {
+        setOpen(false);
+      },
     },
-  });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useZodForm({
-    schema: addCollectionSchema,
-    defaultValues: {
-      title: collectionTitle,
-      description: collectionDescription,
-    },
-  });
-
-  const onSubmit: SubmitHandler<AddCollectionSchema> = async ({
-    title,
-    description,
-  }) => {
-    await runAction({
-      collectionId,
-      title,
-      description,
-    });
-  };
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -87,7 +62,15 @@ export const UpdateCollectionDialog = ({
         <DialogOverlay />
         <DialogContent>
           <Heading level="3">Update Collection</Heading>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form
+            action={(formData) => {
+              runAction({
+                collectionId,
+                title: String(formData.get('title')),
+                description: String(formData.get('description')),
+              });
+            }}
+          >
             {/* Title input */}
             <div className="relative mb-6 w-full">
               <label htmlFor="title" className="sr-only">
@@ -95,13 +78,17 @@ export const UpdateCollectionDialog = ({
               </label>
               <input
                 id="title"
+                name="title"
+                aria-describedby="title-error"
                 placeholder="Title"
                 type="text"
-                className={inputStyles({ error: !!errors.title })}
-                {...register('title')}
+                defaultValue={collectionTitle}
+                className={inputStyles({ error: !!validationErrors?.title })}
               />
-              {errors.title && (
-                <p className={errorStyles}>{errors.title.message}</p>
+              {validationErrors?.title && (
+                <div id="title-error" aria-live="polite">
+                  <p className={errorStyles}>{validationErrors.title[0]}</p>
+                </div>
               )}
             </div>
 
@@ -112,13 +99,21 @@ export const UpdateCollectionDialog = ({
               </label>
               <textarea
                 id="description"
+                name="description"
+                aria-describedby="description-error"
                 placeholder="Description"
+                defaultValue={collectionDescription}
                 rows={4}
-                className={inputStyles({ error: !!errors.description })}
-                {...register('description')}
+                className={inputStyles({
+                  error: !!validationErrors?.description,
+                })}
               />
-              {errors.description && (
-                <p className={errorStyles}>{errors.description.message}</p>
+              {validationErrors?.description && (
+                <div id="description-error" aria-live="polite">
+                  <p className={errorStyles}>
+                    {validationErrors.description[0]}
+                  </p>
+                </div>
               )}
             </div>
 
@@ -133,14 +128,16 @@ export const UpdateCollectionDialog = ({
             </Button>
 
             {/* Server messages */}
-            {error && (
-              <InfoBox
-                variant="error"
-                icon={<AlertTriangle />}
-                className="animate-in zoom-in-50 fade-in duration-150 ease-in-out"
-              >
-                {error}
-              </InfoBox>
+            {error && !validationErrors && (
+              <div aria-live="polite" role="status">
+                <InfoBox
+                  variant="error"
+                  icon={<AlertTriangle />}
+                  className="animate-in zoom-in-50 fade-in duration-150 ease-in-out"
+                >
+                  {error}
+                </InfoBox>
+              </div>
             )}
           </form>
         </DialogContent>

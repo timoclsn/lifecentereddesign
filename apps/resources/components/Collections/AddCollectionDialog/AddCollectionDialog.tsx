@@ -11,13 +11,10 @@ import {
   Heading,
   InfoBox,
 } from 'design-system';
-import { useZodForm } from 'hooks/useZodForm';
 import { useAction } from 'lib/serverActions/client';
 import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { ReactNode, useState } from 'react';
-import { SubmitHandler } from 'react-hook-form';
 import { addCollection } from './actions';
-import { AddCollectionSchema, addCollectionSchema } from './schemas';
 
 const inputStyles = cva(
   'px-8 py-4 text-base text-text-secondary bg-ghost-main-dark-bg outline-none w-full ring-inset',
@@ -46,30 +43,15 @@ export const AddCollectionDialog = ({
   onChange,
 }: Props) => {
   const [open, setOpen] = useState(false);
-  const { error, runAction, isRunning } = useAction(addCollection, {
-    onSuccess: () => {
-      setOpen(false);
+  const { error, validationErrors, runAction, isRunning } = useAction(
+    addCollection,
+    {
+      onSuccess: () => {
+        setOpen(false);
+      },
+      onSettled: onChange,
     },
-    onSettled: onChange,
-  });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useZodForm({
-    schema: addCollectionSchema,
-  });
-
-  const onSubmit: SubmitHandler<AddCollectionSchema> = async ({
-    title,
-    description,
-  }) => {
-    await runAction({
-      title,
-      description,
-      goToCollection,
-    });
-  };
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -78,7 +60,15 @@ export const AddCollectionDialog = ({
         <DialogOverlay />
         <DialogContent>
           <Heading level="3">Add Collection</Heading>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form
+            action={(formData) => {
+              runAction({
+                title: String(formData.get('title')),
+                description: String(formData.get('description')),
+                goToCollection,
+              });
+            }}
+          >
             {/* Title input */}
             <div className="relative mb-6 w-full">
               <label htmlFor="title" className="sr-only">
@@ -86,13 +76,17 @@ export const AddCollectionDialog = ({
               </label>
               <input
                 id="title"
+                name="title"
+                aria-describedby="title-error"
+                required
                 placeholder="Title"
                 type="text"
-                className={inputStyles({ error: !!errors.title })}
-                {...register('title')}
+                className={inputStyles({ error: !!validationErrors?.title })}
               />
-              {errors.title && (
-                <p className={errorStyles}>{errors.title.message}</p>
+              {validationErrors?.title && (
+                <div id="title-error" aria-live="polite">
+                  <p className={errorStyles}>{validationErrors.title[0]}</p>
+                </div>
               )}
             </div>
 
@@ -103,13 +97,21 @@ export const AddCollectionDialog = ({
               </label>
               <textarea
                 id="description"
+                name="description"
+                aria-describedby="description-error"
+                required
                 placeholder="Description"
                 rows={4}
-                className={inputStyles({ error: !!errors.description })}
-                {...register('description')}
+                className={inputStyles({
+                  error: !!validationErrors?.description,
+                })}
               />
-              {errors.description && (
-                <p className={errorStyles}>{errors.description.message}</p>
+              {validationErrors?.description && (
+                <div id="description-error" aria-live="polite">
+                  <p className={errorStyles}>
+                    {validationErrors.description[0]}
+                  </p>
+                </div>
               )}
             </div>
 
@@ -124,14 +126,16 @@ export const AddCollectionDialog = ({
             </Button>
 
             {/* Server messages */}
-            {error && (
-              <InfoBox
-                variant="error"
-                icon={<AlertTriangle />}
-                className="animate-in zoom-in-50 fade-in duration-150 ease-in-out"
-              >
-                {error}
-              </InfoBox>
+            {error && !validationErrors && (
+              <div aria-live="polite" role="status">
+                <InfoBox
+                  variant="error"
+                  icon={<AlertTriangle />}
+                  className="animate-in zoom-in-50 fade-in duration-150 ease-in-out"
+                >
+                  {error}
+                </InfoBox>
+              </div>
             )}
           </form>
         </DialogContent>

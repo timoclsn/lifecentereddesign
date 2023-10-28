@@ -1,6 +1,5 @@
 'use server';
 
-import { addCollectionSchema } from 'components/Collections/AddCollectionDialog/schemas';
 import {
   updateCollection as dbUpdateCollection,
   getCollection,
@@ -8,6 +7,7 @@ import {
 import { createProtectedAction } from 'lib/serverActions/create';
 import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
+import { addCollectionSchema } from '../AddCollectionDialog/schemas';
 
 export const updateCollection = createProtectedAction({
   input: addCollectionSchema.merge(
