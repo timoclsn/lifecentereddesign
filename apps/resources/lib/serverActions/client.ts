@@ -53,12 +53,14 @@ const createReducer =
       case 'IS_SUCCESS':
         return {
           ...state,
+          isIdle: true,
           isSuccess: true,
           data: action.data,
         };
       case 'IS_ERROR':
         return {
           ...state,
+          isIdle: true,
           isError: true,
           error: action.error,
           validationErrors: action.validationErrors,
