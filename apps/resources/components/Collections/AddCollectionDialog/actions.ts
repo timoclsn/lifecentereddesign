@@ -1,32 +1,18 @@
 'use server';
 
-import { createProtectedAction } from 'lib/serverActions/create';
 import { createCollection } from 'lib/collections';
+import { createProtectedAction } from 'lib/serverActions/create';
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { addCollectionSchema } from './schemas';
 
 export const addCollection = createProtectedAction({
-  input: z.object({
-    title: z
-      .string()
-      .min(3, {
-        message: 'The collection title has to be 3 characters minimum.',
-      })
-      .max(50, {
-        message: 'The collection title cannot be longer than 50 characters.',
-      }),
-    description: z
-      .string()
-      .min(3, {
-        message: 'The collection description has to be 3 characters minimum.',
-      })
-      .max(300, {
-        message:
-          'The collection description cannot be longer than 300 characters.',
-      }),
-    goToCollection: z.boolean().optional(),
-  }),
+  input: addCollectionSchema.merge(
+    z.object({
+      goToCollection: z.boolean().optional(),
+    }),
+  ),
   action: async ({ input, ctx }) => {
     const { title, description, goToCollection } = input;
     const { userId } = ctx;
