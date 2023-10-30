@@ -17,7 +17,7 @@ export const CO2Badge = ({ co2, cleanerThan }: Props) => {
 
   const onOpenChange = (open: boolean) => {
     if (open) {
-      track('Open CO2 Badge', {});
+      track('Open CO2 Badge');
     }
     setOpen(open);
   };

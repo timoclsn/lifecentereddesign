@@ -21,7 +21,7 @@ export const SuggestionForm = () => {
         if (document.activeElement instanceof HTMLElement) {
           document.activeElement.blur();
         }
-        track('Resource Suggestion', {});
+        track('Resource Suggestion');
       },
       onError: () => {
         if (!linkInputRef.current) return;

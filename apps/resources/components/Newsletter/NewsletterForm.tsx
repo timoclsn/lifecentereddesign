@@ -29,7 +29,7 @@ export const NewsletterForm = () => {
         if (document.activeElement instanceof HTMLElement) {
           document.activeElement.blur();
         }
-        track('Newsletter Signup', {});
+        track('Newsletter Signup');
       },
       onError: () => {
         if (!emailInputRef.current) return;

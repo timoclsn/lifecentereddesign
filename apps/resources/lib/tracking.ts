@@ -1,8 +1,8 @@
 import { ContentType } from './resources';
 
 interface TrackingEvents {
-  'Download Resources': {};
-  'Resource Suggestion': {};
+  'Download Resources': null;
+  'Resource Suggestion': null;
   'Copy Resource Link': {
     link: string;
   };
@@ -28,7 +28,7 @@ interface TrackingEvents {
   'Uncaught error': {
     message: string;
   };
-  'Newsletter Signup': {};
+  'Newsletter Signup': null;
   'Filter resources by type': {
     type: string;
   };
@@ -41,17 +41,19 @@ interface TrackingEvents {
   'Sort resources': {
     by: string;
   };
-  'Toggle filter resources by likes': {};
-  'Toggle filter resources by comments': {};
+  'Toggle filter resources by likes': null;
+  'Toggle filter resources by comments': null;
   'Show more resources': {
     count: number;
   };
-  'Open CO2 Badge': {};
+  'Open CO2 Badge': null;
 }
 
 export const track = <TEventKey extends keyof TrackingEvents>(
   event: TEventKey,
-  data: TrackingEvents[TEventKey],
+  ...data: TrackingEvents[TEventKey] extends null
+    ? []
+    : [TrackingEvents[TEventKey]]
 ) => {
   splitbee.track(event, data);
 };

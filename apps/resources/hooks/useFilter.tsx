@@ -81,11 +81,11 @@ export const useFilter = () => {
     }
 
     if (param === 'likes') {
-      track('Toggle filter resources by likes', {});
+      track('Toggle filter resources by likes');
     }
 
     if (param === 'comments') {
-      track('Toggle filter resources by comments', {});
+      track('Toggle filter resources by comments');
     }
 
     if (param === 'limit') {
