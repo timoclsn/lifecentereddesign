@@ -100,7 +100,6 @@ describe('getBaseUrl', () => {
     process.env.NEXT_PUBLIC_VERCEL_ENV = '';
     process.env.NEXT_PUBLIC_VERCEL_URL = '';
     process.env.PORT = '3000';
-    console.log(process.env.NEXT_PUBLIC_VERCEL_URL);
     const baseUrl = getBaseUrl();
     expect(baseUrl).toBe('http://localhost:3000');
   });

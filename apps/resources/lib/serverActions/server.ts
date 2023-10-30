@@ -82,7 +82,6 @@ export const createActionClient = <Context>(createClientOpts?: {
           isNextRedirectError(errorMessage) ||
           isNextNotFoundError(errorMessage)
         ) {
-          console.log('is next errror');
           throw error;
         }
 
