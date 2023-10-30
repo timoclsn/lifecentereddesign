@@ -15,7 +15,7 @@ export const DownloadButtonClient = ({ csv }: Props) => {
       size="large"
       onClick={() => {
         downloadCsv(csv, 'lifecentereddesign-net-resources.csv');
-        track('Download Resources', {});
+        track('Download Resources');
       }}
     >
       <Download />

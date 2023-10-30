@@ -71,12 +71,11 @@ const createReducer =
 
 export const useAction = <
   TInputSchema extends z.ZodTypeAny,
-  TInput extends TInputSchema | undefined,
   TResponse extends any,
 >(
-  inputAction: ServerAction<TInputSchema, TInput, TResponse>,
+  inputAction: ServerAction<TInputSchema, TResponse>,
   options: {
-    onRunAction?: (input: InferInputType<TInputSchema, TInput>) => void;
+    onRunAction?: (input: InferInputType<TInputSchema>) => void;
     onSuccess?: (data: TResponse | null) => void;
     onError?: (
       error: string | null,
@@ -92,7 +91,7 @@ export const useAction = <
   const [isRunning, startTransition] = useTransition();
 
   const runAction = useCallback(
-    async (input: InferInputType<TInputSchema, TInput>) => {
+    async (input: InferInputType<TInputSchema>) => {
       startTransition(async () => {
         dispatch({
           type: 'RUN_ACTION',

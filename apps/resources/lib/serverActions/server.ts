@@ -7,15 +7,13 @@ import {
 
 type MaybePromise<T> = Promise<T> | T;
 
-export type InferInputType<
-  TInputSchema extends z.ZodTypeAny,
-  TInput extends TInputSchema | undefined,
-> = z.ZodTypeAny extends TInput ? void : z.input<TInputSchema>;
+export type InferInputType<TInputSchema extends z.ZodTypeAny> =
+  z.ZodTypeAny extends TInputSchema ? void : z.infer<TInputSchema>;
 
 export type InferValidationErrors<TInputSchema extends z.ZodTypeAny> =
   z.inferFlattenedErrors<TInputSchema>['fieldErrors'];
 
-interface Result<TInputSchema extends z.ZodTypeAny, TResponse> {
+interface Result<TInputSchema extends z.ZodTypeAny, TResponse extends any> {
   data: TResponse | null;
   error: string | null;
   validationErrors: InferValidationErrors<TInputSchema> | null;
@@ -23,10 +21,9 @@ interface Result<TInputSchema extends z.ZodTypeAny, TResponse> {
 
 export type ServerAction<
   TInputSchema extends z.ZodTypeAny,
-  TInput extends TInputSchema | undefined,
-  TResponse,
+  TResponse extends any,
 > = (
-  input: InferInputType<TInputSchema, TInput>,
+  input: InferInputType<TInputSchema>,
 ) => Promise<Result<TInputSchema, TResponse>> | void;
 
 export const createActionClient = <Context>(createClientOpts?: {
@@ -34,7 +31,6 @@ export const createActionClient = <Context>(createClientOpts?: {
 }) => {
   const actionBuilder = <
     TInputSchema extends z.ZodTypeAny,
-    TInput extends TInputSchema | undefined,
     TResponse extends any,
   >(actionBuilderOpts: {
     input?: TInputSchema;
@@ -43,7 +39,7 @@ export const createActionClient = <Context>(createClientOpts?: {
       ctx: Context;
     }) => MaybePromise<void> | MaybePromise<TResponse>;
   }) => {
-    const createAction: ServerAction<TInputSchema, TInput, TResponse> = async (
+    const createAction: ServerAction<TInputSchema, TResponse> = async (
       input,
     ) => {
       try {
@@ -82,7 +78,6 @@ export const createActionClient = <Context>(createClientOpts?: {
           isNextRedirectError(errorMessage) ||
           isNextNotFoundError(errorMessage)
         ) {
-          console.log('is next errror');
           throw error;
         }
 
