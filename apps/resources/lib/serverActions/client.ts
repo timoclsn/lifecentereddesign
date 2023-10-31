@@ -1,6 +1,6 @@
 import { useCallback, useReducer, useTransition } from 'react';
 import { z } from 'zod';
-import { InferInputType, InferValidationErrors, ServerAction } from './server';
+import { InferInputArgs, InferValidationErrors, ServerAction } from './server';
 
 interface State<TResponse extends any, TInputSchema extends z.ZodTypeAny> {
   isIdle: boolean;
@@ -75,7 +75,7 @@ export const useAction = <
 >(
   inputAction: ServerAction<TInputSchema, TResponse>,
   options: {
-    onRunAction?: (input: InferInputType<TInputSchema>) => void;
+    onRunAction?: (...inputArgs: InferInputArgs<TInputSchema>) => void;
     onSuccess?: (data: TResponse | null) => void;
     onError?: (
       error: string | null,
@@ -91,16 +91,16 @@ export const useAction = <
   const [isRunning, startTransition] = useTransition();
 
   const runAction = useCallback(
-    async (input: InferInputType<TInputSchema>) => {
+    async (...inputArgs: InferInputArgs<TInputSchema>) => {
       startTransition(async () => {
         dispatch({
           type: 'RUN_ACTION',
         });
 
-        options.onRunAction?.(input);
+        options.onRunAction?.(...inputArgs);
 
         try {
-          const result = await inputAction(input);
+          const result = await inputAction(...inputArgs);
 
           // If /next/navigation function (redirect() and notFound()) is called in the action, the result will be undefined
           // Skip processing because the page will be redirected
