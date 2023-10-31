@@ -51,9 +51,10 @@ interface TrackingEvents {
 
 export const track = <TEventKey extends keyof TrackingEvents>(
   event: TEventKey,
-  ...data: TrackingEvents[TEventKey] extends null
+  ...restArgs: TrackingEvents[TEventKey] extends null
     ? []
-    : [TrackingEvents[TEventKey]]
+    : [data: TrackingEvents[TEventKey]]
 ) => {
+  const data = restArgs.at(0);
   splitbee.track(event, data);
 };
