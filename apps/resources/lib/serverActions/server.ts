@@ -7,8 +7,10 @@ import {
 
 type MaybePromise<T> = Promise<T> | T;
 
-export type InferInputType<TInputSchema extends z.ZodTypeAny> =
-  z.ZodTypeAny extends TInputSchema ? void : z.infer<TInputSchema>;
+// If TInputSchema is a more specific type than z.ZodTypeAny (e.g. z.ZodString),
+// then we can infer the input type. Otherwise, no input is needed.
+export type InferInputArgs<TInputSchema extends z.ZodTypeAny> =
+  z.ZodTypeAny extends TInputSchema ? [] : [input: z.infer<TInputSchema>];
 
 export type InferValidationErrors<TInputSchema extends z.ZodTypeAny> =
   z.inferFlattenedErrors<TInputSchema>['fieldErrors'];
@@ -23,25 +25,26 @@ export type ServerAction<
   TInputSchema extends z.ZodTypeAny,
   TResponse extends any,
 > = (
-  input: InferInputType<TInputSchema>,
+  ...inputArgs: InferInputArgs<TInputSchema>
 ) => Promise<Result<TInputSchema, TResponse>> | void;
 
 export const createActionClient = <Context>(createClientOpts?: {
   middleware?: () => MaybePromise<Context>;
 }) => {
-  const actionBuilder = <
+  const createAction = <
     TInputSchema extends z.ZodTypeAny,
     TResponse extends any,
   >(actionBuilderOpts: {
     input?: TInputSchema;
-    action: (args: {
+    action: (actionArgs: {
       input: z.output<TInputSchema>;
       ctx: Context;
     }) => MaybePromise<void> | MaybePromise<TResponse>;
   }) => {
-    const createAction: ServerAction<TInputSchema, TResponse> = async (
-      input,
+    const action: ServerAction<TInputSchema, TResponse> = async (
+      ...inputArgs
     ) => {
+      const [input] = inputArgs;
       try {
         let parsedInput = input;
         if (actionBuilderOpts.input) {
@@ -89,8 +92,8 @@ export const createActionClient = <Context>(createClientOpts?: {
       }
     };
 
-    return createAction;
+    return action;
   };
 
-  return actionBuilder;
+  return createAction;
 };

@@ -8,7 +8,7 @@ import { deleteAccount } from './actions';
 
 export const DeleteAccountButton = () => {
   const { isRunning, isSuccess, error, runAction } = useAction(deleteAccount, {
-    onRunAction: (test) => {},
+    onRunAction: () => {},
     onSuccess: () => {
       signOut();
     },
