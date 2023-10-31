@@ -22,7 +22,7 @@ export const withUser = async <TData extends Data>(data: TData) => {
   const user = users.find((user) => user.id === data.userId);
 
   if (!user) {
-    console.log(`User (${data.userId}) not found`);
+    console.error(`User (${data.userId}) not found`);
   }
 
   return {
@@ -43,7 +43,7 @@ export const withUserCollection = async <TData extends Data>(
     const user = users.find((user) => user.id === element.userId);
 
     if (!user) {
-      console.log(`User (${element.userId}) not found`);
+      console.error(`User (${element.userId}) not found`);
     }
 
     return {

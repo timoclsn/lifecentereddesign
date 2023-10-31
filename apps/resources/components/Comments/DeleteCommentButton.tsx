@@ -21,7 +21,7 @@ export const DeleteCommentButton = ({
 }: Props) => {
   const { isRunning, runAction } = useAction(deleteComment, {
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
   });
   const handleDeleteAccount = () => {
