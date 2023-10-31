@@ -140,11 +140,9 @@ export const useAction = <
   );
 
   const reset = useCallback(() => {
-    () => {
-      dispatch({
-        type: 'RESET',
-      });
-    };
+    dispatch({
+      type: 'RESET',
+    });
   }, []);
 
   return {
