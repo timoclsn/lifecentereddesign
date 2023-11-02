@@ -1,4 +1,4 @@
-import { ImageResponse } from 'next/server';
+import { ImageResponse } from 'next/og';
 import { ContentType } from '../../lib/resources';
 import { formatType, getHostname } from '../../lib/utils/utils';
 
