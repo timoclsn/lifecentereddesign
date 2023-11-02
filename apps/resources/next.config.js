@@ -5,12 +5,14 @@ const config = {
   reactStrictMode: true,
   images: {
     formats: ['image/avif', 'image/webp'],
-    domains: ['img.clerk.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.clerk.com',
+      },
+    ],
   },
   transpilePackages: ['design-system'],
-  experimental: {
-    serverActions: true,
-  },
   async rewrites() {
     return [
       {

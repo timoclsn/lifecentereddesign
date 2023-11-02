@@ -6,7 +6,7 @@ import { Tooltip } from 'design-system';
 import { useAction } from 'lib/serverActions/client';
 import { track } from 'lib/tracking';
 import { Heart } from 'lucide-react';
-import { experimental_useOptimistic as useOptimistic } from 'react';
+import { useOptimistic } from 'react';
 import { ContentType } from '../../../lib/resources';
 import { SolidHeart } from '../../Icons/SolidHeart';
 import { like, unLike } from '../actions';

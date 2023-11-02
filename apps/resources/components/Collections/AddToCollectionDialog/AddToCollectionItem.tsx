@@ -2,10 +2,10 @@
 
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { cva } from 'class-variance-authority';
-import { useAction } from 'lib/serverActions/client';
 import { ContentType } from 'lib/resources';
+import { useAction } from 'lib/serverActions/client';
 import { Check } from 'lucide-react';
-import { experimental_useOptimistic as useOptimistic } from 'react';
+import { useOptimistic } from 'react';
 import { addToCollection, removeFromCollection } from './actions';
 
 export const checkboxStyles = cva(
