@@ -57,5 +57,13 @@ export const track = <TEventKey extends keyof TrackingEvents>(
     : [event: TEventKey, data: TrackingEvents[TEventKey]]
 ) => {
   const [event, data] = args;
-  splitbee.track(event, data);
+  if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+    splitbee.track(event, data);
+  }
+  if (process.env.NODE_ENV === 'development') {
+    console.info('Tracking event:', {
+      event,
+      data,
+    });
+  }
 };
