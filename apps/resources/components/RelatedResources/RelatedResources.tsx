@@ -1,3 +1,4 @@
+import { Track } from 'components/Track/Track';
 import {
   Bleed,
   Card,
@@ -12,7 +13,6 @@ import { getResourceCached, getResourcesCached } from '../../lib/cache';
 import { ContentType, Resource, Resources } from '../../lib/resources';
 import { Await } from '../Await/Await';
 import { getCardComponent } from '../utils';
-import { RelatedResourceWrapper } from './ReleatedResourceWrapper';
 import birdsImg from './birds.jpg';
 
 interface Props {
@@ -51,11 +51,14 @@ export const RelatedResources = ({ resourceId, resourceType }: Props) => {
                   {resourcesToDisplay.map((resource) => {
                     const component = getCardComponent(resource);
                     return (
-                      <RelatedResourceWrapper
+                      <Track
+                        as="li"
                         key={`${resource.type}-${resource.id}`}
+                        event="Related resource clicked"
+                        className="relative w-[330px] flex-none snap-center sm:w-[600px]"
                       >
                         {component}
-                      </RelatedResourceWrapper>
+                      </Track>
                     );
                   })}
                 </>

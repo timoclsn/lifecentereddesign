@@ -1,6 +1,6 @@
 import { ContentType } from './resources';
 
-interface TrackingEvents {
+export interface TrackingEvents {
   'Download Resources': null;
   'Resource Suggestion': null;
   'Copy Resource Link': {

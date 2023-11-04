@@ -1,3 +1,4 @@
+import { Track } from 'components/Track/Track';
 import {
   Bleed,
   Card,
@@ -11,7 +12,6 @@ import Link from 'next/link';
 import { getResourcesCached } from '../../lib/cache';
 import { Await } from '../Await/Await';
 import { getCardComponent } from '../utils';
-import { NewResourceWrapper } from './NewResourceWrapper';
 import groundImg from './ground.jpg';
 
 export const NewResources = () => {
@@ -44,11 +44,14 @@ export const NewResources = () => {
                   {resourcesToDisplay.map((resource) => {
                     const component = getCardComponent(resource);
                     return (
-                      <NewResourceWrapper
+                      <Track
+                        as="li"
                         key={`${resource.type}-${resource.id}`}
+                        event="New resource clicked"
+                        className="relative w-[330px] flex-none snap-center sm:w-[600px]"
                       >
                         {component}
-                      </NewResourceWrapper>
+                      </Track>
                     );
                   })}
                 </>
