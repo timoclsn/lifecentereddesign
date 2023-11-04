@@ -1,3 +1,4 @@
+import { Track } from 'components/Track/Track';
 import {
   Bleed,
   Card,
@@ -50,12 +51,14 @@ export const RelatedResources = ({ resourceId, resourceType }: Props) => {
                   {resourcesToDisplay.map((resource) => {
                     const component = getCardComponent(resource);
                     return (
-                      <li
+                      <Track
+                        as="li"
                         key={`${resource.type}-${resource.id}`}
+                        event="Related resource clicked"
                         className="relative w-[330px] flex-none snap-center sm:w-[600px]"
                       >
                         {component}
-                      </li>
+                      </Track>
                     );
                   })}
                 </>
