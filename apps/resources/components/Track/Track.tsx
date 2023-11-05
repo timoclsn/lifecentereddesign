@@ -19,7 +19,9 @@ export const Track = <TEventKey extends keyof TrackingEvents>({
   event,
   ...rest
 }: Props<TEventKey>) => {
-  const data = 'data' in rest ? rest.data : undefined;
+  const data =
+    'data' in rest ? (rest.data as TrackingEvents[TEventKey]) : undefined;
+
   return (
     <Element
       className={className}
