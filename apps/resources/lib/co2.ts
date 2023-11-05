@@ -23,7 +23,14 @@ const wccSchema = z.object({
 });
 
 export const getCO2Consumtion = async (url: string) => {
-  const response = await fetch(`https://api.websitecarbon.com/site?url=${url}`);
+  const response = await fetch(
+    `https://api.websitecarbon.com/site?url=${url}`,
+    {
+      next: {
+        revalidate: 60,
+      },
+    },
+  );
   const result = await response.json();
 
   const parsedResult = wccSchema.parse(result);
