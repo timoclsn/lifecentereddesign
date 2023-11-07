@@ -1,6 +1,6 @@
 import { useCallback, useReducer, useTransition } from 'react';
 import { z } from 'zod';
-import { InferInputArgs, InferValidationErrors, ServerAction } from './server';
+import { InferInputArgs, InferValidationErrors, ServerAction } from './types';
 
 interface State<TResponse extends any, TInputSchema extends z.ZodTypeAny> {
   isIdle: boolean;
@@ -24,9 +24,12 @@ type Action<TResponse extends any, TInputSchema extends z.ZodTypeAny> =
   | { type: 'RUN_ACTION' }
   | { type: 'IS_SUCCESS'; data: TResponse | null }
   | {
+      type: 'IS_VALIDATION_ERROR';
+      validationErrors: InferValidationErrors<TInputSchema>;
+    }
+  | {
       type: 'IS_ERROR';
-      error: string | null;
-      validationErrors: InferValidationErrors<TInputSchema> | null;
+      error: string;
     }
   | { type: 'RESET' };
 
@@ -58,6 +61,12 @@ const createReducer =
           isIdle: true,
           isError: true,
           error: action.error,
+        };
+      case 'IS_VALIDATION_ERROR':
+        return {
+          ...state,
+          isIdle: true,
+          isError: true,
           validationErrors: action.validationErrors,
         };
       case 'RESET':
@@ -108,14 +117,23 @@ export const useAction = <
             return;
           }
 
-          if (result.error || result.validationErrors) {
+          if (result.state === 'validationError') {
+            dispatch({
+              type: 'IS_VALIDATION_ERROR',
+              validationErrors: result.validationErrors,
+            });
+            options.onError?.(null, result.validationErrors);
+          }
+
+          if (result.state === 'error') {
             dispatch({
               type: 'IS_ERROR',
               error: result.error,
-              validationErrors: result.validationErrors,
             });
-            options.onError?.(result.error, result.validationErrors);
-          } else {
+            options.onError?.(result.error, null);
+          }
+
+          if (result.state === 'success') {
             dispatch({
               type: 'IS_SUCCESS',
               data: result.data,
@@ -127,7 +145,6 @@ export const useAction = <
           dispatch({
             type: 'IS_ERROR',
             error: userErrorMessage,
-            validationErrors: null,
           });
           options.onError?.(userErrorMessage, null);
           console.error(error);

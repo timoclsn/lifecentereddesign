@@ -126,7 +126,7 @@ export const AddCollectionDialog = ({
             </Button>
 
             {/* Server messages */}
-            {error && !validationErrors && (
+            {error && (
               <div aria-live="polite" role="status">
                 <InfoBox
                   variant="error"
