@@ -10,25 +10,19 @@ export type InferInputArgs<TInputSchema extends z.ZodTypeAny> =
 export type InferValidationErrors<TInputSchema extends z.ZodTypeAny> =
   z.inferFlattenedErrors<TInputSchema>['fieldErrors'];
 
-interface SuccessResult<TResponse extends any> {
-  state: 'success';
-  data: TResponse | null;
-}
-
-interface ValidationErrorResult<TInputSchema extends z.ZodTypeAny> {
-  state: 'validationError';
-  validationErrors: InferValidationErrors<TInputSchema>;
-}
-
-interface ErrorResult {
-  state: 'error';
-  error: string;
-}
-
 export type Result<TInputSchema extends z.ZodTypeAny, TResponse extends any> =
-  | SuccessResult<TResponse>
-  | ValidationErrorResult<TInputSchema>
-  | ErrorResult;
+  | {
+      state: 'success';
+      data: TResponse | null;
+    }
+  | {
+      state: 'validationError';
+      validationErrors: InferValidationErrors<TInputSchema>;
+    }
+  | {
+      state: 'error';
+      error: string;
+    };
 
 export type ServerAction<
   TInputSchema extends z.ZodTypeAny,
