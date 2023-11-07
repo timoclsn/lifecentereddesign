@@ -20,10 +20,7 @@ interface ValidationErrorResult<TInputSchema extends z.ZodTypeAny> {
   validationErrors: InferValidationErrors<TInputSchema>;
 }
 
-interface ErrorResult<
-  TInputSchema extends z.ZodTypeAny,
-  TResponse extends any,
-> {
+interface ErrorResult {
   state: 'error';
   error: string;
 }
@@ -31,7 +28,7 @@ interface ErrorResult<
 export type Result<TInputSchema extends z.ZodTypeAny, TResponse extends any> =
   | SuccessResult<TResponse>
   | ValidationErrorResult<TInputSchema>
-  | ErrorResult<TInputSchema, TResponse>;
+  | ErrorResult;
 
 export type ServerAction<
   TInputSchema extends z.ZodTypeAny,
