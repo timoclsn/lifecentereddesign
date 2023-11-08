@@ -30,6 +30,7 @@ export function ProfileCard({
         <Image
           src={image}
           alt={`Portrait image of ${name}`}
+          placeholder="blur"
           className="border-primary-contrast-text w-[120px] rounded-full border-4 border-solid leading-none"
         />
         <div className="flex-1">
