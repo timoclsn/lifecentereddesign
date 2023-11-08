@@ -23,7 +23,9 @@ export const createActionClient = <Context>(createClientOpts?: {
       ...inputArgs
     ) => {
       const [input] = inputArgs;
+
       try {
+        // Validate input if schema is provided
         let parsedInput = input;
         if (actionBuilderOpts.input) {
           const result = actionBuilderOpts.input.safeParse(input);
@@ -36,8 +38,10 @@ export const createActionClient = <Context>(createClientOpts?: {
           parsedInput = result.data;
         }
 
+        // Run middleware if provided and get context
         const ctx = (await createClientOpts?.middleware?.()) ?? ({} as Context);
 
+        // Call action
         const response = await actionBuilderOpts.action({
           input: parsedInput,
           ctx,
