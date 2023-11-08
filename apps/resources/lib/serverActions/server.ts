@@ -4,29 +4,7 @@ import {
   isNextNotFoundError,
   isNextRedirectError,
 } from '../utils/utils';
-
-type MaybePromise<T> = Promise<T> | T;
-
-// If TInputSchema is a more specific type than z.ZodTypeAny (e.g. z.ZodString),
-// then we can infer the input type. Otherwise, no input is needed.
-export type InferInputArgs<TInputSchema extends z.ZodTypeAny> =
-  z.ZodTypeAny extends TInputSchema ? [] : [input: z.infer<TInputSchema>];
-
-export type InferValidationErrors<TInputSchema extends z.ZodTypeAny> =
-  z.inferFlattenedErrors<TInputSchema>['fieldErrors'];
-
-interface Result<TInputSchema extends z.ZodTypeAny, TResponse extends any> {
-  data: TResponse | null;
-  error: string | null;
-  validationErrors: InferValidationErrors<TInputSchema> | null;
-}
-
-export type ServerAction<
-  TInputSchema extends z.ZodTypeAny,
-  TResponse extends any,
-> = (
-  ...inputArgs: InferInputArgs<TInputSchema>
-) => Promise<Result<TInputSchema, TResponse>> | void;
+import { MaybePromise, ServerAction } from './types';
 
 export const createActionClient = <Context>(createClientOpts?: {
   middleware?: () => MaybePromise<Context>;
@@ -51,8 +29,7 @@ export const createActionClient = <Context>(createClientOpts?: {
           const result = actionBuilderOpts.input.safeParse(input);
           if (!result.success) {
             return {
-              data: null,
-              error: 'Invalid input',
+              state: 'validationError',
               validationErrors: result.error.flatten().fieldErrors,
             };
           }
@@ -67,9 +44,8 @@ export const createActionClient = <Context>(createClientOpts?: {
         });
 
         return {
+          state: 'success',
           data: response ?? null,
-          error: null,
-          validationErrors: null,
         };
       } catch (error) {
         const errorMessage = getErrorMessage(error);
@@ -85,9 +61,8 @@ export const createActionClient = <Context>(createClientOpts?: {
         }
 
         return {
-          data: null,
+          state: 'error',
           error: errorMessage,
-          validationErrors: null,
         };
       }
     };

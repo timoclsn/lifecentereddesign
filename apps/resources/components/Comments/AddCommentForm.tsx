@@ -97,7 +97,7 @@ export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
       </Button>
 
       {/* Server messages */}
-      {error && !validationErrors && (
+      {error && (
         <div aria-live="polite" role="status" className="w-full">
           <InfoBox
             variant="error"

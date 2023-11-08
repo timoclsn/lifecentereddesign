@@ -1,8 +1,9 @@
 import { useCallback, useReducer, useTransition } from 'react';
 import { z } from 'zod';
-import { InferInputArgs, InferValidationErrors, ServerAction } from './server';
+import { InferInputArgs, InferValidationErrors, ServerAction } from './types';
 
 interface State<TResponse extends any, TInputSchema extends z.ZodTypeAny> {
+  status: 'idle' | 'running' | 'success' | 'error';
   isIdle: boolean;
   isSuccess: boolean;
   isError: boolean;
@@ -12,6 +13,7 @@ interface State<TResponse extends any, TInputSchema extends z.ZodTypeAny> {
 }
 
 const initalState: State<any, any> = {
+  status: 'idle',
   isIdle: true,
   isSuccess: false,
   isError: false,
@@ -24,9 +26,12 @@ type Action<TResponse extends any, TInputSchema extends z.ZodTypeAny> =
   | { type: 'RUN_ACTION' }
   | { type: 'IS_SUCCESS'; data: TResponse | null }
   | {
+      type: 'IS_VALIDATION_ERROR';
+      validationErrors: InferValidationErrors<TInputSchema>;
+    }
+  | {
       type: 'IS_ERROR';
-      error: string | null;
-      validationErrors: InferValidationErrors<TInputSchema> | null;
+      error: string;
     }
   | { type: 'RESET' };
 
@@ -40,6 +45,7 @@ const createReducer =
       case 'RUN_ACTION':
         return {
           ...state,
+          status: 'running',
           isIdle: false,
           isSuccess: false,
           isError: false,
@@ -48,6 +54,7 @@ const createReducer =
       case 'IS_SUCCESS':
         return {
           ...state,
+          status: 'success',
           isIdle: true,
           isSuccess: true,
           data: action.data,
@@ -55,9 +62,17 @@ const createReducer =
       case 'IS_ERROR':
         return {
           ...state,
+          status: 'error',
           isIdle: true,
           isError: true,
           error: action.error,
+        };
+      case 'IS_VALIDATION_ERROR':
+        return {
+          ...state,
+          status: 'error',
+          isIdle: true,
+          isError: true,
           validationErrors: action.validationErrors,
         };
       case 'RESET':
@@ -77,17 +92,18 @@ export const useAction = <
   options: {
     onRunAction?: (...inputArgs: InferInputArgs<TInputSchema>) => void;
     onSuccess?: (data: TResponse | null) => void;
-    onError?: (
-      error: string | null,
-      validationErrors: InferValidationErrors<TInputSchema> | null,
-    ) => void;
+    onError?: (errors: {
+      error: string | null;
+      validationErrors: InferValidationErrors<TInputSchema> | null;
+    }) => void;
     onSettled?: () => void;
     reset?: () => void;
   } = {},
 ) => {
   const reducer = createReducer<TResponse, TInputSchema>();
   const [state, dispatch] = useReducer(reducer, initalState);
-  const { isIdle, isSuccess, isError, data, error, validationErrors } = state;
+  const { status, isIdle, isSuccess, isError, data, error, validationErrors } =
+    state;
   const [isRunning, startTransition] = useTransition();
 
   const runAction = useCallback(
@@ -108,14 +124,29 @@ export const useAction = <
             return;
           }
 
-          if (result.error || result.validationErrors) {
+          if (result.state === 'validationError') {
+            dispatch({
+              type: 'IS_VALIDATION_ERROR',
+              validationErrors: result.validationErrors,
+            });
+            options.onError?.({
+              error: null,
+              validationErrors: result.validationErrors,
+            });
+          }
+
+          if (result.state === 'error') {
             dispatch({
               type: 'IS_ERROR',
               error: result.error,
-              validationErrors: result.validationErrors,
             });
-            options.onError?.(result.error, result.validationErrors);
-          } else {
+            options.onError?.({
+              error: result.error,
+              validationErrors: null,
+            });
+          }
+
+          if (result.state === 'success') {
             dispatch({
               type: 'IS_SUCCESS',
               data: result.data,
@@ -127,9 +158,11 @@ export const useAction = <
           dispatch({
             type: 'IS_ERROR',
             error: userErrorMessage,
+          });
+          options.onError?.({
+            error: userErrorMessage,
             validationErrors: null,
           });
-          options.onError?.(userErrorMessage, null);
           console.error(error);
         }
 
@@ -147,6 +180,7 @@ export const useAction = <
 
   return {
     runAction,
+    status,
     isIdle,
     isRunning,
     isSuccess,

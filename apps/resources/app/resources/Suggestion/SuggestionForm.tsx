@@ -129,7 +129,7 @@ export const SuggestionForm = () => {
           </InfoBox>
         </div>
       )}
-      {error && !validationErrors && (
+      {error && (
         <div aria-live="polite" role="status">
           <InfoBox
             variant="error"
