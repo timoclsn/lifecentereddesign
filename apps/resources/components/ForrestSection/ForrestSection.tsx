@@ -43,6 +43,7 @@ export const ForrestSection = ({ children, id }: Props) => {
         <Image
           src={forestImg}
           alt="Image of a foggy forest."
+          placeholder="blur"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
         <Container inset className="relative py-28">

@@ -27,6 +27,7 @@ export const NewResources = () => {
             <Image
               src={groundImg}
               alt="Image of desert ground."
+              placeholder="blur"
               className="rounded-4xl h-full object-cover"
             />
           </li>

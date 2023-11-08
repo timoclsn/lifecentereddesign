@@ -36,6 +36,7 @@ export const RelatedResources = ({ resourceId, resourceType }: Props) => {
             <Image
               src={birdsImg}
               alt="Image of desert ground."
+              placeholder="blur"
               className="rounded-4xl h-full object-cover"
             />
           </li>
