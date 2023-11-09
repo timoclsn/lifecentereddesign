@@ -221,6 +221,10 @@ const includes = (type: ContentType) => {
 
 // All resources
 
+/**
+ * Retrieves all resources from the database and enhances them with additional data.
+ * @returns A Promise that resolves to an array of enhanced resources.
+ */
 export const getResources = async () => {
   const resourcePromises = resourceTypes.map((type) => {
     // @ts-expect-error: Dynamic table access doesn't work on type level
@@ -253,6 +257,12 @@ export const getResources = async () => {
 
 // Single resource
 
+/**
+ * Retrieves a resource by its ID and type, and returns it with an updated like count.
+ * @param id - The ID of the resource to retrieve.
+ * @param type - The type of the resource to retrieve.
+ * @returns The retrieved resource with an updated like count.
+ */
 export const getResource = async (id: number, type: ContentType) => {
   // @ts-expect-error: Dynamic table access doesn't work on type level
   const resource = (await prisma[type].findUnique({
@@ -274,6 +284,12 @@ export const getResource = async (id: number, type: ContentType) => {
 
 // Likes
 
+/**
+ * Retrieves the number of likes for a resource of a given type and ID.
+ * @param id - The ID of the resource.
+ * @param type - The type of the resource.
+ * @returns The number of likes for the resource.
+ */
 const getResourceOldLikesCount = async (id: number, type: ContentType) => {
   // @ts-expect-error: Dynamic table access doesn't work on type level
   const data = (await prisma[type].findUnique({
@@ -288,6 +304,12 @@ const getResourceOldLikesCount = async (id: number, type: ContentType) => {
   return data.likes;
 };
 
+/**
+ * Returns the number of new likes for a given resource and content type.
+ * @param resourceId - The ID of the resource to check for new likes.
+ * @param type - The content type of the resource.
+ * @returns The number of new likes for the given resource and content type.
+ */
 const getNewLikesCount = async (resourceId: number, type: ContentType) => {
   return await prisma.like.count({
     where: {
@@ -297,6 +319,12 @@ const getNewLikesCount = async (resourceId: number, type: ContentType) => {
   });
 };
 
+/**
+ * Retrieves all likes for a given resource ID and content type.
+ * @param id - The ID of the resource to retrieve likes for.
+ * @param type - The content type of the resource.
+ * @returns A Promise that resolves to an array of likes.
+ */
 const getResourceNewLikes = async (id: number, type: ContentType) => {
   return await prisma.like.findMany({
     where: {
@@ -306,6 +334,12 @@ const getResourceNewLikes = async (id: number, type: ContentType) => {
   });
 };
 
+/**
+ * Retrieves the old likes count and new likes data for a given resource.
+ * @param resourceId - The ID of the resource to retrieve likes data for.
+ * @param resourceType - The type of the resource to retrieve likes data for.
+ * @returns An object containing the old likes count and new likes data.
+ */
 export const getResourceLikesData = async (
   resourceId: number,
   resourceType: ContentType,
@@ -320,6 +354,12 @@ export const getResourceLikesData = async (
   };
 };
 
+/**
+ * Creates a new like for a resource.
+ * @param userId - The ID of the user who is liking the resource.
+ * @param id - The ID of the resource being liked.
+ * @param type - The type of content the resource is.
+ */
 export const likeResource = async (
   userId: string,
   id: number,
@@ -334,6 +374,11 @@ export const likeResource = async (
   });
 };
 
+/**
+ * Increments the number of likes for a resource of the given type with the specified ID.
+ * @param id - The ID of the resource to like.
+ * @param type - The type of the resource to like.
+ */
 export const anonymousLikeResource = async (id: number, type: ContentType) => {
   // @ts-expect-error: Dynamic table access doesn't work on type level
   await prisma[type].update({
@@ -348,6 +393,12 @@ export const anonymousLikeResource = async (id: number, type: ContentType) => {
   });
 };
 
+/**
+ * Removes a like from a resource for a given user.
+ * @param userId - The ID of the user who liked the resource.
+ * @param id - The ID of the resource to remove the like from.
+ * @param type - The type of the resource.
+ */
 export const unlikeResource = async (
   userId: string,
   id: number,
@@ -365,6 +416,11 @@ export const unlikeResource = async (
 };
 
 export type LikedResources = Awaited<ReturnType<typeof getLikedResources>>;
+/**
+ * Retrieves a list of resources that a user has liked.
+ * @param userId - The ID of the user whose liked resources to retrieve.
+ * @returns A Promise that resolves to an array of objects containing the IDs and types of the user's liked resources.
+ */
 export const getLikedResources = async (userId: string) => {
   return await prisma.like.findMany({
     where: {
@@ -382,6 +438,10 @@ export const getLikedResources = async (userId: string) => {
 export type Category = Prisma.CategoryGetPayload<{}>;
 export type Categories = Array<Category>;
 
+/**
+ * Retrieves a list of categories from the database.
+ * @returns A promise that resolves to an array of Category objects.
+ */
 export const getCategories = async () => {
   return await prisma.category.findMany({
     orderBy: {
@@ -395,6 +455,10 @@ export const getCategories = async () => {
 export type Topic = Prisma.TopicGetPayload<{}>;
 export type Topics = Array<Topic>;
 
+/**
+ * Retrieves all topics from the database.
+ * @returns A promise that resolves to an array of topics sorted by name in ascending order.
+ */
 export const getTopics = async () => {
   return await prisma.topic.findMany({
     orderBy: {
@@ -405,6 +469,10 @@ export const getTopics = async () => {
 
 // Users
 
+/**
+ * Deletes all user data associated with the given userId.
+ * @param userId - The ID of the user whose data will be deleted.
+ */
 export const deleteUserData = async (userId: string) => {
   await prisma.like.deleteMany({
     where: {
@@ -420,6 +488,12 @@ export const deleteUserData = async (userId: string) => {
 
 // Comments
 
+/**
+ * Retrieves comments for a resource with the given ID and content type.
+ * @param id - The ID of the resource to retrieve comments for.
+ * @param type - The content type of the resource.
+ * @returns A Promise that resolves to an array of comments for the resource.
+ */
 export const getResourceComments = async (id: number, type: ContentType) => {
   const comments = await prisma.comment.findMany({
     where: {
@@ -434,6 +508,12 @@ export const getResourceComments = async (id: number, type: ContentType) => {
   return withUserCollection(comments);
 };
 
+/**
+ * Returns the number of comments for a given resource ID and content type.
+ * @param id - The ID of the resource.
+ * @param type - The content type of the resource.
+ * @returns The number of comments for the given resource ID and content type.
+ */
 export const getCommentsCount = async (id: number, type: ContentType) => {
   return await prisma.comment.count({
     where: {
@@ -443,6 +523,13 @@ export const getCommentsCount = async (id: number, type: ContentType) => {
   });
 };
 
+/**
+ * Adds a comment to a resource.
+ * @param userId - The ID of the user adding the comment.
+ * @param resourceId - The ID of the resource being commented on.
+ * @param type - The type of content being commented on.
+ * @param text - The text of the comment.
+ */
 export const addResourceComment = async (
   userId: string,
   resourceId: number,
@@ -459,6 +546,11 @@ export const addResourceComment = async (
   });
 };
 
+/**
+ * Deletes a resource comment with the given ID and user ID.
+ * @param id - The ID of the comment to delete.
+ * @param userId - The ID of the user who created the comment.
+ */
 export const deleteResourceComment = async (id: number, userId: string) => {
   await prisma.comment.delete({
     where: {
@@ -471,6 +563,11 @@ export const deleteResourceComment = async (id: number, userId: string) => {
 export type CommentedResources = Awaited<
   ReturnType<typeof getCommentedResources>
 >;
+/**
+ * Retrieves a list of commented resources for a given user.
+ * @param userId The ID of the user to retrieve commented resources for.
+ * @returns A Promise that resolves to an array of commented resources.
+ */
 export const getCommentedResources = async (userId: string) => {
   const comments = await prisma.comment.findMany({
     where: {
