@@ -83,7 +83,11 @@ export const Card = async ({
 
             {/* Note */}
             {note && (
-              <Tooltip content={`Editor's note: ${note}`} openOnClick>
+              <Tooltip
+                content={`Editor's note: ${note}`}
+                openOnClick
+                className="relative"
+              >
                 <div>
                   <StickyNote />
                 </div>
@@ -95,6 +99,7 @@ export const Card = async ({
               <Tooltip
                 content="Resource suggested by the community ❤️"
                 openOnClick
+                className="relative"
               >
                 <div>
                   <Users2 />

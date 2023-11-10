@@ -8,6 +8,7 @@ interface Props {
   content: string;
   delayDuration?: number;
   openOnClick?: boolean;
+  className?: string;
 }
 
 export const Tooltip = ({
@@ -15,6 +16,7 @@ export const Tooltip = ({
   content,
   delayDuration = 0,
   openOnClick = false,
+  className,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleOpenState = () => setIsOpen((value) => !value);
@@ -29,6 +31,7 @@ export const Tooltip = ({
         <TooltipPrimitive.Trigger
           asChild
           onClick={openOnClick ? handleTriggerClick : undefined}
+          className={className}
         >
           {children}
         </TooltipPrimitive.Trigger>
