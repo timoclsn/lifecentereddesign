@@ -1,4 +1,4 @@
-import { prisma } from './prisma';
+import { prisma } from 'database';
 import { ContentType, getResource } from './resources';
 import { withUser, withUserCollection } from './users';
 

@@ -1,5 +1,4 @@
-import { Prisma } from 'database';
-import { prisma } from './prisma';
+import { Prisma, prisma } from 'database';
 import { withUserCollection } from './users';
 
 export const resourceTypes = [
