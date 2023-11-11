@@ -1,18 +1,14 @@
 import { useCallback, useReducer, useTransition } from 'react';
 import { z } from 'zod';
-import { InferInputArgs, InferValidationErrors, ServerAction } from './types';
+import {
+  ClientActionAction,
+  ClientActionState,
+  InferInputArgs,
+  InferValidationErrors,
+  ServerAction,
+} from './types';
 
-interface State<TResponse extends any, TInputSchema extends z.ZodTypeAny> {
-  status: 'idle' | 'running' | 'success' | 'error';
-  isIdle: boolean;
-  isSuccess: boolean;
-  isError: boolean;
-  data: TResponse | null;
-  error: string | null;
-  validationErrors: InferValidationErrors<TInputSchema> | null;
-}
-
-const initalState: State<any, any> = {
+const initalState: ClientActionState<any, any> = {
   status: 'idle',
   isIdle: true,
   isSuccess: false,
@@ -22,25 +18,12 @@ const initalState: State<any, any> = {
   validationErrors: null,
 };
 
-type Action<TResponse extends any, TInputSchema extends z.ZodTypeAny> =
-  | { type: 'RUN_ACTION' }
-  | { type: 'IS_SUCCESS'; data: TResponse | null }
-  | {
-      type: 'IS_VALIDATION_ERROR';
-      validationErrors: InferValidationErrors<TInputSchema>;
-    }
-  | {
-      type: 'IS_ERROR';
-      error: string;
-    }
-  | { type: 'RESET' };
-
 const createReducer =
   <TResponse extends any, TInputSchema extends z.ZodTypeAny>() =>
   (
-    state: State<TResponse, TInputSchema>,
-    action: Action<TResponse, TInputSchema>,
-  ): State<TResponse, TInputSchema> => {
+    state: ClientActionState<TResponse, TInputSchema>,
+    action: ClientActionAction<TResponse, TInputSchema>,
+  ): ClientActionState<TResponse, TInputSchema> => {
     switch (action.type) {
       case 'RUN_ACTION':
         return {
