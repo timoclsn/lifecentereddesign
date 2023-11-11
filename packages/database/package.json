@@ -9,7 +9,10 @@
     "db:pull": "prisma db pull"
   },
   "dependencies": {
-    "@prisma/client": "5.5.2"
+    "@planetscale/database": "^1.11.0",
+    "@prisma/adapter-planetscale": "^5.5.2",
+    "@prisma/client": "5.5.2",
+    "zod": "3.22.4"
   },
   "devDependencies": {
     "prisma": "5.5.2"
