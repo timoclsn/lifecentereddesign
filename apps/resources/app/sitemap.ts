@@ -37,7 +37,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
 
   resources.forEach((resource) => {
     pages.push({
-      url: `https://lifecentereddesign.net/resources/${resource.id}-${resource.type}`,
+      url: `https://lifecentereddesign.net/resources/${resource.type}-${resource.id}`,
       lastModified: new Date(),
     });
   });
