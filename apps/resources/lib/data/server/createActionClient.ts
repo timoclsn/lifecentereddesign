@@ -1,14 +1,12 @@
-import { z } from 'zod';
-import {
-  getErrorMessage,
-  isNextNotFoundError,
-  isNextRedirectError,
-} from '../utils/utils';
-import { MaybePromise, ServerAction } from './types';
+import { isNotFoundError } from "next/dist/client/components/not-found";
+import { isRedirectError } from "next/dist/client/components/redirect";
+import { z } from "zod";
+import { CreateClientOptions, MaybePromise, ServerAction } from "../types";
+import { getErrorMessage, id } from "../utils";
 
-export const createActionClient = <Context>(createClientOpts?: {
-  middleware?: () => MaybePromise<Context>;
-}) => {
+export const createActionClient = <Context>(
+  createClientOpts?: CreateClientOptions<Context>,
+) => {
   const createAction = <
     TInputSchema extends z.ZodTypeAny,
     TResponse extends any,
@@ -31,8 +29,11 @@ export const createActionClient = <Context>(createClientOpts?: {
           const result = actionBuilderOpts.input.safeParse(input);
           if (!result.success) {
             return {
-              state: 'validationError',
+              status: "validationError",
+              id: id(),
+              data: null,
               validationErrors: result.error.flatten().fieldErrors,
+              error: null,
             };
           }
           parsedInput = result.data;
@@ -48,25 +49,26 @@ export const createActionClient = <Context>(createClientOpts?: {
         });
 
         return {
-          state: 'success',
+          status: "success",
+          id: id(),
           data: response ?? null,
+          validationErrors: null,
+          error: null,
         };
       } catch (error) {
-        const errorMessage = getErrorMessage(error);
-
         // The next/navigation functions (redirect() and notFound()) operate by deliberately triggering an error,
         // which will then be handled internally by Next.js. In this specific scenario,
         // we must intentionally propagate the error further.
-        if (
-          isNextRedirectError(errorMessage) ||
-          isNextNotFoundError(errorMessage)
-        ) {
+        if (isRedirectError(error) || isNotFoundError(error)) {
           throw error;
         }
 
         return {
-          state: 'error',
-          error: errorMessage,
+          status: "error",
+          id: id(),
+          data: null,
+          validationErrors: null,
+          error: getErrorMessage(error),
         };
       }
     };
