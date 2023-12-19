@@ -11,7 +11,7 @@ import {
   Heading,
   InfoBox,
 } from 'design-system';
-import { useAction } from 'lib/serverActions/client';
+import { useAction } from 'lib/data/client';
 import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 import { addCollection } from './actions';

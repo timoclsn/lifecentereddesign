@@ -2,11 +2,12 @@ import { getCardComponent } from 'components/utils';
 import { Heading } from 'design-system';
 import { matchSorter } from 'match-sorter';
 import { AutoAnimate } from '../../../../../components/AutoAnimate/AutoAnimate';
+
 import {
   CommentedResources,
   LikedResources,
   Resource,
-} from '../../../../../lib/resources';
+} from 'data/resources/query';
 import { ReseourcesFilter } from '../../Resources';
 import { ClearAllButton } from './ClearAllButton';
 import { DownloadButton } from './DownloadButton/DownloadButton';

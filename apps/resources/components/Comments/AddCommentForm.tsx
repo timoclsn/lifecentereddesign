@@ -5,9 +5,9 @@ import { Button, InfoBox } from 'design-system';
 import { track } from 'lib/tracking';
 import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { useRef } from 'react';
-import { ContentType } from '../../lib/resources';
-import { useAction } from '../../lib/serverActions/client';
 import { addComment } from './actions';
+import { ContentType } from 'data/resources/query';
+import { useAction } from 'lib/data/client';
 
 const inputStyles = cva(
   'px-8 py-4 text-base text-text-secondary bg-ghost-main-dark-bg outline-none w-full ring-inset',

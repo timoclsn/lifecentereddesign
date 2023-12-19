@@ -358,14 +358,13 @@ export const getResourceLikesData = createQuery({
   query: async ({ input }) => {
     const { id, type } = input;
 
-    const [oldLikesCount, newLikesCount] = await Promise.all([
+    const [oldLikesCount, newLikes] = await Promise.all([
       getResourceOldLikesCount(id, type),
       getResourceNewLikes(id, type),
     ]);
-
     return {
       oldLikesCount,
-      newLikesCount,
+      newLikes,
     };
   },
 });
@@ -461,16 +460,13 @@ export type CommentedResources = Awaited<
   ReturnType<typeof getCommentedResources>
 >;
 
-export const getCommentedResources = createQuery({
-  input: z.object({
-    userId: z.string(),
-  }),
+export const getCommentedResources = createProtectedQuery({
   cache: {
     noStore: true,
   },
-  query: async ({ input, ctx }) => {
-    const { userId } = input;
-    const { db } = ctx;
+  query: async ({ ctx }) => {
+    const { db, userId } = ctx;
+
     const comments = await db.comment.findMany({
       where: {
         userId,

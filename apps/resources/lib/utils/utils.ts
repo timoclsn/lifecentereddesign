@@ -1,5 +1,5 @@
+import { ContentType } from 'data/resources/query';
 import { format } from 'date-fns';
-import { ContentType } from '../resources';
 
 /**
  * Returns the hostname of a given URL.

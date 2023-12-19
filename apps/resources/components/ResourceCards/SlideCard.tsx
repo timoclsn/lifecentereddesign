@@ -1,5 +1,5 @@
+import { Slide } from 'data/resources/query';
 import { BookOpen, CalendarDays, Tag } from 'lucide-react';
-import { Slide } from '../../lib/resources';
 import { formateDate, getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';
 import { thoughtleadersList, topicsList } from '../utils';

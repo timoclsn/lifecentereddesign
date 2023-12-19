@@ -3,13 +3,13 @@
 import { useAuth } from '@clerk/nextjs';
 import { cva } from 'class-variance-authority';
 import { Tooltip } from 'design-system';
-import { useAction } from 'lib/serverActions/client';
 import { track } from 'lib/tracking';
 import { Heart } from 'lucide-react';
 import { useOptimistic } from 'react';
-import { ContentType } from '../../../lib/resources';
 import { SolidHeart } from '../../Icons/SolidHeart';
 import { like, unLike } from '../actions';
+import { useAction } from 'lib/data/client';
+import { ContentType } from 'data/resources/query';
 
 const heartVariants = cva(
   'group-hover:scale-110 group-active:scale-90 transition-transform ease',

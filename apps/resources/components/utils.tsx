@@ -1,5 +1,3 @@
-import Link from 'next/link';
-import { Fragment } from 'react';
 import {
   Agency,
   Article,
@@ -20,9 +18,11 @@ import {
   Thoughtleader,
   ThoughtleaderBasic,
   Tool,
-  Topics,
   Video,
-} from '../lib/resources';
+} from 'data/resources/query';
+import { Topics } from 'data/topics/query';
+import Link from 'next/link';
+import { Fragment } from 'react';
 import { TopicsButton } from './Card/TopicsButton';
 import { AgencyCard } from './ResourceCards/AgencyCard';
 import { ArticleCard } from './ResourceCards/ArticleCard';

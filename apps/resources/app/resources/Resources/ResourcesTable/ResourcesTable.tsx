@@ -2,30 +2,23 @@ import { auth } from '@clerk/nextjs';
 import { Card, InfoBox, getRandomCardVariant } from 'design-system';
 import { AlertTriangle } from 'lucide-react';
 import { Await } from '../../../../components/Await/Await';
-import {
-  getCategoriesCached,
-  getCommentedResourcesCached,
-  getLikedResourcesCached,
-  getResourcesCached,
-  getTopicsCached,
-} from '../../../../lib/cache';
 import { ReseourcesFilter } from '../Resources';
 import { ResourcesFilter } from './ResourcesFilter/ResourcesFilter';
 import { ResourcesList } from './ResourcesList/ResourcesList';
 import { ResourcesTableProvider } from './ResourcesTableProvider';
+import { query } from 'api/query';
 
 interface Props {
   reseourcesFilter: ReseourcesFilter;
 }
 
 export const ResourcesTable = ({ reseourcesFilter }: Props) => {
-  const { userId } = auth();
   const dataPromises = Promise.all([
-    getResourcesCached(),
-    getCategoriesCached(),
-    getTopicsCached(),
-    getLikedResourcesCached(userId ?? ''),
-    getCommentedResourcesCached(userId ?? ''),
+    query.resources.getResources(),
+    query.categories.getCategories(),
+    query.topics.getTopics(),
+    query.resources.getLikedResources(),
+    query.resources.getCommentedResources(),
   ]);
 
   return (

@@ -2,11 +2,11 @@
 
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { cva } from 'class-variance-authority';
-import { ContentType } from 'lib/resources';
-import { useAction } from 'lib/serverActions/client';
 import { Check } from 'lucide-react';
 import { useOptimistic } from 'react';
 import { addToCollection, removeFromCollection } from './actions';
+import { ContentType } from 'data/resources/query';
+import { useAction } from 'lib/data/client';
 
 export const checkboxStyles = cva(
   'flex h-[25px] w-[25px] items-center justify-center bg-ghost-main-dark-bg outline-none ring-inset flex-none',

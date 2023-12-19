@@ -11,10 +11,10 @@ import {
   Heading,
   InfoBox,
 } from 'design-system';
-import { useAction } from 'lib/serverActions/client';
 import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 import { updateCollection } from './actions';
+import { useAction } from 'lib/data/client';
 
 const inputStyles = cva(
   'px-8 py-4 text-base text-text-secondary bg-ghost-main-dark-bg outline-none w-full ring-inset',

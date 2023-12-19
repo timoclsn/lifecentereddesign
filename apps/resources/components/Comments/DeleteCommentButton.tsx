@@ -1,10 +1,10 @@
 'use client';
 
 import { Loader2, Trash2 } from 'lucide-react';
-import { useAction } from '../../lib/serverActions/client';
 import { deleteComment } from './actions';
-import { ContentType } from '../../lib/resources';
 import { Alert } from 'design-system';
+import { ContentType } from 'data/resources/query';
+import { useAction } from 'lib/data/client';
 
 interface Props {
   resourceId: number;

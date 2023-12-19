@@ -2,8 +2,8 @@
 
 import { AddToCollectionDialog } from 'components/Collections/AddToCollectionDialog/AddToCollectionDialog';
 import { AddToThisCollectionButton } from 'components/Collections/AddToThisCollectionButton';
+import { ContentType } from 'data/resources/query';
 import { Button } from 'design-system';
-import { ContentType } from 'lib/resources';
 import { usePathname } from 'next/navigation';
 
 interface Props {

@@ -9,7 +9,6 @@ import {
 import { isExternalUrl } from 'lib/utils/utils';
 import { ExternalLink, LucideIcon, StickyNote, Users2 } from 'lucide-react';
 import { ReactNode } from 'react';
-import { ContentType } from '../../lib/resources';
 import { CategoryButton } from './CategoryButton';
 import { CollectionButton } from './CollectionButton';
 import { CommentsButton } from './CommentsButton/CommentsButton';
@@ -21,6 +20,7 @@ import { ShareButton } from './ShareButton';
 import { Title } from './Title';
 import { TypeButton } from './TypeButton';
 import { featureFlags } from 'lib/featureFlags';
+import { ContentType } from 'data/resources/query';
 
 interface Props {
   resourceId: number;

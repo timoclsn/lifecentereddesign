@@ -1,5 +1,5 @@
+import { ContentType } from 'data/resources/query';
 import { ImageResponse } from 'next/og';
-import { ContentType } from '../../lib/resources';
 import { formatType, getHostname } from '../../lib/utils/utils';
 
 export const runtime = 'edge';

@@ -1,7 +1,6 @@
 import { MetadataRoute } from 'next';
-import { getResources } from '../lib/resources';
 import { featureFlags } from 'lib/featureFlags';
-import { getCollections } from 'lib/collections';
+import { query } from 'api/query';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,7 +32,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     },
   ];
 
-  const resources = await getResources();
+  const resources = await query.resources.getResources();
 
   resources.forEach((resource) => {
     pages.push({
@@ -50,7 +49,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
       lastModified: new Date(),
     });
 
-    const collections = await getCollections();
+    const collections = await query.collections.getCollections();
 
     collections.forEach((collection) => {
       pages.push({

@@ -1,5 +1,5 @@
+import { Podcast } from 'data/resources/query';
 import { Smile, Tag } from 'lucide-react';
-import { Podcast } from '../../lib/resources';
 import { getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';
 import { thoughtleadersList, topicsList } from '../utils';

@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs';
+import { query } from 'api/query';
+import { ContentType } from 'data/resources/query';
 import { Heart } from 'lucide-react';
-import { getResourceLikesDataCached } from '../../../lib/cache';
-import { ContentType } from '../../../lib/resources';
 import { Await } from '../../Await/Await';
 import { LikesButtonClient } from './LikesButtonClient';
 
@@ -17,7 +17,10 @@ export const LikesButton = async ({
   resourceTitle,
 }: Props) => {
   const { userId } = auth();
-  const promise = getResourceLikesDataCached(resourceId, resourceType);
+  const promise = query.resources.getResourceLikesData({
+    id: resourceId,
+    type: resourceType,
+  });
   return (
     <Await promise={promise} loading={<Loading />}>
       {({ newLikes, oldLikesCount }) => {

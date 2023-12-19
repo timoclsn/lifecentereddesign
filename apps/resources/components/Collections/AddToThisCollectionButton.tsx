@@ -1,9 +1,9 @@
 'use client';
 
 import { addToCollection } from 'components/Collections/AddToCollectionDialog/actions';
+import { ContentType } from 'data/resources/query';
 import { Button } from 'design-system';
-import { useAction } from 'lib/serverActions/client';
-import { ContentType } from 'lib/resources';
+import { useAction } from 'lib/data/client';
 
 interface Props {
   collectionId: number;

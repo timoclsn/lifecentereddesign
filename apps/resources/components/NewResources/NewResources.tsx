@@ -9,13 +9,13 @@ import {
 import { AlertTriangle, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getResourcesCached } from '../../lib/cache';
 import { Await } from '../Await/Await';
 import { getCardComponent } from '../utils';
 import groundImg from './ground.jpg';
+import { query } from 'api/query';
 
 export const NewResources = () => {
-  const resources = getResourcesCached();
+  const resources = query.resources.getResources();
   return (
     <Bleed>
       <section id="new-resources">

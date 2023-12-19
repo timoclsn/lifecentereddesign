@@ -1,7 +1,7 @@
 'use client';
 
+import { ContentType } from 'data/resources/query';
 import { Heading } from 'design-system';
-import { ContentType } from 'lib/resources';
 import { ExternalLink } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 

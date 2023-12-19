@@ -1,3 +1,4 @@
+import { Book } from 'data/resources/query';
 import {
   Book as BookIcon,
   BookOpen,
@@ -5,7 +6,6 @@ import {
   QrCode,
   Tag,
 } from 'lucide-react';
-import { Book } from '../../lib/resources';
 import { formateDate, getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';
 import { thoughtleadersList, topicsList } from '../utils';

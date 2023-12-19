@@ -1,5 +1,5 @@
+import { Community } from 'data/resources/query';
 import { Tag } from 'lucide-react';
-import { Community } from '../../lib/resources';
 import { getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';
 import { topicsList } from '../utils';

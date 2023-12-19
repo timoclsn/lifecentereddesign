@@ -9,12 +9,12 @@ import {
   DialogTrigger,
   Heading,
 } from 'design-system';
-import { ContentType } from 'lib/resources';
-import { useAction } from 'lib/serverActions/client';
 import { ReactNode } from 'react';
 import { AddToCollectionItem } from './AddToCollectionItem';
 import { getData } from './actions';
 import { AddCollectionDialog } from '../AddCollectionDialog/AddCollectionDialog';
+import { ContentType } from 'data/resources/query';
+import { useAction } from 'lib/data/client';
 
 interface Props {
   children: ReactNode;

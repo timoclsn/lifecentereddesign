@@ -1,4 +1,4 @@
-import { ContentType } from './resources';
+import { ContentType } from 'data/resources/query';
 
 export interface TrackingEvents {
   'Download Resources': null;

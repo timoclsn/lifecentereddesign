@@ -1,11 +1,11 @@
 'use client';
 
 import * as Toggle from '@radix-ui/react-toggle';
+import { CommentedResources } from 'data/resources/query';
 import { Tooltip } from 'design-system';
 import { Loader2, MessageCircle } from 'lucide-react';
 import { SolidMessageCircle } from '../../../../../components/Icons/SolidMessageCircle';
 import { useFilter } from '../../../../../hooks/useFilter';
-import { CommentedResources } from '../../../../../lib/resources';
 
 interface Props {
   commentedResources: CommentedResources;

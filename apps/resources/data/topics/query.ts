@@ -1,5 +1,9 @@
 import { createQuery } from 'data/clients';
+import { Prisma } from 'database';
 import 'server-only';
+
+export type Topic = Prisma.TopicGetPayload<{}>;
+export type Topics = Array<Topic>;
 
 export const getTopics = createQuery({
   cache: {

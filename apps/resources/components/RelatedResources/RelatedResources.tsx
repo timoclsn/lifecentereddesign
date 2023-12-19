@@ -1,4 +1,6 @@
+import { query } from 'api/query';
 import { Track } from 'components/Track/Track';
+import { ContentType, Resource, Resources } from 'data/resources/query';
 import {
   Bleed,
   Card,
@@ -9,8 +11,6 @@ import {
 import { AlertTriangle, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getResourceCached, getResourcesCached } from '../../lib/cache';
-import { ContentType, Resource, Resources } from '../../lib/resources';
 import { Await } from '../Await/Await';
 import { getCardComponent } from '../utils';
 import birdsImg from './birds.jpg';
@@ -22,8 +22,11 @@ interface Props {
 
 export const RelatedResources = ({ resourceId, resourceType }: Props) => {
   const promise = Promise.all([
-    getResourceCached(resourceId, resourceType),
-    getResourcesCached(),
+    query.resources.getResource({
+      id: resourceId,
+      type: resourceType,
+    }),
+    query.resources.getResources(),
   ]);
   return (
     <Bleed>
