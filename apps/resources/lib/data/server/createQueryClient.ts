@@ -56,21 +56,25 @@ export const createQueryClient = <Context>(
       }
 
       // Call query
+      return await queryBuilderOpts.query({
+        input: parsedInput,
+        ctx,
+      });
 
       // Populate data in next data cache if cache options are provided
-      if (cacheOptions?.keyParts || cacheOptions?.options) {
-        return nextCache(async () => {
-          return await queryBuilderOpts.query({
-            input: parsedInput,
-            ctx,
-          });
-        })();
-      } else {
-        return await queryBuilderOpts.query({
-          input: parsedInput,
-          ctx,
-        });
-      }
+      // if (cacheOptions?.keyParts || cacheOptions?.options) {
+      //   return nextCache(async () => {
+      //     return await queryBuilderOpts.query({
+      //       input: parsedInput,
+      //       ctx,
+      //     });
+      //   })();
+      // } else {
+      //   return await queryBuilderOpts.query({
+      //     input: parsedInput,
+      //     ctx,
+      //   });
+      // }
     };
 
     return reactCache(query);
