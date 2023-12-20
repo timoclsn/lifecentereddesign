@@ -1,6 +1,6 @@
 'use client';
 
-import { ContentType } from 'data/resources/query';
+import { ContentType } from 'lib/resources';
 import { Select } from 'design-system';
 import { useFilter } from '../../../../../hooks/useFilter';
 

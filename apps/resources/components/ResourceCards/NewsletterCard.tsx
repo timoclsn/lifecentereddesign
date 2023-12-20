@@ -1,4 +1,4 @@
-import { Newsletter } from 'data/resources/query';
+import { Newsletter } from 'lib/resources';
 import { BookOpen, Tag } from 'lucide-react';
 import { getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';

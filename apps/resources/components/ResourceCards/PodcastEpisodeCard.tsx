@@ -1,4 +1,4 @@
-import { PodcastEpisode } from 'data/resources/query';
+import { PodcastEpisode } from 'lib/resources';
 import { CalendarDays, Clock3, Mic, Smile, Tag } from 'lucide-react';
 import { formateDate, getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';

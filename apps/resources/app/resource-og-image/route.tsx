@@ -1,4 +1,4 @@
-import { ContentType } from 'data/resources/query';
+import { ContentType } from 'lib/resources';
 import { ImageResponse } from 'next/og';
 import { formatType, getHostname } from '../../lib/utils/utils';
 

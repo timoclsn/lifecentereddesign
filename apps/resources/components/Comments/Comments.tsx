@@ -1,7 +1,7 @@
 import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
+import { query } from 'api/query';
 import { Button, Container, Heading, InfoBox, Text } from 'design-system';
 import { AlertTriangle } from 'lucide-react';
-import { getResourceCommentsCached } from '../../lib/cache';
 import { ContentType } from '../../lib/resources';
 import { AutoAnimate } from '../AutoAnimate/AutoAnimate';
 import { Await } from '../Await/Await';
@@ -14,7 +14,10 @@ interface Props {
 }
 
 export const Comments = ({ resourceId, resourceType }: Props) => {
-  const commentsPromise = getResourceCommentsCached(resourceId, resourceType);
+  const commentsPromise = query.resources.getResourceComments({
+    id: resourceId,
+    type: resourceType,
+  });
   return (
     <section id="cmnts">
       <Container>

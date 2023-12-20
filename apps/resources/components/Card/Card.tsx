@@ -20,7 +20,7 @@ import { ShareButton } from './ShareButton';
 import { Title } from './Title';
 import { TypeButton } from './TypeButton';
 import { featureFlags } from 'lib/featureFlags';
-import { ContentType } from 'data/resources/query';
+import { ContentType } from 'lib/resources';
 
 interface Props {
   resourceId: number;

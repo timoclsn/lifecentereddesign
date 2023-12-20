@@ -1,6 +1,6 @@
 'use client';
 
-import { Topics } from 'data/topics/query';
+import { Topics } from 'lib/topics';
 import { Select } from 'design-system';
 import { useFilter } from '../../../../../hooks/useFilter';
 

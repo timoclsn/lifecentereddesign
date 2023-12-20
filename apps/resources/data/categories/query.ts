@@ -1,9 +1,5 @@
 import { createQuery } from 'data/clients';
-import { Prisma } from 'database';
 import 'server-only';
-
-export type Category = Prisma.CategoryGetPayload<{}>;
-export type Categories = Array<Category>;
 
 export const getCategories = createQuery({
   cache: {

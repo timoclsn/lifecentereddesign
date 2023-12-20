@@ -5,7 +5,7 @@ import { track } from 'lib/tracking';
 import { Check, Share } from 'lucide-react';
 import { useState } from 'react';
 import { getBaseUrl, wait } from '../../lib/utils/utils';
-import { ContentType } from 'data/resources/query';
+import { ContentType } from 'lib/resources';
 
 interface Props {
   title: string;

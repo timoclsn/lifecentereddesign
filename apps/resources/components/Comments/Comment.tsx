@@ -1,5 +1,5 @@
 import { auth } from '@clerk/nextjs';
-import { ContentType } from 'data/resources/query';
+import { ContentType } from 'lib/resources';
 import { formatDistance, parseISO } from 'date-fns';
 import { Heading, Text } from 'design-system';
 import { Avatar } from './Avatar';

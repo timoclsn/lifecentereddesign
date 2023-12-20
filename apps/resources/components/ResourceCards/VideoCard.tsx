@@ -1,4 +1,4 @@
-import { Video } from 'data/resources/query';
+import { Video } from 'lib/resources';
 import { CalendarDays, Clock3, Tag, VideoIcon } from 'lucide-react';
 import { formateDate, getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';

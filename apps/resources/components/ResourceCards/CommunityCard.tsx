@@ -1,4 +1,4 @@
-import { Community } from 'data/resources/query';
+import { Community } from 'lib/resources';
 import { Tag } from 'lucide-react';
 import { getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';

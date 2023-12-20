@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs';
 import { query } from 'api/query';
-import { ContentType } from 'data/resources/query';
+import { ContentType } from 'lib/resources';
 import { Heart } from 'lucide-react';
 import { Await } from '../../Await/Await';
 import { LikesButtonClient } from './LikesButtonClient';

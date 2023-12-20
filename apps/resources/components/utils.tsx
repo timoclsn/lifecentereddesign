@@ -19,8 +19,8 @@ import {
   ThoughtleaderBasic,
   Tool,
   Video,
-} from 'data/resources/query';
-import { Topics } from 'data/topics/query';
+} from 'lib/resources';
+import { Topics } from 'lib/topics';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { TopicsButton } from './Card/TopicsButton';

@@ -2,7 +2,7 @@
 
 import { AddToCollectionDialog } from 'components/Collections/AddToCollectionDialog/AddToCollectionDialog';
 import { AddToThisCollectionButton } from 'components/Collections/AddToThisCollectionButton';
-import { ContentType } from 'data/resources/query';
+import { ContentType } from 'lib/resources';
 import { Button } from 'design-system';
 import { usePathname } from 'next/navigation';
 

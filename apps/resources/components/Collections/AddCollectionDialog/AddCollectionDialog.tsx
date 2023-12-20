@@ -1,5 +1,6 @@
 'use client';
 
+import { action } from 'api/action';
 import { cva } from 'class-variance-authority';
 import {
   Button,
@@ -14,7 +15,6 @@ import {
 import { useAction } from 'lib/data/client';
 import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { ReactNode, useState } from 'react';
-import { addCollection } from './actions';
 
 const inputStyles = cva(
   'px-8 py-4 text-base text-text-secondary bg-ghost-main-dark-bg outline-none w-full ring-inset',
@@ -44,7 +44,7 @@ export const AddCollectionDialog = ({
 }: Props) => {
   const [open, setOpen] = useState(false);
   const { error, validationErrors, runAction, isRunning } = useAction(
-    addCollection,
+    action.collections.addCollection,
     {
       onSuccess: () => {
         setOpen(false);

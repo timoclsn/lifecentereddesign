@@ -2,7 +2,7 @@ import { Tooltip } from 'design-system';
 import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Await } from '../../Await/Await';
-import { ContentType } from 'data/resources/query';
+import { ContentType } from 'lib/resources';
 import { query } from 'api/query';
 
 interface Props {

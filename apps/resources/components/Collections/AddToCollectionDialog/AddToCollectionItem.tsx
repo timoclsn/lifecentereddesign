@@ -1,12 +1,12 @@
 'use client';
 
 import * as Checkbox from '@radix-ui/react-checkbox';
+import { action } from 'api/action';
 import { cva } from 'class-variance-authority';
+import { useAction } from 'lib/data/client';
+import { ContentType } from 'lib/resources';
 import { Check } from 'lucide-react';
 import { useOptimistic } from 'react';
-import { addToCollection, removeFromCollection } from './actions';
-import { ContentType } from 'data/resources/query';
-import { useAction } from 'lib/data/client';
 
 export const checkboxStyles = cva(
   'flex h-[25px] w-[25px] items-center justify-center bg-ghost-main-dark-bg outline-none ring-inset flex-none',
@@ -47,13 +47,13 @@ export const AddToCollectionItem = ({
     (_, newState) => newState as Checked,
   );
   const { runAction: runAddToCollection, isRunning: addIsRunning } = useAction(
-    addToCollection,
+    action.collections.addToCollection,
     {
       onSettled: onChange,
     },
   );
   const { runAction: runRemoveFromCollection, isRunning: removeIsRunning } =
-    useAction(removeFromCollection, {
+    useAction(action.collections.removeFromCollection, {
       onSettled: onChange,
     });
   const isRunning = addIsRunning || removeIsRunning;

@@ -1,4 +1,4 @@
-import { Podcast } from 'data/resources/query';
+import { Podcast } from 'lib/resources';
 import { Smile, Tag } from 'lucide-react';
 import { getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';

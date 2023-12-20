@@ -1,4 +1,4 @@
-import { Paper } from 'data/resources/query';
+import { Paper } from 'lib/resources';
 import { BookOpen, CalendarDays, Newspaper, Tag } from 'lucide-react';
 import { formateDate, getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';

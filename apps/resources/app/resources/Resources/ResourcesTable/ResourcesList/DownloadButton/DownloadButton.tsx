@@ -1,4 +1,4 @@
-import { Resource } from 'data/resources/query';
+import { Resource } from 'lib/resources';
 import { DownloadButtonClient } from './DownloadButtonClient';
 
 interface Props {

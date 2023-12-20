@@ -1,5 +1,5 @@
 import { query } from 'api/query';
-import { ContentType } from 'data/resources/query';
+import { ContentType } from 'lib/resources';
 import { Card, getRandomCardVariant } from 'design-system';
 import { AlertTriangle } from 'lucide-react';
 import { Await } from '../Await/Await';

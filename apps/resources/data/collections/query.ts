@@ -1,5 +1,6 @@
 import { createQuery } from 'data/clients';
-import { ContentType, getResource, resourceTypes } from 'data/resources/query';
+import { getResource } from 'data/resources/query';
+import { ContentType, resourceTypes } from 'lib/resources';
 import { withUser, withUserCollection } from 'lib/users';
 import 'server-only';
 import { z } from 'zod';

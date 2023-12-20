@@ -1,6 +1,6 @@
 'use client';
 
-import { ContentType } from 'data/resources/query';
+import { ContentType } from 'lib/resources';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 

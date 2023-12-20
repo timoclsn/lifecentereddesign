@@ -1,4 +1,4 @@
-import { Thoughtleader } from 'data/resources/query';
+import { Thoughtleader } from 'lib/resources';
 import { Briefcase, Tag } from 'lucide-react';
 import { getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';

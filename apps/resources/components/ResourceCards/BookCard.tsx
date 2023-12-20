@@ -1,4 +1,4 @@
-import { Book } from 'data/resources/query';
+import { Book } from 'lib/resources';
 import {
   Book as BookIcon,
   BookOpen,

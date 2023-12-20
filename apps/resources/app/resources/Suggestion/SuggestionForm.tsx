@@ -1,6 +1,8 @@
 'use client';
 
+import { action } from 'api/action';
 import { Button, InfoBox } from 'design-system';
+import { useAction } from 'lib/data/client';
 import { track } from 'lib/tracking';
 import { AlertTriangle, CheckCircle2, Loader2, Mail } from 'lucide-react';
 import { useRef } from 'react';
@@ -8,14 +10,12 @@ import {
   errorStyles,
   inputStyles,
 } from '../../../components/ForrestSection/ForrestSection';
-import { useAction } from '../../../lib/serverActions/client';
-import { submit } from './actions';
 
 export const SuggestionForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const linkInputRef = useRef<HTMLInputElement>(null);
   const { error, validationErrors, isRunning, isSuccess, runAction } =
-    useAction(submit, {
+    useAction(action.resources.suggest, {
       onSuccess: () => {
         formRef.current?.reset();
         if (document.activeElement instanceof HTMLElement) {

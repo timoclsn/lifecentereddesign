@@ -1,6 +1,5 @@
 import { query } from 'api/query';
 import { Track } from 'components/Track/Track';
-import { ContentType, Resource, Resources } from 'data/resources/query';
 import {
   Bleed,
   Card,
@@ -8,6 +7,7 @@ import {
   Text,
   getRandomCardVariant,
 } from 'design-system';
+import { ContentType, Resource, Resources } from 'lib/resources';
 import { AlertTriangle, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';

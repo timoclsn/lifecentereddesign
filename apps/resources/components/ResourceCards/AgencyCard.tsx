@@ -1,4 +1,4 @@
-import { Agency } from 'data/resources/query';
+import { Agency } from 'lib/resources';
 import { Tag } from 'lucide-react';
 import { getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';

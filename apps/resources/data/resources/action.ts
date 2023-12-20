@@ -2,16 +2,12 @@
 
 import { auth } from '@clerk/nextjs';
 import { createAction, createProtectedAction } from 'data/clients';
-import { resourceCommentsTag, resourceLikesTag } from 'lib/cache';
+import { resourceTypes } from 'lib/resources';
 import { revalidateTag } from 'next/cache';
+import nodemailer from 'nodemailer';
 import 'server-only';
 import { z } from 'zod';
-import { resourceTypes } from './query';
-
-export const textSchema = z
-  .string()
-  .min(3, { message: 'Your comment has to be at least 3 characters.' })
-  .max(300, { message: 'Your comment cannot be longer than 300 characters.' });
+import { resourceCommentsTag, resourceLikesTag } from './query';
 
 export const like = createAction({
   input: z.object({
@@ -78,7 +74,12 @@ export const addComment = createProtectedAction({
   input: z.object({
     id: z.number(),
     type: z.enum(resourceTypes),
-    text: textSchema,
+    text: z
+      .string()
+      .min(3, { message: 'Your comment has to be at least 3 characters.' })
+      .max(300, {
+        message: 'Your comment cannot be longer than 300 characters.',
+      }),
   }),
   action: async ({ input, ctx }) => {
     const { id, type, text } = input;
@@ -121,5 +122,50 @@ export const deleteComment = createProtectedAction({
 
     const tag = resourceCommentsTag(resourceId, resourceType);
     revalidateTag(tag);
+  },
+});
+
+const SUGGESTION_MAIL_PASSWORD = z
+  .string()
+  .parse(process.env.SUGGESTION_MAIL_PASSWORD);
+
+export const suggest = createAction({
+  input: z.object({
+    link: z.string().min(1, { message: 'Link is required' }).url({
+      message: 'Must be a valid URL',
+    }),
+    message: z.string().optional(),
+    name: z.string().optional(),
+  }),
+  action: async ({ input }) => {
+    const { link, message, name } = input;
+
+    const transporter = nodemailer.createTransport({
+      port: 465,
+      host: 'sslout.de',
+      auth: {
+        user: 'suggestion@lifecentereddesign.net',
+        pass: SUGGESTION_MAIL_PASSWORD,
+      },
+      secure: true,
+    });
+
+    const mailData = {
+      from: 'suggestion@lifecentereddesign.net',
+      to: 'hello@lifecentereddesign.net',
+      subject: 'Resource Suggestion',
+      text: `Link: ${link}\nMessage: ${
+        message ? message : 'No message provided'
+      }\nName: ${name ? name : 'No name provided'}`,
+    };
+
+    try {
+      await transporter.sendMail(mailData);
+    } catch (e) {
+      console.error(e);
+      throw new Error(
+        'There was an error submitting your suggestion. Please try again or send it via email at hello@lifecentereddesign.net.',
+      );
+    }
   },
 });
