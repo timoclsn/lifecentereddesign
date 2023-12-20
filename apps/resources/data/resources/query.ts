@@ -1,6 +1,13 @@
 import { createProtectedQuery, createQuery } from 'data/clients';
-import { prisma } from 'database';
-import { ContentType, Resource, includes, resourceTypes } from 'lib/resources';
+import {
+  ContentType,
+  Resource,
+  getNewLikesCount,
+  getResourceNewLikes,
+  getResourceOldLikesCount,
+  includes,
+  resourceTypes,
+} from 'lib/resources';
 import { withUserCollection } from 'lib/users';
 import 'server-only';
 import { z } from 'zod';
@@ -87,38 +94,6 @@ export const getResource = createQuery({
     };
   },
 });
-
-const getResourceOldLikesCount = async (id: number, type: ContentType) => {
-  // @ts-expect-error: Dynamic table access doesn't work on type level
-  const data = (await prisma[type].findUnique({
-    where: {
-      id: id,
-    },
-    select: {
-      likes: true,
-    },
-  })) as { likes: number };
-
-  return data.likes;
-};
-
-const getNewLikesCount = async (resourceId: number, type: ContentType) => {
-  return await prisma.like.count({
-    where: {
-      resourceId,
-      type,
-    },
-  });
-};
-
-const getResourceNewLikes = async (id: number, type: ContentType) => {
-  return await prisma.like.findMany({
-    where: {
-      resourceId: id,
-      type,
-    },
-  });
-};
 
 export const resourceLikesTag = (resourceId: number, type: ContentType) =>
   `likes-${type}-${resourceId}`;

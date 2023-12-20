@@ -5,7 +5,6 @@ import { createAction, createProtectedAction } from 'data/clients';
 import { resourceTypes } from 'lib/resources';
 import { revalidateTag } from 'next/cache';
 import nodemailer from 'nodemailer';
-import 'server-only';
 import { z } from 'zod';
 import { resourceCommentsTag, resourceLikesTag } from './query';
 

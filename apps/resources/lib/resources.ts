@@ -1,4 +1,4 @@
-import { Prisma } from 'database';
+import { Prisma, prisma } from 'database';
 
 export const resourceTypes = [
   'thoughtleader',
@@ -215,4 +215,42 @@ export const includes = (type: ContentType) => {
       authors: true,
     }),
   };
+};
+
+export const getResourceOldLikesCount = async (
+  id: number,
+  type: ContentType,
+) => {
+  // @ts-expect-error: Dynamic table access doesn't work on type level
+  const data = (await prisma[type].findUnique({
+    where: {
+      id: id,
+    },
+    select: {
+      likes: true,
+    },
+  })) as { likes: number };
+
+  return data.likes;
+};
+
+export const getNewLikesCount = async (
+  resourceId: number,
+  type: ContentType,
+) => {
+  return await prisma.like.count({
+    where: {
+      resourceId,
+      type,
+    },
+  });
+};
+
+export const getResourceNewLikes = async (id: number, type: ContentType) => {
+  return await prisma.like.findMany({
+    where: {
+      resourceId: id,
+      type,
+    },
+  });
 };

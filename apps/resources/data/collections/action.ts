@@ -4,7 +4,6 @@ import { createProtectedAction } from 'data/clients';
 import { resourceTypes } from 'lib/resources';
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
-import 'server-only';
 import { z } from 'zod';
 import {
   collectionTag,

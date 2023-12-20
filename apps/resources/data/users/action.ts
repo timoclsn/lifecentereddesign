@@ -3,7 +3,6 @@
 import { clerkClient } from '@clerk/nextjs';
 import { createProtectedAction } from 'data/clients';
 import { revalidatePath } from 'next/cache';
-import 'server-only';
 
 export const deleteAccount = createProtectedAction({
   action: async ({ ctx }) => {
