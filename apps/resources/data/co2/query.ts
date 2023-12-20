@@ -28,8 +28,10 @@ export const getConsumtion = createQuery({
     url: z.string().url(),
   }),
   cache: {
+    keyParts: ['co2'],
     options: {
       revalidate: 60,
+      tags: ['co2'],
     },
   },
   query: async ({ input }) => {

@@ -16,7 +16,7 @@ import { query } from 'api/query';
 import { getResources } from 'data/resources/query';
 
 export const NewResources = () => {
-  const resources = getResources();
+  const promise = getResources();
   return (
     <Bleed>
       <section id="new-resources">
@@ -32,7 +32,7 @@ export const NewResources = () => {
               className="rounded-4xl h-full object-cover"
             />
           </li>
-          <Await promise={resources} loading={<Loading />} error={<Error />}>
+          <Await promise={promise} loading={<Loading />} error={<Error />}>
             {(resources) => {
               console.log({ resources });
               const resourcesToDisplay = resources
