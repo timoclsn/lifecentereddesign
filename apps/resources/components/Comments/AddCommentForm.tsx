@@ -77,7 +77,7 @@ export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
         </label>
         <textarea
           id="text"
-          name="ref"
+          name="text"
           ref={textInputRef}
           required
           placeholder="Post a comment…"
