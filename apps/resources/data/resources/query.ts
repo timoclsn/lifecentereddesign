@@ -1,4 +1,5 @@
-import { createProtectedQuery, createQuery } from 'data/clients';
+import { auth } from '@clerk/nextjs';
+import { createQuery } from 'data/clients';
 import {
   ContentType,
   Resource,
@@ -130,12 +131,17 @@ export const getResourceLikesData = createQuery({
 
 export type LikedResources = Awaited<ReturnType<typeof getLikedResources>>;
 
-export const getLikedResources = createProtectedQuery({
+export const getLikedResources = createQuery({
   cache: {
     noStore: true,
   },
   query: async ({ ctx }) => {
-    const { db, userId } = ctx;
+    const { db } = ctx;
+    const { userId } = auth();
+
+    if (!userId) {
+      return [];
+    }
 
     return await db.like.findMany({
       where: {
@@ -219,12 +225,17 @@ export type CommentedResources = Awaited<
   ReturnType<typeof getCommentedResources>
 >;
 
-export const getCommentedResources = createProtectedQuery({
+export const getCommentedResources = createQuery({
   cache: {
     noStore: true,
   },
   query: async ({ ctx }) => {
-    const { db, userId } = ctx;
+    const { db } = ctx;
+    const { userId } = auth();
+
+    if (!userId) {
+      return [];
+    }
 
     const comments = await db.comment.findMany({
       where: {

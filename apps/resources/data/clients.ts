@@ -24,15 +24,3 @@ export const createQuery = createQueryClient({
     return { db: prisma };
   },
 });
-
-export const createProtectedQuery = createQueryClient({
-  middleware: () => {
-    const { userId } = auth();
-
-    if (!userId) {
-      throw new Error('You must be logged in to perform this action.');
-    }
-
-    return { db: prisma, userId };
-  },
-});
