@@ -56,24 +56,21 @@ export const createQueryClient = <Context>(
       }
 
       // Call query
+      const queryResult = await queryBuilderOpts.query({
+        input: parsedInput,
+        ctx,
+      });
 
       // Populate data in next data cache if cache options are provided
       if (cacheOptions?.keyParts || cacheOptions?.options) {
         return nextCache(
-          // @ts-expect-error: Couldn't find a way to type this properly
-          (...args) => queryBuilderOpts.query(...args),
+          async () => queryResult,
           cacheOptions.keyParts,
           cacheOptions.options,
-        )({
-          input: parsedInput,
-          ctx,
-        });
+        )();
+      } else {
+        return queryResult;
       }
-
-      return await queryBuilderOpts.query({
-        input: parsedInput,
-        ctx,
-      });
     };
 
     return reactCache(query);
