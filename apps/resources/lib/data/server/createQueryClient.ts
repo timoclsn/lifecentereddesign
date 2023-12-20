@@ -60,17 +60,17 @@ export const createQueryClient = <Context>(
         input: parsedInput,
         ctx,
       });
+      return queryResult;
 
       // Populate data in next data cache if cache options are provided
-      if (cacheOptions?.keyParts || cacheOptions?.options) {
-        return nextCache(
-          async () => queryResult,
-          cacheOptions.keyParts,
-          cacheOptions.options,
-        )();
-      } else {
-        return queryResult;
-      }
+      // if (cacheOptions?.keyParts || cacheOptions?.options) {
+      //   return nextCache(
+      //     async () => queryResult,
+      //     cacheOptions.keyParts,
+      //     cacheOptions.options,
+      //   )();
+      // } else {
+      // }
     };
 
     return reactCache(query);
