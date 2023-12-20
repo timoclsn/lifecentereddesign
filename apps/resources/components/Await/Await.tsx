@@ -32,7 +32,6 @@ const InnerAwait = async <T extends unknown>({
   promise,
   children,
 }: InnerAwaitProps<T>) => {
-  console.log({ promise });
   const data = await promise;
   console.log({ data });
   return children(data);
