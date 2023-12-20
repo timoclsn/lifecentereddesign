@@ -33,6 +33,7 @@ export const NewResources = () => {
           </li>
           <Await promise={resources} loading={<Loading />} error={<Error />}>
             {(resources) => {
+              console.log(resources);
               const resourcesToDisplay = resources
                 .sort(
                   (a, b) =>
