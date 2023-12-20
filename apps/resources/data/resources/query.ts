@@ -24,6 +24,8 @@ export const getResources = createQuery({
   query: async ({ ctx }) => {
     const { db } = ctx;
 
+    console.log('getResources');
+
     const resourcePromises = resourceTypes.map((type) => {
       // @ts-expect-error: Dynamic table access doesn't work on type level
       return db[type].findMany({
