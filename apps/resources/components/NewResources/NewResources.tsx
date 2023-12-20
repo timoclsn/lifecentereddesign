@@ -13,9 +13,10 @@ import { Await } from '../Await/Await';
 import { getCardComponent } from '../utils';
 import groundImg from './ground.jpg';
 import { query } from 'api/query';
+import { getResources } from 'data/resources/query';
 
 export const NewResources = () => {
-  const resources = query.resources.getResources();
+  const resources = getResources();
   return (
     <Bleed>
       <section id="new-resources">
