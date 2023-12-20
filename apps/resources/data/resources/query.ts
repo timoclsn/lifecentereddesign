@@ -34,6 +34,7 @@ export const getResources = createQuery({
     });
 
     const resources = await Promise.all(resourcePromises);
+    console.log({ getResources: resources });
 
     const enhancedResourcesPromises = resources.flat().map(async (resource) => {
       // Doing those two in parallel seems to break the vercel build
@@ -52,6 +53,8 @@ export const getResources = createQuery({
     const enhancedResources = (
       await Promise.all(enhancedResourcesPromises)
     ).flat();
+
+    console.log({ enhancedResources });
 
     return enhancedResources;
   },
