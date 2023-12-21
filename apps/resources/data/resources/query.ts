@@ -35,13 +35,25 @@ export const getResources = createQuery({
 
     const resources = await Promise.all(resourcePromises);
 
-    const enhancedResources = resources.flat().map((resource) => {
+    const enhancedResourcesPromises = resources.flat().map(async (resource) => {
+      const [newLikesCount, commentsCount] = await Promise.all([
+        getNewLikesCount(resource.id, resource.type),
+        getCommentsCount({
+          id: resource.id,
+          type: resource.type,
+        }),
+      ]);
+
       return {
         ...resource,
-        likes: 0,
-        comments: 0,
+        likes: resource.likes + newLikesCount,
+        comments: commentsCount,
       };
     });
+
+    const enhancedResources = (
+      await Promise.all(enhancedResourcesPromises)
+    ).flat();
 
     console.log({ enhancedResources });
 
