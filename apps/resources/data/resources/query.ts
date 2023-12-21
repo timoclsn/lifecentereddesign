@@ -204,7 +204,7 @@ export const getCommentsCount = createQuery({
     const { id, type } = input;
     const tag = resourceCommentsTag(id, type);
     return {
-      keyParts: [tag],
+      keyParts: [`commentscount-${type}-${id}`],
       options: {
         revalidate: 60,
         tags: [tag],
