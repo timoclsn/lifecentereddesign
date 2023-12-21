@@ -1,5 +1,6 @@
 import { auth } from '@clerk/nextjs';
 import { createQuery } from 'data/clients';
+import { prisma } from 'database';
 import {
   ContentType,
   Resource,
@@ -41,10 +42,7 @@ export const getResources = createQuery({
     const enhancedResourcesPromises = resources.flat().map(async (resource) => {
       // Doing those two in parallel seems to break the vercel build
       const newLikesCount = await getNewLikesCount(resource.id, resource.type);
-      const commentsCount = await getCommentsCount({
-        id: resource.id,
-        type: resource.type,
-      });
+      const commentsCount = await getCommentsCount2(resource.id, resource.type);
       return {
         ...resource,
         likes: resource.likes + newLikesCount,
@@ -61,6 +59,15 @@ export const getResources = createQuery({
     return enhancedResources;
   },
 });
+
+const getCommentsCount2 = async (id: number, type: ContentType) => {
+  return await prisma.comment.count({
+    where: {
+      resourceId: id,
+      type,
+    },
+  });
+};
 
 export const getResource = createQuery({
   input: z.object({
