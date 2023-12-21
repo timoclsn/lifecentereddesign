@@ -25,10 +25,7 @@ export const createQueryClient = <Context>(
     }) => MaybePromise<TResponse>;
     cache?:
       | CacheOptions
-      | ((queryArgs: {
-          input: z.output<TInputSchema>;
-          ctx: Context;
-        }) => CacheOptions);
+      | ((queryArgs: { input: z.output<TInputSchema> }) => CacheOptions);
   }) => {
     let cacheOptions: CacheOptions | undefined;
 
@@ -43,38 +40,37 @@ export const createQueryClient = <Context>(
         parsedInput = queryBuilderOpts.input.parse(input);
       }
 
-      // Run middleware if provided and get context
-      const ctx = (await createClientOpts?.middleware?.()) ?? ({} as Context);
-
+      // Resolve cache options
       cacheOptions =
         typeof queryBuilderOpts.cache === 'function'
-          ? queryBuilderOpts.cache({ input: parsedInput, ctx })
+          ? queryBuilderOpts.cache({ input: parsedInput })
           : queryBuilderOpts.cache;
 
       if (cacheOptions?.noStore) {
         noStore();
       }
 
-      // Call query
+      // Wrapper function to allow for caching
+      const innerQuery = async () => {
+        // Run middleware if provided and get context
+        const ctx = (await createClientOpts?.middleware?.()) ?? ({} as Context);
 
-      // Populate data in next data cache if cache options are provided
-      if (cacheOptions?.keyParts || cacheOptions?.options) {
-        return nextCache(
-          async () => {
-            return await queryBuilderOpts.query({
-              input: parsedInput,
-              ctx,
-            });
-          },
-          cacheOptions.keyParts,
-          cacheOptions.options,
-        )();
-      } else {
+        // Call query
         return await queryBuilderOpts.query({
           input: parsedInput,
           ctx,
         });
+      };
+
+      if (cacheOptions?.keyParts || cacheOptions?.options) {
+        return await nextCache(
+          innerQuery,
+          cacheOptions.keyParts,
+          cacheOptions.options,
+        )();
       }
+
+      return await innerQuery();
     };
 
     return reactCache(query);

@@ -25,8 +25,6 @@ export const getResources = createQuery({
   query: async ({ ctx }) => {
     const { db } = ctx;
 
-    console.log('getResources');
-
     const resourcePromises = resourceTypes.map((type) => {
       // @ts-expect-error: Dynamic table access doesn't work on type level
       return db[type].findMany({
@@ -37,12 +35,14 @@ export const getResources = createQuery({
     });
 
     const resources = await Promise.all(resourcePromises);
-    console.log({ getResources: resources });
 
     const enhancedResourcesPromises = resources.flat().map(async (resource) => {
       const [newLikesCount, commentsCount] = await Promise.all([
         getNewLikesCount(resource.id, resource.type),
-        getCommentsCount2(resource.id, resource.type),
+        getCommentsCount({
+          id: resource.id,
+          type: resource.type,
+        }),
       ]);
 
       return {
@@ -56,20 +56,9 @@ export const getResources = createQuery({
       await Promise.all(enhancedResourcesPromises)
     ).flat();
 
-    console.log({ enhancedResources });
-
     return enhancedResources;
   },
 });
-
-const getCommentsCount2 = async (id: number, type: ContentType) => {
-  return await prisma.comment.count({
-    where: {
-      resourceId: id,
-      type,
-    },
-  });
-};
 
 export const getResource = createQuery({
   input: z.object({

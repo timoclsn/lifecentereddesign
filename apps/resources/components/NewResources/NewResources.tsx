@@ -1,3 +1,4 @@
+import { query } from 'api/query';
 import { Track } from 'components/Track/Track';
 import {
   Bleed,
@@ -12,11 +13,9 @@ import Link from 'next/link';
 import { Await } from '../Await/Await';
 import { getCardComponent } from '../utils';
 import groundImg from './ground.jpg';
-import { query } from 'api/query';
-import { getResources } from 'data/resources/query';
 
 export const NewResources = () => {
-  const promise = getResources();
+  const promise = query.resources.getResources();
   return (
     <Bleed>
       <section id="new-resources">
@@ -34,7 +33,6 @@ export const NewResources = () => {
           </li>
           <Await promise={promise} loading={<Loading />} error={<Error />}>
             {(resources) => {
-              console.log({ NewResources: resources });
               const resourcesToDisplay = resources
                 .sort(
                   (a, b) =>

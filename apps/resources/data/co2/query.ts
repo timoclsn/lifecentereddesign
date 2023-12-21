@@ -37,24 +37,14 @@ export const getConsumtion = createQuery({
   query: async ({ input }) => {
     const { url } = input;
 
-    const controller = new AbortController();
-    const { signal } = controller;
-
-    const timeout = setTimeout(() => {
-      controller.abort();
-    }, 5000);
-
     const response = await fetch(
       `https://api.websitecarbon.com/site?url=${url}`,
-      { signal },
     );
     const result = await response.json();
     const parsedResult = wccSchema.parse(result);
 
     const co2 = Math.round(parsedResult.statistics.co2.grid.grams * 100) / 100;
     const cleanerThan = Math.round(parsedResult.cleanerThan * 100);
-
-    clearTimeout(timeout);
 
     return {
       co2,
