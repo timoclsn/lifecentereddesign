@@ -13,10 +13,9 @@ import { getResourcesCached } from '../../lib/cache';
 import { Await } from '../Await/Await';
 import { getCardComponent } from '../utils';
 import groundImg from './ground.jpg';
-import { getResources } from 'lib/resources';
 
 export const NewResources = () => {
-  const resources = getResources();
+  const resources = getResourcesCached();
   return (
     <Bleed>
       <section id="new-resources">
