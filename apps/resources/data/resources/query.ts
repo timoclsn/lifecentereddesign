@@ -40,9 +40,11 @@ export const getResources = createQuery({
     console.log({ getResources: resources });
 
     const enhancedResourcesPromises = resources.flat().map(async (resource) => {
-      // Doing those two in parallel seems to break the vercel build
-      const newLikesCount = await getNewLikesCount(resource.id, resource.type);
-      const commentsCount = await getCommentsCount2(resource.id, resource.type);
+      const [newLikesCount, commentsCount] = await Promise.all([
+        getNewLikesCount(resource.id, resource.type),
+        getCommentsCount2(resource.id, resource.type),
+      ]);
+
       return {
         ...resource,
         likes: resource.likes + newLikesCount,
