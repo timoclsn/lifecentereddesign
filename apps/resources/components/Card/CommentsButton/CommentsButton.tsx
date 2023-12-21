@@ -18,6 +18,7 @@ export const CommentsButton = ({ resourceId, resourceType }: Props) => {
   return (
     <Await promise={commentsCountPromise} loading={<Loading />}>
       {(commentsCount) => {
+        console.log({ commentsCount });
         return (
           <Link
             href={`/resources/${resourceType}-${resourceId}#cmnts`}

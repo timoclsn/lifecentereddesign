@@ -73,7 +73,7 @@ export const createQueryClient = <Context>(
       return await innerQuery();
     };
 
-    return query;
+    return reactCache(query);
   };
 
   return createQuery;
