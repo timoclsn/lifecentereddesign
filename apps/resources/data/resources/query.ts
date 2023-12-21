@@ -3,6 +3,7 @@ import { createQuery } from 'data/clients';
 import {
   ContentType,
   Resource,
+  getCommentsCountRaw,
   getNewLikesCount,
   getResourceNewLikes,
   getResourceOldLikesCount,
@@ -39,10 +40,10 @@ export const getResources = createQuery({
 
     for (const resource of resources.flat()) {
       const newLikesCount = await getNewLikesCount(resource.id, resource.type);
-      const commentsCount = await getCommentsCount({
-        id: resource.id,
-        type: resource.type,
-      });
+      const commentsCount = await getCommentsCountRaw(
+        resource.id,
+        resource.type,
+      );
 
       const enhancedResource = {
         ...resource,

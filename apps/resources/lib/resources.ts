@@ -246,6 +246,18 @@ export const getNewLikesCount = async (
   });
 };
 
+export const getCommentsCountRaw = async (
+  resourceId: number,
+  type: ContentType,
+) => {
+  return await prisma.comment.count({
+    where: {
+      resourceId,
+      type,
+    },
+  });
+};
+
 export const getResourceNewLikes = async (id: number, type: ContentType) => {
   return await prisma.like.findMany({
     where: {
