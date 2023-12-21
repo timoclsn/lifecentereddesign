@@ -39,11 +39,10 @@ export const getResources = createQuery({
     const enhancedResourcesPromises = [];
 
     for (const resource of resources.flat()) {
-      const newLikesCount = await getNewLikesCount(resource.id, resource.type);
-      const commentsCount = await getCommentsCountRaw(
-        resource.id,
-        resource.type,
-      );
+      const [newLikesCount, commentsCount] = await Promise.all([
+        getNewLikesCount(resource.id, resource.type),
+        getCommentsCountRaw(resource.id, resource.type),
+      ]);
 
       const enhancedResource = {
         ...resource,
@@ -213,16 +212,9 @@ export const getCommentsCount = createQuery({
       },
     };
   },
-  query: async ({ input, ctx }) => {
+  query: async ({ input }) => {
     const { id, type } = input;
-    const { db } = ctx;
-
-    return await db.comment.count({
-      where: {
-        resourceId: id,
-        type,
-      },
-    });
+    return await getCommentsCountRaw(id, type);
   },
 });
 
