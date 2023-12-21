@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export type MaybePromise<T> = Promise<T> | T;
 
@@ -8,7 +8,7 @@ export type InferInputArgs<TInputSchema extends z.ZodTypeAny> =
   z.ZodTypeAny extends TInputSchema ? [] : [input: z.input<TInputSchema>];
 
 export type InferValidationErrors<TInputSchema extends z.ZodTypeAny> =
-  z.inferFlattenedErrors<TInputSchema>["fieldErrors"];
+  z.inferFlattenedErrors<TInputSchema>['fieldErrors'];
 
 export interface CreateClientOptions<Context> {
   middleware?: () => MaybePromise<Context>;
@@ -18,35 +18,35 @@ export interface CreateClientOptions<Context> {
 
 export type Result<TInputSchema extends z.ZodTypeAny, TResponse extends any> =
   | {
-      status: "initial";
+      status: 'initial';
       id: string;
       data: null;
       validationErrors: null;
       error: null;
     }
   | {
-      status: "running";
+      status: 'running';
       id: string;
       data: null;
       validationErrors: null;
       error: null;
     }
   | {
-      status: "success";
+      status: 'success';
       id: string;
       data: TResponse | null;
       validationErrors: null;
       error: null;
     }
   | {
-      status: "validationError";
+      status: 'validationError';
       id: string;
       data: null;
       validationErrors: InferValidationErrors<TInputSchema>;
       error: null;
     }
   | {
-      status: "error";
+      status: 'error';
       id: string;
       data: null;
       validationErrors: null;
@@ -67,7 +67,7 @@ export type FormActionResult<
   TInputSchema extends z.ZodTypeAny,
   TResponse extends any,
 > = Result<TInputSchema, TResponse> extends infer R
-  ? R extends { status: "running" }
+  ? R extends { status: 'running' }
     ? never
     : R
   : never;

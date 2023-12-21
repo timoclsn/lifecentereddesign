@@ -1,6 +1,5 @@
 import { auth } from '@clerk/nextjs';
 import { createQuery } from 'data/clients';
-import { prisma } from 'database';
 import {
   ContentType,
   Resource,
@@ -55,6 +54,8 @@ export const getResources = createQuery({
     const enhancedResources = (
       await Promise.all(enhancedResourcesPromises)
     ).flat();
+
+    console.log({ enhancedResources });
 
     return enhancedResources;
   },
