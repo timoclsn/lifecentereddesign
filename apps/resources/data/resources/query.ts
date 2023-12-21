@@ -55,8 +55,6 @@ export const getResources = createQuery({
       await Promise.all(enhancedResourcesPromises)
     ).flat();
 
-    console.log({ enhancedResources });
-
     return enhancedResources;
   },
 });
