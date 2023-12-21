@@ -59,12 +59,16 @@ export const createQueryClient = <Context>(
 
       // Populate data in next data cache if cache options are provided
       if (cacheOptions?.keyParts || cacheOptions?.options) {
-        return nextCache(async () => {
-          return await queryBuilderOpts.query({
-            input: parsedInput,
-            ctx,
-          });
-        })();
+        return nextCache(
+          async () => {
+            return await queryBuilderOpts.query({
+              input: parsedInput,
+              ctx,
+            });
+          },
+          cacheOptions.keyParts,
+          cacheOptions.options,
+        )();
       } else {
         return await queryBuilderOpts.query({
           input: parsedInput,
