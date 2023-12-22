@@ -125,17 +125,17 @@ export const getResourceLikesData = createQuery({
     const { id, type } = input;
     const { db } = ctx;
 
-    const [oldLikesCount, newLikes] = await Promise.all([
+    const [oldLikes, newLikes] = await Promise.all([
       // prettier-ignore
       // @ts-expect-error: Dynamic table access doesn't work on type level
-      (db[type].findUnique({
+      db[type].findUnique({
           where: {
             id: id,
           },
           select: {
             likes: true,
           },
-        }) as { likes: number }).likes,
+        }) as { likes: number },
       db.like.findMany({
         where: {
           resourceId: id,
@@ -143,8 +143,9 @@ export const getResourceLikesData = createQuery({
         },
       }),
     ]);
+
     return {
-      oldLikesCount,
+      oldLikesCount: oldLikes.likes,
       newLikes,
     };
   },
