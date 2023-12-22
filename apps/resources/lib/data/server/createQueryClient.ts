@@ -50,11 +50,11 @@ export const createQueryClient = <Context>(
         noStore();
       }
 
-      // Run middleware if provided and get context
-      const ctx = (await createClientOpts?.middleware?.()) ?? ({} as Context);
-
       // Wrapper function to allow for caching
       const innerQuery = async () => {
+        // Run middleware if provided and get context
+        const ctx = (await createClientOpts?.middleware?.()) ?? ({} as Context);
+
         // Call query
         return await queryBuilderOpts.query({
           input: parsedInput,
