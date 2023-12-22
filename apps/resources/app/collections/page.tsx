@@ -1,12 +1,12 @@
 import { auth } from '@clerk/nextjs';
+import { query } from 'api/query';
 import { Await } from 'components/Await/Await';
 import { AddCollectionDialog } from 'components/Collections/AddCollectionDialog/AddCollectionDialog';
 import { Button, Heading, Text } from 'design-system';
-import { getCollectionsCached } from 'lib/cache';
 import Link from 'next/link';
 
 const CollectionsPage = async () => {
-  const promise = getCollectionsCached();
+  const promise = query.collections.getCollections();
   const { userId } = auth();
   return (
     <>

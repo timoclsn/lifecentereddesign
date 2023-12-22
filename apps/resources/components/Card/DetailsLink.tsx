@@ -1,8 +1,8 @@
 'use client';
 
+import { ContentType } from 'lib/resources';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ContentType } from '../../lib/resources';
 
 interface Props {
   resourceId: number;

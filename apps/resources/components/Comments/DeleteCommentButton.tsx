@@ -1,10 +1,10 @@
 'use client';
 
-import { Loader2, Trash2 } from 'lucide-react';
-import { useAction } from '../../lib/serverActions/client';
-import { deleteComment } from './actions';
-import { ContentType } from '../../lib/resources';
+import { action } from 'api/action';
 import { Alert } from 'design-system';
+import { useAction } from 'lib/data/client';
+import { ContentType } from 'lib/resources';
+import { Loader2, Trash2 } from 'lucide-react';
 
 interface Props {
   resourceId: number;
@@ -19,7 +19,7 @@ export const DeleteCommentButton = ({
   commentId,
   commentUserId,
 }: Props) => {
-  const { isRunning, runAction } = useAction(deleteComment, {
+  const { isRunning, runAction } = useAction(action.resources.deleteComment, {
     onError: (error) => {
       console.error(error);
     },

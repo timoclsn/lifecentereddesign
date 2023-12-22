@@ -1,9 +1,9 @@
 import { auth } from '@clerk/nextjs';
+import { ContentType } from 'lib/resources';
 import { formatDistance, parseISO } from 'date-fns';
 import { Heading, Text } from 'design-system';
 import { Avatar } from './Avatar';
 import { DeleteCommentButton } from './DeleteCommentButton';
-import { ContentType } from '../../lib/resources';
 
 interface Props {
   resourceId: number;

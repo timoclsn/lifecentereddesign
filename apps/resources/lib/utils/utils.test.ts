@@ -2,11 +2,8 @@ import {
   formatType,
   formateDate,
   getBaseUrl,
-  getErrorMessage,
   getHostname,
   isExternalUrl,
-  isNextNotFoundError,
-  isNextRedirectError,
   minDelay,
   parseResourceSlug,
   wait,
@@ -116,60 +113,6 @@ describe('formatType', () => {
     const type = 'podcastEpisode';
     const formattedType = formatType(type);
     expect(formattedType).toBe('Podcast Episode');
-  });
-});
-
-describe('getErrorMessage', () => {
-  it('should return the error message if the input is an Error object', () => {
-    const error = new Error('Something went wrong');
-    const errorMessage = getErrorMessage(error);
-    expect(errorMessage).toBe('Something went wrong');
-  });
-
-  it('should return the message property of the input object if it exists', () => {
-    const error = { message: 'Something went wrong' };
-    const errorMessage = getErrorMessage(error);
-    expect(errorMessage).toBe('Something went wrong');
-  });
-
-  it('should return the input string if it is a string', () => {
-    const error = 'Something went wrong';
-    const errorMessage = getErrorMessage(error);
-    expect(errorMessage).toBe('Something went wrong');
-  });
-
-  it('should return "Something went wrong" if the input is not an Error object, object with message property, or string', () => {
-    const error = null;
-    const errorMessage = getErrorMessage(error);
-    expect(errorMessage).toBe('Something went wrong');
-  });
-});
-
-describe('isNextRedirectError', () => {
-  it('should return true if the input is "NEXT_REDIRECT"', () => {
-    const message = 'NEXT_REDIRECT';
-    const result = isNextRedirectError(message);
-    expect(result).toBe(true);
-  });
-
-  it('should return false if the input is not "NEXT_REDIRECT"', () => {
-    const message = 'SOME_OTHER_ERROR';
-    const result = isNextRedirectError(message);
-    expect(result).toBe(false);
-  });
-});
-
-describe('isNextNotFoundError', () => {
-  it('should return true if the input is "NEXT_NOT_FOUND"', () => {
-    const message = 'NEXT_NOT_FOUND';
-    const result = isNextNotFoundError(message);
-    expect(result).toBe(true);
-  });
-
-  it('should return false if the input is not "NEXT_NOT_FOUND"', () => {
-    const message = 'SOME_OTHER_ERROR';
-    const result = isNextNotFoundError(message);
-    expect(result).toBe(false);
   });
 });
 

@@ -1,17 +1,17 @@
 'use client';
 
+import { action } from 'api/action';
 import { Alert, Button } from 'design-system';
-import { useAction } from 'lib/serverActions/client';
-import { useRouter } from 'next/navigation';
-import { deleteCollection } from './actions';
+import { useAction } from 'lib/data/client';
 
 interface Props {
   collectionId: number;
 }
 
 export const DeleteCollectionButton = ({ collectionId }: Props) => {
-  const { push } = useRouter();
-  const { isRunning, runAction } = useAction(deleteCollection);
+  const { isRunning, runAction } = useAction(
+    action.collections.deleteCollection,
+  );
   const handleDeleteAccount = () => {
     runAction({
       collectionId,

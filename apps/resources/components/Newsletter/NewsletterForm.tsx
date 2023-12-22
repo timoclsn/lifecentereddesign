@@ -1,7 +1,9 @@
 'use client';
 
 import * as Checkbox from '@radix-ui/react-checkbox';
+import { action } from 'api/action';
 import { Button, InfoBox } from 'design-system';
+import { useAction } from 'lib/data/client';
 import { track } from 'lib/tracking';
 import {
   AlertTriangle,
@@ -10,20 +12,18 @@ import {
   Loader2,
   Mail,
 } from 'lucide-react';
-import { useAction } from '../../lib/serverActions/client';
+import { useRef } from 'react';
 import {
   checkboxStyles,
   errorStyles,
   inputStyles,
 } from '../ForrestSection/ForrestSection';
-import { subscribe } from './actions';
-import { useRef } from 'react';
 
 export const NewsletterForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const emailInputRef = useRef<HTMLInputElement>(null);
   const { isRunning, isSuccess, error, validationErrors, runAction } =
-    useAction(subscribe, {
+    useAction(action.newsletter.subscribe, {
       onSuccess: () => {
         formRef.current?.reset();
         if (document.activeElement instanceof HTMLElement) {

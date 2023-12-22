@@ -1,7 +1,7 @@
+import { query } from 'api/query';
+import { ContentType } from 'lib/resources';
 import { Card, getRandomCardVariant } from 'design-system';
 import { AlertTriangle } from 'lucide-react';
-import { getResourceCached } from '../../lib/cache';
-import { ContentType } from '../../lib/resources';
 import { Await } from '../Await/Await';
 import { getCardComponent } from '../utils';
 
@@ -11,7 +11,10 @@ interface Props {
 }
 
 export const ResourceCard = ({ resourceId, resourceType }: Props) => {
-  const resource = getResourceCached(resourceId, resourceType);
+  const resource = query.resources.getResource({
+    id: resourceId,
+    type: resourceType,
+  });
   return (
     <section>
       <Await promise={resource} loading={<Loading />} error={<Error />}>

@@ -1,5 +1,6 @@
 'use client';
 
+import { action } from 'api/action';
 import {
   Button,
   Dialog,
@@ -9,12 +10,11 @@ import {
   DialogTrigger,
   Heading,
 } from 'design-system';
+import { useAction } from 'lib/data/client';
 import { ContentType } from 'lib/resources';
-import { useAction } from 'lib/serverActions/client';
 import { ReactNode } from 'react';
-import { AddToCollectionItem } from './AddToCollectionItem';
-import { getData } from './actions';
 import { AddCollectionDialog } from '../AddCollectionDialog/AddCollectionDialog';
+import { AddToCollectionItem } from './AddToCollectionItem';
 
 interface Props {
   children: ReactNode;
@@ -27,7 +27,9 @@ export const AddToCollectionDialog = ({
   resourceType,
   children,
 }: Props) => {
-  const { isRunning, data, error, runAction } = useAction(getData);
+  const { isRunning, data, error, runAction } = useAction(
+    action.collections.getAddToCollectionData,
+  );
 
   const loadData = () => {
     runAction({

@@ -1,5 +1,5 @@
+import { Paper } from 'lib/resources';
 import { BookOpen, CalendarDays, Newspaper, Tag } from 'lucide-react';
-import { Paper } from '../../lib/resources';
 import { formateDate, getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';
 import { thoughtleadersList, topicsList } from '../utils';

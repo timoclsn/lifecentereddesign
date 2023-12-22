@@ -1,17 +1,28 @@
 'use server';
 
 import { clerkClient } from '@clerk/nextjs';
-import { createProtectedAction } from 'lib/serverActions/create';
+import { createProtectedAction } from 'data/clients';
 import { revalidatePath } from 'next/cache';
-import { deleteUserData } from '../../lib/resources';
 
 export const deleteAccount = createProtectedAction({
   action: async ({ ctx }) => {
-    const { userId } = ctx;
+    const { db, userId } = ctx;
 
     try {
       await clerkClient.users.deleteUser(userId);
-      await deleteUserData(userId);
+
+      await db.like.deleteMany({
+        where: {
+          userId,
+        },
+      });
+
+      await db.comment.deleteMany({
+        where: {
+          userId,
+        },
+      });
+
       revalidatePath('/');
     } catch (error) {
       throw new Error(

@@ -1,9 +1,9 @@
 import { Tooltip } from 'design-system';
 import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
-import { getResourceCommentsCountCached } from '../../../lib/cache';
-import { ContentType } from '../../../lib/resources';
 import { Await } from '../../Await/Await';
+import { ContentType } from 'lib/resources';
+import { query } from 'api/query';
 
 interface Props {
   resourceId: number;
@@ -11,10 +11,10 @@ interface Props {
 }
 
 export const CommentsButton = ({ resourceId, resourceType }: Props) => {
-  const commentsCountPromise = getResourceCommentsCountCached(
-    resourceId,
-    resourceType,
-  );
+  const commentsCountPromise = query.resources.getCommentsCount({
+    id: resourceId,
+    type: resourceType,
+  });
   return (
     <Await promise={commentsCountPromise} loading={<Loading />}>
       {(commentsCount) => {

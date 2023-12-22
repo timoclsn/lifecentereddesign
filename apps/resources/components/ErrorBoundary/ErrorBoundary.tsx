@@ -1,7 +1,7 @@
 'use client';
 
+import { getErrorMessage } from 'lib/data/utils';
 import { track } from 'lib/tracking';
-import { getErrorMessage } from 'lib/utils/utils';
 import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {

@@ -1,9 +1,9 @@
 'use client';
 
+import { ContentType } from 'lib/resources';
 import { track } from 'lib/tracking';
 import Link from 'next/link';
 import { ReactNode } from 'react';
-import { ContentType } from '../../lib/resources';
 
 interface Props {
   children: ReactNode;

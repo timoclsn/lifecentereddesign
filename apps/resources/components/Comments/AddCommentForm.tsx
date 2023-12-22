@@ -1,13 +1,13 @@
 'use client';
 
+import { action } from 'api/action';
 import { cva } from 'class-variance-authority';
 import { Button, InfoBox } from 'design-system';
+import { useAction } from 'lib/data/client';
+import { ContentType } from 'lib/resources';
 import { track } from 'lib/tracking';
 import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { useRef } from 'react';
-import { ContentType } from '../../lib/resources';
-import { useAction } from '../../lib/serverActions/client';
-import { addComment } from './actions';
 
 const inputStyles = cva(
   'px-8 py-4 text-base text-text-secondary bg-ghost-main-dark-bg outline-none w-full ring-inset',
@@ -33,7 +33,7 @@ export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
   const formRef = useRef<HTMLFormElement>(null);
   const textInputRef = useRef<HTMLTextAreaElement>(null);
   const { error, validationErrors, runAction, isRunning } = useAction(
-    addComment,
+    action.resources.addComment,
     {
       onSuccess: () => {
         formRef.current?.reset();
@@ -77,7 +77,7 @@ export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
         </label>
         <textarea
           id="text"
-          name="ref"
+          name="text"
           ref={textInputRef}
           required
           placeholder="Post a comment…"

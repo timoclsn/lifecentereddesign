@@ -1,12 +1,12 @@
 import { auth } from '@clerk/nextjs';
+import { query } from 'api/query';
 import { Resources } from 'app/resources/Resources/Resources';
 import { Await } from 'components/Await/Await';
 import { UpdateCollectionDialog } from 'components/Collections/UpdateCollectionDialog/UpdateCollectionDialog';
 import { Button, Heading, Text } from 'design-system';
-import { getCollectionCached } from 'lib/cache';
 import { SearchParams } from 'lib/types';
-import { DeleteCollectionButton } from '../../../components/Collections/DeleteCollectionButton/DeleteCollectionButton';
 import { notFound } from 'next/navigation';
+import { DeleteCollectionButton } from '../../../components/Collections/DeleteCollectionButton/DeleteCollectionButton';
 
 interface Props {
   params: {
@@ -17,7 +17,7 @@ interface Props {
 
 const CollectionPage = async ({ params, searchParams }: Props) => {
   const { id } = params;
-  const promise = getCollectionCached(Number(id));
+  const promise = query.collections.getCollection({ id: Number(id) });
   const { userId } = auth();
 
   return (

@@ -1,9 +1,6 @@
-import {
-  Categories,
-  CommentedResources,
-  LikedResources,
-  Topics,
-} from '../../../../../lib/resources';
+import { Categories } from 'lib/categories';
+import { CommentedResources, LikedResources } from 'data/resources/query';
+import { Topics } from 'lib/topics';
 import { CategoryFilter } from './CategoryFilter';
 import { Clear } from './Clear';
 import { CommentsFilter } from './CommentsFilter';

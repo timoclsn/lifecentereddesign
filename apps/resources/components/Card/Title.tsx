@@ -1,7 +1,7 @@
 'use client';
 
-import { Heading } from 'design-system';
 import { ContentType } from 'lib/resources';
+import { Heading } from 'design-system';
 import { ExternalLink } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 

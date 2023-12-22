@@ -1,0 +1,21 @@
+import { createQuery } from 'data/clients';
+import 'server-only';
+
+export const getCategories = createQuery({
+  cache: {
+    keyParts: ['categories'],
+    options: {
+      revalidate: 60,
+      tags: ['categories'],
+    },
+  },
+  query: async ({ ctx }) => {
+    const { db } = ctx;
+
+    return await db.category.findMany({
+      orderBy: {
+        name: 'asc',
+      },
+    });
+  },
+});

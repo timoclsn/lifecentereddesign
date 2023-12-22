@@ -1,18 +1,21 @@
 'use client';
 
 import { useAuth } from '@clerk/nextjs';
+import { action } from 'api/action';
 import { Alert, Button, InfoBox } from 'design-system';
+import { useAction } from 'lib/data/client';
 import { AlertTriangle, CheckCircle2, Loader2, XCircle } from 'lucide-react';
-import { useAction } from '../../lib/serverActions/client';
-import { deleteAccount } from './actions';
 
 export const DeleteAccountButton = () => {
-  const { isRunning, isSuccess, error, runAction } = useAction(deleteAccount, {
-    onRunAction: () => {},
-    onSuccess: () => {
-      signOut();
+  const { isRunning, isSuccess, error, runAction } = useAction(
+    action.users.deleteAccount,
+    {
+      onRunAction: () => {},
+      onSuccess: () => {
+        signOut();
+      },
     },
-  });
+  );
   const { signOut } = useAuth();
 
   const handleDeleteAccount = () => {

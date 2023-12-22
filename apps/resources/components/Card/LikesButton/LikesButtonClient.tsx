@@ -1,15 +1,15 @@
 'use client';
 
 import { useAuth } from '@clerk/nextjs';
+import { action } from 'api/action';
 import { cva } from 'class-variance-authority';
 import { Tooltip } from 'design-system';
-import { useAction } from 'lib/serverActions/client';
+import { useAction } from 'lib/data/client';
+import { ContentType } from 'lib/resources';
 import { track } from 'lib/tracking';
 import { Heart } from 'lucide-react';
 import { useOptimistic } from 'react';
-import { ContentType } from '../../../lib/resources';
 import { SolidHeart } from '../../Icons/SolidHeart';
-import { like, unLike } from '../actions';
 
 const heartVariants = cva(
   'group-hover:scale-110 group-active:scale-90 transition-transform ease',
@@ -42,7 +42,7 @@ export const LikesButtonClient = ({
 }: Props) => {
   const { isSignedIn } = useAuth();
   const { runAction: runLikeAction, isRunning: isLikeRunning } = useAction(
-    like,
+    action.resources.like,
     {
       onRunAction: () => {
         updateOptimisticCount(optimisticCount + 1);
@@ -59,7 +59,7 @@ export const LikesButtonClient = ({
     },
   );
   const { runAction: runUnLikeAction, isRunning: isUnLikeRunning } = useAction(
-    unLike,
+    action.resources.unLike,
     {
       onRunAction: () => {
         updateOptimisticCount(optimisticCount - 1);

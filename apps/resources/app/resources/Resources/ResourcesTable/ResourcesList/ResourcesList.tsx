@@ -1,12 +1,9 @@
 import { getCardComponent } from 'components/utils';
+import { CommentedResources, LikedResources } from 'data/resources/query';
 import { Heading } from 'design-system';
+import { Resource } from 'lib/resources';
 import { matchSorter } from 'match-sorter';
 import { AutoAnimate } from '../../../../../components/AutoAnimate/AutoAnimate';
-import {
-  CommentedResources,
-  LikedResources,
-  Resource,
-} from '../../../../../lib/resources';
 import { ReseourcesFilter } from '../../Resources';
 import { ClearAllButton } from './ClearAllButton';
 import { DownloadButton } from './DownloadButton/DownloadButton';

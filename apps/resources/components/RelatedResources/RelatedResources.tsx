@@ -1,3 +1,4 @@
+import { query } from 'api/query';
 import { Track } from 'components/Track/Track';
 import {
   Bleed,
@@ -6,11 +7,10 @@ import {
   Text,
   getRandomCardVariant,
 } from 'design-system';
+import { ContentType, Resource, Resources } from 'lib/resources';
 import { AlertTriangle, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getResourceCached, getResourcesCached } from '../../lib/cache';
-import { ContentType, Resource, Resources } from '../../lib/resources';
 import { Await } from '../Await/Await';
 import { getCardComponent } from '../utils';
 import birdsImg from './birds.jpg';
@@ -22,8 +22,11 @@ interface Props {
 
 export const RelatedResources = ({ resourceId, resourceType }: Props) => {
   const promise = Promise.all([
-    getResourceCached(resourceId, resourceType),
-    getResourcesCached(),
+    query.resources.getResource({
+      id: resourceId,
+      type: resourceType,
+    }),
+    query.resources.getResources(),
   ]);
   return (
     <Bleed>
@@ -32,7 +35,7 @@ export const RelatedResources = ({ resourceId, resourceType }: Props) => {
           Related Resources
         </Heading>
         <ul className="mb-14 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 sm:snap-none sm:px-8 xl:px-10">
-          <li className="hidden flex-none snap-center sm:block">
+          <li className="hidden flex-none snap-center snap-always sm:block">
             <Image
               src={birdsImg}
               alt="Image of desert ground."
@@ -56,7 +59,7 @@ export const RelatedResources = ({ resourceId, resourceType }: Props) => {
                         as="li"
                         key={`${resource.type}-${resource.id}`}
                         event="Related resource clicked"
-                        className="relative w-[330px] flex-none snap-center sm:w-[600px]"
+                        className="relative w-[330px] flex-none snap-center snap-always sm:w-[600px]"
                       >
                         {component}
                       </Track>
@@ -66,7 +69,7 @@ export const RelatedResources = ({ resourceId, resourceType }: Props) => {
               );
             }}
           </Await>
-          <li className="rounded-4xl flex-none snap-center">
+          <li className="rounded-4xl flex-none snap-center snap-always">
             <Link href="/resources" className="block h-full hover:opacity-80">
               <Card
                 variant="primary"

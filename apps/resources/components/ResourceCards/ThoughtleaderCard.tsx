@@ -1,5 +1,5 @@
+import { Thoughtleader } from 'lib/resources';
 import { Briefcase, Tag } from 'lucide-react';
-import { Thoughtleader } from '../../lib/resources';
 import { getHostname } from '../../lib/utils/utils';
 import { Card } from '../Card/Card';
 import { topicsList } from '../utils';
