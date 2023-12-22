@@ -1,15 +1,6 @@
 import { auth } from '@clerk/nextjs';
 import { createQuery } from 'data/clients';
-import {
-  ContentType,
-  Resource,
-  getCommentsCountRaw,
-  getNewLikesCount,
-  getResourceNewLikes,
-  getResourceOldLikesCount,
-  includes,
-  resourceTypes,
-} from 'lib/resources';
+import { ContentType, Resource, includes, resourceTypes } from 'lib/resources';
 import { withUserCollection } from 'lib/users';
 import 'server-only';
 import { z } from 'zod';
@@ -36,22 +27,28 @@ export const getResources = createQuery({
 
     const resources = await Promise.all(resourcePromises);
 
-    const enhancedResourcesPromises = [];
-
-    for (const resource of resources.flat()) {
+    const enhancedResourcesPromises = resources.flat().map(async (resource) => {
       const [newLikesCount, commentsCount] = await Promise.all([
-        getNewLikesCount(resource.id, resource.type),
-        getCommentsCountRaw(resource.id, resource.type),
+        db.like.count({
+          where: {
+            resourceId: resource.id,
+            type: resource.type,
+          },
+        }),
+        db.comment.count({
+          where: {
+            resourceId: resource.id,
+            type: resource.type,
+          },
+        }),
       ]);
 
-      const enhancedResource = {
+      return {
         ...resource,
         likes: resource.likes + newLikesCount,
         comments: commentsCount,
       };
-
-      enhancedResourcesPromises.push(enhancedResource);
-    }
+    });
 
     const enhancedResources = (
       await Promise.all(enhancedResourcesPromises)
@@ -78,8 +75,8 @@ export const getResource = createQuery({
     };
   },
   query: async ({ input, ctx }) => {
-    const { db } = ctx;
     const { id, type } = input;
+    const { db } = ctx;
 
     // @ts-expect-error: Dynamic table access doesn't work on type level
     const resource = (await db[type].findUnique({
@@ -91,7 +88,12 @@ export const getResource = createQuery({
       },
     })) as Resource;
 
-    const newLikesCount = await getNewLikesCount(resource.id, resource.type);
+    const newLikesCount = await db.like.count({
+      where: {
+        resourceId: resource.id,
+        type,
+      },
+    });
 
     return {
       ...resource,
@@ -119,12 +121,27 @@ export const getResourceLikesData = createQuery({
       },
     };
   },
-  query: async ({ input }) => {
+  query: async ({ input, ctx }) => {
     const { id, type } = input;
+    const { db } = ctx;
 
     const [oldLikesCount, newLikes] = await Promise.all([
-      getResourceOldLikesCount(id, type),
-      getResourceNewLikes(id, type),
+      // prettier-ignore
+      // @ts-expect-error: Dynamic table access doesn't work on type level
+      (db[type].findUnique({
+          where: {
+            id: id,
+          },
+          select: {
+            likes: true,
+          },
+        }) as { likes: number }).likes,
+      db.like.findMany({
+        where: {
+          resourceId: id,
+          type,
+        },
+      }),
     ]);
     return {
       oldLikesCount,
@@ -212,9 +229,15 @@ export const getCommentsCount = createQuery({
       },
     };
   },
-  query: async ({ input }) => {
+  query: async ({ input, ctx }) => {
     const { id, type } = input;
-    return await getCommentsCountRaw(id, type);
+    const { db } = ctx;
+    return await db.comment.count({
+      where: {
+        resourceId: id,
+        type,
+      },
+    });
   },
 });
 
