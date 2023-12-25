@@ -38,7 +38,10 @@ export const getConsumtion = createQuery({
     const { url } = input;
 
     if (process.env.NODE_ENV === 'development') {
-      return devCache;
+      return {
+        co2: 0.14,
+        cleanerThan: 86,
+      };
     }
 
     const response = await fetch(
@@ -56,8 +59,3 @@ export const getConsumtion = createQuery({
     };
   },
 });
-
-const devCache = {
-  co2: 0.14,
-  cleanerThan: 86,
-};
