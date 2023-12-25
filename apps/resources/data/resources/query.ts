@@ -25,23 +25,32 @@ export const getResources = createQuery({
       }) as Promise<Array<Resource>>;
     });
 
-    const resources = await Promise.all(resourcePromises);
+    const [likes, comments, ...resources] = await Promise.all([
+      db.like.findMany({
+        select: {
+          resourceId: true,
+          type: true,
+        },
+      }),
+      db.comment.findMany({
+        select: {
+          resourceId: true,
+          type: true,
+        },
+      }),
+      ...resourcePromises,
+    ]);
 
-    const enhancedResourcesPromises = resources.flat().map(async (resource) => {
-      const [newLikesCount, commentsCount] = await Promise.all([
-        db.like.count({
-          where: {
-            resourceId: resource.id,
-            type: resource.type,
-          },
-        }),
-        db.comment.count({
-          where: {
-            resourceId: resource.id,
-            type: resource.type,
-          },
-        }),
-      ]);
+    const enhancedResources = resources.flat().map((resource) => {
+      const newLikesCount = likes.filter(
+        (like) =>
+          like.resourceId === resource.id && like.type === resource.type,
+      ).length;
+
+      const commentsCount = comments.filter(
+        (comment) =>
+          comment.resourceId === resource.id && comment.type === resource.type,
+      ).length;
 
       return {
         ...resource,
@@ -49,10 +58,6 @@ export const getResources = createQuery({
         comments: commentsCount,
       };
     });
-
-    const enhancedResources = (
-      await Promise.all(enhancedResourcesPromises)
-    ).flat();
 
     return enhancedResources;
   },
