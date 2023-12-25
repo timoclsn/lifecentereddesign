@@ -37,6 +37,10 @@ export const getConsumtion = createQuery({
   query: async ({ input }) => {
     const { url } = input;
 
+    if (process.env.NODE_ENV === 'development') {
+      return devCache;
+    }
+
     const response = await fetch(
       `https://api.websitecarbon.com/site?url=${url}`,
     );
@@ -46,9 +50,19 @@ export const getConsumtion = createQuery({
     const co2 = Math.round(parsedResult.statistics.co2.grid.grams * 100) / 100;
     const cleanerThan = Math.round(parsedResult.cleanerThan * 100);
 
+    console.log({
+      co2,
+      cleanerThan,
+    });
+
     return {
       co2,
       cleanerThan,
     };
   },
 });
+
+const devCache = {
+  co2: 0.14,
+  cleanerThan: 86,
+};
