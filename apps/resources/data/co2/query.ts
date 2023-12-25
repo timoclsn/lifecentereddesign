@@ -50,11 +50,6 @@ export const getConsumtion = createQuery({
     const co2 = Math.round(parsedResult.statistics.co2.grid.grams * 100) / 100;
     const cleanerThan = Math.round(parsedResult.cleanerThan * 100);
 
-    console.log({
-      co2,
-      cleanerThan,
-    });
-
     return {
       co2,
       cleanerThan,
