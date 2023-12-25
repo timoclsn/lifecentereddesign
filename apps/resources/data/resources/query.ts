@@ -25,23 +25,32 @@ export const getResources = createQuery({
       }) as Promise<Array<Resource>>;
     });
 
-    const resources = await Promise.all(resourcePromises);
+    const [likes, comments, ...resources] = await Promise.all([
+      db.like.findMany({
+        select: {
+          resourceId: true,
+          type: true,
+        },
+      }),
+      db.comment.findMany({
+        select: {
+          resourceId: true,
+          type: true,
+        },
+      }),
+      ...resourcePromises,
+    ]);
 
-    const enhancedResourcesPromises = resources.flat().map(async (resource) => {
-      const [newLikesCount, commentsCount] = await Promise.all([
-        db.like.count({
-          where: {
-            resourceId: resource.id,
-            type: resource.type,
-          },
-        }),
-        db.comment.count({
-          where: {
-            resourceId: resource.id,
-            type: resource.type,
-          },
-        }),
-      ]);
+    const enhancedResources = resources.flat().map((resource) => {
+      const newLikesCount = likes.filter(
+        (like) =>
+          like.resourceId === resource.id && like.type === resource.type,
+      ).length;
+
+      const commentsCount = comments.filter(
+        (comment) =>
+          comment.resourceId === resource.id && comment.type === resource.type,
+      ).length;
 
       return {
         ...resource,
@@ -49,10 +58,6 @@ export const getResources = createQuery({
         comments: commentsCount,
       };
     });
-
-    const enhancedResources = (
-      await Promise.all(enhancedResourcesPromises)
-    ).flat();
 
     return enhancedResources;
   },
@@ -78,22 +83,23 @@ export const getResource = createQuery({
     const { id, type } = input;
     const { db } = ctx;
 
-    // @ts-expect-error: Dynamic table access doesn't work on type level
-    const resource = (await db[type].findUnique({
-      where: {
-        id: id,
-      },
-      include: {
-        ...includes(type),
-      },
-    })) as Resource;
-
-    const newLikesCount = await db.like.count({
-      where: {
-        resourceId: resource.id,
-        type,
-      },
-    });
+    const [resource, newLikesCount] = await Promise.all([
+      // @ts-expect-error: Dynamic table access doesn't work on type level
+      db[type].findUnique({
+        where: {
+          id: id,
+        },
+        include: {
+          ...includes(type),
+        },
+      }) as Promise<Resource>,
+      db.like.count({
+        where: {
+          resourceId: id,
+          type,
+        },
+      }),
+    ]);
 
     return {
       ...resource,
