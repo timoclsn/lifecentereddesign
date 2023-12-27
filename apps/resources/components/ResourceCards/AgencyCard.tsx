@@ -6,9 +6,10 @@ import { topicsList } from '../utils';
 
 interface Props {
   agency: Agency;
+  showPreview?: boolean;
 }
 
-export const AgencyCard = ({ agency }: Props) => {
+export const AgencyCard = ({ agency, showPreview }: Props) => {
   return (
     <Card
       resourceId={agency.id}
@@ -41,6 +42,7 @@ export const AgencyCard = ({ agency }: Props) => {
       suggestion={agency.suggestion}
       note={agency.note}
       showType
+      showPreview={showPreview}
     />
   );
 };

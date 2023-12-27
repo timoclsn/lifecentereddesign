@@ -6,9 +6,10 @@ import { thoughtleadersList, topicsList } from '../utils';
 
 interface Props {
   podcastEpisode: PodcastEpisode;
+  showPreview?: boolean;
 }
 
-export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
+export const PodcastEpisodeCard = ({ podcastEpisode, showPreview }: Props) => {
   return (
     <Card
       resourceId={podcastEpisode.id}
@@ -80,6 +81,7 @@ export const PodcastEpisodeCard = ({ podcastEpisode }: Props) => {
       suggestion={podcastEpisode.suggestion}
       note={podcastEpisode.note}
       showType
+      showPreview={showPreview}
     />
   );
 };

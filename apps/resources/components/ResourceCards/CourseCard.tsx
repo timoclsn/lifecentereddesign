@@ -6,9 +6,10 @@ import { topicsList } from '../utils';
 
 interface Props {
   course: Course;
+  showPreview?: boolean;
 }
 
-export const CourseCard = ({ course }: Props) => {
+export const CourseCard = ({ course, showPreview }: Props) => {
   return (
     <Card
       resourceId={course.id}
@@ -41,6 +42,7 @@ export const CourseCard = ({ course }: Props) => {
       suggestion={course.suggestion}
       note={course.note}
       showType
+      showPreview={showPreview}
     />
   );
 };

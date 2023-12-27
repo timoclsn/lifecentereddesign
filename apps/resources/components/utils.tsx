@@ -43,48 +43,97 @@ import { ThoughtleaderCard } from './ResourceCards/ThoughtleaderCard';
 import { ToolCard } from './ResourceCards/ToolCard';
 import { VideoCard } from './ResourceCards/VideoCard';
 
-export const getCardComponent = (resource: Resources[0]) => {
+export const getCardComponent = (
+  resource: Resources[0],
+  options: {
+    showPreview?: boolean;
+  } = {},
+) => {
+  const { showPreview } = options;
   switch (resource.type) {
     case 'thoughtleader':
-      return <ThoughtleaderCard thoughtleader={resource as Thoughtleader} />;
+      return (
+        <ThoughtleaderCard
+          thoughtleader={resource as Thoughtleader}
+          showPreview={showPreview}
+        />
+      );
     case 'book':
-      return <BookCard book={resource as Book} />;
+      return <BookCard book={resource as Book} showPreview={showPreview} />;
     case 'article':
-      return <ArticleCard article={resource as Article} />;
+      return (
+        <ArticleCard article={resource as Article} showPreview={showPreview} />
+      );
     case 'course':
-      return <CourseCard course={resource as Course} />;
+      return (
+        <CourseCard course={resource as Course} showPreview={showPreview} />
+      );
     case 'podcast':
-      return <PodcastCard podcast={resource as Podcast} />;
+      return (
+        <PodcastCard podcast={resource as Podcast} showPreview={showPreview} />
+      );
     case 'podcastEpisode':
-      return <PodcastEpisodeCard podcastEpisode={resource as PodcastEpisode} />;
+      return (
+        <PodcastEpisodeCard
+          podcastEpisode={resource as PodcastEpisode}
+          showPreview={showPreview}
+        />
+      );
     case 'video':
-      return <VideoCard video={resource as Video} />;
+      return <VideoCard video={resource as Video} showPreview={showPreview} />;
     case 'tool':
-      return <ToolCard tool={resource as Tool} />;
+      return <ToolCard tool={resource as Tool} showPreview={showPreview} />;
     case 'directory':
-      return <DirectoryCard directory={resource as Directory} />;
+      return (
+        <DirectoryCard
+          directory={resource as Directory}
+          showPreview={showPreview}
+        />
+      );
     case 'community':
-      return <CommunityCard community={resource as Community} />;
+      return (
+        <CommunityCard
+          community={resource as Community}
+          showPreview={showPreview}
+        />
+      );
     case 'example':
-      return <ExampleCard example={resource as Example} />;
+      return (
+        <ExampleCard example={resource as Example} showPreview={showPreview} />
+      );
     case 'agency':
-      return <AgencyCard agency={resource as Agency} />;
+      return (
+        <AgencyCard agency={resource as Agency} showPreview={showPreview} />
+      );
     case 'slide':
-      return <SlideCard slide={resource as Slide} />;
+      return <SlideCard slide={resource as Slide} showPreview={showPreview} />;
     case 'magazine':
-      return <MagazineCard magazine={resource as Magazine} />;
+      return (
+        <MagazineCard
+          magazine={resource as Magazine}
+          showPreview={showPreview}
+        />
+      );
     case 'newsletter':
-      return <NewsletterCard newsletter={resource as Newsletter} />;
+      return (
+        <NewsletterCard
+          newsletter={resource as Newsletter}
+          showPreview={showPreview}
+        />
+      );
     case 'paper':
-      return <PaperCard paper={resource as Paper} />;
+      return <PaperCard paper={resource as Paper} showPreview={showPreview} />;
     case 'socialMediaProfile':
       return (
         <SocialMediaProfileCard
           socielaMediaProfile={resource as SocialMediaProfile}
+          showPreview={showPreview}
         />
       );
     case 'report':
-      return <ReportCard report={resource as Report} />;
+      return (
+        <ReportCard report={resource as Report} showPreview={showPreview} />
+      );
     default:
       throw new Error(`Unknown resource type: ${resource.type}`);
   }

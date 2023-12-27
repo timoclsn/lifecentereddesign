@@ -6,9 +6,10 @@ import { thoughtleadersList, topicsList } from '../utils';
 
 interface Props {
   slide: Slide;
+  showPreview?: boolean;
 }
 
-export const SlideCard = ({ slide }: Props) => {
+export const SlideCard = ({ slide, showPreview }: Props) => {
   return (
     <Card
       resourceId={slide.id}
@@ -72,6 +73,7 @@ export const SlideCard = ({ slide }: Props) => {
       suggestion={slide.suggestion}
       note={slide.note}
       showType
+      showPreview={showPreview}
     />
   );
 };

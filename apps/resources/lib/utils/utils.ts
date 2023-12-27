@@ -1,5 +1,7 @@
-import { ContentType } from 'lib/resources';
+import * as cheerio from 'cheerio';
 import { format } from 'date-fns';
+import { ContentType } from 'lib/resources';
+import { z } from 'zod';
 
 /**
  * Returns the hostname of a given URL.
@@ -84,4 +86,27 @@ export const parseResourceSlug = (slug: string) => {
  */
 export const isExternalUrl = (url: string) => {
   return url.startsWith('http');
+};
+
+/**
+ * Checks if a given string is a valid URL.
+ * @param url - The string to be checked.
+ * @returns True if the string is a valid URL, false otherwise.
+ */
+export const isUrl = (url: string) => {
+  const result = z.string().url().safeParse(url);
+  return result.success;
+};
+
+/**
+ * Retrieves the Open Graph image link from a given URL.
+ * @param url - The URL to fetch and extract the Open Graph image link from.
+ * @returns The Open Graph image link, or an empty string if not found.
+ */
+export const getOgImageLink = async (url: string) => {
+  const response = await fetch(url);
+  const data = await response.text();
+  const $ = cheerio.load(data);
+  const ogImageUrl = $('meta[property="og:image"]').attr('content') || '';
+  return ogImageUrl;
 };

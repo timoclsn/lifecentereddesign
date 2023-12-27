@@ -6,9 +6,10 @@ import { thoughtleadersList, topicsList } from '../utils';
 
 interface Props {
   report: Report;
+  showPreview?: boolean;
 }
 
-export const ReportCard = ({ report }: Props) => {
+export const ReportCard = ({ report, showPreview }: Props) => {
   return (
     <Card
       resourceId={report.id}
@@ -73,6 +74,7 @@ export const ReportCard = ({ report }: Props) => {
       suggestion={report.suggestion}
       note={report.note}
       showType
+      showPreview={showPreview}
     />
   );
 };

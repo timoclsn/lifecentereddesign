@@ -6,9 +6,10 @@ import { topicsList } from '../utils';
 
 interface Props {
   community: Community;
+  showPreview?: boolean;
 }
 
-export const CommunityCard = ({ community }: Props) => {
+export const CommunityCard = ({ community, showPreview }: Props) => {
   return (
     <Card
       resourceId={community.id}
@@ -41,6 +42,7 @@ export const CommunityCard = ({ community }: Props) => {
       suggestion={community.suggestion}
       note={community.note}
       showType
+      showPreview={showPreview}
     />
   );
 };
