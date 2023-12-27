@@ -21,9 +21,8 @@ export const Preview = ({ url }: Props) => {
             <Image
               src={ogImageLink}
               alt="Preview image of the resource"
-              width={16}
-              height={9}
-              className="absolute inset-0 h-full w-full object-contain"
+              fill
+              className="object-contain"
               unoptimized
             />
           );
