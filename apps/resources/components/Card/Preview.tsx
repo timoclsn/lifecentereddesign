@@ -10,7 +10,7 @@ export const Preview = ({ url }: Props) => {
   const promise = getOgImageLink(url);
 
   return (
-    <div className="bg-ghost-main-dark-bg @3xl:w-[300px] @5xl:w-[500px]  relative aspect-video w-full flex-none">
+    <div className="bg-ghost-main-dark-bg @3xl:w-[300px] @5xl:w-[500px] relative -z-10 aspect-video w-full flex-none">
       <Await promise={promise} loading={<Loading />} error={<Error />}>
         {(ogImageLink) => {
           if (!isUrl(ogImageLink)) {
