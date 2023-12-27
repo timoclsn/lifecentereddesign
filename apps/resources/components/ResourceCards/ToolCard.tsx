@@ -6,9 +6,10 @@ import { topicsList } from '../utils';
 
 interface Props {
   tool: Tool;
+  showPreview?: boolean;
 }
 
-export const ToolCard = ({ tool }: Props) => {
+export const ToolCard = ({ tool, showPreview }: Props) => {
   return (
     <Card
       resourceId={tool.id}
@@ -41,6 +42,7 @@ export const ToolCard = ({ tool }: Props) => {
       suggestion={tool.suggestion}
       note={tool.note}
       showType
+      showPreview={showPreview}
     />
   );
 };

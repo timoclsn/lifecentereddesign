@@ -8,9 +8,14 @@ import { getCardComponent } from '../utils';
 interface Props {
   resourceId: number;
   resourceType: ContentType;
+  showPreview?: boolean;
 }
 
-export const ResourceCard = ({ resourceId, resourceType }: Props) => {
+export const ResourceCard = ({
+  resourceId,
+  resourceType,
+  showPreview,
+}: Props) => {
   const resource = query.resources.getResource({
     id: resourceId,
     type: resourceType,
@@ -18,7 +23,13 @@ export const ResourceCard = ({ resourceId, resourceType }: Props) => {
   return (
     <section>
       <Await promise={resource} loading={<Loading />} error={<Error />}>
-        {(resource) => <>{getCardComponent(resource)}</>}
+        {(resource) => (
+          <>
+            {getCardComponent(resource, {
+              showPreview,
+            })}
+          </>
+        )}
       </Await>
     </section>
   );

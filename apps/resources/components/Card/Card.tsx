@@ -43,6 +43,7 @@ interface Props {
   description?: string | null;
   suggestion?: boolean;
   note?: string | null;
+  showPreview?: boolean;
 }
 
 export const Card = async ({
@@ -58,6 +59,7 @@ export const Card = async ({
   description,
   suggestion = false,
   note,
+  showPreview = false,
 }: Props) => {
   const flags = await featureFlags();
   const resourceLink = tags?.at(0)?.url;
@@ -131,7 +133,7 @@ export const Card = async ({
             />
           </div>
         </div>
-        <div className="flex w-full justify-between gap-4">
+        <div className="@3xl:flex-row flex w-full flex-col justify-between gap-8">
           <div className="flex flex-col items-start gap-4 sm:mb-16">
             {/* Title */}
             <Title
@@ -171,7 +173,7 @@ export const Card = async ({
           </div>
 
           {/* Preview */}
-          {resourceLink && <Preview url={resourceLink} />}
+          {showPreview && resourceLink && <Preview url={resourceLink} />}
         </div>
       </div>
 

@@ -66,7 +66,11 @@ const ResourcePage = async ({ params }: Props) => {
 
   return (
     <>
-      <ResourceCard resourceId={resourceId} resourceType={resourceType} />
+      <ResourceCard
+        resourceId={resourceId}
+        resourceType={resourceType}
+        showPreview={true}
+      />
       <Comments resourceId={resourceId} resourceType={resourceType} />
       <RelatedResources resourceId={resourceId} resourceType={resourceType} />
       <NewResources />

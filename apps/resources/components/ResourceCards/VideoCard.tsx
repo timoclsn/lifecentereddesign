@@ -6,9 +6,10 @@ import { thoughtleadersList, topicsList } from '../utils';
 
 interface Props {
   video: Video;
+  showPreview?: boolean;
 }
 
-export const VideoCard = ({ video }: Props) => {
+export const VideoCard = ({ video, showPreview }: Props) => {
   return (
     <Card
       resourceId={video.id}
@@ -72,6 +73,7 @@ export const VideoCard = ({ video }: Props) => {
       suggestion={video.suggestion}
       note={video.note}
       showType
+      showPreview={showPreview}
     />
   );
 };

@@ -6,9 +6,13 @@ import { topicsList } from '../utils';
 
 interface Props {
   socielaMediaProfile: SocialMediaProfile;
+  showPreview?: boolean;
 }
 
-export const SocialMediaProfileCard = ({ socielaMediaProfile }: Props) => {
+export const SocialMediaProfileCard = ({
+  socielaMediaProfile,
+  showPreview,
+}: Props) => {
   return (
     <Card
       resourceId={socielaMediaProfile.id}
@@ -49,6 +53,7 @@ export const SocialMediaProfileCard = ({ socielaMediaProfile }: Props) => {
       suggestion={socielaMediaProfile.suggestion}
       note={socielaMediaProfile.note}
       showType
+      showPreview={showPreview}
     />
   );
 };
