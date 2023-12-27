@@ -7,6 +7,7 @@ import {
   minDelay,
   parseResourceSlug,
   wait,
+  isUrl,
 } from './utils';
 
 describe('getHostname', () => {
@@ -146,6 +147,26 @@ describe('isExternalUrl', () => {
   it('should return false for an empty string', () => {
     const url = '';
     const result = isExternalUrl(url);
+    expect(result).toBe(false);
+  });
+});
+
+describe('isUrl', () => {
+  it('should return true for a valid URL', () => {
+    const url = 'https://www.example.com';
+    const result = isUrl(url);
+    expect(result).toBe(true);
+  });
+
+  it('should return false for an invalid URL', () => {
+    const url = 'not a valid URL';
+    const result = isUrl(url);
+    expect(result).toBe(false);
+  });
+
+  it('should return false for an empty string', () => {
+    const url = '';
+    const result = isUrl(url);
     expect(result).toBe(false);
   });
 });

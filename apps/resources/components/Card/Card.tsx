@@ -6,6 +6,8 @@ import {
   Text,
   Tooltip,
 } from 'design-system';
+import { featureFlags } from 'lib/featureFlags';
+import { ContentType } from 'lib/resources';
 import { isExternalUrl } from 'lib/utils/utils';
 import { ExternalLink, LucideIcon, StickyNote, Users2 } from 'lucide-react';
 import { ReactNode } from 'react';
@@ -15,12 +17,11 @@ import { CommentsButton } from './CommentsButton/CommentsButton';
 import { CopyButton } from './CopyButton';
 import { DetailsLink } from './DetailsLink';
 import { LikesButton } from './LikesButton/LikesButton';
+import { Preview } from './Preview';
 import { ResourceLink } from './ResourceLink';
 import { ShareButton } from './ShareButton';
 import { Title } from './Title';
 import { TypeButton } from './TypeButton';
-import { featureFlags } from 'lib/featureFlags';
-import { ContentType } from 'lib/resources';
 
 interface Props {
   resourceId: number;
@@ -65,7 +66,7 @@ export const Card = async ({
   return (
     <CardPrimitive
       variant={variant}
-      className="group/card relative flex h-full w-full flex-col gap-8 sm:gap-24"
+      className="group/card @container relative flex h-full w-full flex-col gap-8"
     >
       <DetailsLink
         resourceId={resourceId}
@@ -73,7 +74,7 @@ export const Card = async ({
         resourceLink={resourceLink}
       />
 
-      <div className="flex flex-1 flex-col items-start gap-9">
+      <div className="flex flex-1 flex-col items-start gap-8">
         <div className="flex w-full flex-wrap justify-between gap-2">
           <div className="flex items-center gap-2">
             {/* Type */}
@@ -130,43 +131,47 @@ export const Card = async ({
             />
           </div>
         </div>
-
-        <div className="flex flex-col items-start gap-4">
-          {/* Title */}
-          <Title
-            resourceId={resourceId}
-            resourceType={resourceType}
-            resourceLink={resourceLink}
-          >
-            {title}
-          </Title>
-
-          {/* Meta infos */}
-          {metaInfos && (
-            <ul className="text-text-secondary -mt-1 flex flex-wrap gap-x-2 gap-y-1 sm:gap-x-8 sm:gap-y-3">
-              {metaInfos.map((metaInfo, idx) => {
-                return (
-                  <li key={idx} className="flex items-center gap-1">
-                    <metaInfo.icon size="18" className="flex-none" />
-                    <Text>{metaInfo.text}</Text>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-
-          {/* Description */}
-          {description && (
-            <Text className="text-text-secondary">{description}</Text>
-          )}
-
-          {/* Add to collection */}
-          {flags.collections && userId && (
-            <CollectionButton
+        <div className="flex w-full justify-between gap-4">
+          <div className="flex flex-col items-start gap-4 sm:mb-16">
+            {/* Title */}
+            <Title
               resourceId={resourceId}
               resourceType={resourceType}
-            />
-          )}
+              resourceLink={resourceLink}
+            >
+              {title}
+            </Title>
+
+            {/* Meta infos */}
+            {metaInfos && (
+              <ul className="text-text-secondary -mt-1 flex flex-wrap gap-x-2 gap-y-1 sm:gap-x-8 sm:gap-y-3">
+                {metaInfos.map((metaInfo, idx) => {
+                  return (
+                    <li key={idx} className="flex items-center gap-1">
+                      <metaInfo.icon size="18" className="flex-none" />
+                      <Text>{metaInfo.text}</Text>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+
+            {/* Description */}
+            {description && (
+              <Text className="text-text-secondary">{description}</Text>
+            )}
+
+            {/* Add to collection */}
+            {flags.collections && userId && (
+              <CollectionButton
+                resourceId={resourceId}
+                resourceType={resourceType}
+              />
+            )}
+          </div>
+
+          {/* Preview */}
+          {resourceLink && <Preview url={resourceLink} />}
         </div>
       </div>
 
