@@ -69,7 +69,7 @@ const ResourcePage = async ({ params }: Props) => {
       <ResourceCard
         resourceId={resourceId}
         resourceType={resourceType}
-        showPreview={true}
+        showPreview
       />
       <Comments resourceId={resourceId} resourceType={resourceType} />
       <RelatedResources resourceId={resourceId} resourceType={resourceType} />
