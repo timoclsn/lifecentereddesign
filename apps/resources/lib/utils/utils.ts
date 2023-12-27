@@ -1,4 +1,3 @@
-import * as cheerio from 'cheerio';
 import { format } from 'date-fns';
 import { ContentType } from 'lib/resources';
 import { z } from 'zod';
@@ -96,17 +95,4 @@ export const isExternalUrl = (url: string) => {
 export const isUrl = (url: string) => {
   const result = z.string().url().safeParse(url);
   return result.success;
-};
-
-/**
- * Retrieves the Open Graph image link from a given URL.
- * @param url - The URL to fetch and extract the Open Graph image link from.
- * @returns The Open Graph image link, or an empty string if not found.
- */
-export const getOgImageLink = async (url: string) => {
-  const response = await fetch(url);
-  const data = await response.text();
-  const $ = cheerio.load(data);
-  const ogImageUrl = $('meta[property="og:image"]').attr('content') || '';
-  return ogImageUrl;
 };

@@ -1,13 +1,21 @@
+import { query } from 'api/query';
 import { Await } from 'components/Await/Await';
-import { getOgImageLink, isUrl } from 'lib/utils/utils';
+import { ContentType } from 'lib/resources';
+import { isUrl } from 'lib/utils/utils';
 import Image from 'next/image';
 
 interface Props {
   url: string;
+  resourceId: number;
+  resourceType: ContentType;
 }
 
-export const Preview = ({ url }: Props) => {
-  const promise = getOgImageLink(url);
+export const Preview = ({ url, resourceId, resourceType }: Props) => {
+  const promise = query.resources.getOgImageLink({
+    id: resourceId,
+    type: resourceType,
+    url,
+  });
 
   return (
     <div className="bg-ghost-main-dark-bg @3xl:w-[300px] @5xl:w-[500px] relative -z-10 aspect-video w-full flex-none">

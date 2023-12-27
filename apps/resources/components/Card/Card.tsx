@@ -173,7 +173,13 @@ export const Card = async ({
           </div>
 
           {/* Preview */}
-          {showPreview && resourceLink && <Preview url={resourceLink} />}
+          {showPreview && resourceLink && (
+            <Preview
+              url={resourceLink}
+              resourceId={resourceId}
+              resourceType={resourceType}
+            />
+          )}
         </div>
       </div>
 

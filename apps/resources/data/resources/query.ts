@@ -1,4 +1,5 @@
 import { auth } from '@clerk/nextjs';
+import * as cheerio from 'cheerio';
 import { createQuery } from 'data/clients';
 import { ContentType, Resource, includes, resourceTypes } from 'lib/resources';
 import { withUserCollection } from 'lib/users';
@@ -282,5 +283,35 @@ export const getCommentedResources = createQuery({
           (selfComment) => selfComment.resourceId === comment.resourceId,
         ),
     );
+  },
+});
+
+export const getOgImageLink = createQuery({
+  input: z.object({
+    id: z.number(),
+    type: z.enum(resourceTypes),
+    url: z.string().url(),
+  }),
+  cache: ({ input }) => {
+    const { id, type } = input;
+    const tag = `resource-og-image-${type}-${id}`;
+    return {
+      keyParts: [tag],
+      options: {
+        revalidate: 60,
+        tags: [tag],
+      },
+    };
+  },
+  query: async ({ input }) => {
+    const { url } = input;
+
+    const response = await fetch(url);
+    const data = await response.text();
+
+    const $ = cheerio.load(data);
+    const ogImageUrl = $('meta[property="og:image"]').attr('content') || '';
+
+    return ogImageUrl;
   },
 });
