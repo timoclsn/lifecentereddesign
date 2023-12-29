@@ -70,7 +70,7 @@ export interface ButtonProps extends VariantProps<typeof styles> {
   className?: string;
 }
 
-export function Button({
+export const Button = ({
   children,
   as,
   variant = 'contained',
@@ -82,7 +82,7 @@ export function Button({
   href,
   external,
   className,
-}: ButtonProps) {
+}: ButtonProps) => {
   const Element = as ? as : href ? 'a' : 'button';
   return (
     <Element
@@ -97,4 +97,4 @@ export function Button({
       {children}
     </Element>
   );
-}
+};
