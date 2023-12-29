@@ -1,7 +1,7 @@
 'use client';
 
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { cx } from 'class-variance-authority';
+import { cx } from 'cva';
 import { X } from 'lucide-react';
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from 'react';
 

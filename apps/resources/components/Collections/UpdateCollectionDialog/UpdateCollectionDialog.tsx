@@ -1,7 +1,7 @@
 'use client';
 
 import { action } from 'api/action';
-import { cva } from 'class-variance-authority';
+import { cva } from 'cva';
 import {
   Button,
   Dialog,
@@ -16,17 +16,15 @@ import { useAction } from 'lib/data/client';
 import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 
-const inputStyles = cva(
-  'px-8 py-4 text-base text-text-secondary bg-ghost-main-dark-bg outline-none w-full ring-inset',
-  {
-    variants: {
-      error: {
-        true: 'ring-2 ring-red-700',
-        false: 'focus-visible:ring-2 focus-visible:ring-ghost-contrast-text',
-      },
+const inputStyles = cva({
+  base: 'px-8 py-4 text-base text-text-secondary bg-ghost-main-dark-bg outline-none w-full ring-inset',
+  variants: {
+    error: {
+      true: 'ring-2 ring-red-700',
+      false: 'focus-visible:ring-2 focus-visible:ring-ghost-contrast-text',
     },
   },
-);
+});
 
 const errorStyles =
   'absolute left-0 bottom-0 -mb-4 text-red-700 text-sm slide-in-from-top-full duration-100 ease-in-out fade-in animate-in';

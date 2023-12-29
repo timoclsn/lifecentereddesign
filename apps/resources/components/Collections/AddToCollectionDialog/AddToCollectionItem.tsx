@@ -2,23 +2,21 @@
 
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { action } from 'api/action';
-import { cva } from 'class-variance-authority';
+import { cva } from 'cva';
 import { useAction } from 'lib/data/client';
 import { ContentType } from 'lib/resources';
 import { Check } from 'lucide-react';
 import { useOptimistic } from 'react';
 
-export const checkboxStyles = cva(
-  'flex h-[25px] w-[25px] items-center justify-center bg-ghost-main-dark-bg outline-none ring-inset flex-none',
-  {
-    variants: {
-      error: {
-        true: 'ring-2 ring-red-700',
-        false: 'focus-visible:ring-2 focus-visible:ring-ghost-contrast-text',
-      },
+export const checkboxStyles = cva({
+  base: 'flex h-[25px] w-[25px] items-center justify-center bg-ghost-main-dark-bg outline-none ring-inset flex-none',
+  variants: {
+    error: {
+      true: 'ring-2 ring-red-700',
+      false: 'focus-visible:ring-2 focus-visible:ring-ghost-contrast-text',
     },
   },
-);
+});
 
 export const errorStyles =
   'absolute left-0 bottom-0 -mb-6 text-red-700 text-sm slide-in-from-top-full duration-100 ease-in-out fade-in animate-in';
