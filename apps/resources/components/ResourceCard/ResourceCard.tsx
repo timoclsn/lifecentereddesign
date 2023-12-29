@@ -39,7 +39,7 @@ const Loading = () => {
   return (
     <Card
       variant={getRandomCardVariant()}
-      className="h-[400px] animate-pulse"
+      className="h-[500px] animate-pulse"
     />
   );
 };
