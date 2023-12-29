@@ -18,9 +18,6 @@ const styles = cva({
       primary: null,
       danger: null,
     },
-    selected: {
-      true: 'text-primary-hover-text bg-primary-ghost-bg',
-    },
   },
   compoundVariants: [
     {
@@ -84,13 +81,12 @@ export function Button({
   disabled,
   href,
   external,
-  selected,
   className,
 }: ButtonProps) {
   const Element = as ? as : href ? 'a' : 'button';
   return (
     <Element
-      className={styles({ variant, size, color, selected, className })}
+      className={styles({ variant, size, color, className })}
       type={Element === 'button' ? type : undefined}
       onClick={onClick}
       disabled={disabled}
