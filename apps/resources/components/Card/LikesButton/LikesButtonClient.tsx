@@ -2,7 +2,7 @@
 
 import { useAuth } from '@clerk/nextjs';
 import { action } from 'api/action';
-import { cva } from 'class-variance-authority';
+import { cva } from 'cva';
 import { Tooltip } from 'design-system';
 import { useAction } from 'lib/data/client';
 import { ContentType } from 'lib/resources';
@@ -11,19 +11,17 @@ import { Heart } from 'lucide-react';
 import { useOptimistic } from 'react';
 import { SolidHeart } from '../../Icons/SolidHeart';
 
-const heartVariants = cva(
-  'group-hover:scale-110 group-active:scale-90 transition-transform ease',
-  {
-    variants: {
-      loading: {
-        true: 'animate-pulse',
-      },
-      active: {
-        true: 'text-red-700',
-      },
+const heartVariants = cva({
+  base: 'group-hover:scale-110 group-active:scale-90 transition-transform ease',
+  variants: {
+    loading: {
+      true: 'animate-pulse',
+    },
+    active: {
+      true: 'text-red-700',
     },
   },
-);
+});
 
 interface Props {
   resourceId: number;

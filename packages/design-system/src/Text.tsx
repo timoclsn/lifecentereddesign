@@ -1,4 +1,4 @@
-import { cva, VariantProps } from 'class-variance-authority';
+import { VariantProps, cva } from 'cva';
 import { ReactNode } from 'react';
 
 const validElements = [
@@ -17,7 +17,8 @@ const validElements = [
   'label',
 ] as const;
 
-const styles = cva('font-sans', {
+const styles = cva({
+  base: 'font-sans',
   variants: {
     size: {
       small: 'text-sm',

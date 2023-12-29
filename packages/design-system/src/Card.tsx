@@ -1,4 +1,4 @@
-import { cva, VariantProps } from 'class-variance-authority';
+import { VariantProps, cva } from 'cva';
 import { ReactNode } from 'react';
 import { objectKeys } from './utils';
 
@@ -19,7 +19,8 @@ export const getRandomCardVariant = () => {
   return randomKey;
 };
 
-const styles = cva('rounded-4xl p-8 pt-10 w-full', {
+const styles = cva({
+  base: 'rounded-4xl p-8 pt-10 w-full',
   variants: {
     variant: {
       ...colorVariants,

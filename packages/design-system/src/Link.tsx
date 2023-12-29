@@ -1,4 +1,4 @@
-import { cx } from 'class-variance-authority';
+import { cx } from 'cva';
 import { ElementType, ReactNode } from 'react';
 
 interface Props {
