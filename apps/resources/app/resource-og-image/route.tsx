@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+
 import { ContentType } from 'lib/resources';
 import { ImageResponse } from 'next/og';
 import { formatType, getHostname } from '../../lib/utils/utils';
@@ -23,6 +25,7 @@ export const GET = async (request: Request) => {
   const formattedType = formatType(type);
   const category = searchParams.get('category') || '';
   const link = searchParams.get('link') || '';
+  const ogImageLink = searchParams.get('ogImageLink') || '';
 
   return new ImageResponse(
     (
@@ -46,6 +49,7 @@ export const GET = async (request: Request) => {
             height: '100%',
             borderRadius: '64px',
             backgroundColor: getBackgroundColorForType(type),
+            gap: '16px',
           }}
         >
           <div
@@ -101,23 +105,44 @@ export const GET = async (request: Request) => {
               LifeCenteredDesign.Net
             </div>
           </div>
-
-          {/* Title */}
           <div
             style={{
-              fontSize: '64px',
-              lineHeight: '64px',
-              fontFamily: 'Serif',
-              fontWeight: '700',
-              padding: '32px 0',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: '-webkit-box',
-              WebkitBoxOrient: 'vertical',
-              WebkitLineClamp: 3,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
+              flex: '1',
             }}
           >
-            {title}
+            {/* Title */}
+            <div
+              style={{
+                fontSize: '64px',
+                lineHeight: '64px',
+                fontFamily: 'Serif',
+                fontWeight: '700',
+                padding: '32px 0',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 3,
+                flex: '1',
+              }}
+            >
+              {title}
+            </div>
+
+            {/* OG Image */}
+            {ogImageLink && (
+              <img
+                src={ogImageLink}
+                alt=""
+                style={{
+                  maxWidth: '35%',
+                  height: '100%',
+                }}
+              />
+            )}
           </div>
 
           <div

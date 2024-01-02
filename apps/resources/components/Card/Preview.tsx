@@ -1,7 +1,6 @@
 import { query } from 'api/query';
 import { Await } from 'components/Await/Await';
 import { ContentType } from 'lib/resources';
-import { isUrl } from 'lib/utils/utils';
 import Image from 'next/image';
 
 interface Props {
@@ -21,7 +20,7 @@ export const Preview = ({ url, resourceId, resourceType }: Props) => {
     <div className="bg-ghost-main-dark-bg @3xl:w-[300px] @5xl:w-[500px] relative -z-10 aspect-video w-full flex-none">
       <Await promise={promise} loading={<Loading />} error={<Error />}>
         {(ogImageLink) => {
-          if (!isUrl(ogImageLink)) {
+          if (!ogImageLink) {
             return <Error />;
           }
 

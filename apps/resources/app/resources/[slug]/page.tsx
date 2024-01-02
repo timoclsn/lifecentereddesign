@@ -20,6 +20,12 @@ export const generateMetadata = createGenerateMetadata(async ({ params }) => {
     return {};
   }
 
+  const ogImageLink = await query.resources.getOgImageLink({
+    id: resourceId,
+    type: resourceType,
+    url: resource.link || '',
+  });
+
   const title = 'name' in resource ? resource.name : resource.title;
   const description =
     'A resource from LifeCenteredDesign.Net: A curated directory of resources around Life-centered Design and related fields.';
@@ -32,6 +38,9 @@ export const generateMetadata = createGenerateMetadata(async ({ params }) => {
   searchParams.set('type', type);
   searchParams.set('category', category);
   searchParams.set('link', link);
+  if (ogImageLink) {
+    searchParams.set('ogImageLink', ogImageLink);
+  }
 
   return {
     title,
