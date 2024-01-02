@@ -3,6 +3,7 @@ import * as cheerio from 'cheerio';
 import { createQuery } from 'data/clients';
 import { ContentType, Resource, includes, resourceTypes } from 'lib/resources';
 import { withUserCollection } from 'lib/users';
+import { isUrl } from 'lib/utils/utils';
 import 'server-only';
 import { z } from 'zod';
 
@@ -312,6 +313,6 @@ export const getOgImageLink = createQuery({
     const $ = cheerio.load(data);
     const ogImageUrl = $('meta[property="og:image"]').attr('content') || '';
 
-    return ogImageUrl;
+    return isUrl(ogImageUrl) ? ogImageUrl : '';
   },
 });
