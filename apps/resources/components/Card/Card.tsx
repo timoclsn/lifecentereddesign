@@ -195,20 +195,26 @@ export const Card = async ({
 
         {/* Tags */}
         {tags && tags.length > 0 && (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex max-w-full flex-wrap gap-2">
             {tags.map((tag, idx) => (
               <ResourceLink
                 key={idx}
                 href={tag.url}
                 resourceType={resourceType}
                 resourceTitle={title}
+                className="max-w-full"
               >
                 <Tag variant="dark">
-                  <div className="flex items-center gap-1">
-                    {tag.icon && <tag.icon size="18" />}
-                    <span>{tag.text}</span>
+                  <div className="flex max-w-full items-center gap-1">
+                    {tag.icon && <tag.icon size="18" className="flex-none" />}
+                    <span className="flex-1 truncate" title={tag.text}>
+                      {tag.text}
+                    </span>
                     {isExternalUrl(tag.url) && (
-                      <ExternalLink size={16} className="text-text-secondary" />
+                      <ExternalLink
+                        size={16}
+                        className="text-text-secondary flex-none"
+                      />
                     )}
                   </div>
                 </Tag>
