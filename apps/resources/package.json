@@ -50,7 +50,6 @@
     "autoprefixer": "10.4.16",
     "eslint": "8.56.0",
     "eslint-config-custom": "workspace:*",
-    "globby": "14.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "8.4.33",
