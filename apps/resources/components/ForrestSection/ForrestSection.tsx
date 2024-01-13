@@ -15,7 +15,7 @@ export const inputStyles = cva({
 });
 
 export const checkboxStyles = cva({
-  base: 'flex h-[25px] w-[25px] items-center justify-center bg-ghost-main-dark-bg outline-none ring-inset flex-none',
+  base: 'flex size-[25px] items-center justify-center bg-ghost-main-dark-bg outline-none ring-inset flex-none',
   variants: {
     error: {
       true: 'ring-2 ring-red-700',

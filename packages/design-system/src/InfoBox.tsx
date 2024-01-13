@@ -2,7 +2,7 @@ import { VariantProps, cva } from 'cva';
 import { ReactNode } from 'react';
 
 const styles = cva({
-  base: 'px-6 py-4 text-white flex gap-2 [&_svg]:h-[20px] [&_svg]:w-[20px]',
+  base: 'px-6 py-4 text-white flex gap-2 [&_svg]:size-[20px]',
   variants: {
     variant: {
       success: 'bg-green-700',

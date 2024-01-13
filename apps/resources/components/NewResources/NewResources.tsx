@@ -65,7 +65,7 @@ export const NewResources = () => {
                 variant="primary"
                 className="flex h-full items-center justify-center"
               >
-                <div className="text-primary-contrast-text flex items-center justify-center gap-2 [&>svg]:h-[25px] [&>svg]:w-[25px]">
+                <div className="text-primary-contrast-text flex items-center justify-center gap-2 [&>svg]:size-[25px]">
                   <ArrowRight />
                   <Text size="large">All Resources</Text>
                 </div>
