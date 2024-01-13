@@ -48,7 +48,7 @@ export const ShareButton = ({ title, resourceId, resourceType }: Props) => {
         onClick={handleClick}
       >
         <Tag variant="dark">
-          <div className="flex items-center gap-1 [&>svg]:h-[18px] [&>svg]:w-[18px]">
+          <div className="flex items-center gap-1 [&>svg]:size-[18px]">
             {copied ? <Check /> : <Share />}
             <span className="sr-only">{tooltip}</span>
           </div>

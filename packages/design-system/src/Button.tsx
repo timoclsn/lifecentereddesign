@@ -10,9 +10,9 @@ const styles = cva({
       text: null,
     },
     size: {
-      small: 'text-base leading-6 [&>svg]:w-[16px] [&>svg]:h-[16px] px-4 py-2',
-      medium: 'text-base leading-6 [&>svg]:w-[20px] [&>svg]:h-[20px] px-6 py-4',
-      large: 'text-2xlleading-8[&>svg]:w-[25px][&>svg]:h-[25px] px-6 py-4',
+      small: 'text-base leading-6 [&>svg]:size-[16px] px-4 py-2',
+      medium: 'text-base leading-6 [&>svg]:size-[16px] px-6 py-4',
+      large: 'text-xl leading-8 [&>svg]:size-[20px] px-6 py-4',
     },
     color: {
       primary: null,
