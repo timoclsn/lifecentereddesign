@@ -11,8 +11,8 @@ const styles = cva({
     },
     size: {
       small: 'text-base leading-6 [&>svg]:size-[16px] px-4 py-2',
-      medium: 'text-base leading-6 [&>svg]:size-[20px] px-6 py-4',
-      large: 'text-2xl leading-8 [&>svg]:size-[25px] px-6 py-4',
+      medium: 'text-base leading-6 [&>svg]:size-[16px] px-6 py-4',
+      large: 'text-xl leading-8 [&>svg]:size-[20px] px-6 py-4',
     },
     color: {
       primary: null,
