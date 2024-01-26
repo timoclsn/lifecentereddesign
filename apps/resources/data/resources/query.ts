@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio';
 import { createQuery } from 'data/clients';
 import { ContentType, Resource, includes, resourceTypes } from 'lib/resources';
 import { withUserCollection } from 'lib/users';
-import { isUrl } from 'lib/utils/utils';
+import { isUrl, wait } from 'lib/utils/utils';
 import 'server-only';
 import { z } from 'zod';
 
@@ -314,5 +314,28 @@ export const getOgImageLink = createQuery({
     const ogImageUrl = $('meta[property="og:image"]').attr('content') || '';
 
     return isUrl(ogImageUrl) ? ogImageUrl : '';
+  },
+});
+
+export const getResourcesCount = createQuery({
+  cache: {
+    keyParts: ['resources-count'],
+    options: {
+      revalidate: 60,
+      tags: ['resources-count'],
+    },
+  },
+  query: async ({ ctx }) => {
+    const { db } = ctx;
+    await wait(2000);
+
+    const counts = (await Promise.all(
+      resourceTypes.map((type) => {
+        // @ts-expect-error: Dynamic table access doesn't work on type level
+        return db[type].count();
+      }),
+    )) as Array<number>;
+
+    return counts.reduce((acc, curr) => acc + curr, 0);
   },
 });
