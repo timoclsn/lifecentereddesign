@@ -2,8 +2,12 @@ import { Bleed, Button, Heading, Text } from 'design-system';
 import Image from 'next/image';
 import Link from 'next/link';
 import earthImg from './earth.jpg';
+import { query } from 'api/query';
+import { Await } from 'components/Await/Await';
+import { CountUp } from 'components/CountUp/CountUp';
 
 export function Header() {
+  const countPromise = query.resources.getResourcesCount();
   return (
     <section>
       <Heading level="1" className="mb-8 max-w-3xl font-normal">
@@ -17,7 +21,13 @@ export function Header() {
       </Text>
       <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
         <Button as={Link} size="large" href="/resources" variant="contained">
-          Discover resources
+          Discover
+          <Await promise={countPromise} loading={<CountLoading />} error={null}>
+            {(count) => {
+              return <CountUp initalCount={1}>{count}</CountUp>;
+            }}
+          </Await>
+          resources
         </Button>
         <Button
           as={Link}
@@ -47,3 +57,11 @@ export function Header() {
     </section>
   );
 }
+
+const CountLoading = () => {
+  return (
+    <span className="animate-pulse font-mono slashed-zero tabular-nums">
+      000
+    </span>
+  );
+};
