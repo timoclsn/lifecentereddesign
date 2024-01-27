@@ -1,4 +1,5 @@
 import { ClerkProvider } from '@clerk/nextjs';
+import { StorageProvider } from 'components/StorageProvider/StorageProvider';
 import { Container } from 'design-system';
 import 'design-system/src/themes/resources.css';
 import { Metadata } from 'next';
@@ -67,21 +68,23 @@ interface Props {
 const RootLayout = ({ children }: Props) => {
   return (
     <ClerkProvider>
-      <html
-        lang="en"
-        className={`${sans.variable} ${serif.variable} min-h-screen`}
-      >
-        <body className="bg-bg-primary text-text-primary flex min-h-screen flex-col font-sans text-base font-normal">
-          <Header />
-          <main className="flex-1">
-            <Container inset className="space-y-10 sm:space-y-40">
-              {children}
-            </Container>
-          </main>
-          <Footer />
-        </body>
-        <Script data-no-cookie data-api="/_hive" src="/bee.js" />
-      </html>
+      <StorageProvider>
+        <html
+          lang="en"
+          className={`${sans.variable} ${serif.variable} min-h-screen`}
+        >
+          <body className="bg-bg-primary text-text-primary flex min-h-screen flex-col font-sans text-base font-normal">
+            <Header />
+            <main className="flex-1">
+              <Container inset className="space-y-10 sm:space-y-40">
+                {children}
+              </Container>
+            </main>
+            <Footer />
+          </body>
+          <Script data-no-cookie data-api="/_hive" src="/bee.js" />
+        </html>
+      </StorageProvider>
     </ClerkProvider>
   );
 };

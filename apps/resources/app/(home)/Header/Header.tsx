@@ -1,10 +1,12 @@
+import { query } from 'api/query';
+import { Await } from 'components/Await/Await';
+import { cx } from 'cva';
 import { Bleed, Button, Heading, Text } from 'design-system';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ResourcesCount } from './ResourcesCount';
 import earthImg from './earth.jpg';
-import { query } from 'api/query';
-import { Await } from 'components/Await/Await';
-import { CountUp } from 'components/CountUp/CountUp';
+import { countStyles } from './utils';
 
 export function Header() {
   const countPromise = query.resources.getResourcesCount();
@@ -24,7 +26,7 @@ export function Header() {
           Discover
           <Await promise={countPromise} loading={<CountLoading />} error={null}>
             {(count) => {
-              return <CountUp initalCount={1}>{count}</CountUp>;
+              return <ResourcesCount>{count}</ResourcesCount>;
             }}
           </Await>
           resources
@@ -59,9 +61,5 @@ export function Header() {
 }
 
 const CountLoading = () => {
-  return (
-    <span className="animate-pulse font-mono slashed-zero tabular-nums">
-      000
-    </span>
-  );
+  return <span className={cx(countStyles, 'animate-pulse')}>000</span>;
 };

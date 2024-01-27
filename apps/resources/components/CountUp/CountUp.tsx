@@ -1,22 +1,24 @@
 'use client';
 
-import { cx } from 'cva';
 import { useCountUp } from 'hooks/useCountUp';
 
 interface Props {
-  initalCount?: number;
   children: number;
+  initalCount?: number;
+  onCountUpFinished?: () => void;
   className?: string;
 }
 
-export const CountUp = ({ children, initalCount = 0, className }: Props) => {
+export const CountUp = ({
+  children,
+  initalCount = 0,
+  onCountUpFinished,
+  className,
+}: Props) => {
   const count = useCountUp({
     initalCount,
     finalCount: children,
+    onCountUpFinished,
   });
-  return (
-    <span className={cx('font-mono slashed-zero tabular-nums', className)}>
-      {count}
-    </span>
-  );
+  return <span className={className}>{count}</span>;
 };
