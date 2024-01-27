@@ -1,3 +1,5 @@
+import { ClerkProvider } from '@clerk/nextjs';
+import { StorageProvider } from 'components/StorageProvider/StorageProvider';
 import { Container } from 'design-system';
 import 'design-system/src/themes/resources.css';
 import { Metadata } from 'next';
@@ -10,7 +12,6 @@ import { description, title } from '../lib/metadata';
 import '../lib/polyfills';
 import { getBaseUrl } from '../lib/utils/utils';
 import '../styles/globals.css';
-import { Providers } from './Providers';
 
 const sans = DM_Sans({
   weight: ['400', '700'],
@@ -66,23 +67,25 @@ interface Props {
 
 const RootLayout = ({ children }: Props) => {
   return (
-    <Providers>
-      <html
-        lang="en"
-        className={`${sans.variable} ${serif.variable} min-h-screen`}
-      >
-        <body className="bg-bg-primary text-text-primary flex min-h-screen flex-col font-sans text-base font-normal">
-          <Header />
-          <main className="flex-1">
-            <Container inset className="space-y-10 sm:space-y-40">
-              {children}
-            </Container>
-          </main>
-          <Footer />
-        </body>
-        <Script data-no-cookie data-api="/_hive" src="/bee.js" />
-      </html>
-    </Providers>
+    <ClerkProvider>
+      <StorageProvider>
+        <html
+          lang="en"
+          className={`${sans.variable} ${serif.variable} min-h-screen`}
+        >
+          <body className="bg-bg-primary text-text-primary flex min-h-screen flex-col font-sans text-base font-normal">
+            <Header />
+            <main className="flex-1">
+              <Container inset className="space-y-10 sm:space-y-40">
+                {children}
+              </Container>
+            </main>
+            <Footer />
+          </body>
+          <Script data-no-cookie data-api="/_hive" src="/bee.js" />
+        </html>
+      </StorageProvider>
+    </ClerkProvider>
   );
 };
 
