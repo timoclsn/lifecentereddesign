@@ -1,4 +1,3 @@
-import { ClerkProvider } from '@clerk/nextjs';
 import { Container } from 'design-system';
 import 'design-system/src/themes/resources.css';
 import { Metadata } from 'next';
@@ -11,6 +10,7 @@ import { description, title } from '../lib/metadata';
 import '../lib/polyfills';
 import { getBaseUrl } from '../lib/utils/utils';
 import '../styles/globals.css';
+import { Providers } from './Providers';
 
 const sans = DM_Sans({
   weight: ['400', '700'],
@@ -66,7 +66,7 @@ interface Props {
 
 const RootLayout = ({ children }: Props) => {
   return (
-    <ClerkProvider>
+    <Providers>
       <html
         lang="en"
         className={`${sans.variable} ${serif.variable} min-h-screen`}
@@ -82,7 +82,7 @@ const RootLayout = ({ children }: Props) => {
         </body>
         <Script data-no-cookie data-api="/_hive" src="/bee.js" />
       </html>
-    </ClerkProvider>
+    </Providers>
   );
 };
 

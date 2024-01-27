@@ -1,18 +1,27 @@
 import { useEffect, useState } from 'react';
 
-interface Arguments {
+const DURATION = 3000; // 3s
+
+interface Options {
   initalCount: number;
   finalCount: number;
-  speed?: number;
+  onCountUpFinished?: () => void;
 }
 
 export const useCountUp = ({
   initalCount,
   finalCount,
-  speed = 15,
-}: Arguments) => {
+  onCountUpFinished,
+}: Options) => {
   const [count, setCount] = useState(initalCount);
   const maxLength = finalCount.toString().length;
+  const speed = DURATION / (finalCount - initalCount);
+
+  useEffect(() => {
+    if (count === finalCount) {
+      onCountUpFinished?.();
+    }
+  }, [count, finalCount, onCountUpFinished]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -25,8 +34,9 @@ export const useCountUp = ({
         }
       });
     }, speed);
+
     return () => clearInterval(interval);
-  }, [finalCount, speed]);
+  }, [finalCount, onCountUpFinished, speed]);
 
   return count.toString().padStart(maxLength, '0');
 };
