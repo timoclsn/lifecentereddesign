@@ -20,9 +20,7 @@ const StorageContext = createContext<State | null>(null);
 export const useStorage = () => {
   const context = useContext(StorageContext);
   if (!context) {
-    throw new Error(
-      'useGlobalStorage must be used within a GlobalStorageProvider',
-    );
+    throw new Error('useStorage must be used within a StorageProvider');
   }
   return context;
 };
