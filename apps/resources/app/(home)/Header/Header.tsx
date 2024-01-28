@@ -1,15 +1,10 @@
-import { query } from 'api/query';
-import { Await } from 'components/Await/Await';
-import { cx } from 'cva';
 import { Bleed, Button, Heading, Text } from 'design-system';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ResourcesCount } from './ResourcesCount';
+import { ResourcesCount } from './ResourcesCount/ResourcesCount';
 import earthImg from './earth.jpg';
-import { countStyles } from './utils';
 
 export function Header() {
-  const countPromise = query.resources.getResourcesCount();
   return (
     <section>
       <Heading level="1" className="mb-8 max-w-3xl font-normal">
@@ -23,13 +18,7 @@ export function Header() {
       </Text>
       <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
         <Button as={Link} size="large" href="/resources" variant="contained">
-          Discover
-          <Await promise={countPromise} loading={<CountLoading />} error={null}>
-            {(count) => {
-              return <ResourcesCount>{count}</ResourcesCount>;
-            }}
-          </Await>
-          resources
+          Discover <ResourcesCount /> resources
         </Button>
         <Button
           as={Link}
@@ -59,7 +48,3 @@ export function Header() {
     </section>
   );
 }
-
-const CountLoading = () => {
-  return <span className={cx(countStyles, 'animate-pulse')}>000</span>;
-};

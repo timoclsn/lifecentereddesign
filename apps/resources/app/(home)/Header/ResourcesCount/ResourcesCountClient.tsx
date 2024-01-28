@@ -8,7 +8,7 @@ interface Props {
   children: number;
 }
 
-export const ResourcesCount = ({ children }: Props) => {
+export const ResourcesCountClient = ({ children }: Props) => {
   const {
     store: { resourcesCountFinished },
     setStorageValue,
