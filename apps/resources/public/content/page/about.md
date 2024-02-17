@@ -11,6 +11,6 @@ Since Life-centered Design is an evolving field, information about it is still r
 
 And now it is finally here and with other projects like the Life-centered Design Collective, I really hope I can help spread the word about Life-centered Design and also help evolve its principles and philosophy.
 
-So feel free to dive into the [resources](/#resources) around Life-centered Design and all the related fields and topics! And if you want to get all the new links delivered to your inbox once a month, please sign up for the Newsletter [here](/#newsletter).
+So feel free to dive into the [resources](/resources) around Life-centered Design and all the related fields and topics! And if you want to get all the new links delivered to your inbox once a month, please sign up for the Newsletter [here](/#newsletter).
 
 💚 Katha
