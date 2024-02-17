@@ -1,4 +1,4 @@
-import { allPages } from 'contentlayer/generated';
+import { query } from 'api/query';
 import { Heading } from 'design-system';
 import { Metadata } from 'next';
 
@@ -6,17 +6,14 @@ export const metadata: Metadata = {
   title: 'Imprint',
 };
 
-const ImprintPage = () => {
-  const content = allPages.find((page) => page.title === 'Imprint');
+const ImprintPage = async () => {
+  const page = await query.content.getPage('imprint');
   return (
     <section className="mx-auto max-w-prose space-y-20">
       <Heading level="1" className="mb-6">
-        {content?.title}
+        {page.title}
       </Heading>
-      <div
-        className="prose"
-        dangerouslySetInnerHTML={{ __html: content?.body.html ?? '' }}
-      />
+      <div className="prose">{page.body}</div>
     </section>
   );
 };
