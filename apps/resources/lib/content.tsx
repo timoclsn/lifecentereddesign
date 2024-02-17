@@ -32,8 +32,7 @@ export const getContent = async (options: Options) => {
     source: file,
     components: {
       a: ({ children, href }) => {
-        if (!href) return null;
-        return <Link href={href}>{children}</Link>;
+        return <Link href={href ?? ''}>{children}</Link>;
       },
     },
     options: { parseFrontmatter: true },
