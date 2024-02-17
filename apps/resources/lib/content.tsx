@@ -17,9 +17,7 @@ interface Options {
   name: string;
 }
 
-export const getContent = async (options: Options) => {
-  const { type, name } = options;
-
+export const getContent = async ({ type, name }: Options) => {
   const filePath = path.join(
     process.cwd(),
     'public',
