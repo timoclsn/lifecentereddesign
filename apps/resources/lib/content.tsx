@@ -1,9 +1,8 @@
 import { readFile } from 'fs/promises';
 import { compileMDX } from 'next-mdx-remote/rsc';
-import { z } from 'zod';
-import path from 'path';
 import Link from 'next/link';
-import { HTMLProps } from 'react';
+import path from 'path';
+import { z } from 'zod';
 
 const frontmatteSchemas = {
   page: z.object({
@@ -32,7 +31,7 @@ export const getContent = async (options: Options) => {
   const { content, frontmatter } = await compileMDX({
     source: file,
     components: {
-      a: ({ children, href }: HTMLProps<HTMLAnchorElement>) => {
+      a: ({ children, href }) => {
         if (!href) return null;
         return <Link href={href}>{children}</Link>;
       },
