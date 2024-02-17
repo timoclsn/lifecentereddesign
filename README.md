@@ -15,5 +15,4 @@ Visit on: https://lifecentereddesign.net
 - [Zod](https://github.com/colinhacks/zod)
 - [React Hook Form](https://react-hook-form.com/)
 - [Prisma](https://www.prisma.io/)
-- [Contentlayer](https://www.contentlayer.dev/)
 - [Vercel](https://vercel.com/)

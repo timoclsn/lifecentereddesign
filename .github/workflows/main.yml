@@ -59,10 +59,6 @@ jobs:
         working-directory: ./packages/database
         run: pnpm db:generate
 
-      - name: Generate content types
-        working-directory: ./apps/resources
-        run: pnpm content
-
       - name: Type check
         run: pnpm typecheck
 
@@ -93,10 +89,6 @@ jobs:
       - name: Generate prisma type
         working-directory: ./packages/database
         run: pnpm db:generate
-
-      - name: Generate content types
-        working-directory: ./apps/resources
-        run: pnpm content
 
       - name: Test
         run: pnpm test
