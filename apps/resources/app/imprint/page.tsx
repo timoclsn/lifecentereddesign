@@ -7,13 +7,13 @@ export const metadata: Metadata = {
 };
 
 const ImprintPage = async () => {
-  const page = await query.content.getPage('imprint');
+  const { data, content } = await query.content.getPage('imprint');
   return (
     <section className="mx-auto max-w-prose space-y-20">
       <Heading level="1" className="mb-6">
-        {page.title}
+        {data.title}
       </Heading>
-      <div className="prose">{page.body}</div>
+      <div className="prose">{content}</div>
     </section>
   );
 };
