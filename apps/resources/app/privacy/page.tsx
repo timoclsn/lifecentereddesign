@@ -7,13 +7,13 @@ export const metadata: Metadata = {
 };
 
 const PrivacyPage = async () => {
-  const page = await query.content.getPage('privacy');
+  const { data, content } = await query.content.getPage('privacy');
   return (
     <section className="mx-auto max-w-prose space-y-20">
       <Heading level="1" className="mb-6">
-        {page.title}
+        {data.title}
       </Heading>
-      <div className="prose">{page.body}</div>
+      <div className="prose">{content}</div>
     </section>
   );
 };

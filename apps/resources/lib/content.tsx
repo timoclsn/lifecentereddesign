@@ -1,4 +1,4 @@
-import { readFile } from 'fs/promises';
+import { readFile, readdir } from 'fs/promises';
 import { compileMDX } from 'next-mdx-remote/rsc';
 import Link from 'next/link';
 import path from 'path';
@@ -12,12 +12,12 @@ const frontmatteSchemas = {
 
 type ContentType = keyof typeof frontmatteSchemas;
 
-interface Options {
-  type: ContentType;
+export const getContent = async <Type extends ContentType>(options: {
+  type: Type;
   name: string;
-}
+}) => {
+  const { type, name } = options;
 
-export const getContent = async ({ type, name }: Options) => {
   const filePath = path.join(
     process.cwd(),
     'public',
@@ -26,6 +26,7 @@ export const getContent = async ({ type, name }: Options) => {
     `${name}.md`,
   );
   const file = await readFile(filePath, 'utf8');
+
   const { content, frontmatter } = await compileMDX({
     source: file,
     components: {
@@ -36,7 +37,26 @@ export const getContent = async ({ type, name }: Options) => {
     options: { parseFrontmatter: true },
   });
 
-  const parsedFrontmatter = frontmatteSchemas[type].parse(frontmatter);
+  const parsedFrontmatter = frontmatteSchemas[type].parse(
+    frontmatter,
+  ) as z.output<(typeof frontmatteSchemas)[Type]>;
 
-  return { ...parsedFrontmatter, body: content };
+  return {
+    name,
+    data: parsedFrontmatter,
+    content,
+    raw: file,
+  };
+};
+
+export const getAllContent = async <Type extends ContentType>(type: Type) => {
+  const dirPath = path.join(process.cwd(), 'public', 'content', type);
+  const fileNames = await readdir(dirPath);
+
+  return await Promise.all(
+    fileNames.map(async (fileName) => {
+      const name = fileName.replace(/\.md$/, '');
+      return await getContent({ type, name });
+    }),
+  );
 };
