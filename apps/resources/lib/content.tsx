@@ -5,7 +5,7 @@ import path from 'path';
 import { cache } from 'react';
 import { z } from 'zod';
 
-const CONTENT_PATH = ['public', 'content'] as const;
+const CONTENT_PATH = ['content'] as const;
 const FILE_EXTENSIONS = ['.md', '.mdx'] as const;
 
 const frontmatterSchemas = {
