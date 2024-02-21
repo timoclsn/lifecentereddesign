@@ -6,6 +6,6 @@ import { z } from 'zod';
 export const getPage = createQuery({
   input: z.enum(['imprint', 'privacy', 'about']),
   query: async ({ input }) => {
-    return await getContent({ type: 'page', name: input });
+    return await getContent('page', input);
   },
 });

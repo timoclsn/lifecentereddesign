@@ -2,31 +2,53 @@ import { readFile, readdir } from 'fs/promises';
 import { compileMDX } from 'next-mdx-remote/rsc';
 import Link from 'next/link';
 import path from 'path';
+import { cache } from 'react';
 import { z } from 'zod';
 
-const frontmatteSchemas = {
+const CONTENT_PATH = ['public', 'content'] as const;
+const FILE_EXTENSIONS = ['.md', '.mdx'] as const;
+
+const frontmatterSchemas = {
   page: z.object({
     title: z.string(),
   }),
 };
 
-type ContentType = keyof typeof frontmatteSchemas;
+type ContentType = keyof typeof frontmatterSchemas;
 
-export const getContent = async <Type extends ContentType>(options: {
-  type: Type;
-  name: string;
-}) => {
-  const { type, name } = options;
+/**
+ * Retrieves content of a specific type and name.
+ * @param type The type of content.
+ * @param name The name of the content.
+ * @returns An object containing the name, parsed frontmatter, content, and raw file data.
+ * @throws Error if no content file is found for the specified type and name.
+ */
 
+const getContent = async <Type extends ContentType>(
+  type: Type,
+  name: string,
+) => {
+  const dirName = name;
+
+  // Get file name for content file
+  const dirPath = path.join(process.cwd(), ...CONTENT_PATH, type, dirName);
+  const fileNames = await readdir(dirPath);
+  const fileName = fileNames.find((name) =>
+    FILE_EXTENSIONS.some((extention) => path.extname(name) === extention),
+  );
+  if (!fileName) {
+    throw new Error(`No content file found for ${type}/${dirName}`);
+  }
+
+  // Read file and compile MDX
   const filePath = path.join(
     process.cwd(),
-    'public',
-    'content',
+    ...CONTENT_PATH,
     type,
-    `${name}.md`,
+    dirName,
+    fileName,
   );
   const file = await readFile(filePath, 'utf8');
-
   const { content, frontmatter } = await compileMDX({
     source: file,
     components: {
@@ -37,26 +59,39 @@ export const getContent = async <Type extends ContentType>(options: {
     options: { parseFrontmatter: true },
   });
 
-  const parsedFrontmatter = frontmatteSchemas[type].parse(
+  // Parse frontmatter
+  const parsedFrontmatter = frontmatterSchemas[type].parse(
     frontmatter,
-  ) as z.output<(typeof frontmatteSchemas)[Type]>;
+  ) as z.output<(typeof frontmatterSchemas)[Type]>;
 
   return {
-    name,
+    name: dirName,
     data: parsedFrontmatter,
     content,
     raw: file,
   };
 };
 
-export const getAllContent = async <Type extends ContentType>(type: Type) => {
-  const dirPath = path.join(process.cwd(), 'public', 'content', type);
-  const fileNames = await readdir(dirPath);
+/**
+ * Retrieves all content of a specific type.
+ *
+ * @param type The type of content to retrieve.
+ * @returns A promise that resolves to an array of content items.
+ */
+
+const getAllContent = async <Type extends ContentType>(type: Type) => {
+  // Get content names
+  const dirPath = path.join(process.cwd(), ...CONTENT_PATH, type);
+  const dirNames = await readdir(dirPath);
 
   return await Promise.all(
-    fileNames.map(async (fileName) => {
-      const name = fileName.replace(/\.md$/, '');
-      return await getContent({ type, name });
+    dirNames.map(async (name) => {
+      return await getContent(type, name);
     }),
   );
 };
+
+const getContentCached = cache(getContent);
+const getAllContentCached = cache(getAllContent);
+
+export { getAllContentCached as getAllContent, getContentCached as getContent };
