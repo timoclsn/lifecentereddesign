@@ -8,6 +8,8 @@ import nodemailer from 'nodemailer';
 import { z } from 'zod';
 import { resourceCommentsTag, resourceLikesTag } from './query';
 
+const { SUGGESTION_MAIL_PASSWORD } = process.env;
+
 export const like = createAction({
   input: z.object({
     id: z.number(),
@@ -123,10 +125,6 @@ export const deleteComment = createProtectedAction({
     revalidateTag(tag);
   },
 });
-
-const SUGGESTION_MAIL_PASSWORD = z
-  .string()
-  .parse(process.env.SUGGESTION_MAIL_PASSWORD);
 
 export const suggest = createAction({
   input: z.object({

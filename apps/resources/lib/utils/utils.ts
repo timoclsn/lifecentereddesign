@@ -2,6 +2,8 @@ import { format } from 'date-fns';
 import { ContentType } from 'lib/resources';
 import { z } from 'zod';
 
+const { NEXT_PUBLIC_VERCEL_ENV, NEXT_PUBLIC_VERCEL_URL, PORT } = process.env;
+
 /**
  * Returns the hostname of a given URL.
  * @param url - The URL to extract the hostname from.
@@ -43,13 +45,13 @@ export const formateDate = (date: Date | string) =>
  * @returns {string} The base URL.
  */
 export const getBaseUrl = () => {
-  if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+  if (NEXT_PUBLIC_VERCEL_ENV === 'production') {
     return `https://lifecentereddesign.net`;
   }
-  if (process.env.NEXT_PUBLIC_VERCEL_URL) {
-    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+  if (NEXT_PUBLIC_VERCEL_URL) {
+    return `https://${NEXT_PUBLIC_VERCEL_URL}`;
   }
-  return `http://localhost:${process.env.PORT ?? 3000}`;
+  return `http://localhost:${PORT ?? 3000}`;
 };
 
 /**
