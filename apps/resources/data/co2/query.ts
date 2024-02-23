@@ -1,6 +1,8 @@
 import { createQuery } from 'data/clients';
 import { z } from 'zod';
 
+const { NODE_ENV } = process.env;
+
 const wccSchema = z.object({
   url: z.string().url(),
   green: z.union([z.boolean(), z.string()]),
@@ -37,7 +39,7 @@ export const getConsumtion = createQuery({
   query: async ({ input }) => {
     const { url } = input;
 
-    if (process.env.NODE_ENV === 'development') {
+    if (NODE_ENV === 'development') {
       return {
         co2: 0.14,
         cleanerThan: 86,

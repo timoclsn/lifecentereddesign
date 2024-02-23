@@ -4,21 +4,14 @@ import { createAction } from 'data/clients';
 import { getErrorMessage } from 'lib/data/utils';
 import { z } from 'zod';
 
-const envSchema = z.object({
-  MAILCHIMP_API_KEY: z.string(),
-  MAILCHIMP_API_SERVER: z.string(),
-  MAILCHIMP_AUDIENCE_ID: z.string(),
-  MAILCHIMP_MARKETING_PERMISSION_ID: z.string(),
-});
-
 const {
-  MAILCHIMP_API_KEY: apiKey,
-  MAILCHIMP_API_SERVER: apiServer,
-  MAILCHIMP_AUDIENCE_ID: audienceId,
-  MAILCHIMP_MARKETING_PERMISSION_ID: marketingPermissionId,
-} = envSchema.parse(process.env);
+  MAILCHIMP_API_KEY,
+  MAILCHIMP_API_SERVER,
+  MAILCHIMP_AUDIENCE_ID,
+  MAILCHIMP_MARKETING_PERMISSION_ID,
+} = process.env;
 
-const url = `https://${apiServer}.api.mailchimp.com/3.0/lists/${audienceId}/members`;
+const url = `https://${MAILCHIMP_API_SERVER}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}/members`;
 
 const apiErrorSchema = z.object({
   title: z.string(),
@@ -44,7 +37,7 @@ export const subscribe = createAction({
       status: 'pending',
       marketing_permissions: [
         {
-          marketing_permission_id: marketingPermissionId,
+          marketing_permission_id: MAILCHIMP_MARKETING_PERMISSION_ID,
           enabled: consens,
         },
       ],
@@ -55,7 +48,7 @@ export const subscribe = createAction({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `api_key ${apiKey}`,
+          Authorization: `api_key ${MAILCHIMP_API_KEY}`,
         },
         body: JSON.stringify(data),
       });

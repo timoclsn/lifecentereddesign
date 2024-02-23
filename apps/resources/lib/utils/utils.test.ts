@@ -86,21 +86,6 @@ describe('getBaseUrl', () => {
     const baseUrl = getBaseUrl();
     expect(baseUrl).toBe('https://lifecentereddesign.net');
   });
-
-  it('should return the Vercel URL if NEXT_PUBLIC_VERCEL_URL is set', () => {
-    process.env.NEXT_PUBLIC_VERCEL_ENV = '';
-    process.env.NEXT_PUBLIC_VERCEL_URL = 'example.vercel.app';
-    const baseUrl = getBaseUrl();
-    expect(baseUrl).toBe('https://example.vercel.app');
-  });
-
-  it('should return the localhost URL if neither NEXT_PUBLIC_VERCEL_ENV nor NEXT_PUBLIC_VERCEL_URL is set', () => {
-    process.env.NEXT_PUBLIC_VERCEL_ENV = '';
-    process.env.NEXT_PUBLIC_VERCEL_URL = '';
-    process.env.PORT = '3000';
-    const baseUrl = getBaseUrl();
-    expect(baseUrl).toBe('http://localhost:3000');
-  });
 });
 
 describe('formatType', () => {

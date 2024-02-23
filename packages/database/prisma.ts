@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
 
-const env = z.string().parse(process.env.NODE_ENV);
+const { NODE_ENV } = process.env;
 
 const prismaGlobal = global as typeof global & {
   prisma?: PrismaClient;
@@ -9,6 +9,6 @@ const prismaGlobal = global as typeof global & {
 
 export const prisma: PrismaClient = prismaGlobal.prisma || new PrismaClient();
 
-if (env !== 'production') {
+if (NODE_ENV !== 'production') {
   prismaGlobal.prisma = prisma;
 }

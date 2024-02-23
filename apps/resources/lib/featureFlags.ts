@@ -2,16 +2,10 @@ import { getAll } from '@vercel/edge-config';
 import { cache } from 'react';
 import { z } from 'zod';
 
-const projectKey = 'lcdNet';
-const nodeEnv = z
-  .enum(['development', 'production'])
-  .parse(process.env.NODE_ENV);
-const vercelEnv = z
-  .enum(['development', 'preview', 'production'])
-  .optional()
-  .parse(process.env.VERCEL_ENV);
+const { NEXT_PUBLIC_VERCEL_ENV, NODE_ENV } = process.env;
 
-const env = vercelEnv || nodeEnv;
+const projectKey = 'lcdNet';
+const ENV = NEXT_PUBLIC_VERCEL_ENV || NODE_ENV;
 
 const flagsSchema = z.object({
   lcdNet: z.object({
@@ -30,5 +24,6 @@ const flagsSchema = z.object({
 export const featureFlags = cache(async () => {
   const flags = await getAll();
   const parsedFlags = flagsSchema.parse(flags);
+  const env = ENV === 'test' ? 'development' : ENV;
   return parsedFlags[projectKey][env];
 });
