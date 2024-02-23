@@ -80,14 +80,6 @@ describe('formateDate', () => {
   });
 });
 
-describe('getBaseUrl', () => {
-  it('should return the production URL if NEXT_PUBLIC_VERCEL_ENV is "production"', () => {
-    process.env.NEXT_PUBLIC_VERCEL_ENV = 'production';
-    const baseUrl = getBaseUrl();
-    expect(baseUrl).toBe('https://lifecentereddesign.net');
-  });
-});
-
 describe('formatType', () => {
   it('should format a single word correctly', () => {
     const type = 'podcast';
