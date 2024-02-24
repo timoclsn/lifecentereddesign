@@ -1,19 +1,34 @@
 import { z } from 'zod';
 
+const envVarSchema = z.string().min(1);
+
 const envSchema = z.object({
-  PORT: z.string().min(1).optional(),
-  MAILCHIMP_API_KEY: z.string().min(1),
-  MAILCHIMP_API_SERVER: z.string().min(1),
-  MAILCHIMP_AUDIENCE_ID: z.string().min(1),
-  MAILCHIMP_MARKETING_PERMISSION_ID: z.string().min(1),
-  SUGGESTION_MAIL_PASSWORD: z.string().min(1),
-  NEXT_PUBLIC_VERCEL_ENV: z.enum(['preview', 'production']).optional(),
+  // Server
+
+  // Node.js
+  PORT: envVarSchema.optional(),
+
+  // Mailchimp
+  MAILCHIMP_API_KEY: envVarSchema,
+  MAILCHIMP_API_SERVER: envVarSchema,
+  MAILCHIMP_AUDIENCE_ID: envVarSchema,
+  MAILCHIMP_MARKETING_PERMISSION_ID: envVarSchema,
+
+  // Mail
+  SUGGESTION_MAIL_PASSWORD: envVarSchema,
+
+  // Client
+
+  // Vercel
+  NEXT_PUBLIC_VERCEL_ENV: z
+    .enum(['production', 'preview', 'development'])
+    .optional(),
 });
 
 envSchema.parse(process.env);
 
 declare global {
   namespace NodeJS {
-    interface ProcessEnv extends z.infer<typeof envSchema> {}
+    interface ProcessEnv extends z.input<typeof envSchema> {}
   }
 }
