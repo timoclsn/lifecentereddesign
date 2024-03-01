@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs/server';
 import { prisma } from 'database';
 import { createActionClient, createQueryClient } from '../lib/data/server';
 

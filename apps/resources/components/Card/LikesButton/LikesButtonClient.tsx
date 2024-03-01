@@ -8,7 +8,7 @@ import { useAction } from 'lib/data/client';
 import { ContentType } from 'lib/resources';
 import { track } from 'lib/tracking';
 import { Heart } from 'lucide-react';
-import { useOptimistic } from 'react';
+import { useOptimistic, useTransition } from 'react';
 import { SolidHeart } from '../../Icons/SolidHeart';
 
 const heartVariants = cva({
@@ -39,15 +39,10 @@ export const LikesButtonClient = ({
   liked,
 }: Props) => {
   const { isSignedIn } = useAuth();
+  let [, startTransition] = useTransition();
   const { runAction: runLikeAction, isRunning: isLikeRunning } = useAction(
     action.resources.like,
     {
-      onRunAction: () => {
-        updateOptimisticCount(optimisticCount + 1);
-        if (isSignedIn) {
-          updateOptimisticLiked(true);
-        }
-      },
       onSuccess: () => {
         track('Like resource', {
           type: resourceType,
@@ -59,12 +54,6 @@ export const LikesButtonClient = ({
   const { runAction: runUnLikeAction, isRunning: isUnLikeRunning } = useAction(
     action.resources.unLike,
     {
-      onRunAction: () => {
-        updateOptimisticCount(optimisticCount - 1);
-        if (isSignedIn) {
-          updateOptimisticLiked(false);
-        }
-      },
       onSuccess: () => {
         track('Un-like resource', {
           type: resourceType,
@@ -75,27 +64,33 @@ export const LikesButtonClient = ({
   );
   const isRunning = isLikeRunning || isUnLikeRunning;
 
-  const [optimisticCount, updateOptimisticCount] = useOptimistic(
-    count,
-    (_, newState) => newState as number,
-  );
-  const [optimisticLiked, updateOptimisticLiked] = useOptimistic(
-    liked,
-    (_, newState) => newState as boolean,
-  );
+  const [optimisticCount, setOptimisticCount] = useOptimistic(count);
+  const [optimisticLiked, setOptimisticLiked] = useOptimistic(liked);
 
   const handleClick = async () => {
-    if (liked) {
-      await runUnLikeAction({
-        id: resourceId,
-        type: resourceType,
-      });
-    } else {
-      await runLikeAction({
-        id: resourceId,
-        type: resourceType,
-      });
-    }
+    startTransition(async () => {
+      if (liked) {
+        // Un-like
+        setOptimisticCount(optimisticCount - 1);
+        if (isSignedIn) {
+          setOptimisticLiked(false);
+        }
+        await runUnLikeAction({
+          id: resourceId,
+          type: resourceType,
+        });
+      } else {
+        // Like
+        setOptimisticCount(optimisticCount + 1);
+        if (isSignedIn) {
+          setOptimisticLiked(true);
+        }
+        await runLikeAction({
+          id: resourceId,
+          type: resourceType,
+        });
+      }
+    });
   };
   return (
     <button

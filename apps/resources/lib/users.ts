@@ -1,4 +1,4 @@
-import { clerkClient } from '@clerk/nextjs';
+import { clerkClient } from '@clerk/nextjs/server';
 import { User } from '@clerk/nextjs/dist/types/server';
 
 interface Data {
@@ -19,7 +19,7 @@ export const withUser = async <TData extends Data>(data: TData) => {
     userId: [data.userId],
   });
 
-  const user = users.find((user) => user.id === data.userId);
+  const user = users.data.find((user) => user.id === data.userId);
 
   if (!user) {
     console.error(`User (${data.userId}) not found`);
@@ -40,7 +40,7 @@ export const withUserCollection = async <TData extends Data>(
   });
 
   return data.map((element) => {
-    const user = users.find((user) => user.id === element.userId);
+    const user = users.data.find((user) => user.id === element.userId);
 
     if (!user) {
       console.error(`User (${element.userId}) not found`);

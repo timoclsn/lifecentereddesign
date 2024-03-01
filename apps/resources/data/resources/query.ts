@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs/server';
 import * as cheerio from 'cheerio';
 import { createQuery } from 'data/clients';
 import { ContentType, Resource, includes, resourceTypes } from 'lib/resources';
