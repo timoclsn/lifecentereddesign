@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs/server';
 import { Card, InfoBox, getRandomCardVariant } from 'design-system';
 import { AlertTriangle } from 'lucide-react';
 import { Await } from '../../../../components/Await/Await';

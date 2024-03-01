@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs/server';
 import { query } from 'api/query';
 import { Resources } from 'app/resources/Resources/Resources';
 import { Await } from 'components/Await/Await';

@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs/server';
 import { ContentType } from 'lib/resources';
 import { formatDistance, parseISO } from 'date-fns';
 import { Heading, Text } from 'design-system';

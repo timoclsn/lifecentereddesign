@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs/server';
 import { query } from 'api/query';
 import { Await } from 'components/Await/Await';
 import { AddCollectionDialog } from 'components/Collections/AddCollectionDialog/AddCollectionDialog';

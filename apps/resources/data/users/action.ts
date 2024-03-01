@@ -1,6 +1,6 @@
 'use server';
 
-import { clerkClient } from '@clerk/nextjs';
+import { clerkClient } from '@clerk/nextjs/server';
 import { createProtectedAction } from 'data/clients';
 import { revalidatePath } from 'next/cache';
 

@@ -1,6 +1,6 @@
 'use server';
 
-import { auth } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs/server';
 import { createAction, createProtectedAction } from 'data/clients';
 import { resourceTypes } from 'lib/resources';
 import { revalidateTag } from 'next/cache';
