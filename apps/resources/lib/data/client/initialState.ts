@@ -1,9 +1,8 @@
-import { FormActionResult } from "../types";
+import { Result } from '../types';
 
-// Use FormActionResult because it is the more restricted type
-export const initalState: FormActionResult<any, any> = {
-  status: "initial",
-  id: "",
+export const initalState: Result<any, any> = {
+  status: 'initial',
+  id: '',
   data: null,
   error: null,
   validationErrors: null,
