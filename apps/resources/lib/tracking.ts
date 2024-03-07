@@ -1,6 +1,7 @@
 import { ContentType } from 'lib/resources';
 
-const { NEXT_PUBLIC_VERCEL_ENV, NODE_ENV } = process.env;
+const NEXT_PUBLIC_VERCEL_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV;
+const NODE_ENV = process.env.NODE_ENV;
 
 export interface TrackingEvents {
   'Download Resources': null;

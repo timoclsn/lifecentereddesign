@@ -2,7 +2,9 @@ import { format } from 'date-fns';
 import { ContentType } from 'lib/resources';
 import { z } from 'zod';
 
-const { NEXT_PUBLIC_VERCEL_ENV, NEXT_PUBLIC_VERCEL_URL, PORT } = process.env;
+const NEXT_PUBLIC_VERCEL_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV;
+const NEXT_PUBLIC_VERCEL_URL = process.env.NEXT_PUBLIC_VERCEL_URL;
+const PORT = process.env.PORT;
 
 /**
  * Returns the hostname of a given URL.
