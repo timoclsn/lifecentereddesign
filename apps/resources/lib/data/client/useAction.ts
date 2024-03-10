@@ -1,25 +1,25 @@
-import { useCallback, useReducer, useTransition } from "react";
-import { z } from "zod";
+import { useCallback, useReducer, useTransition } from 'react';
+import { z } from 'zod';
 import {
   InferInputArgs,
   InferValidationErrors,
   Result,
   ServerAction,
-} from "../types";
-import { initalState } from "./initialState";
+} from '../types';
+import { initalState } from './initialState';
 
 type Action<TResponse extends any, TInputSchema extends z.ZodTypeAny> =
-  | { type: "RUN_ACTION" }
-  | { type: "IS_SUCCESS"; data: TResponse | null }
+  | { type: 'RUN_ACTION' }
+  | { type: 'IS_SUCCESS'; data: TResponse | null }
   | {
-      type: "IS_VALIDATION_ERROR";
+      type: 'IS_VALIDATION_ERROR';
       validationErrors: InferValidationErrors<TInputSchema>;
     }
   | {
-      type: "IS_ERROR";
+      type: 'IS_ERROR';
       error: string;
     }
-  | { type: "RESET" };
+  | { type: 'RESET' };
 
 const createReducer =
   <TResponse extends any, TInputSchema extends z.ZodTypeAny>() =>
@@ -28,44 +28,44 @@ const createReducer =
     action: Action<TResponse, TInputSchema>,
   ): Result<TInputSchema, TResponse> => {
     switch (action.type) {
-      case "RUN_ACTION":
+      case 'RUN_ACTION':
         return {
           ...state,
-          status: "running",
+          status: 'running',
           data: null,
           validationErrors: null,
           error: null,
         };
-      case "IS_SUCCESS":
+      case 'IS_SUCCESS':
         return {
           ...state,
-          status: "success",
+          status: 'success',
           data: action.data,
           validationErrors: null,
           error: null,
         };
-      case "IS_VALIDATION_ERROR":
+      case 'IS_VALIDATION_ERROR':
         return {
           ...state,
-          status: "validationError",
+          status: 'validationError',
           data: null,
           validationErrors: action.validationErrors,
           error: null,
         };
-      case "IS_ERROR":
+      case 'IS_ERROR':
         return {
           ...state,
-          status: "error",
+          status: 'error',
           data: null,
           validationErrors: null,
           error: action.error,
         };
-      case "RESET":
+      case 'RESET':
         return {
           ...initalState,
         };
       default:
-        throw new Error("Unknown action type");
+        throw new Error('Unknown action type');
     }
   };
 
@@ -94,19 +94,19 @@ export const useAction = <
   const reducer = createReducer<TResponse, TInputSchema>();
   const [state, dispatch] = useReducer(reducer, initalState);
   const { status, data, error, validationErrors } = state;
-  const isSuccess = status === "success";
-  const isError = status === "error" || status === "validationError";
+  const isSuccess = status === 'success';
+  const isError = status === 'error' || status === 'validationError';
   const [isRunning, startTransition] = useTransition();
 
   const runAction = useCallback(
     async (...inputArgs: InferInputArgs<TInputSchema>) => {
       options.onRunAction?.(...inputArgs);
 
-      startTransition(async () => {
-        dispatch({
-          type: "RUN_ACTION",
-        });
+      dispatch({
+        type: 'RUN_ACTION',
+      });
 
+      startTransition(async () => {
         try {
           const result = await inputAction(...inputArgs);
 
@@ -116,9 +116,9 @@ export const useAction = <
             return;
           }
 
-          if (result.status === "validationError") {
+          if (result.status === 'validationError') {
             dispatch({
-              type: "IS_VALIDATION_ERROR",
+              type: 'IS_VALIDATION_ERROR',
               validationErrors: result.validationErrors,
             });
             options.onError?.(
@@ -130,9 +130,9 @@ export const useAction = <
             );
           }
 
-          if (result.status === "error") {
+          if (result.status === 'error') {
             dispatch({
-              type: "IS_ERROR",
+              type: 'IS_ERROR',
               error: result.error,
             });
             options.onError?.(
@@ -144,17 +144,17 @@ export const useAction = <
             );
           }
 
-          if (result.status === "success") {
+          if (result.status === 'success') {
             dispatch({
-              type: "IS_SUCCESS",
+              type: 'IS_SUCCESS',
               data: result.data,
             });
             options.onSuccess?.(result.data, ...inputArgs);
           }
         } catch (error) {
-          const userErrorMessage = "Something went wrong. Please try again.";
+          const userErrorMessage = 'Something went wrong. Please try again.';
           dispatch({
-            type: "IS_ERROR",
+            type: 'IS_ERROR',
             error: userErrorMessage,
           });
           options.onError?.(
@@ -175,7 +175,7 @@ export const useAction = <
 
   const reset = useCallback(() => {
     dispatch({
-      type: "RESET",
+      type: 'RESET',
     });
     options.onReset?.();
   }, [options]);

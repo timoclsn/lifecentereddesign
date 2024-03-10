@@ -1,8 +1,8 @@
-import { isNotFoundError } from "next/dist/client/components/not-found";
-import { isRedirectError } from "next/dist/client/components/redirect";
-import { z } from "zod";
-import { CreateClientOptions, MaybePromise, ServerAction } from "../types";
-import { getErrorMessage, id } from "../utils";
+import { isNotFoundError } from 'next/dist/client/components/not-found';
+import { isRedirectError } from 'next/dist/client/components/redirect';
+import { z } from 'zod';
+import { CreateClientOptions, MaybePromise, ServerAction } from '../types';
+import { getErrorMessage, id } from '../utils';
 
 export const createActionClient = <Context>(
   createClientOpts?: CreateClientOptions<Context>,
@@ -20,7 +20,10 @@ export const createActionClient = <Context>(
     const action: ServerAction<TInputSchema, TResponse> = async (
       ...inputArgs
     ) => {
-      const [input] = inputArgs;
+      // Depending of how the action is called, the input can be the first or second argument
+      // If the action is put through useFormState the first argument will be previous state and the second the input
+      const [firstArg, secondArg] = inputArgs;
+      const input = secondArg instanceof FormData ? secondArg : firstArg;
 
       try {
         // Validate input if schema is provided
@@ -29,7 +32,7 @@ export const createActionClient = <Context>(
           const result = actionBuilderOpts.input.safeParse(input);
           if (!result.success) {
             return {
-              status: "validationError",
+              status: 'validationError',
               id: id(),
               data: null,
               validationErrors: result.error.flatten().fieldErrors,
@@ -49,7 +52,7 @@ export const createActionClient = <Context>(
         });
 
         return {
-          status: "success",
+          status: 'success',
           id: id(),
           data: response ?? null,
           validationErrors: null,
@@ -64,7 +67,7 @@ export const createActionClient = <Context>(
         }
 
         return {
-          status: "error",
+          status: 'error',
           id: id(),
           data: null,
           validationErrors: null,
