@@ -11,10 +11,7 @@
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint:workspace": "manypkg check",
-    "lint:workspace:X": "manypkg X",
-    "db:generate": "turbo run db:generate",
-    "db:push": "turbo run db:push",
-    "db:pull": "turbo run db:push"
+    "lint:workspace:X": "manypkg X"
   },
   "dependencies": {
     "@manypkg/cli": "0.21.1",

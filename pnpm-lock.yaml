@@ -29,6 +29,9 @@ importers:
       '@formkit/auto-animate':
         specifier: 1.0.0-beta.6
         version: 1.0.0-beta.6
+      '@libsql/client':
+        specifier: ^0.5.6
+        version: 0.5.6
       '@radix-ui/react-checkbox':
         specifier: ^1.0.4
         version: 1.0.4(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
@@ -59,6 +62,12 @@ importers:
       design-system:
         specifier: workspace:*
         version: link:../../packages/design-system
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
+      drizzle-orm:
+        specifier: ^0.30.5
+        version: 0.30.5(@libsql/client@0.5.6)(@types/react@18.2.47)(react@18.2.0)
       esbuild:
         specifier: ^0.19.11
         version: 0.19.11
@@ -89,6 +98,9 @@ importers:
       sharp:
         specifier: 0.33.1
         version: 0.33.1
+      tsx:
+        specifier: ^4.7.1
+        version: 4.7.1
       use-debounce:
         specifier: ^10.0.0
         version: 10.0.0(react@18.2.0)
@@ -123,6 +135,9 @@ importers:
       autoprefixer:
         specifier: 10.4.16
         version: 10.4.16(postcss@8.4.33)
+      drizzle-kit:
+        specifier: ^0.20.14
+        version: 0.20.14
       eslint:
         specifier: 8.56.0
         version: 8.56.0
@@ -153,28 +168,10 @@ importers:
 
   packages/database:
     dependencies:
-      '@libsql/client':
-        specifier: ^0.5.6
-        version: 0.5.6
       '@prisma/client':
         specifier: 5.8.0
         version: 5.8.0(prisma@5.8.0)
-      dotenv:
-        specifier: ^16.4.5
-        version: 16.4.5
-      drizzle-orm:
-        specifier: ^0.30.4
-        version: 0.30.4(@libsql/client@0.5.6)
-      tsx:
-        specifier: ^4.7.1
-        version: 4.7.1
-      zod:
-        specifier: 3.22.4
-        version: 3.22.4
     devDependencies:
-      drizzle-kit:
-        specifier: ^0.20.14
-        version: 0.20.14
       prisma:
         specifier: 5.8.0
         version: 5.8.0
@@ -4176,8 +4173,8 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.30.4(@libsql/client@0.5.6):
-    resolution: {integrity: sha512-kWoSMGbrOFkmkAweLTFtHJMpN+nwhx89q0mLELqT2aEU+1szNV8jrnBmJwZ0WGNp7J7yQn/ezEtxBI/qzTSElQ==}
+  /drizzle-orm@0.30.5(@libsql/client@0.5.6)(@types/react@18.2.47)(react@18.2.0):
+    resolution: {integrity: sha512-oImmwGpe1jTWvhPkpsnramZA8m/lE8krTj7Ws7KHSFCMshMXmcZWX2g2Ki793PQOBmwI50KYzWJ9yNKKhWYLyA==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=3'
@@ -4254,6 +4251,8 @@ packages:
         optional: true
     dependencies:
       '@libsql/client': 0.5.6
+      '@types/react': 18.2.47
+      react: 18.2.0
     dev: false
 
   /eastasianwidth@0.2.0:

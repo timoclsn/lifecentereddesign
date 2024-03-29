@@ -4,7 +4,7 @@ import type { Config } from 'drizzle-kit';
 const { TURSO_DATABASE_URL, TURSO_AUTH_TOKEN } = process.env;
 
 export default {
-  schema: './schema.ts',
+  schema: './db/schema.ts',
   driver: 'turso',
   dbCredentials: {
     url: TURSO_DATABASE_URL!,

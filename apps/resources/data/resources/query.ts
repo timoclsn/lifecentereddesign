@@ -1,11 +1,196 @@
 import { auth } from '@clerk/nextjs/server';
 import * as cheerio from 'cheerio';
 import { createQuery } from 'data/clients';
+import {
+  category,
+  comment,
+  creator,
+  like,
+  resource,
+  resourceToCreator,
+  resourceToTopic,
+  topic,
+  type,
+} from 'db/schema';
+import {
+  SQL,
+  and,
+  asc,
+  count,
+  desc,
+  eq,
+  getTableColumns,
+  like as likeFilter,
+  max,
+  or,
+} from 'drizzle-orm';
+import { db as dbNew } from 'lib/db';
 import { ContentType, Resource, includes, resourceTypes } from 'lib/resources';
 import { withUserCollection } from 'lib/users';
 import { isUrl, wait } from 'lib/utils/utils';
 import 'server-only';
 import { z } from 'zod';
+
+export const getResourcesNew = createQuery({
+  input: z.object({
+    limit: z.number().optional(),
+    orderBy: z.enum(['date', 'name', 'likes', 'comments']).optional(),
+    filter: z
+      .object({
+        type: z.array(z.number()).optional(),
+        category: z.array(z.number()).optional(),
+        topic: z.array(z.number()).optional(),
+        creator: z.array(z.number()).optional(),
+        search: z.string().optional().optional(),
+      })
+      .optional()
+      .default({}),
+  }),
+  cache: {
+    noStore: true,
+  },
+  query: async ({ input }) => {
+    const { filter, orderBy, limit } = input;
+    const { userId } = auth();
+
+    const likesSubquery = dbNew
+      .select({
+        resourceId: like.resourceId,
+        likesCount: count(like.resourceId).as('likesCount'),
+        likedByUser: max(eq(like.userId, userId ?? ''))
+          .mapWith(Boolean)
+          .as('likedByUser'),
+      })
+      .from(like)
+      .groupBy(like.resourceId)
+      .as('likesSubquery');
+
+    const commentsSubquery = dbNew
+      .select({
+        resourceId: comment.resourceId,
+        commentsCount: count(comment.resourceId).as('commentsCount'),
+        commentedByUser: max(eq(comment.userId, userId ?? ''))
+          .mapWith(Boolean)
+          .as('commentedByUser'),
+      })
+      .from(comment)
+      .groupBy(comment.resourceId)
+      .as('commentsSubquery');
+
+    return await dbNew
+      .select({
+        resource: getTableColumns(resource),
+        type: getTableColumns(type),
+        category: getTableColumns(category),
+        topic: getTableColumns(topic),
+        creator: getTableColumns(creator),
+        likes: likesSubquery.likesCount,
+        likedByUser: likesSubquery.likedByUser,
+        comments: commentsSubquery.commentsCount,
+        commentedByUser: commentsSubquery.commentedByUser,
+      })
+      .from(resource)
+      .leftJoin(type, eq(resource.typeId, type.id))
+      .leftJoin(category, eq(resource.categoryId, category.id))
+      .leftJoin(resourceToTopic, eq(resource.id, resourceToTopic.resourceId))
+      .leftJoin(topic, eq(resourceToTopic.topicId, topic.id))
+      .leftJoin(
+        resourceToCreator,
+        eq(resource.id, resourceToCreator.resourceId),
+      )
+      .leftJoin(creator, eq(resourceToCreator.creatorId, creator.id))
+      .leftJoin(likesSubquery, eq(resource.id, likesSubquery.resourceId))
+      .leftJoin(commentsSubquery, eq(resource.id, commentsSubquery.resourceId))
+      .groupBy(resource.id)
+      .where(({ resource, creator }) => {
+        const where: Array<SQL<unknown> | undefined> = [];
+
+        // Filters
+        if (filter.type) {
+          filter.type.forEach((typeId) => {
+            where.push(eq(resource.typeId, typeId));
+          });
+        }
+
+        if (filter.category) {
+          filter.category.forEach((categoryId) => {
+            where.push(eq(resource.categoryId, categoryId));
+          });
+        }
+
+        if (filter.topic) {
+          filter.topic.forEach((topicId) => {
+            where.push(eq(resourceToTopic.topicId, topicId));
+          });
+        }
+
+        if (filter.creator) {
+          filter.creator.forEach((creatorId) => {
+            where.push(eq(resourceToCreator.creatorId, creatorId));
+          });
+        }
+
+        // Search
+        if (filter.search) {
+          where.push(
+            or(
+              likeFilter(resource.name, `%${filter.search}%`),
+              likeFilter(resource.description, `%${filter.search}%`),
+              likeFilter(creator.name, `%${filter.search}%`),
+              likeFilter(creator.description, `%${filter.search}%`),
+            ),
+          );
+        }
+
+        return and(...where);
+      })
+      .orderBy(({ resource, likes, comments }) => {
+        switch (orderBy) {
+          case 'name':
+            return asc(resource.name);
+          case 'likes':
+            return desc(likes);
+          case 'comments':
+            return desc(comments);
+          case 'date':
+          default:
+            return desc(resource.createdAt);
+        }
+      })
+      .limit(limit ?? 0)
+      .then((result) => {
+        // Aggregate resources
+
+        type Row = (typeof result)[number];
+        type Resource = ReturnType<typeof createResource>;
+
+        const createResource = (row: Row) => {
+          const { resource, topic, creator, ...rest } = row;
+          return {
+            ...resource,
+            topics: topic ? [topic] : [],
+            creators: creator ? [creator] : [],
+            ...rest,
+          };
+        };
+
+        const resourcesMap: Record<string, Resource> = {};
+
+        for (const row of result) {
+          const resource = resourcesMap[row.resource.id];
+
+          if (!resource) {
+            resourcesMap[row.resource.id] = createResource(row);
+          } else {
+            row.topic && resource.topics.push(row.topic);
+            row.creator && resource.creators.push(row.creator);
+          }
+        }
+
+        return Object.values(resourcesMap);
+      });
+  },
+});
 
 export const getResources = createQuery({
   cache: {

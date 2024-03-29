@@ -17,6 +17,10 @@ const envSchema = z.object({
   // Mail
   SUGGESTION_MAIL_PASSWORD: envVarSchema,
 
+  // Turso DB
+  TURSO_DATABASE_URL: envVarSchema,
+  TURSO_AUTH_TOKEN: envVarSchema,
+
   // Client
 
   // Vercel
