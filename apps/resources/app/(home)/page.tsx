@@ -3,16 +3,15 @@ import { NewResources } from '../../components/NewResources/NewResources';
 import { Newsletter } from '../../components/Newsletter/Newsletter';
 import { About } from './About/About';
 import { Header } from './Header/Header';
-import { db } from 'lib/db';
 
 const Home = async () => {
   const resources = await query.resources.getResourcesNew({
-    filter: {
-      search: 'test',
-    },
+    orderBy: 'likes',
+    filter: {},
   });
 
   console.log('Resources:', JSON.stringify(resources, null, 2));
+  console.log(resources.length);
 
   return (
     <>

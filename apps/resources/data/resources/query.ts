@@ -21,6 +21,7 @@ import {
   like as likeFilter,
   max,
   or,
+  sql,
 } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 import { db as dbNew } from 'lib/db';
@@ -52,6 +53,20 @@ export const getResourcesNew = createQuery({
     const { filter, orderBy, limit } = input;
     const { userId } = auth();
 
+    const getOrderBy = () => {
+      switch (orderBy) {
+        case 'name':
+          return asc(resource.name);
+        case 'likes':
+          return desc(likesSubquery.likesCount);
+        case 'comments':
+          return desc(commentsSubquery.commentsCount);
+        case 'date':
+        default:
+          return desc(resource.createdAt);
+      }
+    };
+
     const likesSubquery = dbNew
       .select({
         resourceId: like.resourceId,
@@ -77,6 +92,68 @@ export const getResourcesNew = createQuery({
       .as('commentsSubquery');
 
     const creator = alias(resource, 'creator');
+
+    const resourceIdsSubquery = dbNew
+      .select({
+        id: resource.id,
+      })
+      .from(resource)
+      .leftJoin(type, eq(resource.typeId, type.id))
+      .leftJoin(category, eq(resource.categoryId, category.id))
+      .leftJoin(resourceToTopic, eq(resource.id, resourceToTopic.resourceId))
+      .leftJoin(topic, eq(resourceToTopic.topicId, topic.id))
+      .leftJoin(
+        resourceToCreator,
+        eq(resource.id, resourceToCreator.resourceId),
+      )
+      .leftJoin(creator, eq(resourceToCreator.creatorId, creator.id))
+      .leftJoin(likesSubquery, eq(resource.id, likesSubquery.resourceId))
+      .leftJoin(commentsSubquery, eq(resource.id, commentsSubquery.resourceId))
+      .where(() => {
+        const where: Array<SQL<unknown> | undefined> = [];
+
+        // Filters
+        if (filter.type) {
+          filter.type.forEach((typeId) => {
+            where.push(eq(type.id, typeId));
+          });
+        }
+
+        if (filter.category) {
+          filter.category.forEach((categoryId) => {
+            where.push(eq(category.id, categoryId));
+          });
+        }
+
+        if (filter.topic) {
+          filter.topic.forEach((topicId) => {
+            where.push(eq(topic.id, topicId));
+          });
+        }
+
+        if (filter.creator) {
+          filter.creator.forEach((creatorId) => {
+            where.push(eq(creator.id, creatorId));
+          });
+        }
+
+        // Search
+        if (filter.search) {
+          where.push(
+            or(
+              likeFilter(resource.name, `%${filter.search}%`),
+              likeFilter(resource.description, `%${filter.search}%`),
+              likeFilter(creator.name, `%${filter.search}%`),
+              likeFilter(creator.description, `%${filter.search}%`),
+            ),
+          );
+        }
+
+        return and(...where);
+      })
+      .orderBy(getOrderBy)
+      .groupBy(resource.id)
+      .limit(limit ?? 0);
 
     return await dbNew
       .select({
@@ -121,62 +198,8 @@ export const getResourcesNew = createQuery({
       .leftJoin(creator, eq(resourceToCreator.creatorId, creator.id))
       .leftJoin(likesSubquery, eq(resource.id, likesSubquery.resourceId))
       .leftJoin(commentsSubquery, eq(resource.id, commentsSubquery.resourceId))
-      .where(({ name, description, type, category, topic, creator }) => {
-        const where: Array<SQL<unknown> | undefined> = [];
-
-        // Filters
-        if (filter.type) {
-          filter.type.forEach((typeId) => {
-            where.push(eq(type.id, typeId));
-          });
-        }
-
-        if (filter.category) {
-          filter.category.forEach((categoryId) => {
-            where.push(eq(category.id, categoryId));
-          });
-        }
-
-        if (filter.topic) {
-          filter.topic.forEach((topicId) => {
-            where.push(eq(topic.id, topicId));
-          });
-        }
-
-        if (filter.creator) {
-          filter.creator.forEach((creatorId) => {
-            where.push(eq(creator.id, creatorId));
-          });
-        }
-
-        // Search
-        if (filter.search) {
-          where.push(
-            or(
-              likeFilter(name, `%${filter.search}%`),
-              likeFilter(description, `%${filter.search}%`),
-              likeFilter(creator.name, `%${filter.search}%`),
-              likeFilter(creator.description, `%${filter.search}%`),
-            ),
-          );
-        }
-
-        return and(...where);
-      })
-      .orderBy(({ name, createdAt, likesCount, commentsCount }) => {
-        switch (orderBy) {
-          case 'name':
-            return asc(name);
-          case 'likes':
-            return desc(likesCount);
-          case 'comments':
-            return desc(commentsCount);
-          case 'date':
-          default:
-            return desc(createdAt);
-        }
-      })
-      .limit(limit ?? 0)
+      .where(sql`${resource.id} IN ${resourceIdsSubquery}`)
+      .orderBy(getOrderBy)
       .then((result) => {
         // Aggregate resources
 
@@ -192,13 +215,13 @@ export const getResourcesNew = createQuery({
           };
         };
 
-        const resourcesMap: Record<string, Resource> = {};
+        const resources: Array<Resource> = [];
 
         for (const row of result) {
-          const resource = resourcesMap[row.id];
+          const resource = resources.find((resource) => resource.id === row.id);
 
           if (!resource) {
-            resourcesMap[row.id] = createResource(row);
+            resources.push(createResource(row));
           } else {
             if (row.topic) {
               const { topic } = row;
@@ -213,7 +236,7 @@ export const getResourcesNew = createQuery({
           }
         }
 
-        return Object.values(resourcesMap);
+        return resources;
       });
   },
 });
