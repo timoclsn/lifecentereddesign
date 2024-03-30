@@ -4,7 +4,6 @@ import { drizzle } from 'drizzle-orm/libsql';
 import {
   category,
   comment,
-  creator,
   like,
   resource,
   resourceToCreator,
@@ -41,14 +40,6 @@ const main = async () => {
   await db.insert(topic).values(
     Array.from({ length: COUNT }, (_, i) => ({
       name: `Topic ${i + 1}`,
-    })),
-  );
-
-  // Insert creators
-  await db.insert(creator).values(
-    Array.from({ length: COUNT }, (_, i) => ({
-      name: `Creator ${i + 1}`,
-      description: `Description ${i + 1}`,
     })),
   );
 

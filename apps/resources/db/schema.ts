@@ -54,6 +54,33 @@ export const resourceRelations = relations(resource, ({ one, many }) => ({
   likes: many(like),
 }));
 
+// Resource to creator table (self referenceing many-to-many relation)
+
+export const resourceToCreator = sqliteTable(
+  'resource_to_creator',
+  {
+    resourceId: integer('resource_id')
+      .notNull()
+      .references(() => resource.id),
+    creatorId: integer('creator_id')
+      .notNull()
+      .references(() => resource.id),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.resourceId, table.creatorId] }),
+  }),
+);
+
+export const resourceToCreatorRelations = relations(
+  resourceToCreator,
+  ({ one }) => ({
+    creator: one(resource, {
+      fields: [resourceToCreator.creatorId],
+      references: [resource.id],
+    }),
+  }),
+);
+
 // Type table
 
 export const type = sqliteTable('type', {
@@ -123,59 +150,6 @@ export const resourceToTopicRelations = relations(
     topic: one(topic, {
       fields: [resourceToTopic.topicId],
       references: [topic.id],
-    }),
-  }),
-);
-
-// Creator table
-
-export const creator = sqliteTable(
-  'creator',
-  {
-    id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
-    createdAt: integer('created_at', { mode: 'timestamp' })
-      .notNull()
-      .default(sql`(unixepoch())`),
-    name: text('name', { mode: 'text', length: 256 }).notNull(),
-    description: text('description', { mode: 'text' }).notNull(),
-  },
-  (table) => ({
-    nameIdx: index('name_idx').on(table.name),
-    descriptionIdx: index('description_idx').on(table.description),
-  }),
-);
-
-export const creatorRelations = relations(creator, ({ many }) => ({
-  resourceToCreator: many(resourceToCreator),
-}));
-
-// Resource to creator table
-
-export const resourceToCreator = sqliteTable(
-  'resource_to_creator',
-  {
-    resourceId: integer('resource_id')
-      .notNull()
-      .references(() => resource.id),
-    creatorId: integer('creator_id')
-      .notNull()
-      .references(() => creator.id),
-  },
-  (table) => ({
-    pk: primaryKey({ columns: [table.resourceId, table.creatorId] }),
-  }),
-);
-
-export const resourceToCreatorRelations = relations(
-  resourceToCreator,
-  ({ one }) => ({
-    resource: one(resource, {
-      fields: [resourceToCreator.resourceId],
-      references: [resource.id],
-    }),
-    creator: one(creator, {
-      fields: [resourceToCreator.creatorId],
-      references: [creator.id],
     }),
   }),
 );

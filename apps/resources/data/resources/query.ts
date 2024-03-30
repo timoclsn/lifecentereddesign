@@ -4,7 +4,6 @@ import { createQuery } from 'data/clients';
 import {
   category,
   comment,
-  creator,
   like,
   resource,
   resourceToCreator,
@@ -19,11 +18,11 @@ import {
   count,
   desc,
   eq,
-  getTableColumns,
   like as likeFilter,
   max,
   or,
 } from 'drizzle-orm';
+import { alias } from 'drizzle-orm/sqlite-core';
 import { db as dbNew } from 'lib/db';
 import { ContentType, Resource, includes, resourceTypes } from 'lib/resources';
 import { withUserCollection } from 'lib/users';
@@ -77,16 +76,37 @@ export const getResourcesNew = createQuery({
       .groupBy(comment.resourceId)
       .as('commentsSubquery');
 
+    const creator = alias(resource, 'creator');
+
     return await dbNew
       .select({
-        resource: getTableColumns(resource),
-        type: getTableColumns(type),
-        category: getTableColumns(category),
-        topic: getTableColumns(topic),
-        creator: getTableColumns(creator),
-        likes: likesSubquery.likesCount,
+        id: resource.id,
+        createdAt: resource.createdAt,
+        name: resource.name,
+        description: resource.description,
+        link: resource.link,
+        suggestion: resource.suggestion,
+        date: resource.date,
+        type: {
+          id: type.id,
+          name: type.name,
+        },
+        category: {
+          id: category.id,
+          name: category.name,
+        },
+        topic: {
+          id: topic.id,
+          name: topic.name,
+        },
+        creator: {
+          id: creator.id,
+          name: creator.name,
+          description: creator.description,
+        },
+        likesCount: likesSubquery.likesCount,
         likedByUser: likesSubquery.likedByUser,
-        comments: commentsSubquery.commentsCount,
+        commentsCount: commentsSubquery.commentsCount,
         commentedByUser: commentsSubquery.commentedByUser,
       })
       .from(resource)
@@ -101,32 +121,31 @@ export const getResourcesNew = createQuery({
       .leftJoin(creator, eq(resourceToCreator.creatorId, creator.id))
       .leftJoin(likesSubquery, eq(resource.id, likesSubquery.resourceId))
       .leftJoin(commentsSubquery, eq(resource.id, commentsSubquery.resourceId))
-      .groupBy(resource.id)
-      .where(({ resource, creator }) => {
+      .where(({ name, description, type, category, topic, creator }) => {
         const where: Array<SQL<unknown> | undefined> = [];
 
         // Filters
         if (filter.type) {
           filter.type.forEach((typeId) => {
-            where.push(eq(resource.typeId, typeId));
+            where.push(eq(type.id, typeId));
           });
         }
 
         if (filter.category) {
           filter.category.forEach((categoryId) => {
-            where.push(eq(resource.categoryId, categoryId));
+            where.push(eq(category.id, categoryId));
           });
         }
 
         if (filter.topic) {
           filter.topic.forEach((topicId) => {
-            where.push(eq(resourceToTopic.topicId, topicId));
+            where.push(eq(topic.id, topicId));
           });
         }
 
         if (filter.creator) {
           filter.creator.forEach((creatorId) => {
-            where.push(eq(resourceToCreator.creatorId, creatorId));
+            where.push(eq(creator.id, creatorId));
           });
         }
 
@@ -134,8 +153,8 @@ export const getResourcesNew = createQuery({
         if (filter.search) {
           where.push(
             or(
-              likeFilter(resource.name, `%${filter.search}%`),
-              likeFilter(resource.description, `%${filter.search}%`),
+              likeFilter(name, `%${filter.search}%`),
+              likeFilter(description, `%${filter.search}%`),
               likeFilter(creator.name, `%${filter.search}%`),
               likeFilter(creator.description, `%${filter.search}%`),
             ),
@@ -144,17 +163,17 @@ export const getResourcesNew = createQuery({
 
         return and(...where);
       })
-      .orderBy(({ resource, likes, comments }) => {
+      .orderBy(({ name, createdAt, likesCount, commentsCount }) => {
         switch (orderBy) {
           case 'name':
-            return asc(resource.name);
+            return asc(name);
           case 'likes':
-            return desc(likes);
+            return desc(likesCount);
           case 'comments':
-            return desc(comments);
+            return desc(commentsCount);
           case 'date':
           default:
-            return desc(resource.createdAt);
+            return desc(createdAt);
         }
       })
       .limit(limit ?? 0)
@@ -165,25 +184,32 @@ export const getResourcesNew = createQuery({
         type Resource = ReturnType<typeof createResource>;
 
         const createResource = (row: Row) => {
-          const { resource, topic, creator, ...rest } = row;
+          const { topic, creator, ...rest } = row;
           return {
-            ...resource,
+            ...rest,
             topics: topic ? [topic] : [],
             creators: creator ? [creator] : [],
-            ...rest,
           };
         };
 
         const resourcesMap: Record<string, Resource> = {};
 
         for (const row of result) {
-          const resource = resourcesMap[row.resource.id];
+          const resource = resourcesMap[row.id];
 
           if (!resource) {
-            resourcesMap[row.resource.id] = createResource(row);
+            resourcesMap[row.id] = createResource(row);
           } else {
-            row.topic && resource.topics.push(row.topic);
-            row.creator && resource.creators.push(row.creator);
+            if (row.topic) {
+              const { topic } = row;
+              if (!resource.topics.some((t) => t.id === topic.id))
+                resource.topics.push(row.topic);
+            }
+            if (row.creator) {
+              const { creator } = row;
+              if (!resource.creators.some((t) => t.id === creator.id))
+                resource.creators.push(row.creator);
+            }
           }
         }
 
