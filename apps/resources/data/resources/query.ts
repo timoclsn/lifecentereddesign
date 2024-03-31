@@ -37,6 +37,7 @@ export const getResourcesNew = createQuery({
     orderBy: z.enum(['date', 'name', 'likes', 'comments']).optional(),
     filter: z
       .object({
+        id: z.array(z.number()).optional(),
         type: z.array(z.number()).optional(),
         category: z.array(z.number()).optional(),
         topic: z.array(z.number()).optional(),
@@ -58,16 +59,16 @@ export const getResourcesNew = createQuery({
         case 'name':
           return asc(resource.name);
         case 'likes':
-          return desc(likesSubquery.likesCount);
+          return desc(likesQuery.likesCount);
         case 'comments':
-          return desc(commentsSubquery.commentsCount);
+          return desc(commentsQuery.commentsCount);
         case 'date':
         default:
           return desc(resource.createdAt);
       }
     };
 
-    const likesSubquery = dbNew
+    const likesQuery = dbNew
       .select({
         resourceId: like.resourceId,
         likesCount: count(like.resourceId).as('likesCount'),
@@ -77,9 +78,9 @@ export const getResourcesNew = createQuery({
       })
       .from(like)
       .groupBy(like.resourceId)
-      .as('likesSubquery');
+      .as('likesQuery');
 
-    const commentsSubquery = dbNew
+    const commentsQuery = dbNew
       .select({
         resourceId: comment.resourceId,
         commentsCount: count(comment.resourceId).as('commentsCount'),
@@ -89,11 +90,11 @@ export const getResourcesNew = createQuery({
       })
       .from(comment)
       .groupBy(comment.resourceId)
-      .as('commentsSubquery');
+      .as('commentsQuery');
 
     const creator = alias(resource, 'creator');
 
-    const resourceIdsSubquery = dbNew
+    const resourceIdsQuery = dbNew
       .select({
         id: resource.id,
       })
@@ -107,12 +108,18 @@ export const getResourcesNew = createQuery({
         eq(resource.id, resourceToCreator.resourceId),
       )
       .leftJoin(creator, eq(resourceToCreator.creatorId, creator.id))
-      .leftJoin(likesSubquery, eq(resource.id, likesSubquery.resourceId))
-      .leftJoin(commentsSubquery, eq(resource.id, commentsSubquery.resourceId))
+      .leftJoin(likesQuery, eq(resource.id, likesQuery.resourceId))
+      .leftJoin(commentsQuery, eq(resource.id, commentsQuery.resourceId))
       .where(() => {
         const where: Array<SQL<unknown> | undefined> = [];
 
         // Filters
+        if (filter.id) {
+          filter.id.forEach((resourceId) => {
+            where.push(eq(resource.id, resourceId));
+          });
+        }
+
         if (filter.type) {
           filter.type.forEach((typeId) => {
             where.push(eq(type.id, typeId));
@@ -181,10 +188,10 @@ export const getResourcesNew = createQuery({
           name: creator.name,
           description: creator.description,
         },
-        likesCount: likesSubquery.likesCount,
-        likedByUser: likesSubquery.likedByUser,
-        commentsCount: commentsSubquery.commentsCount,
-        commentedByUser: commentsSubquery.commentedByUser,
+        likesCount: likesQuery.likesCount,
+        likedByUser: likesQuery.likedByUser,
+        commentsCount: commentsQuery.commentsCount,
+        commentedByUser: commentsQuery.commentedByUser,
       })
       .from(resource)
       .leftJoin(type, eq(resource.typeId, type.id))
@@ -196,9 +203,9 @@ export const getResourcesNew = createQuery({
         eq(resource.id, resourceToCreator.resourceId),
       )
       .leftJoin(creator, eq(resourceToCreator.creatorId, creator.id))
-      .leftJoin(likesSubquery, eq(resource.id, likesSubquery.resourceId))
-      .leftJoin(commentsSubquery, eq(resource.id, commentsSubquery.resourceId))
-      .where(sql`${resource.id} IN ${resourceIdsSubquery}`)
+      .leftJoin(likesQuery, eq(resource.id, likesQuery.resourceId))
+      .leftJoin(commentsQuery, eq(resource.id, commentsQuery.resourceId))
+      .where(sql`${resource.id} IN ${resourceIdsQuery}`)
       .orderBy(getOrderBy)
       .then((result) => {
         // Aggregate resources

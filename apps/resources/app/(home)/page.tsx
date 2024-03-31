@@ -6,7 +6,7 @@ import { Header } from './Header/Header';
 
 const Home = async () => {
   const resources = await query.resources.getResourcesNew({
-    orderBy: 'likes',
+    orderBy: 'date',
     filter: {},
   });
 
