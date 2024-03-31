@@ -168,9 +168,12 @@ export const getResourcesNew = createQuery({
         createdAt: resource.createdAt,
         name: resource.name,
         description: resource.description,
+        details: resource.details,
         link: resource.link,
         suggestion: resource.suggestion,
         date: resource.date,
+        datePlain: resource.datePlain,
+        creatorsPlain: resource.creatorsPlain,
         type: {
           id: type.id,
           name: type.name,
