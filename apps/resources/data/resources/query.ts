@@ -55,6 +55,10 @@ export const getResourcesNew = createQuery({
     const { userId } = auth();
 
     const getOrderBy = () => {
+      if (filter.search) {
+        return sql`rank`;
+      }
+
       switch (orderBy) {
         case 'name':
           return asc(resource.name);
@@ -110,8 +114,14 @@ export const getResourcesNew = createQuery({
       .leftJoin(creator, eq(resourceToCreator.creatorId, creator.id))
       .leftJoin(likesQuery, eq(resource.id, likesQuery.resourceId))
       .leftJoin(commentsQuery, eq(resource.id, commentsQuery.resourceId))
+      .innerJoin(sql`resource_fts`, sql`resource_fts.id = ${resource.id}`)
       .where(() => {
         const where: Array<SQL<unknown> | undefined> = [];
+
+        // Search
+        if (filter.search) {
+          where.push(sql`resource_fts MATCH ${filter.search}`);
+        }
 
         // Filters
         if (filter.id) {
@@ -142,18 +152,6 @@ export const getResourcesNew = createQuery({
           filter.creator.forEach((creatorId) => {
             where.push(eq(creator.id, creatorId));
           });
-        }
-
-        // Search
-        if (filter.search) {
-          where.push(
-            or(
-              likeFilter(resource.name, `%${filter.search}%`),
-              likeFilter(resource.description, `%${filter.search}%`),
-              likeFilter(creator.name, `%${filter.search}%`),
-              likeFilter(creator.description, `%${filter.search}%`),
-            ),
-          );
         }
 
         return and(...where);
@@ -208,7 +206,18 @@ export const getResourcesNew = createQuery({
       .leftJoin(creator, eq(resourceToCreator.creatorId, creator.id))
       .leftJoin(likesQuery, eq(resource.id, likesQuery.resourceId))
       .leftJoin(commentsQuery, eq(resource.id, commentsQuery.resourceId))
-      .where(sql`${resource.id} IN ${resourceIdsQuery}`)
+      .innerJoin(sql`resource_fts`, sql`resource_fts.id = ${resource.id}`)
+      .where(() => {
+        const where: Array<SQL<unknown> | undefined> = [
+          sql`${resource.id} IN ${resourceIdsQuery}`,
+        ];
+
+        if (filter.search) {
+          where.push(sql`resource_fts MATCH ${filter.search}`);
+        }
+
+        return and(...where);
+      })
       .orderBy(getOrderBy)
       .then((result) => {
         // Aggregate resources

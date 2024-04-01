@@ -53,7 +53,7 @@ export const resourceRelations = relations(resource, ({ one, many }) => ({
     references: [category.id],
   }),
   topics: many(resourceToTopic),
-  creators: many(resourceToCreator),
+  creators: many(resourceToCreator, { relationName: 'creator' }),
   likes: many(like),
 }));
 
@@ -78,7 +78,13 @@ export const resourceToCreatorRelations = relations(
   resourceToCreator,
   ({ one }) => ({
     creator: one(resource, {
+      relationName: 'resource',
       fields: [resourceToCreator.creatorId],
+      references: [resource.id],
+    }),
+    resource: one(resource, {
+      relationName: 'creator',
+      fields: [resourceToCreator.resourceId],
       references: [resource.id],
     }),
   }),
