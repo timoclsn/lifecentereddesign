@@ -1,6 +1,7 @@
 import { auth } from '@clerk/nextjs/server';
 import * as cheerio from 'cheerio';
 import { createQuery } from 'data/clients';
+import { resourceFts } from 'db/ftsSchema';
 import {
   category,
   comment,
@@ -11,18 +12,7 @@ import {
   topic,
   type,
 } from 'db/schema';
-import {
-  SQL,
-  and,
-  asc,
-  count,
-  desc,
-  eq,
-  like as likeFilter,
-  max,
-  or,
-  sql,
-} from 'drizzle-orm';
+import { SQL, and, asc, count, desc, eq, inArray, max, sql } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 import { db as dbNew } from 'lib/db';
 import { ContentType, Resource, includes, resourceTypes } from 'lib/resources';
@@ -56,7 +46,7 @@ export const getResourcesNew = createQuery({
 
     const getOrderBy = () => {
       if (filter.search) {
-        return sql`rank`;
+        return desc(resourceFts.rank);
       }
 
       switch (orderBy) {
@@ -114,13 +104,13 @@ export const getResourcesNew = createQuery({
       .leftJoin(creator, eq(resourceToCreator.creatorId, creator.id))
       .leftJoin(likesQuery, eq(resource.id, likesQuery.resourceId))
       .leftJoin(commentsQuery, eq(resource.id, commentsQuery.resourceId))
-      .innerJoin(sql`resource_fts`, sql`resource_fts.id = ${resource.id}`)
+      .innerJoin(resourceFts, eq(resourceFts.id, resource.id))
       .where(() => {
         const where: Array<SQL<unknown> | undefined> = [];
 
         // Search
         if (filter.search) {
-          where.push(sql`resource_fts MATCH ${filter.search}`);
+          where.push(sql`${resourceFts} MATCH ${filter.search}`);
         }
 
         // Filters
@@ -206,14 +196,14 @@ export const getResourcesNew = createQuery({
       .leftJoin(creator, eq(resourceToCreator.creatorId, creator.id))
       .leftJoin(likesQuery, eq(resource.id, likesQuery.resourceId))
       .leftJoin(commentsQuery, eq(resource.id, commentsQuery.resourceId))
-      .innerJoin(sql`resource_fts`, sql`resource_fts.id = ${resource.id}`)
+      .innerJoin(resourceFts, eq(resourceFts.id, resource.id))
       .where(() => {
         const where: Array<SQL<unknown> | undefined> = [
-          sql`${resource.id} IN ${resourceIdsQuery}`,
+          inArray(resource.id, resourceIdsQuery),
         ];
 
         if (filter.search) {
-          where.push(sql`resource_fts MATCH ${filter.search}`);
+          where.push(sql`${resourceFts} MATCH ${filter.search}`);
         }
 
         return and(...where);
