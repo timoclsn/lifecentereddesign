@@ -44,9 +44,11 @@ export const getResourcesNew = createQuery({
     const { filter, orderBy, limit } = input;
     const { userId } = auth();
 
+    const creator = alias(resource, 'creator');
+
     const getOrderBy = () => {
       if (filter.search) {
-        return desc(resourceFts.rank);
+        return asc(resourceFts.rank);
       }
 
       switch (orderBy) {
@@ -85,8 +87,6 @@ export const getResourcesNew = createQuery({
       .from(comment)
       .groupBy(comment.resourceId)
       .as('commentsQuery');
-
-    const creator = alias(resource, 'creator');
 
     const resourceIdsQuery = dbNew
       .select({
@@ -194,14 +194,15 @@ export const getResourcesNew = createQuery({
         eq(resource.id, resourceToCreator.resourceId),
       )
       .leftJoin(creator, eq(resourceToCreator.creatorId, creator.id))
+      .innerJoin(resourceFts, eq(resourceFts.id, resource.id))
       .leftJoin(likesQuery, eq(resource.id, likesQuery.resourceId))
       .leftJoin(commentsQuery, eq(resource.id, commentsQuery.resourceId))
-      .innerJoin(resourceFts, eq(resourceFts.id, resource.id))
       .where(() => {
         const where: Array<SQL<unknown> | undefined> = [
           inArray(resource.id, resourceIdsQuery),
         ];
 
+        // Search
         if (filter.search) {
           where.push(sql`${resourceFts} MATCH ${filter.search}`);
         }

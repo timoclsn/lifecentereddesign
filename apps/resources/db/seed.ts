@@ -30,38 +30,129 @@ const main = async () => {
       id,
       name,
       description,
-      details
+      details,
+      creator_names,
+      creator_descriptions,
+      creator_details,
     );`,
   );
 
   await db.run(
     sql`CREATE TRIGGER insert_resource_fts after INSERT on resource
-      begin
+      BEGIN
+        -- Insert the resource
         INSERT INTO resource_fts (id, name, description, details)
         VALUES (NEW.id, NEW.name, NEW.description, NEW.details);
-      end;
+      END;
     `,
   );
 
   await db.run(
     sql`CREATE TRIGGER update_resource_fts after UPDATE on resource
-      begin
+      BEGIN
+        -- Update the resource with new values
         UPDATE resource_fts
-          SET
-            name = NEW.name,
-            description = NEW.description,
-            details = NEW.details
-          WHERE id = NEW.id;
-      end;
+        SET
+          name = NEW.name,
+          description = NEW.description,
+          details = NEW.details
+        WHERE id = NEW.id;
+
+        -- Update the creator fields of all resources that have this creator
+        UPDATE resource_fts
+        SET 
+          creator_names = (
+            SELECT GROUP_CONCAT(r.name, '; ')
+            FROM resource_to_creator rtc
+            JOIN resource r ON rtc.creator_id = r.id
+            WHERE rtc.resource_id = resource_fts.id
+          ),
+          creator_descriptions = (
+            SELECT GROUP_CONCAT(r.description, '; ')
+            FROM resource_to_creator rtc
+            JOIN resource r ON rtc.creator_id = r.id
+            WHERE rtc.resource_id = resource_fts.id
+          ),
+          creator_details = (
+            SELECT GROUP_CONCAT(r.details, '; ')
+            FROM resource_to_creator rtc
+            JOIN resource r ON rtc.creator_id = r.id
+            WHERE rtc.resource_id = resource_fts.id
+          )
+        WHERE EXISTS (
+          SELECT 1
+          FROM resource_to_creator rtc
+          WHERE rtc.creator_id = NEW.id AND rtc.resource_id = resource_fts.id
+        );
+      END;
     `,
   );
 
   await db.run(
     sql`CREATE TRIGGER delete_resource_fts after DELETE on resource
-      begin
+      BEGIN
+        -- Delete the resource
         DELETE FROM resource_fts
         WHERE id = OLD.id;
-      end;
+      END;
+    `,
+  );
+
+  await db.run(
+    sql`CREATE TRIGGER insert_creator_fts after INSERT on resource_to_creator
+    BEGIN
+      -- Update the creator fields of the resource
+      UPDATE resource_fts
+      SET 
+        creator_names = (
+          SELECT GROUP_CONCAT(r.name, '; ')
+          FROM resource_to_creator rtc
+          JOIN resource r ON rtc.creator_id = r.id
+          WHERE rtc.resource_id = NEW.resource_id
+        ),
+        creator_descriptions = (
+          SELECT GROUP_CONCAT(r.description, '; ')
+          FROM resource_to_creator rtc
+          JOIN resource r ON rtc.creator_id = r.id
+          WHERE rtc.resource_id = NEW.resource_id
+        ),
+        creator_details = (
+          SELECT GROUP_CONCAT(r.details, '; ')
+          FROM resource_to_creator rtc
+          JOIN resource r ON rtc.creator_id = r.id
+          WHERE rtc.resource_id = NEW.resource_id
+        )
+      WHERE id = NEW.resource_id;
+    END;
+    `,
+  );
+
+  await db.run(
+    sql`CREATE TRIGGER delete_creator_fts after DELETE on resource_to_creator
+    BEGIN
+      -- Update the creator fields of the resource
+      UPDATE resource_fts
+      SET 
+        creator_names = (
+          SELECT GROUP_CONCAT(r.name, '; ')
+          FROM resource_to_creator rtc
+          JOIN resource r ON rtc.creator_id = r.id
+          WHERE rtc.resource_id = NEW.resource_id
+        ),
+        creator_descriptions = (
+          SELECT GROUP_CONCAT(r.description, '; ')
+          FROM resource_to_creator rtc
+          JOIN resource r ON rtc.creator_id = r.id
+          WHERE rtc.resource_id = NEW.resource_id
+        ),
+        creator_details = (
+          SELECT GROUP_CONCAT(r.details, '; ')
+          FROM resource_to_creator rtc
+          JOIN resource r ON rtc.creator_id = r.id
+          WHERE rtc.resource_id = NEW.resource_id
+        )
+      WHERE id = NEW.resource_id;
+    END;
     `,
   );
 
