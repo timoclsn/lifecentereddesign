@@ -11,7 +11,8 @@
     "test": "jest",
     "db:push": "drizzle-kit push:sqlite",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "tsx ./db/seed.ts"
+    "db:seed": "tsx ./db/seed.ts",
+    "db:reset": "rm ./local.db && pnpm db:push && pnpm db:seed"
   },
   "dependencies": {
     "@clerk/nextjs": "5.0.0-beta.28",
