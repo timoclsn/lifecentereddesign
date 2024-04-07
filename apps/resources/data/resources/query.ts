@@ -234,13 +234,13 @@ export const getResourcesNew = createQuery({
             resources.push(createResource(row));
           } else {
             if (row.topic) {
-              const { topic } = row;
-              if (!resource.topics.some((t) => t.id === topic.id))
+              if (!resource.topics.some((topic) => topic.id === row.topic?.id))
                 resource.topics.push(row.topic);
             }
             if (row.creator) {
-              const { creator } = row;
-              if (!resource.creators.some((t) => t.id === creator.id))
+              if (
+                !resource.creators.some((topic) => topic.id === row.creator?.id)
+              )
                 resource.creators.push(row.creator);
             }
           }
