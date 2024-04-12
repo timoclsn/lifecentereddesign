@@ -569,17 +569,15 @@ export const getResourcesCount = createQuery({
       tags: ['resources-count'],
     },
   },
-  query: async ({ ctx }) => {
-    const { db } = ctx;
+  query: async () => {
     await wait(2000);
 
-    const counts = (await Promise.all(
-      resourceTypes.map((type) => {
-        // @ts-expect-error: Dynamic table access doesn't work on type level
-        return db[type].count();
-      }),
-    )) as Array<number>;
+    const [result] = await dbNew
+      .select({
+        count: count(),
+      })
+      .from(resource);
 
-    return counts.reduce((acc, curr) => acc + curr, 0);
+    return result.count;
   },
 });
