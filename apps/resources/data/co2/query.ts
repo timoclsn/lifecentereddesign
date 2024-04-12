@@ -32,7 +32,7 @@ export const getConsumtion = createQuery({
   cache: {
     keyParts: ['co2'],
     options: {
-      revalidate: 60,
+      revalidate: 3600,
       tags: ['co2'],
     },
   },

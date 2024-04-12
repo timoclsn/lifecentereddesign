@@ -255,7 +255,7 @@ export const getResources = createQuery({
   cache: {
     keyParts: ['resources'],
     options: {
-      revalidate: 60,
+      revalidate: 3600,
       tags: ['resources'],
     },
   },
@@ -320,7 +320,7 @@ export const getResource = createQuery({
     return {
       keyParts: [tag],
       options: {
-        revalidate: 60,
+        revalidate: 3600,
         tags: [tag],
       },
     };
@@ -368,7 +368,7 @@ export const getResourceLikesData = createQuery({
     return {
       keyParts: [tag],
       options: {
-        revalidate: 60,
+        revalidate: 3600,
         tags: [tag],
       },
     };
@@ -443,7 +443,7 @@ export const getResourceComments = createQuery({
     return {
       keyParts: [tag],
       options: {
-        revalidate: 60,
+        revalidate: 3600,
         tags: [tag],
       },
     };
@@ -477,7 +477,7 @@ export const getCommentsCount = createQuery({
     return {
       keyParts: [`commentscount-${type}-${id}`],
       options: {
-        revalidate: 60,
+        revalidate: 3600,
         tags: [tag],
       },
     };
@@ -543,7 +543,7 @@ export const getOgImageLink = createQuery({
     return {
       keyParts: [tag],
       options: {
-        revalidate: 60,
+        revalidate: 3600,
         tags: [tag],
       },
     };
@@ -565,7 +565,7 @@ export const getResourcesCount = createQuery({
   cache: {
     keyParts: ['resources-count'],
     options: {
-      revalidate: 60,
+      revalidate: 3600,
       tags: ['resources-count'],
     },
   },
