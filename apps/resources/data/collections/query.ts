@@ -9,7 +9,7 @@ export const getCollections = createQuery({
   cache: {
     keyParts: ['collections'],
     options: {
-      revalidate: 60,
+      revalidate: 3600,
       tags: ['collections'],
     },
   },
@@ -34,7 +34,7 @@ export const getResourceCollections = createQuery({
     return {
       keyParts: [tag],
       options: {
-        revalidate: 60,
+        revalidate: 3600,
         tags: [tag],
       },
     };
@@ -69,7 +69,7 @@ export const getCollection = createQuery({
     return {
       keyParts: [tag],
       options: {
-        revalidate: 60,
+        revalidate: 3600,
         tags: [tag],
       },
     };
