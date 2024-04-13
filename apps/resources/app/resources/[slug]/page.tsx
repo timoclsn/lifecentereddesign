@@ -1,37 +1,36 @@
 import { query } from 'api/query';
+import { notFound } from 'next/navigation';
 import { Comments } from '../../../components/Comments/Comments';
 import { NewResources } from '../../../components/NewResources/NewResources';
 import { Newsletter } from '../../../components/Newsletter/Newsletter';
-import { RelatedResources } from '../../../components/RelatedResources/RelatedResources';
-import { ResourceCard } from '../../../components/ResourceCard/ResourceCard';
+import { ResourceDetailCard } from '../../../components/ResourceCard/ResourceCard';
 import { createGenerateMetadata } from '../../../lib/metadata';
-import { getBaseUrl, parseResourceSlug } from '../../../lib/utils/utils';
+import { getBaseUrl } from '../../../lib/utils/utils';
 
 export const generateMetadata = createGenerateMetadata(async ({ params }) => {
   const { slug } = params;
-  const { resourceId, resourceType } = parseResourceSlug(slug);
 
-  try {
-    var resource = await query.resources.getResource({
-      id: resourceId,
-      type: resourceType,
-    });
-  } catch (error) {
-    return {};
+  const [resource] = await query.resources.getResourcesNew({
+    filter: {
+      id: [slug],
+    },
+  });
+
+  if (!resource) {
+    notFound();
   }
 
   const ogImageLink = await query.resources.getOgImageLink({
-    id: resourceId,
-    type: resourceType,
-    url: resource.link || '',
+    id: resource.id,
+    url: resource.link,
   });
 
-  const title = 'name' in resource ? resource.name : resource.title;
+  const title = resource.name;
   const description =
     'A resource from LifeCenteredDesign.Net: A curated directory of resources around Life-centered Design and related fields.';
-  const type = resource.type;
-  const category = resource.category ? resource.category.name : '';
-  const link = resource.link || '';
+  const type = resource.type?.name || '';
+  const category = resource.category?.name || '';
+  const link = resource.link;
 
   const searchParams = new URLSearchParams();
   searchParams.set('title', title);
@@ -71,17 +70,12 @@ interface Props {
 
 const ResourcePage = async ({ params }: Props) => {
   const { slug } = params;
-  const { resourceId, resourceType } = parseResourceSlug(slug);
 
   return (
     <>
-      <ResourceCard
-        resourceId={resourceId}
-        resourceType={resourceType}
-        showPreview
-      />
-      <Comments resourceId={resourceId} resourceType={resourceType} />
-      <RelatedResources resourceId={resourceId} resourceType={resourceType} />
+      <ResourceDetailCard id={slug} showPreview />
+      <Comments id={slug} />
+      {/* <RelatedResources resourceId={resourceId} resourceType={resourceType} /> */}
       <NewResources />
       <Newsletter />
     </>

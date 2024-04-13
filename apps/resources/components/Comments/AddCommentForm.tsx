@@ -4,7 +4,6 @@ import { action } from 'api/action';
 import { cva } from 'cva';
 import { Button, InfoBox } from 'design-system';
 import { useAction } from 'lib/data/client';
-import { ContentType } from 'lib/resources';
 import { track } from 'lib/tracking';
 import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { useRef } from 'react';
@@ -23,11 +22,10 @@ const errorStyles =
   'absolute left-0 bottom-0 -mb-4 text-red-700 text-sm slide-in-from-top-full duration-100 ease-in-out fade-in animate-in';
 
 interface Props {
-  resourceId: number;
-  resourceType: ContentType;
+  id: string;
 }
 
-export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
+export const AddCommentForm = ({ id }: Props) => {
   const formRef = useRef<HTMLFormElement>(null);
   const textInputRef = useRef<HTMLTextAreaElement>(null);
   const { error, validationErrors, runAction, isRunning } = useAction(
@@ -40,10 +38,7 @@ export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
           document.activeElement.blur();
         }
 
-        track('Comment Added', {
-          id: resourceId,
-          type: resourceType,
-        });
+        track('Comment Added', { id });
       },
       onError: () => {
         if (!textInputRef.current) return;
@@ -62,8 +57,7 @@ export const AddCommentForm = ({ resourceId, resourceType }: Props) => {
       ref={formRef}
       action={(formData) => {
         runAction({
-          id: resourceId,
-          type: resourceType,
+          id,
           text: String(formData.get('text')),
         });
       }}

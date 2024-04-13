@@ -5,18 +5,16 @@ import { track } from 'lib/tracking';
 import { Check, Share } from 'lucide-react';
 import { useState } from 'react';
 import { getBaseUrl, wait } from '../../lib/utils/utils';
-import { ContentType } from 'lib/resources';
 
 interface Props {
-  title: string;
-  resourceId: number;
-  resourceType: ContentType;
+  id: string;
+  name: string;
 }
 
-export const ShareButton = ({ title, resourceId, resourceType }: Props) => {
+export const ShareButton = ({ id, name }: Props) => {
   const [copied, setCopied] = useState(false);
 
-  const link = `${getBaseUrl()}/resources/${resourceType}-${resourceId}`;
+  const link = `${getBaseUrl()}/resources/${id}`;
   const text = 'Check out this resource I found on LifeCenteredDesign.Net 🌱';
   const tooltip = 'Share resource link';
 
@@ -25,7 +23,7 @@ export const ShareButton = ({ title, resourceId, resourceType }: Props) => {
 
     if (navigator.share) {
       navigator.share({
-        title,
+        title: name,
         text,
         url: link,
       });
@@ -36,9 +34,7 @@ export const ShareButton = ({ title, resourceId, resourceType }: Props) => {
       setCopied(false);
     }
 
-    track('Share Resource Link', {
-      link,
-    });
+    track('Share Resource Link', { id, link });
   };
 
   return (

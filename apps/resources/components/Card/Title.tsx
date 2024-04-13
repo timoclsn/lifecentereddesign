@@ -1,27 +1,17 @@
 'use client';
 
-import { ContentType } from 'lib/resources';
 import { Heading } from 'design-system';
 import { ExternalLink } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 interface Props {
   children: string;
-  resourceId: number;
-  resourceType: ContentType;
-  resourceLink?: string;
+  slug: string;
 }
 
-export const Title = ({
-  children,
-  resourceId,
-  resourceType,
-  resourceLink,
-}: Props) => {
+export const Title = ({ children, slug }: Props) => {
   const pathname = usePathname();
-  const isDetailPage = pathname === `/resources/${resourceType}-${resourceId}`;
-
-  const showExternalLinkIcon = isDetailPage && resourceLink;
+  const isDetailPage = pathname === `/resources/${slug}`;
   return (
     <Heading
       level="3"
@@ -29,7 +19,7 @@ export const Title = ({
       className="group-hover/card:pointer-events-none group-hover/card:cursor-pointer group-hover/card:underline"
     >
       {children}
-      {showExternalLinkIcon && (
+      {isDetailPage && (
         <span>
           {' '}
           <ExternalLink size={18} className="inline align-baseline" />

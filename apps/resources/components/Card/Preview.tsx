@@ -5,15 +5,13 @@ import Image from 'next/image';
 
 interface Props {
   url: string;
-  resourceId: number;
-  resourceType: ContentType;
+  id: string;
 }
 
-export const Preview = ({ url, resourceId, resourceType }: Props) => {
+export const Preview = ({ url, id }: Props) => {
   const promise = query.resources.getOgImageLink({
-    id: resourceId,
-    type: resourceType,
     url,
+    id,
   });
 
   return (

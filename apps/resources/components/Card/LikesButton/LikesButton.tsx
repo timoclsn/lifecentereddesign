@@ -1,53 +1,94 @@
-import { auth } from '@clerk/nextjs/server';
-import { query } from 'api/query';
-import { ContentType } from 'lib/resources';
+'use client';
+
+import { useAuth } from '@clerk/nextjs';
+import { action } from 'api/action';
+import { cva } from 'cva';
+import { Tooltip } from 'design-system';
+import { useAction } from 'lib/data/client';
+import { track } from 'lib/tracking';
 import { Heart } from 'lucide-react';
-import { Await } from '../../Await/Await';
-import { LikesButtonClient } from './LikesButtonClient';
+import { useOptimistic, useTransition } from 'react';
+import { SolidHeart } from '../../Icons/SolidHeart';
+
+const heartVariants = cva({
+  base: 'group-hover:scale-110 group-active:scale-90 transition-transform ease',
+  variants: {
+    active: {
+      true: 'text-red-700',
+    },
+  },
+});
 
 interface Props {
-  resourceId: number;
-  resourceType: ContentType;
-  resourceTitle: string;
+  id: string;
+  count: number;
+  liked: boolean;
 }
 
-export const LikesButton = async ({
-  resourceId,
-  resourceType,
-  resourceTitle,
-}: Props) => {
-  const { userId } = auth();
-  const promise = query.resources.getResourceLikesData({
-    id: resourceId,
-    type: resourceType,
-  });
-  return (
-    <Await promise={promise} loading={<Loading />}>
-      {({ newLikes, oldLikesCount }) => {
-        const count = oldLikesCount + newLikes.length;
-        const liked = userId
-          ? newLikes.some((like) => like.userId === userId)
-          : false;
-        return (
-          <LikesButtonClient
-            resourceId={resourceId}
-            resourceType={resourceType}
-            resourceTitle={resourceTitle}
-            count={count}
-            liked={liked}
-          />
-        );
-      }}
-    </Await>
+export const LikesButton = ({ id, count, liked }: Props) => {
+  const { isSignedIn } = useAuth();
+  let [, startTransition] = useTransition();
+  const { runAction: runLikeAction, isRunning: isLikeRunning } = useAction(
+    action.resources.like,
+    {
+      onSuccess: () => {
+        track('Like resource', { id });
+      },
+    },
   );
-};
+  const { runAction: runUnLikeAction, isRunning: isUnLikeRunning } = useAction(
+    action.resources.unLike,
+    {
+      onSuccess: () => {
+        track('Un-like resource', { id });
+      },
+    },
+  );
+  const isRunning = isLikeRunning || isUnLikeRunning;
 
-const Loading = () => {
+  const [optimisticCount, setOptimisticCount] = useOptimistic(count);
+  const [optimisticLiked, setOptimisticLiked] = useOptimistic(liked);
+
+  const handleClick = async () => {
+    startTransition(async () => {
+      if (liked) {
+        // Un-like
+        setOptimisticCount(optimisticCount - 1);
+        setOptimisticLiked(false);
+        await runUnLikeAction({ id });
+      } else {
+        // Like
+        setOptimisticCount(optimisticCount + 1);
+        setOptimisticLiked(true);
+        await runLikeAction({ id });
+      }
+    });
+  };
   return (
-    <div className="ease group flex items-center justify-center gap-2 disabled:opacity-80">
-      <div>
-        <Heart className="animate-pulse" />
-      </div>
-    </div>
+    <button
+      onClick={handleClick}
+      disabled={!isSignedIn || isRunning}
+      className="ease group relative flex items-center justify-center gap-2 disabled:opacity-80"
+    >
+      <div>{optimisticCount}</div>
+      <Tooltip
+        content={
+          isSignedIn
+            ? optimisticLiked
+              ? 'Remove resource from your favourites'
+              : 'Like resource to show support and mark as favourite'
+            : 'Sign in to like resources'
+        }
+        delayDuration={500}
+      >
+        <div>
+          {optimisticLiked ? (
+            <SolidHeart className={heartVariants({ active: true })} />
+          ) : (
+            <Heart className={heartVariants({ active: false })} />
+          )}
+        </div>
+      </Tooltip>
+    </button>
   );
 };

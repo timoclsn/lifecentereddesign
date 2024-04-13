@@ -7,39 +7,40 @@ export interface TrackingEvents {
   'Download Resources': null;
   'Resource Suggestion': null;
   'Copy Resource Link': {
+    id: string;
     link: string;
   };
   'Open resource': {
-    name: string;
-    type: ContentType;
+    id: string;
   };
   'Share Resource Link': {
+    id: string;
     link: string;
   };
   'Like resource': {
-    name: string;
-    type: ContentType;
+    id: string;
   };
   'Un-like resource': {
-    name: string;
-    type: ContentType;
+    id: string;
   };
   'Comment Added': {
-    id: number;
-    type: ContentType;
+    id: string;
   };
   'Uncaught error': {
     message: string;
   };
   'Newsletter Signup': null;
   'Filter resources by type': {
-    type: string;
+    id: number;
+    name: string;
   };
   'Filter resources by category': {
-    category: string;
+    id: number;
+    name: string;
   };
   'Filter resources by topic': {
-    topic: string;
+    id: number;
+    name: string;
   };
   'Sort resources': {
     by: string;

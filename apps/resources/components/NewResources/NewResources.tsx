@@ -11,11 +11,14 @@ import { AlertTriangle, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Await } from '../Await/Await';
-import { getCardComponent } from '../utils';
+import { Card as ResourceCard } from '../Card/Card';
 import groundImg from './ground.jpg';
 
 export const NewResources = () => {
-  const promise = query.resources.getResources();
+  const promise = query.resources.getResourcesNew({
+    limit: 10,
+    orderBy: 'date',
+  });
   return (
     <Bleed>
       <section id="new-resources">
@@ -33,25 +36,17 @@ export const NewResources = () => {
           </li>
           <Await promise={promise} loading={<Loading />} error={<Error />}>
             {(resources) => {
-              const resourcesToDisplay = resources
-                .sort(
-                  (a, b) =>
-                    new Date(b.createdAt).getTime() -
-                    new Date(a.createdAt).getTime(),
-                )
-                .slice(0, 10);
               return (
                 <>
-                  {resourcesToDisplay.map((resource) => {
-                    const component = getCardComponent(resource);
+                  {resources.map((resource) => {
                     return (
                       <Track
                         as="li"
-                        key={`${resource.type}-${resource.id}`}
+                        key={resource.id}
                         event="New resource clicked"
                         className="relative w-[330px] flex-none snap-center snap-always sm:w-[600px]"
                       >
-                        {component}
+                        <ResourceCard resource={resource} />
                       </Track>
                     );
                   })}

@@ -1,5 +1,6 @@
 import { createClient } from '@libsql/client';
 import 'dotenv/config';
+import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/libsql';
 import {
   category,
@@ -11,7 +12,6 @@ import {
   topic,
   type,
 } from './schema';
-import { sql } from 'drizzle-orm';
 
 const COUNT = 10;
 
@@ -32,8 +32,6 @@ const main = async () => {
       description,
       details,
       creator_names,
-      creator_descriptions,
-      creator_details,
     );`,
   );
 
@@ -63,18 +61,6 @@ const main = async () => {
         SET 
           creator_names = (
             SELECT GROUP_CONCAT(r.name, '; ')
-            FROM resource_to_creator rtc
-            JOIN resource r ON rtc.creator_id = r.id
-            WHERE rtc.resource_id = resource_fts.id
-          ),
-          creator_descriptions = (
-            SELECT GROUP_CONCAT(r.description, '; ')
-            FROM resource_to_creator rtc
-            JOIN resource r ON rtc.creator_id = r.id
-            WHERE rtc.resource_id = resource_fts.id
-          ),
-          creator_details = (
-            SELECT GROUP_CONCAT(r.details, '; ')
             FROM resource_to_creator rtc
             JOIN resource r ON rtc.creator_id = r.id
             WHERE rtc.resource_id = resource_fts.id
@@ -109,18 +95,6 @@ const main = async () => {
           FROM resource_to_creator rtc
           JOIN resource r ON rtc.creator_id = r.id
           WHERE rtc.resource_id = NEW.resource_id
-        ),
-        creator_descriptions = (
-          SELECT GROUP_CONCAT(r.description, '; ')
-          FROM resource_to_creator rtc
-          JOIN resource r ON rtc.creator_id = r.id
-          WHERE rtc.resource_id = NEW.resource_id
-        ),
-        creator_details = (
-          SELECT GROUP_CONCAT(r.details, '; ')
-          FROM resource_to_creator rtc
-          JOIN resource r ON rtc.creator_id = r.id
-          WHERE rtc.resource_id = NEW.resource_id
         )
       WHERE id = NEW.resource_id;
     END;
@@ -135,18 +109,6 @@ const main = async () => {
       SET 
         creator_names = (
           SELECT GROUP_CONCAT(r.name, '; ')
-          FROM resource_to_creator rtc
-          JOIN resource r ON rtc.creator_id = r.id
-          WHERE rtc.resource_id = NEW.resource_id
-        ),
-        creator_descriptions = (
-          SELECT GROUP_CONCAT(r.description, '; ')
-          FROM resource_to_creator rtc
-          JOIN resource r ON rtc.creator_id = r.id
-          WHERE rtc.resource_id = NEW.resource_id
-        ),
-        creator_details = (
-          SELECT GROUP_CONCAT(r.details, '; ')
           FROM resource_to_creator rtc
           JOIN resource r ON rtc.creator_id = r.id
           WHERE rtc.resource_id = NEW.resource_id
@@ -180,8 +142,9 @@ const main = async () => {
   // Insert resources
   await db.insert(resource).values(
     Array.from({ length: COUNT }, (_, i) => ({
+      id: String(i + 1),
       name: `Resource ${i + 1}`,
-      link: `Link ${i + 1}`,
+      link: `https://example.com/${i + 1}`,
       typeId: Math.floor(Math.random() * COUNT) + 1,
       categoryId: Math.floor(Math.random() * COUNT) + 1,
     })),
@@ -190,7 +153,7 @@ const main = async () => {
   // Link resources to topics
   await db.insert(resourceToTopic).values(
     Array.from({ length: COUNT }, (_, i) => ({
-      resourceId: i + 1,
+      resourceId: String(i + 1),
       topicId: i + 1,
     })),
   );
@@ -198,8 +161,8 @@ const main = async () => {
   // Link resources to creators
   await db.insert(resourceToCreator).values(
     Array.from({ length: COUNT }, (_, i) => ({
-      resourceId: i + 1,
-      creatorId: i + 1,
+      resourceId: String(i + 1),
+      creatorId: String(i + 1),
     })),
   );
 
@@ -207,7 +170,7 @@ const main = async () => {
   await db.insert(like).values(
     Array.from({ length: 50 }, (_, i) => ({
       userId: `userId-${i + 1}`,
-      resourceId: Math.floor(Math.random() * COUNT) + 1,
+      resourceId: String(Math.floor(Math.random() * COUNT) + 1),
     })),
   );
 
@@ -215,7 +178,7 @@ const main = async () => {
   await db.insert(comment).values(
     Array.from({ length: 50 }, (_, i) => ({
       userId: `userId-${i + 1}`,
-      resourceId: Math.floor(Math.random() * COUNT) + 1,
+      resourceId: String(Math.floor(Math.random() * COUNT) + 1),
       text: `Comment ${i + 1}`,
     })),
   );

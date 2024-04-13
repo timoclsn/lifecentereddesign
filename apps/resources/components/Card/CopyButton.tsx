@@ -1,16 +1,17 @@
 'use client';
 
 import { Tag, Tooltip } from 'design-system';
+import { track } from 'lib/tracking';
 import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
 import { wait } from '../../lib/utils/utils';
-import { track } from 'lib/tracking';
 
 interface Props {
+  id: string;
   link: string;
 }
 
-export const CopyButton = ({ link }: Props) => {
+export const CopyButton = ({ id, link }: Props) => {
   const [copied, setCopied] = useState(false);
   const tooltip = 'Copy resource link';
 
@@ -18,9 +19,7 @@ export const CopyButton = ({ link }: Props) => {
     if (!navigator.clipboard) return;
     setCopied(true);
     navigator.clipboard.writeText(link);
-    track('Copy Resource Link', {
-      link,
-    });
+    track('Copy Resource Link', { id, link });
     await wait(3000);
     setCopied(false);
   };

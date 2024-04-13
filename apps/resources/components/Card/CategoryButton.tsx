@@ -9,13 +9,14 @@ import { useFilter } from '../../hooks/useFilter';
 
 interface Props {
   children: ReactNode;
-  category: string;
+  categoryId: number;
 }
 
-export const CategoryButton = ({ children, category }: Props) => {
+export const CategoryButton = ({ children, categoryId }: Props) => {
   const { handleValueChange, searchParams, isPending } = useFilter();
   const searchParamsCategory = searchParams.get('category');
-  const isFiltered = searchParamsCategory === category;
+  const categoryIdString = String(categoryId);
+  const isFiltered = searchParamsCategory === categoryIdString;
   const { inContext } = useResourcesTable();
 
   const handleClick = () => {
@@ -23,7 +24,7 @@ export const CategoryButton = ({ children, category }: Props) => {
       handleValueChange('category', '');
       return;
     }
-    handleValueChange('category', category);
+    handleValueChange('category', categoryIdString);
   };
 
   const tag = (children: ReactNode) => <Tag variant="light">{children}</Tag>;
@@ -31,7 +32,7 @@ export const CategoryButton = ({ children, category }: Props) => {
   if (!inContext) {
     return (
       <Link
-        href={`/resources?category=${category}#resources`}
+        href={`/resources?category=${categoryIdString}#resources`}
         className="relative hover:opacity-80"
       >
         {tag(children)}

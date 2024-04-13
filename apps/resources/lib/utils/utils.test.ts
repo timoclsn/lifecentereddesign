@@ -1,13 +1,13 @@
 import {
   formatType,
   formateDate,
-  getBaseUrl,
   getHostname,
   isExternalUrl,
+  isUrl,
   minDelay,
   parseResourceSlug,
+  sluggify,
   wait,
-  isUrl,
 } from './utils';
 
 describe('getHostname', () => {
@@ -145,5 +145,36 @@ describe('isUrl', () => {
     const url = '';
     const result = isUrl(url);
     expect(result).toBe(false);
+  });
+});
+describe('sluggify', () => {
+  it('should convert text to lowercase and replace spaces with dashes', () => {
+    const text = 'Hello World';
+    const result = sluggify(text);
+    expect(result).toBe('hello-world');
+  });
+
+  it('should remove special characters from the text', () => {
+    const text = 'Hello!@#$%^&*()_+{}|:"<>? World';
+    const result = sluggify(text);
+    expect(result).toBe('hello-world');
+  });
+
+  it('should handle empty string input', () => {
+    const text = '';
+    const result = sluggify(text);
+    expect(result).toBe('');
+  });
+
+  it('should handle text with only special characters', () => {
+    const text = '!@#$%^&*()_+{}|:"<>?';
+    const result = sluggify(text);
+    expect(result).toBe('');
+  });
+
+  it('should handle text with only spaces', () => {
+    const text = '     ';
+    const result = sluggify(text);
+    expect(result).toBe('');
   });
 });

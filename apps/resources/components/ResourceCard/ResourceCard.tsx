@@ -1,34 +1,25 @@
 import { query } from 'api/query';
-import { ContentType } from 'lib/resources';
 import { Card, getRandomCardVariant } from 'design-system';
 import { AlertTriangle } from 'lucide-react';
 import { Await } from '../Await/Await';
-import { getCardComponent } from '../utils';
+import { Card as ResourceCard } from '../Card/Card';
 
 interface Props {
-  resourceId: number;
-  resourceType: ContentType;
+  id: string;
   showPreview?: boolean;
 }
 
-export const ResourceCard = ({
-  resourceId,
-  resourceType,
-  showPreview,
-}: Props) => {
-  const resource = query.resources.getResource({
-    id: resourceId,
-    type: resourceType,
+export const ResourceDetailCard = ({ id, showPreview }: Props) => {
+  const promise = query.resources.getResourcesNew({
+    filter: {
+      id: [id],
+    },
   });
   return (
     <section>
-      <Await promise={resource} loading={<Loading />} error={<Error />}>
-        {(resource) => (
-          <>
-            {getCardComponent(resource, {
-              showPreview,
-            })}
-          </>
+      <Await promise={promise} loading={<Loading />} error={<Error />}>
+        {([resource]) => (
+          <ResourceCard resource={resource} showPreview={showPreview} />
         )}
       </Await>
     </section>

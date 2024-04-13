@@ -100,3 +100,14 @@ export const isUrl = (url: string) => {
   const result = z.string().url().safeParse(url);
   return result.success;
 };
+
+/**
+ * Converts a given text into a slug format.
+ * @param text - The text to be converted into a slug.
+ * @returns The slugified version of the input text.
+ */
+export const sluggify = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/ /g, '-')
+    .replace(/[^\w-]+/g, '');

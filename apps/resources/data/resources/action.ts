@@ -1,80 +1,53 @@
 'use server';
 
-import { auth } from '@clerk/nextjs/server';
 import { createAction, createProtectedAction } from 'data/clients';
+import { and, eq } from 'drizzle-orm';
+import { db as dbNew } from 'lib/db';
 import { resourceTypes } from 'lib/resources';
-import { revalidateTag } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import nodemailer from 'nodemailer';
 import { z } from 'zod';
-import { resourceCommentsTag, resourceLikesTag } from './query';
+import { comment, like as likeSchema } from '../../db/schema';
+import { resourceCommentsTag } from './query';
 
 const { SUGGESTION_MAIL_PASSWORD } = process.env;
 
-export const like = createAction({
+export const like = createProtectedAction({
   input: z.object({
-    id: z.number(),
-    type: z.enum(resourceTypes),
+    id: z.string(),
   }),
   action: async ({ input, ctx }) => {
-    const { id, type } = input;
-    const { db } = ctx;
-    const { userId } = auth();
+    const { id } = input;
+    const { userId } = ctx;
 
-    if (userId) {
-      await db.like.create({
-        data: {
-          userId,
-          type,
-          resourceId: id,
-        },
-      });
-    } else {
-      // @ts-expect-error: Dynamic table access doesn't work on type level
-      await prisma[type].update({
-        where: {
-          id,
-        },
-        data: {
-          likes: {
-            increment: 1,
-          },
-        },
-      });
-    }
+    await dbNew.insert(likeSchema).values({
+      resourceId: id,
+      userId,
+    });
 
-    const tag = resourceLikesTag(id, type);
-    revalidateTag(tag);
+    revalidatePath('/');
   },
 });
 
 export const unLike = createProtectedAction({
   input: z.object({
-    id: z.number(),
-    type: z.enum(resourceTypes),
+    id: z.string(),
   }),
   action: async ({ input, ctx }) => {
-    const { id, type } = input;
-    const { db, userId } = ctx;
+    const { id } = input;
+    const { userId } = ctx;
 
-    await db.like.delete({
-      where: {
-        userId_type_resourceId: {
-          userId,
-          type,
-          resourceId: id,
-        },
-      },
-    });
+    await dbNew
+      .delete(likeSchema)
+      .where(and(eq(likeSchema.resourceId, id), eq(likeSchema.userId, userId)));
 
-    const tag = resourceLikesTag(id, type);
-    revalidateTag(tag);
+    revalidatePath('/');
   },
 });
 
 export const addComment = createProtectedAction({
   input: z.object({
-    id: z.number(),
-    type: z.enum(resourceTypes),
+    id: z.string(),
     text: z
       .string()
       .min(3, { message: 'Your comment has to be at least 3 characters.' })
@@ -83,45 +56,37 @@ export const addComment = createProtectedAction({
       }),
   }),
   action: async ({ input, ctx }) => {
-    const { id, type, text } = input;
+    const { id, text } = input;
     const { db, userId } = ctx;
 
-    await db.comment.create({
-      data: {
-        userId,
-        resourceId: id,
-        type,
-        text,
-      },
+    await dbNew.insert(comment).values({
+      resourceId: id,
+      userId,
+      text,
     });
-    const tag = resourceCommentsTag(id, type);
+
+    const tag = resourceCommentsTag(id);
     revalidateTag(tag);
   },
 });
 
 export const deleteComment = createProtectedAction({
   input: z.object({
-    resourceId: z.number(),
-    resourceType: z.enum(resourceTypes),
+    resourceId: z.string(),
     commentId: z.number(),
     commentUserId: z.string(),
   }),
   action: async ({ input, ctx }) => {
-    const { resourceId, resourceType, commentId, commentUserId } = input;
-    const { db, userId } = ctx;
+    const { resourceId, commentId, commentUserId } = input;
+    const { userId } = ctx;
 
     if (userId !== commentUserId) {
       throw new Error('You can only delete your own comments');
     }
 
-    await db.comment.delete({
-      where: {
-        id: commentId,
-        userId,
-      },
-    });
+    await dbNew.delete(comment).where(eq(comment.id, commentId));
 
-    const tag = resourceCommentsTag(resourceId, resourceType);
+    const tag = resourceCommentsTag(resourceId);
     revalidateTag(tag);
   },
 });

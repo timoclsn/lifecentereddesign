@@ -1,13 +1,11 @@
 import { auth } from '@clerk/nextjs/server';
-import { ContentType } from 'lib/resources';
 import { formatDistance, parseISO } from 'date-fns';
 import { Heading, Text } from 'design-system';
 import { Avatar } from './Avatar';
 import { DeleteCommentButton } from './DeleteCommentButton';
 
 interface Props {
-  resourceId: number;
-  resourceType: ContentType;
+  resourceId: string;
   commentId: number;
   userId: string;
   username: string;
@@ -18,7 +16,6 @@ interface Props {
 
 export const Comment = ({
   resourceId,
-  resourceType,
   commentId,
   userId,
   username,
@@ -48,7 +45,6 @@ export const Comment = ({
         {isAuthedUser && (
           <DeleteCommentButton
             resourceId={resourceId}
-            resourceType={resourceType}
             commentId={commentId}
             commentUserId={userId}
           />

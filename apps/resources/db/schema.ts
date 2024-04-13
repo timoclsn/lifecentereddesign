@@ -13,7 +13,7 @@ import {
 export const resource = sqliteTable(
   'resource',
   {
-    id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+    id: text('id', { mode: 'text', length: 256 }).primaryKey(),
     createdAt: integer('created_at', { mode: 'timestamp' })
       .notNull()
       .default(sql`(unixepoch())`),
@@ -38,8 +38,6 @@ export const resource = sqliteTable(
   (table) => ({
     typeIdx: index('type_idx').on(table.typeId),
     categoryIdx: index('category_idx').on(table.categoryId),
-    nameIdx: index('name_idx').on(table.name),
-    descriptionIdx: index('description_idx').on(table.description),
   }),
 );
 
@@ -62,10 +60,10 @@ export const resourceRelations = relations(resource, ({ one, many }) => ({
 export const resourceToCreator = sqliteTable(
   'resource_to_creator',
   {
-    resourceId: integer('resource_id')
+    resourceId: text('resource_id', { mode: 'text', length: 256 })
       .notNull()
       .references(() => resource.id),
-    creatorId: integer('creator_id')
+    creatorId: text('creator_id', { mode: 'text', length: 256 })
       .notNull()
       .references(() => resource.id),
   },
@@ -137,7 +135,7 @@ export const topicRelations = relations(topic, ({ many }) => ({
 export const resourceToTopic = sqliteTable(
   'resource_to_topic',
   {
-    resourceId: integer('resource_id')
+    resourceId: text('resource_id', { mode: 'text', length: 256 })
       .notNull()
       .references(() => resource.id),
     topicId: integer('topic_id')
@@ -173,7 +171,7 @@ export const like = sqliteTable(
       .notNull()
       .default(sql`(unixepoch())`),
     userId: text('user_id', { mode: 'text', length: 256 }).notNull(),
-    resourceId: integer('resource_id', { mode: 'number' })
+    resourceId: text('resource_id', { mode: 'text', length: 256 })
       .notNull()
       .references(() => resource.id),
   },
@@ -199,7 +197,7 @@ export const comment = sqliteTable(
       .notNull()
       .default(sql`(unixepoch())`),
     userId: text('user_id', { mode: 'text', length: 256 }).notNull(),
-    resourceId: integer('resource_id', { mode: 'number' })
+    resourceId: text('resource_id', { mode: 'text', length: 256 })
       .notNull()
       .references(() => resource.id),
     text: text('text', { mode: 'text' }).notNull(),

@@ -1,18 +1,8 @@
-import { auth } from '@clerk/nextjs/server';
-import {
-  Card as CardPrimitive,
-  CardProps,
-  Tag,
-  Text,
-  Tooltip,
-} from 'design-system';
-import { featureFlags } from 'lib/featureFlags';
-import { ContentType } from 'lib/resources';
-import { isExternalUrl } from 'lib/utils/utils';
-import { ExternalLink, LucideIcon, StickyNote, Users2 } from 'lucide-react';
-import { ReactNode } from 'react';
+import { NewResource } from 'data/resources/query';
+import { Card as CardPrimitive, Tag, Text, Tooltip } from 'design-system';
+import { formateDate, getHostname } from 'lib/utils/utils';
+import { CalendarDays, ExternalLink, StickyNote, Users2 } from 'lucide-react';
 import { CategoryButton } from './CategoryButton';
-import { CollectionButton } from './CollectionButton';
 import { CommentsButton } from './CommentsButton/CommentsButton';
 import { CopyButton } from './CopyButton';
 import { DetailsLink } from './DetailsLink';
@@ -24,70 +14,35 @@ import { Title } from './Title';
 import { TypeButton } from './TypeButton';
 
 interface Props {
-  resourceId: number;
-  resourceType: ContentType;
-  variant: CardProps['variant'];
-  displayType: string;
-  title: string;
-  showType?: boolean;
-  metaInfos?: Array<{
-    icon: LucideIcon;
-    text: string | ReactNode;
-  }>;
-  category?: string;
-  tags?: Array<{
-    icon?: LucideIcon;
-    text: string;
-    url: string;
-  }>;
-  description?: string | null;
-  suggestion?: boolean;
-  note?: string | null;
+  resource: NewResource;
   showPreview?: boolean;
 }
 
-export const Card = async ({
-  resourceId,
-  resourceType,
-  showType,
-  variant,
-  displayType,
-  title,
-  metaInfos,
-  category,
-  tags,
-  description,
-  suggestion = false,
-  note,
-  showPreview = false,
-}: Props) => {
-  const flags = await featureFlags();
-  const resourceLink = tags?.at(0)?.url;
-  const { userId } = auth();
+export const Card = async ({ resource, showPreview }: Props) => {
+  // const flags = await featureFlags();
+  // const { userId } = auth();
 
   return (
     <CardPrimitive
-      variant={variant}
+      // variant={variant}
       className="group/card @container relative flex h-full w-full flex-col gap-8"
     >
-      <DetailsLink
-        resourceId={resourceId}
-        resourceType={resourceType}
-        resourceLink={resourceLink}
-      />
+      <DetailsLink slug={resource.id} link={resource.link} />
 
       <div className="flex flex-1 flex-col items-start gap-8">
         <div className="flex w-full flex-wrap justify-between gap-2">
           <div className="flex items-center gap-2">
             {/* Type */}
-            {showType && (
-              <TypeButton type={resourceType}>{displayType}</TypeButton>
+            {resource.type && (
+              <TypeButton typeId={resource.type.id}>
+                {resource.type.name}
+              </TypeButton>
             )}
 
             {/* Note */}
-            {note && (
+            {resource.note && (
               <Tooltip
-                content={`Editor's note: ${note}`}
+                content={`Editor's note: ${resource.note}`}
                 openOnClick
                 className="relative"
               >
@@ -98,7 +53,7 @@ export const Card = async ({
             )}
 
             {/* User suggestion */}
-            {suggestion && (
+            {resource.suggestion && (
               <Tooltip
                 content="Resource suggested by the community ❤️"
                 openOnClick
@@ -114,117 +69,95 @@ export const Card = async ({
           <div className="flex items-center justify-center gap-3">
             {/* Comments */}
             <CommentsButton
-              resourceId={resourceId}
-              resourceType={resourceType}
+              commentsCount={resource.commentsCount}
+              slug={resource.id}
             />
 
             {/* Likes */}
             <LikesButton
-              resourceId={resourceId}
-              resourceType={resourceType}
-              resourceTitle={title}
+              id={resource.id}
+              count={resource.likesCount}
+              liked={resource.likedByUser}
             />
 
             {/* Copy Share Link */}
-            <ShareButton
-              title={title}
-              resourceId={resourceId}
-              resourceType={resourceType}
-            />
+            <ShareButton id={resource.id} name={resource.name} />
           </div>
         </div>
         <div className="@3xl:flex-row flex w-full flex-col justify-between gap-8">
           <div className="flex flex-col items-start gap-4 sm:mb-16">
             {/* Title */}
-            <Title
-              resourceId={resourceId}
-              resourceType={resourceType}
-              resourceLink={resourceLink}
-            >
-              {title}
-            </Title>
+            <Title slug={resource.id}>{resource.name}</Title>
 
             {/* Meta infos */}
-            {metaInfos && (
-              <ul className="text-text-secondary -mt-1 flex flex-wrap gap-x-2 gap-y-1 sm:gap-x-8 sm:gap-y-3">
-                {metaInfos.map((metaInfo, idx) => {
-                  return (
-                    <li key={idx} className="flex items-center gap-1">
-                      <metaInfo.icon size="18" className="flex-none" />
-                      <Text>{metaInfo.text}</Text>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
+            <ul className="text-text-secondary -mt-1 flex flex-wrap gap-x-2 gap-y-1 sm:gap-x-8 sm:gap-y-3">
+              {resource.date && (
+                <li className="flex items-center gap-1">
+                  <CalendarDays size="18" className="flex-none" />
+                  <Text>{formateDate(resource.date)}</Text>
+                </li>
+              )}
+            </ul>
 
             {/* Description */}
-            {description && (
-              <Text className="text-text-secondary">{description}</Text>
+            {resource.description && (
+              <Text className="text-text-secondary">
+                {resource.description}
+              </Text>
             )}
 
             {/* Add to collection */}
-            {flags.collections && userId && (
+            {/* {flags.collections && userId && (
               <CollectionButton
                 resourceId={resourceId}
                 resourceType={resourceType}
               />
-            )}
+            )} */}
           </div>
 
           {/* Preview */}
-          {showPreview && resourceLink && (
-            <Preview
-              url={resourceLink}
-              resourceId={resourceId}
-              resourceType={resourceType}
-            />
-          )}
+          {showPreview && <Preview url={resource.link} id={resource.id} />}
         </div>
       </div>
 
       <div
         className={`flex flex-wrap gap-3 ${
-          category ? 'justify-between' : 'justify-end'
+          resource.category ? 'justify-between' : 'justify-end'
         }`}
       >
         {/* Category */}
-        {category && (
-          <CategoryButton category={category}>{category}</CategoryButton>
+        {resource.category && (
+          <CategoryButton categoryId={resource.category.id}>
+            {resource.category.name}
+          </CategoryButton>
         )}
 
-        {/* Tags */}
-        {tags && tags.length > 0 && (
-          <div className="flex max-w-full flex-wrap gap-2">
-            {tags.map((tag, idx) => (
-              <ResourceLink
-                key={idx}
-                href={tag.url}
-                resourceType={resourceType}
-                resourceTitle={title}
-                className="max-w-full"
-              >
-                <Tag variant="dark">
-                  <div className="flex max-w-full items-center gap-1">
-                    {tag.icon && <tag.icon size="18" className="flex-none" />}
-                    <span className="flex-1 truncate" title={tag.text}>
-                      {tag.text}
-                    </span>
-                    {isExternalUrl(tag.url) && (
-                      <ExternalLink
-                        size={16}
-                        className="text-text-secondary flex-none"
-                      />
-                    )}
-                  </div>
-                </Tag>
-              </ResourceLink>
-            ))}
+        {/* Link */}
+        <div className="flex max-w-full flex-wrap gap-2">
+          <ResourceLink
+            id={resource.id}
+            link={resource.link}
+            className="max-w-full"
+          >
+            <Tag variant="dark">
+              <div className="flex max-w-full items-center gap-1">
+                <span
+                  className="flex-1 truncate"
+                  title={getHostname(resource.link)}
+                >
+                  {getHostname(resource.link)}
+                </span>
+                <ExternalLink
+                  size={16}
+                  className="text-text-secondary flex-none"
+                />
+              </div>
+            </Tag>
+          </ResourceLink>
 
-            {/* Copy Link Button*/}
-            {resourceLink && <CopyButton link={resourceLink} />}
-          </div>
-        )}
+          {/* Copy Link Button*/}
+          <CopyButton id={resource.id} link={resource.link} />
+        </div>
       </div>
     </CardPrimitive>
   );

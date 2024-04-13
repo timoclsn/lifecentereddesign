@@ -2,21 +2,18 @@ import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
 import { query } from 'api/query';
 import { Button, Container, Heading, InfoBox, Text } from 'design-system';
 import { AlertTriangle } from 'lucide-react';
-import { ContentType } from '../../lib/resources';
 import { AutoAnimate } from '../AutoAnimate/AutoAnimate';
 import { Await } from '../Await/Await';
 import { AddCommentForm } from './AddCommentForm';
 import { Comment } from './Comment';
 
 interface Props {
-  resourceId: number;
-  resourceType: ContentType;
+  id: string;
 }
 
-export const Comments = ({ resourceId, resourceType }: Props) => {
+export const Comments = ({ id }: Props) => {
   const commentsPromise = query.resources.getResourceComments({
-    id: resourceId,
-    type: resourceType,
+    id,
   });
   return (
     <section id="cmnts">
@@ -24,10 +21,7 @@ export const Comments = ({ resourceId, resourceType }: Props) => {
         <div className="mx-auto flex w-full max-w-lg flex-col gap-12">
           <Heading level="2">Comments</Heading>
           <SignedIn>
-            <AddCommentForm
-              resourceId={resourceId}
-              resourceType={resourceType}
-            />
+            <AddCommentForm id={id} />
           </SignedIn>
           <SignedOut>
             <div className="flex h-16 w-full flex-col items-stretch justify-center">
@@ -53,8 +47,7 @@ export const Comments = ({ resourceId, resourceType }: Props) => {
                         {comments.map((comment, index) => (
                           <li key={comment.id}>
                             <Comment
-                              resourceId={resourceId}
-                              resourceType={resourceType}
+                              resourceId={id}
                               commentId={comment.id}
                               userId={comment.userId}
                               username={comment.user?.username ?? 'anonymous'}

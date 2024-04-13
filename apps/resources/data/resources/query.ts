@@ -21,17 +21,20 @@ import { isUrl, wait } from 'lib/utils/utils';
 import 'server-only';
 import { z } from 'zod';
 
+export type NewResources = Awaited<ReturnType<typeof getResourcesNew>>;
+export type NewResource = NewResources[number];
+
 export const getResourcesNew = createQuery({
   input: z.object({
     limit: z.number().optional(),
     orderBy: z.enum(['date', 'name', 'likes', 'comments']).optional(),
     filter: z
       .object({
-        id: z.array(z.number()).optional(),
+        id: z.array(z.string()).optional(),
         type: z.array(z.number()).optional(),
         category: z.array(z.number()).optional(),
         topic: z.array(z.number()).optional(),
-        creator: z.array(z.number()).optional(),
+        creator: z.array(z.string()).optional(),
         search: z.string().optional().optional(),
       })
       .optional()
@@ -115,8 +118,8 @@ export const getResourcesNew = createQuery({
 
         // Filters
         if (filter.id) {
-          filter.id.forEach((resourceId) => {
-            where.push(eq(resource.id, resourceId));
+          filter.id.forEach((id) => {
+            where.push(eq(resource.id, id));
           });
         }
 
@@ -156,6 +159,7 @@ export const getResourcesNew = createQuery({
         createdAt: resource.createdAt,
         name: resource.name,
         description: resource.description,
+        note: resource.note,
         details: resource.details,
         link: resource.link,
         suggestion: resource.suggestion,
@@ -429,17 +433,16 @@ export const getLikedResources = createQuery({
   },
 });
 
-export const resourceCommentsTag = (resourceId: number, type: ContentType) =>
-  `comments-${type}-${resourceId}`;
+export const resourceCommentsTag = (resourceId: string) =>
+  `comments-${resourceId}`;
 
 export const getResourceComments = createQuery({
   input: z.object({
-    id: z.number(),
-    type: z.enum(resourceTypes),
+    id: z.string(),
   }),
   cache: ({ input }) => {
-    const { id, type } = input;
-    const tag = resourceCommentsTag(id, type);
+    const { id } = input;
+    const tag = resourceCommentsTag(id);
     return {
       keyParts: [tag],
       options: {
@@ -448,49 +451,15 @@ export const getResourceComments = createQuery({
       },
     };
   },
-  query: async ({ input, ctx }) => {
-    const { db } = ctx;
-    const { id, type } = input;
+  query: async ({ input }) => {
+    const { id } = input;
 
-    const comments = await db.comment.findMany({
-      where: {
-        resourceId: id,
-        type,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
+    const comments = await dbNew.query.comment.findMany({
+      where: eq(comment.resourceId, id),
+      orderBy: desc(comment.createdAt),
     });
 
     return withUserCollection(comments);
-  },
-});
-
-export const getCommentsCount = createQuery({
-  input: z.object({
-    id: z.number(),
-    type: z.enum(resourceTypes),
-  }),
-  cache: ({ input }) => {
-    const { id, type } = input;
-    const tag = resourceCommentsTag(id, type);
-    return {
-      keyParts: [`commentscount-${type}-${id}`],
-      options: {
-        revalidate: 3600,
-        tags: [tag],
-      },
-    };
-  },
-  query: async ({ input, ctx }) => {
-    const { id, type } = input;
-    const { db } = ctx;
-    return await db.comment.count({
-      where: {
-        resourceId: id,
-        type,
-      },
-    });
   },
 });
 
@@ -533,13 +502,12 @@ export const getCommentedResources = createQuery({
 
 export const getOgImageLink = createQuery({
   input: z.object({
-    id: z.number(),
-    type: z.enum(resourceTypes),
+    id: z.string(),
     url: z.string().url(),
   }),
   cache: ({ input }) => {
-    const { id, type } = input;
-    const tag = `resource-og-image-${type}-${id}`;
+    const { id } = input;
+    const tag = `resource-og-image-${id}`;
     return {
       keyParts: [tag],
       options: {

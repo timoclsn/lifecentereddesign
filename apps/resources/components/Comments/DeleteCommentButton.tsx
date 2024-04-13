@@ -3,19 +3,16 @@
 import { action } from 'api/action';
 import { Alert } from 'design-system';
 import { useAction } from 'lib/data/client';
-import { ContentType } from 'lib/resources';
 import { Loader2, Trash2 } from 'lucide-react';
 
 interface Props {
-  resourceId: number;
-  resourceType: ContentType;
+  resourceId: string;
   commentId: number;
   commentUserId: string;
 }
 
 export const DeleteCommentButton = ({
   resourceId,
-  resourceType,
   commentId,
   commentUserId,
 }: Props) => {
@@ -27,7 +24,6 @@ export const DeleteCommentButton = ({
   const handleDeleteAccount = () => {
     runAction({
       resourceId,
-      resourceType,
       commentId,
       commentUserId,
     });

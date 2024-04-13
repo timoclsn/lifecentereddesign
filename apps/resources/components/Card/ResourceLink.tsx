@@ -1,37 +1,26 @@
 'use client';
 
 import { cx } from 'cva';
-import { ContentType } from 'lib/resources';
 import { track } from 'lib/tracking';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
-  href: string;
-  resourceType: ContentType;
-  resourceTitle: string;
+  id: string;
+  link: string;
   className?: string;
 }
 
-export const ResourceLink = ({
-  children,
-  href,
-  resourceTitle,
-  resourceType,
-  className,
-}: Props) => {
+export const ResourceLink = ({ children, id, link, className }: Props) => {
   return (
     <Link
-      href={href}
+      href={link}
       target="_blank"
       rel="noopener"
       className={cx('relative hover:opacity-80', className)}
       onClick={() => {
-        track('Open resource', {
-          type: resourceType,
-          name: resourceTitle,
-        });
+        track('Open resource', { id });
       }}
     >
       {children}

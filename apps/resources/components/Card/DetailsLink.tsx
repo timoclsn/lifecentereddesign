@@ -1,27 +1,21 @@
 'use client';
 
-import { ContentType } from 'lib/resources';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 interface Props {
-  resourceId: number;
-  resourceType: ContentType;
-  resourceLink?: string;
+  slug: string;
+  link: string;
 }
 
-export const DetailsLink = ({
-  resourceId,
-  resourceType,
-  resourceLink,
-}: Props) => {
+export const DetailsLink = ({ slug, link }: Props) => {
   const pathname = usePathname();
-  const isDetailPage = pathname === `/resources/${resourceType}-${resourceId}`;
-  if (isDetailPage && !resourceLink) return null;
-  if (isDetailPage && resourceLink) {
+  const detailsPath = `/resources/${slug}`;
+  const isDetailPage = pathname === detailsPath;
+  if (isDetailPage) {
     return (
       <Link
-        href={resourceLink}
+        href={link}
         target="_blank"
         rel="noopener"
         className="absolute inset-0"
@@ -29,10 +23,5 @@ export const DetailsLink = ({
     );
   }
 
-  return (
-    <Link
-      href={`/resources/${resourceType}-${resourceId}`}
-      className="absolute inset-0"
-    />
-  );
+  return <Link href={detailsPath} className="absolute inset-0" />;
 };
