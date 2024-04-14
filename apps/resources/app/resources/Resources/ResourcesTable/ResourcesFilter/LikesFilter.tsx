@@ -1,20 +1,18 @@
 'use client';
 
 import * as Toggle from '@radix-ui/react-toggle';
-import { LikedResources } from 'data/resources/query';
 import { Tooltip } from 'design-system';
 import { Heart, Loader2 } from 'lucide-react';
 import { SolidHeart } from '../../../../../components/Icons/SolidHeart';
 import { useFilter } from '../../../../../hooks/useFilter';
 
 interface Props {
-  likedResources: LikedResources;
+  likedResourcesCount: number;
 }
 
-export const LikesFilter = ({ likedResources }: Props) => {
+export const LikesFilter = ({ likedResourcesCount }: Props) => {
   const { searchParams, handleValueChange, filter, isPending } = useFilter();
-  const filterByLikes = searchParams.get('likes') === 'true';
-  const likedResourcesCount = likedResources.length;
+  const filterByLikes = searchParams.get('liked') === 'true';
 
   return (
     <div className="flex items-center justify-center gap-1">
@@ -34,11 +32,11 @@ export const LikesFilter = ({ likedResources }: Props) => {
           className="ease text-text-primary flex items-center justify-center transition-transform hover:scale-110 active:scale-90"
           onPressedChange={() => {
             if (filterByLikes) {
-              searchParams.delete('likes');
+              searchParams.delete('liked');
               filter();
               return;
             }
-            handleValueChange('likes', 'true');
+            handleValueChange('liked', 'true');
           }}
         >
           {isPending && <Loader2 className="animate-spin" />}

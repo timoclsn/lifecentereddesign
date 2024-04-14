@@ -111,3 +111,17 @@ export const sluggify = (text: string) =>
     .toLowerCase()
     .replace(/ /g, '-')
     .replace(/[^\w-]+/g, '');
+
+/**
+ * Checks if an object is empty.
+ * @param obj - The object to check.
+ * @returns `true` if the object is empty, `false` otherwise.
+ */
+export const isEmpty = (obj: Record<string, unknown>) => {
+  for (let key in obj) {
+    if (obj[key] !== undefined) {
+      return false;
+    }
+  }
+  return true;
+};

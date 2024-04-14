@@ -10,11 +10,13 @@ import { getBaseUrl } from '../../../lib/utils/utils';
 export const generateMetadata = createGenerateMetadata(async ({ params }) => {
   const { slug } = params;
 
-  const [resource] = await query.resources.getResourcesNew({
+  const { resources } = await query.resources.getResourcesNew({
     filter: {
       id: [slug],
     },
   });
+
+  const [resource] = resources;
 
   if (!resource) {
     notFound();

@@ -2,6 +2,7 @@ import {
   formatType,
   formateDate,
   getHostname,
+  isEmpty,
   isExternalUrl,
   isUrl,
   minDelay,
@@ -147,6 +148,7 @@ describe('isUrl', () => {
     expect(result).toBe(false);
   });
 });
+
 describe('sluggify', () => {
   it('should convert text to lowercase and replace spaces with dashes', () => {
     const text = 'Hello World';
@@ -176,5 +178,37 @@ describe('sluggify', () => {
     const text = '     ';
     const result = sluggify(text);
     expect(result).toBe('');
+  });
+});
+
+describe('isEmpty', () => {
+  it('should return true for an empty object', () => {
+    const obj = {};
+    const result = isEmpty(obj);
+    expect(result).toBe(true);
+  });
+
+  it('should return false for an object with properties', () => {
+    const obj = { key: 'value' };
+    const result = isEmpty(obj);
+    expect(result).toBe(false);
+  });
+
+  it('should return true for an object with undefined properties', () => {
+    const obj = { key: undefined };
+    const result = isEmpty(obj);
+    expect(result).toBe(true);
+  });
+
+  it('should return false for an object with null properties', () => {
+    const obj = { key: null };
+    const result = isEmpty(obj);
+    expect(result).toBe(false);
+  });
+
+  it('should return false for an object with non-empty properties', () => {
+    const obj = { key: 'value', anotherKey: 123 };
+    const result = isEmpty(obj);
+    expect(result).toBe(false);
   });
 });

@@ -1,5 +1,10 @@
 import { createQuery } from 'data/clients';
 import 'server-only';
+import { db as dbNew } from 'lib/db';
+import { asc } from 'drizzle-orm';
+import { topic } from 'db/schema';
+
+export type Topics = Awaited<ReturnType<typeof getTopics>>;
 
 export const getTopics = createQuery({
   cache: {
@@ -9,12 +14,9 @@ export const getTopics = createQuery({
       tags: ['topics'],
     },
   },
-  query: async ({ ctx }) => {
-    const { db } = ctx;
-    return await db.topic.findMany({
-      orderBy: {
-        name: 'asc',
-      },
+  query: async () => {
+    return await dbNew.query.topic.findMany({
+      orderBy: asc(topic.name),
     });
   },
 });

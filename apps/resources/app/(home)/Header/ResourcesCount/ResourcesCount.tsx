@@ -5,9 +5,9 @@ import { ResourcesCountClient } from './ResourcesCountClient';
 import { countStyles } from './utils';
 
 export const ResourcesCount = () => {
-  const countPromise = query.resources.getResourcesCount();
+  const promise = query.resources.getResourcesCount();
   return (
-    <Await promise={countPromise} loading={<Loading />} error={null}>
+    <Await promise={promise} loading={<Loading />} error={null}>
       {(count) => {
         return <ResourcesCountClient>{count}</ResourcesCountClient>;
       }}

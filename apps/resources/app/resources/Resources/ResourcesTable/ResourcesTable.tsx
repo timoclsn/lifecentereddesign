@@ -7,6 +7,7 @@ import { ResourcesFilter } from './ResourcesFilter/ResourcesFilter';
 import { ResourcesList } from './ResourcesList/ResourcesList';
 import { ResourcesTableProvider } from './ResourcesTableProvider';
 import { query } from 'api/query';
+import { isEmpty } from 'lib/utils/utils';
 
 interface Props {
   reseourcesFilter: ReseourcesFilter;
@@ -14,35 +15,54 @@ interface Props {
 
 export const ResourcesTable = ({ reseourcesFilter }: Props) => {
   const dataPromises = Promise.all([
-    query.resources.getResources(),
+    query.resources.getResourcesNew({
+      limit: reseourcesFilter.limit,
+      sort: reseourcesFilter.sort,
+      filter: {
+        category: reseourcesFilter.category
+          ? [reseourcesFilter.category]
+          : undefined,
+        topic: reseourcesFilter.topic ? [reseourcesFilter.topic] : undefined,
+        search: reseourcesFilter.search,
+        liked: reseourcesFilter.liked,
+        commented: reseourcesFilter.commented,
+        from: reseourcesFilter.from
+          ? new Date(reseourcesFilter.from)
+          : undefined,
+        till: reseourcesFilter.till
+          ? new Date(reseourcesFilter.till)
+          : undefined,
+      },
+    }),
+    query.types.getTypes(),
     query.categories.getCategories(),
     query.topics.getTopics(),
-    query.resources.getLikedResources(),
-    query.resources.getCommentedResources(),
+    query.resources.getLikedResourcesCount(),
+    query.resources.getCommentedResourcesCount(),
   ]);
 
   return (
     <Await promise={dataPromises} loading={<Loading />} error={<Error />}>
       {([
-        resources,
+        resourcesQuery,
+        types,
         categories,
         topics,
-        likedResources,
-        commentedResources,
+        likedResourcesCount,
+        commentedResourcesCount,
       ]) => (
         <ResourcesTableProvider>
           <div>
             <ResourcesFilter
+              types={types}
               topics={topics}
               categories={categories}
-              likedResources={likedResources}
-              commentedResources={commentedResources}
+              likedResourcesCount={likedResourcesCount}
+              commentedResourcesCount={commentedResourcesCount}
             />
             <ResourcesList
-              resources={resources}
-              reseourcesFilter={reseourcesFilter}
-              likedResources={likedResources}
-              commentedResources={commentedResources}
+              resourcesQuery={resourcesQuery}
+              isFiltered={!isEmpty(reseourcesFilter)}
             />
           </div>
         </ResourcesTableProvider>

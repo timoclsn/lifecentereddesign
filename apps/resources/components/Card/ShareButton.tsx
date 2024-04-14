@@ -7,14 +7,14 @@ import { useState } from 'react';
 import { getBaseUrl, wait } from '../../lib/utils/utils';
 
 interface Props {
-  id: string;
+  slug: string;
   name: string;
 }
 
-export const ShareButton = ({ id, name }: Props) => {
+export const ShareButton = ({ slug, name }: Props) => {
   const [copied, setCopied] = useState(false);
 
-  const link = `${getBaseUrl()}/resources/${id}`;
+  const link = `${getBaseUrl()}/resources/${slug}`;
   const text = 'Check out this resource I found on LifeCenteredDesign.Net 🌱';
   const tooltip = 'Share resource link';
 
@@ -34,7 +34,7 @@ export const ShareButton = ({ id, name }: Props) => {
       setCopied(false);
     }
 
-    track('Share Resource Link', { id, link });
+    track('Share Resource Link', { id: slug, link });
   };
 
   return (

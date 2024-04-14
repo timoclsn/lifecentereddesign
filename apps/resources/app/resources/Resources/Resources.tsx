@@ -6,17 +6,17 @@ import { ResourcesTable } from './ResourcesTable/ResourcesTable';
 
 export type ReseourcesFilter = z.infer<typeof reseourcesFilterSchema>;
 const reseourcesFilterSchema = z.object({
-  type: z.coerce.string().optional(),
-  category: z.coerce.string().optional(),
-  topic: z.coerce.string().optional(),
-  sort: z.coerce.string().optional(),
-  search: z.coerce.string().optional(),
-  likes: z.coerce.boolean().optional(),
-  comments: z.coerce.boolean().optional(),
-  from: z.coerce.string().optional(),
-  till: z.coerce.string().optional(),
+  type: z.coerce.number().optional(),
+  category: z.coerce.number().optional(),
+  topic: z.coerce.number().optional(),
+  sort: z.enum(['date', 'name', 'likes', 'comments']).optional(),
+  search: z.string().optional(),
+  liked: z.coerce.boolean().optional(),
+  commented: z.coerce.boolean().optional(),
+  from: z.string().optional(),
+  till: z.string().optional(),
   limit: z.coerce.number().optional(),
-  title: z.coerce.string().optional(),
+  title: z.string().optional(),
 });
 
 interface Props {

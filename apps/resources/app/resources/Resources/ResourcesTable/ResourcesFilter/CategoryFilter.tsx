@@ -1,8 +1,8 @@
 'use client';
 
-import { Categories } from 'lib/categories';
 import { Select } from 'design-system';
 import { useFilter } from '../../../../../hooks/useFilter';
+import { Categories } from 'data/categories/query';
 
 interface Props {
   categories: Categories;
@@ -33,7 +33,7 @@ export const CategoryFilter = ({ categories }: Props) => {
           All
         </Select.Item>
         {categories.map((category) => (
-          <Select.Item key={category.id} value={category.name}>
+          <Select.Item key={category.id} value={String(category.id)}>
             {category.name}
           </Select.Item>
         ))}

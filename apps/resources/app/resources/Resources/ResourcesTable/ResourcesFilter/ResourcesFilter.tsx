@@ -1,6 +1,6 @@
-import { Categories } from 'lib/categories';
-import { CommentedResources, LikedResources } from 'data/resources/query';
-import { Topics } from 'lib/topics';
+import { Categories } from 'data/categories/query';
+import { Topics } from 'data/topics/query';
+import { Types } from 'data/types/query';
 import { CategoryFilter } from './CategoryFilter';
 import { Clear } from './Clear';
 import { CommentsFilter } from './CommentsFilter';
@@ -11,32 +11,34 @@ import { TopicFilter } from './TopicFilter';
 import { TypeFilter } from './TypeFilter';
 
 interface Props {
+  types: Types;
   categories: Categories;
   topics: Topics;
-  likedResources: LikedResources;
-  commentedResources: CommentedResources;
+  likedResourcesCount: number;
+  commentedResourcesCount: number;
 }
 
 export const ResourcesFilter = ({
+  types,
   categories,
   topics,
-  likedResources,
-  commentedResources,
+  likedResourcesCount,
+  commentedResourcesCount,
 }: Props) => {
   return (
     <div className="bg-bg-primary sticky top-0 z-10 flex flex-wrap justify-between gap-3 py-4 sm:py-6">
       <div className="flex flex-1 gap-3 sm:w-auto sm:flex-nowrap">
-        <TypeFilter />
+        <TypeFilter types={types} />
         <CategoryFilter categories={categories} />
         <TopicFilter topics={topics} />
       </div>
 
       <div className="flex flex-wrap gap-3">
-        {commentedResources.length > 0 && (
-          <CommentsFilter commentedResources={commentedResources} />
+        {commentedResourcesCount > 0 && (
+          <CommentsFilter commentedResourcesCount={commentedResourcesCount} />
         )}
-        {likedResources.length > 0 && (
-          <LikesFilter likedResources={likedResources} />
+        {likedResourcesCount > 0 && (
+          <LikesFilter likedResourcesCount={likedResourcesCount} />
         )}
         <Search />
         <Sort />

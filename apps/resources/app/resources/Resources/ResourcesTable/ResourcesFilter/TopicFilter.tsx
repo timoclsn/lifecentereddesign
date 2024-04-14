@@ -33,7 +33,7 @@ export const TopicFilter = ({ topics }: Props) => {
           All
         </Select.Item>
         {topics.map((topic) => (
-          <Select.Item key={topic.id} value={topic.name}>
+          <Select.Item key={topic.id} value={String(topic.id)}>
             {topic.name}
           </Select.Item>
         ))}

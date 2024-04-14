@@ -1,20 +1,18 @@
 'use client';
 
 import * as Toggle from '@radix-ui/react-toggle';
-import { CommentedResources } from 'data/resources/query';
 import { Tooltip } from 'design-system';
 import { Loader2, MessageCircle } from 'lucide-react';
 import { SolidMessageCircle } from '../../../../../components/Icons/SolidMessageCircle';
 import { useFilter } from '../../../../../hooks/useFilter';
 
 interface Props {
-  commentedResources: CommentedResources;
+  commentedResourcesCount: number;
 }
 
-export const CommentsFilter = ({ commentedResources }: Props) => {
+export const CommentsFilter = ({ commentedResourcesCount }: Props) => {
   const { searchParams, handleValueChange, filter, isPending } = useFilter();
-  const filterByLikes = searchParams.get('comments') === 'true';
-  const commentedResourcesCount = commentedResources.length;
+  const filterByLikes = searchParams.get('commented') === 'true';
 
   return (
     <div className="flex items-center justify-center gap-1">
@@ -34,11 +32,11 @@ export const CommentsFilter = ({ commentedResources }: Props) => {
           className="ease text-text-primary flex items-center justify-center transition-transform hover:scale-110 active:scale-90"
           onPressedChange={() => {
             if (filterByLikes) {
-              searchParams.delete('comments');
+              searchParams.delete('commented');
               filter();
               return;
             }
-            handleValueChange('comments', 'true');
+            handleValueChange('commented', 'true');
           }}
         >
           {isPending && <Loader2 className="animate-spin" />}

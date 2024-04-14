@@ -12,22 +12,35 @@ import {
   topic,
   type,
 } from 'db/schema';
-import { SQL, and, asc, count, desc, eq, inArray, max, sql } from 'drizzle-orm';
+import {
+  SQL,
+  and,
+  asc,
+  count,
+  countDistinct,
+  desc,
+  eq,
+  gte,
+  inArray,
+  lte,
+  max,
+  sql,
+} from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
 import { db as dbNew } from 'lib/db';
-import { ContentType, Resource, includes, resourceTypes } from 'lib/resources';
 import { withUserCollection } from 'lib/users';
 import { isUrl, wait } from 'lib/utils/utils';
 import 'server-only';
 import { z } from 'zod';
 
-export type NewResources = Awaited<ReturnType<typeof getResourcesNew>>;
+export type NewResourcesQuery = Awaited<ReturnType<typeof getResourcesNew>>;
+export type NewResources = NewResourcesQuery['resources'];
 export type NewResource = NewResources[number];
 
 export const getResourcesNew = createQuery({
   input: z.object({
     limit: z.number().optional(),
-    orderBy: z.enum(['date', 'name', 'likes', 'comments']).optional(),
+    sort: z.enum(['date', 'name', 'likes', 'comments']).optional(),
     filter: z
       .object({
         id: z.array(z.string()).optional(),
@@ -36,6 +49,10 @@ export const getResourcesNew = createQuery({
         topic: z.array(z.number()).optional(),
         creator: z.array(z.string()).optional(),
         search: z.string().optional().optional(),
+        from: z.date().optional(),
+        till: z.date().optional(),
+        liked: z.boolean().optional(),
+        commented: z.boolean().optional(),
       })
       .optional()
       .default({}),
@@ -44,7 +61,7 @@ export const getResourcesNew = createQuery({
     noStore: true,
   },
   query: async ({ input }) => {
-    const { filter, orderBy, limit } = input;
+    const { filter, sort, limit } = input;
     const { userId } = auth();
 
     const creator = alias(resource, 'creator');
@@ -54,7 +71,7 @@ export const getResourcesNew = createQuery({
         return asc(resourceFts.rank);
       }
 
-      switch (orderBy) {
+      switch (sort) {
         case 'name':
           return asc(resource.name);
         case 'likes':
@@ -147,11 +164,27 @@ export const getResourcesNew = createQuery({
           });
         }
 
+        if (filter.from) {
+          where.push(gte(resource.createdAt, filter.from));
+        }
+
+        if (filter.till) {
+          where.push(lte(resource.createdAt, filter.till));
+        }
+
+        if (filter.liked) {
+          where.push(eq(likesQuery.likedByUser, filter.liked));
+        }
+
+        if (filter.commented) {
+          where.push(eq(commentsQuery.commentedByUser, filter.commented));
+        }
+
         return and(...where);
       })
       .orderBy(getOrderBy)
       .groupBy(resource.id)
-      .limit(limit ?? 0);
+      .limit(limit ? limit + 1 : 0);
 
     return await dbNew
       .select({
@@ -250,186 +283,39 @@ export const getResourcesNew = createQuery({
           }
         }
 
-        return resources;
+        if (limit) {
+          const hasMore = resources.length > limit;
+          return {
+            resources: resources.slice(0, limit),
+            hasMore,
+          };
+        }
+
+        return {
+          resources,
+          hasMore: false,
+        };
       });
   },
 });
 
-export const getResources = createQuery({
-  cache: {
-    keyParts: ['resources'],
-    options: {
-      revalidate: 3600,
-      tags: ['resources'],
-    },
-  },
-  query: async ({ ctx }) => {
-    const { db } = ctx;
-
-    const resourcePromises = resourceTypes.map((type) => {
-      // @ts-expect-error: Dynamic table access doesn't work on type level
-      return db[type].findMany({
-        include: {
-          ...includes(type),
-        },
-      }) as Promise<Array<Resource>>;
-    });
-
-    const [likes, comments, ...resources] = await Promise.all([
-      db.like.findMany({
-        select: {
-          resourceId: true,
-          type: true,
-        },
-      }),
-      db.comment.findMany({
-        select: {
-          resourceId: true,
-          type: true,
-        },
-      }),
-      ...resourcePromises,
-    ]);
-
-    const enhancedResources = resources.flat().map((resource) => {
-      const newLikesCount = likes.filter(
-        (like) =>
-          like.resourceId === resource.id && like.type === resource.type,
-      ).length;
-
-      const commentsCount = comments.filter(
-        (comment) =>
-          comment.resourceId === resource.id && comment.type === resource.type,
-      ).length;
-
-      return {
-        ...resource,
-        likes: resource.likes + newLikesCount,
-        comments: commentsCount,
-      };
-    });
-
-    return enhancedResources;
-  },
-});
-
-export const getResource = createQuery({
-  input: z.object({
-    id: z.number(),
-    type: z.enum(resourceTypes),
-  }),
-  cache: ({ input }) => {
-    const { id, type } = input;
-    const tag = `resource-${type}-${id}`;
-    return {
-      keyParts: [tag],
-      options: {
-        revalidate: 3600,
-        tags: [tag],
-      },
-    };
-  },
-  query: async ({ input, ctx }) => {
-    const { id, type } = input;
-    const { db } = ctx;
-
-    const [resource, newLikesCount] = await Promise.all([
-      // @ts-expect-error: Dynamic table access doesn't work on type level
-      db[type].findUnique({
-        where: {
-          id: id,
-        },
-        include: {
-          ...includes(type),
-        },
-      }) as Promise<Resource>,
-      db.like.count({
-        where: {
-          resourceId: id,
-          type,
-        },
-      }),
-    ]);
-
-    return {
-      ...resource,
-      likes: resource.likes + newLikesCount,
-    };
-  },
-});
-
-export const resourceLikesTag = (resourceId: number, type: ContentType) =>
-  `likes-${type}-${resourceId}`;
-
-export const getResourceLikesData = createQuery({
-  input: z.object({
-    id: z.number(),
-    type: z.enum(resourceTypes),
-  }),
-  cache: ({ input }) => {
-    const { id, type } = input;
-    const tag = resourceLikesTag(id, type);
-    return {
-      keyParts: [tag],
-      options: {
-        revalidate: 3600,
-        tags: [tag],
-      },
-    };
-  },
-  query: async ({ input, ctx }) => {
-    const { id, type } = input;
-    const { db } = ctx;
-
-    const [oldLikes, newLikes] = await Promise.all([
-      // prettier-ignore
-      // @ts-expect-error: Dynamic table access doesn't work on type level
-      db[type].findUnique({
-          where: {
-            id: id,
-          },
-          select: {
-            likes: true,
-          },
-        }) as { likes: number },
-      db.like.findMany({
-        where: {
-          resourceId: id,
-          type,
-        },
-      }),
-    ]);
-
-    return {
-      oldLikesCount: oldLikes.likes,
-      newLikes,
-    };
-  },
-});
-
-export type LikedResources = Awaited<ReturnType<typeof getLikedResources>>;
-
-export const getLikedResources = createQuery({
+export const getLikedResourcesCount = createQuery({
   cache: {
     noStore: true,
   },
-  query: async ({ ctx }) => {
-    const { db } = ctx;
+  query: async () => {
     const { userId } = auth();
 
     if (!userId) {
-      return [];
+      return 0;
     }
 
-    return await db.like.findMany({
-      where: {
-        userId,
-      },
-      select: {
-        resourceId: true,
-        type: true,
-      },
-    });
+    const [result] = await dbNew
+      .select({ count: count() })
+      .from(like)
+      .where(eq(like.userId, userId));
+
+    return result.count;
   },
 });
 
@@ -463,40 +349,23 @@ export const getResourceComments = createQuery({
   },
 });
 
-export type CommentedResources = Awaited<
-  ReturnType<typeof getCommentedResources>
->;
-
-export const getCommentedResources = createQuery({
+export const getCommentedResourcesCount = createQuery({
   cache: {
     noStore: true,
   },
-  query: async ({ ctx }) => {
-    const { db } = ctx;
+  query: async () => {
     const { userId } = auth();
 
     if (!userId) {
-      return [];
+      return 0;
     }
 
-    const comments = await db.comment.findMany({
-      where: {
-        userId,
-      },
-      select: {
-        resourceId: true,
-        type: true,
-      },
-    });
+    const [result] = await dbNew
+      .select({ count: countDistinct(comment.resourceId) })
+      .from(comment)
+      .where(eq(comment.userId, userId));
 
-    // Remove duplicates
-    return comments.filter(
-      (comment, index, self) =>
-        index ===
-        self.findIndex(
-          (selfComment) => selfComment.resourceId === comment.resourceId,
-        ),
-    );
+    return result.count;
   },
 });
 

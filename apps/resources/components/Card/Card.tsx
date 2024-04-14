@@ -81,7 +81,7 @@ export const Card = async ({ resource, showPreview }: Props) => {
             />
 
             {/* Copy Share Link */}
-            <ShareButton id={resource.id} name={resource.name} />
+            <ShareButton slug={resource.id} name={resource.name} />
           </div>
         </div>
         <div className="@3xl:flex-row flex w-full flex-col justify-between gap-8">
