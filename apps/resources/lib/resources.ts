@@ -22,6 +22,8 @@ import {
   inArray,
   lte,
   max,
+  ne,
+  or,
   sql,
 } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
@@ -31,6 +33,7 @@ import 'server-only';
 export const selectResources = async (
   options: {
     filter: {
+      mode?: 'and' | 'or';
       id?: string[];
       type?: number[];
       category?: number[];
@@ -41,9 +44,10 @@ export const selectResources = async (
       till?: Date;
       liked?: boolean;
       commented?: boolean;
+      exclude?: string[];
     };
     limit?: number;
-    sort?: 'date' | 'name' | 'likes' | 'comments';
+    sort?: Array<'date' | 'name' | 'likes' | 'comments' | 'random'>;
   } = { filter: {} },
 ) => {
   const { filter, sort, limit } = options;
@@ -51,22 +55,31 @@ export const selectResources = async (
 
   const creator = alias(resource, 'creator');
 
-  const getOrderBy = () => {
+  const orderBy = () => {
     if (filter.search) {
       return asc(resourceFts.rank);
     }
 
-    switch (sort) {
-      case 'name':
-        return asc(resource.name);
-      case 'likes':
-        return desc(likesQuery.likesCount);
-      case 'comments':
-        return desc(commentsQuery.commentsCount);
-      case 'date':
-      default:
-        return desc(resource.createdAt);
+    if (sort && sort.length > 0) {
+      return sort.map((sort) => {
+        switch (sort) {
+          case 'name':
+            return asc(resource.name);
+          case 'likes':
+            return desc(likesQuery.likesCount);
+          case 'comments':
+            return desc(commentsQuery.commentsCount);
+          case 'random':
+            return sql`RANDOM()`;
+          case 'date':
+          default:
+            return desc(resource.createdAt);
+        }
+      });
     }
+
+    // Default sort
+    return desc(resource.createdAt);
   };
 
   const likesQuery = dbNew
@@ -162,9 +175,22 @@ export const selectResources = async (
         where.push(eq(commentsQuery.commentedByUser, filter.commented));
       }
 
-      return and(...where);
+      // Collect exclude separately because it always should be and
+      const exclude: Array<SQL<unknown> | undefined> = [];
+
+      if (filter.exclude) {
+        filter.exclude.forEach((id) => {
+          exclude.push(ne(resource.id, id));
+        });
+      }
+
+      if (filter.mode === 'or') {
+        return and(or(...where), ...exclude);
+      }
+
+      return and(...where, ...exclude);
     })
-    .orderBy(getOrderBy)
+    .orderBy(orderBy)
     .groupBy(resource.id)
     .limit(limit ? limit + 1 : 0);
 
@@ -225,7 +251,7 @@ export const selectResources = async (
 
       return and(...where);
     })
-    .orderBy(getOrderBy)
+    .orderBy(orderBy)
     .then((result) => {
       // Aggregate resources
 

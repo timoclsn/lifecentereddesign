@@ -17,9 +17,12 @@ export type Resource = Resources[number];
 export const getResources = createQuery({
   input: z.object({
     limit: z.number().optional(),
-    sort: z.enum(['date', 'name', 'likes', 'comments']).optional(),
+    sort: z
+      .array(z.enum(['date', 'name', 'likes', 'comments', 'random']))
+      .optional(),
     filter: z
       .object({
+        mode: z.enum(['and', 'or']).optional(),
         id: z.array(z.string()).optional(),
         type: z.array(z.number()).optional(),
         category: z.array(z.number()).optional(),
@@ -30,6 +33,7 @@ export const getResources = createQuery({
         till: z.date().optional(),
         liked: z.boolean().optional(),
         commented: z.boolean().optional(),
+        exclude: z.array(z.string()).optional(),
       })
       .optional()
       .default({}),
@@ -58,7 +62,13 @@ export const getResource = createQuery({
       },
     });
 
-    return resources[0];
+    const resource = resources[0];
+
+    if (!resource) {
+      throw new Error('Resource not found');
+    }
+
+    return resource;
   },
 });
 
@@ -179,5 +189,77 @@ export const getResourcesCount = createQuery({
       .from(resource);
 
     return result.count;
+  },
+});
+
+export const getRelatedResources = createQuery({
+  input: z.object({
+    id: z.string(),
+  }),
+  cache: {
+    noStore: true,
+  },
+  query: async ({ input }) => {
+    const { id } = input;
+
+    const relatedResources: Resources = [];
+
+    const { resources } = await selectResources({
+      filter: {
+        id: [id],
+      },
+    });
+
+    const resource = resources[0];
+
+    if (!resource) {
+      throw new Error('Resource not found');
+    }
+
+    if (resource.type?.name === 'Thoughtleader') {
+      const { resources } = await selectResources({
+        limit: 10,
+        sort: ['likes', 'comments', 'date'],
+        filter: {
+          creator: [resource.id],
+        },
+      });
+
+      relatedResources.push(...resources);
+    } else {
+      const relatedThoughtleaders = resource.creators.map(
+        (creator) => creator.id,
+      );
+
+      const relatedTopics = resource.topics.map((topic) => topic.id);
+
+      const { resources } = await selectResources({
+        limit: 10,
+        sort: ['likes', 'comments', 'date'],
+        filter: {
+          mode: 'or',
+          creator: relatedThoughtleaders,
+          topic: relatedTopics,
+          exclude: [resource.id],
+        },
+      });
+
+      relatedResources.push(...resources);
+    }
+
+    // Fallback
+    if (relatedResources.length === 0) {
+      const { resources } = await selectResources({
+        limit: 10,
+        sort: ['random'],
+        filter: {
+          exclude: [resource.id],
+        },
+      });
+
+      relatedResources.push(...resources);
+    }
+
+    return relatedResources;
   },
 });

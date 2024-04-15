@@ -16,7 +16,7 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
   const promises = Promise.all([
     query.resources.getResources({
       limit: reseourcesFilter.limit,
-      sort: reseourcesFilter.sort,
+      sort: reseourcesFilter.sort ? [reseourcesFilter.sort] : undefined,
       filter: {
         category: reseourcesFilter.category
           ? [reseourcesFilter.category]

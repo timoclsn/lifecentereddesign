@@ -17,7 +17,7 @@ import groundImg from './ground.jpg';
 export const NewResources = () => {
   const promise = query.resources.getResources({
     limit: 10,
-    sort: 'date',
+    sort: ['date'],
   });
   return (
     <Bleed>
