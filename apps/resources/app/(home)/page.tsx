@@ -1,4 +1,4 @@
-import { NewResources } from '../../components/NewResources/NewResources';
+import { NewResources } from 'components/NewResources/NewResources';
 import { Newsletter } from '../../components/Newsletter/Newsletter';
 import { About } from './About/About';
 import { Header } from './Header/Header';

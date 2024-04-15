@@ -1,21 +1,20 @@
-import { auth } from '@clerk/nextjs/server';
+import { query } from 'api/query';
 import { Card, InfoBox, getRandomCardVariant } from 'design-system';
+import { isEmpty } from 'lib/utils/utils';
 import { AlertTriangle } from 'lucide-react';
 import { Await } from '../../../../components/Await/Await';
 import { ReseourcesFilter } from '../Resources';
 import { ResourcesFilter } from './ResourcesFilter/ResourcesFilter';
 import { ResourcesList } from './ResourcesList/ResourcesList';
 import { ResourcesTableProvider } from './ResourcesTableProvider';
-import { query } from 'api/query';
-import { isEmpty } from 'lib/utils/utils';
 
 interface Props {
   reseourcesFilter: ReseourcesFilter;
 }
 
 export const ResourcesTable = ({ reseourcesFilter }: Props) => {
-  const dataPromises = Promise.all([
-    query.resources.getResourcesNew({
+  const promises = Promise.all([
+    query.resources.getResources({
       limit: reseourcesFilter.limit,
       sort: reseourcesFilter.sort,
       filter: {
@@ -42,9 +41,9 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
   ]);
 
   return (
-    <Await promise={dataPromises} loading={<Loading />} error={<Error />}>
+    <Await promise={promises} loading={<Loading />} error={<Error />}>
       {([
-        resourcesQuery,
+        { resources, hasMore },
         types,
         categories,
         topics,
@@ -61,7 +60,8 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
               commentedResourcesCount={commentedResourcesCount}
             />
             <ResourcesList
-              resourcesQuery={resourcesQuery}
+              resources={resources}
+              hasMore={hasMore}
               isFiltered={!isEmpty(reseourcesFilter)}
             />
           </div>

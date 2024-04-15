@@ -1,7 +1,7 @@
 import { query } from 'api/query';
+import { NewResources } from 'components/NewResources/NewResources';
 import { notFound } from 'next/navigation';
 import { Comments } from '../../../components/Comments/Comments';
-import { NewResources } from '../../../components/NewResources/NewResources';
 import { Newsletter } from '../../../components/Newsletter/Newsletter';
 import { ResourceDetailCard } from '../../../components/ResourceCard/ResourceCard';
 import { createGenerateMetadata } from '../../../lib/metadata';
@@ -10,13 +10,9 @@ import { getBaseUrl } from '../../../lib/utils/utils';
 export const generateMetadata = createGenerateMetadata(async ({ params }) => {
   const { slug } = params;
 
-  const { resources } = await query.resources.getResourcesNew({
-    filter: {
-      id: [slug],
-    },
+  const resource = await query.resources.getResource({
+    id: slug,
   });
-
-  const [resource] = resources;
 
   if (!resource) {
     notFound();

@@ -10,15 +10,14 @@ interface Props {
 }
 
 export const ResourceDetailCard = ({ id, showPreview }: Props) => {
-  const promise = query.resources.getResourcesNew({
-    filter: {
-      id: [id],
-    },
+  const promise = query.resources.getResource({
+    id,
   });
+
   return (
     <section>
       <Await promise={promise} loading={<Loading />} error={<Error />}>
-        {([resource]) => (
+        {(resource) => (
           <ResourceCard resource={resource} showPreview={showPreview} />
         )}
       </Await>

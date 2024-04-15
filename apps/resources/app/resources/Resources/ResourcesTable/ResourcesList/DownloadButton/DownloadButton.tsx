@@ -1,8 +1,8 @@
-import { NewResources } from 'data/resources/query';
+import { Resources } from 'data/resources/query';
 import { DownloadButtonClient } from './DownloadButtonClient';
 
 interface Props {
-  resources: NewResources;
+  resources: Resources;
 }
 
 export const DownloadButton = ({ resources }: Props) => {

@@ -1,4 +1,4 @@
-import { NewResource } from 'data/resources/query';
+import { Resource } from 'data/resources/query';
 import { Card as CardPrimitive, Tag, Text, Tooltip } from 'design-system';
 import { formateDate, getHostname } from 'lib/utils/utils';
 import { CalendarDays, ExternalLink, StickyNote, Users2 } from 'lucide-react';
@@ -14,7 +14,7 @@ import { Title } from './Title';
 import { TypeButton } from './TypeButton';
 
 interface Props {
-  resource: NewResource;
+  resource: Resource;
   showPreview?: boolean;
 }
 

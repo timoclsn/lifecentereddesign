@@ -15,7 +15,7 @@ import { Card as ResourceCard } from '../Card/Card';
 import groundImg from './ground.jpg';
 
 export const NewResources = () => {
-  const promise = query.resources.getResourcesNew({
+  const promise = query.resources.getResources({
     limit: 10,
     sort: 'date',
   });

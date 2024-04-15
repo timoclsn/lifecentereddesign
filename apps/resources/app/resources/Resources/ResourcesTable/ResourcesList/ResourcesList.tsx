@@ -1,5 +1,5 @@
 import { Card } from 'components/Card/Card';
-import { NewResourcesQuery } from 'data/resources/query';
+import { Resources } from 'data/resources/query';
 import { Heading } from 'design-system';
 import { AutoAnimate } from '../../../../../components/AutoAnimate/AutoAnimate';
 import { ClearAllButton } from './ClearAllButton';
@@ -8,12 +8,12 @@ import { ResourcesListTop } from './ResourcesListTop';
 import { ShowMoreButton } from './ShowMoreButton';
 
 interface Props {
-  resourcesQuery: NewResourcesQuery;
+  resources: Resources;
+  hasMore: boolean;
   isFiltered: boolean;
 }
 
-export const ResourcesList = ({ resourcesQuery, isFiltered }: Props) => {
-  const { resources, hasMore } = resourcesQuery;
+export const ResourcesList = ({ resources, hasMore, isFiltered }: Props) => {
   const showShowMoreBtn = hasMore;
   const showDownloadButton = isFiltered && resources.length > 0;
 

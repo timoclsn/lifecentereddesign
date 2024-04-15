@@ -1,11 +1,11 @@
-import { NewResource } from 'data/resources/query';
+import { Resource } from 'data/resources/query';
 import { Card } from 'design-system';
 
 interface Props {
-  resource: NewResource;
+  resource: Resource;
 }
 
-export const NewResourceCard = ({ resource }: Props) => {
+export const ResourceCard = ({ resource }: Props) => {
   return (
     <Card>
       <div>{resource.name}</div>
