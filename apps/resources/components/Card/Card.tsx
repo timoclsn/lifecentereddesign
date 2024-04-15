@@ -1,7 +1,13 @@
 import { Resource } from 'data/resources/query';
 import { Card as CardPrimitive, Tag, Text, Tooltip } from 'design-system';
 import { formateDate, getHostname } from 'lib/utils/utils';
-import { CalendarDays, ExternalLink, StickyNote, Users2 } from 'lucide-react';
+import {
+  CalendarDays,
+  ExternalLink,
+  StickyNote,
+  Users2,
+  TagIcon,
+} from 'lucide-react';
 import { CategoryButton } from './CategoryButton';
 import { CommentsButton } from './CommentsButton/CommentsButton';
 import { CopyButton } from './CopyButton';
@@ -12,6 +18,7 @@ import { ResourceLink } from './ResourceLink';
 import { ShareButton } from './ShareButton';
 import { Title } from './Title';
 import { TypeButton } from './TypeButton';
+import { creatorList, topicsList } from 'components/utils';
 
 interface Props {
   resource: Resource;
@@ -91,10 +98,34 @@ export const Card = async ({ resource, showPreview }: Props) => {
 
             {/* Meta infos */}
             <ul className="text-text-secondary -mt-1 flex flex-wrap gap-x-2 gap-y-1 sm:gap-x-8 sm:gap-y-3">
+              {resource.creators.length > 0 && (
+                <li className="flex items-center gap-1">
+                  <Users2 size="18" className="flex-none" />
+                  <Text>{creatorList(resource.creators)}</Text>
+                </li>
+              )}
+              {resource.creatorsPlain && (
+                <li className="flex items-center gap-1">
+                  <Users2 size="18" className="flex-none" />
+                  <Text>{resource.creatorsPlain}</Text>
+                </li>
+              )}
               {resource.date && (
                 <li className="flex items-center gap-1">
                   <CalendarDays size="18" className="flex-none" />
                   <Text>{formateDate(resource.date)}</Text>
+                </li>
+              )}
+              {resource.datePlain && (
+                <li className="flex items-center gap-1">
+                  <CalendarDays size="18" className="flex-none" />
+                  <Text>{resource.datePlain}</Text>
+                </li>
+              )}
+              {resource.topics.length > 0 && (
+                <li className="flex items-center gap-1">
+                  <TagIcon size="18" className="flex-none" />
+                  <Text>{topicsList(resource.topics)}</Text>
                 </li>
               )}
             </ul>

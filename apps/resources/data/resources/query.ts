@@ -13,6 +13,10 @@ import { z } from 'zod';
 type GetResourcesResult = Awaited<ReturnType<typeof getResources>>;
 export type Resources = GetResourcesResult['resources'];
 export type Resource = Resources[number];
+export type Creators = Resource['creators'];
+export type Creator = Creators[number];
+export type Topics = Resource['topics'];
+export type Topic = Topics[number];
 
 export const getResources = createQuery({
   input: z.object({

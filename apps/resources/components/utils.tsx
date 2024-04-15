@@ -20,7 +20,6 @@ import {
   Tool,
   Video,
 } from 'lib/resources';
-import { Topics } from 'lib/topics';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { TopicsButton } from './Card/TopicsButton';
@@ -42,6 +41,7 @@ import { SocialMediaProfileCard } from './ResourceCards/SocialMediaProfileCard';
 import { ThoughtleaderCard } from './ResourceCards/ThoughtleaderCard';
 import { ToolCard } from './ResourceCards/ToolCard';
 import { VideoCard } from './ResourceCards/VideoCard';
+import { Creators, Topics } from 'data/resources/query';
 
 export const getCardComponent = (
   resource: Resources[0],
@@ -143,26 +143,24 @@ export const topicsList = (topics: Topics) => {
   return topics.map((topic, index) => {
     return (
       <Fragment key={topic.id}>
-        <TopicsButton topic={topic.name}>{topic.name}</TopicsButton>
+        <TopicsButton topic={topic.id}>{topic.name}</TopicsButton>
         {index !== topics.length - 1 && ', '}
       </Fragment>
     );
   });
 };
 
-export const thoughtleadersList = (
-  thoughtleaders: Array<ThoughtleaderBasic>,
-) => {
-  return thoughtleaders.map((thoughtleader, index) => {
+export const creatorList = (creators: Creators) => {
+  return creators.map((creator, index) => {
     return (
-      <Fragment key={index}>
+      <Fragment key={creator.id}>
         <Link
-          href={`/resources/thoughtleader-${thoughtleader.id}`}
+          href={`/resources/${creator.id}`}
           className="relative inline-flex items-center justify-center gap-0.5 hover:underline"
         >
-          {thoughtleader.name}
+          {creator.name}
         </Link>
-        {index !== thoughtleaders.length - 1 && ', '}
+        {index !== creators.length - 1 && ', '}
       </Fragment>
     );
   });

@@ -9,13 +9,14 @@ import { useFilter } from '../../hooks/useFilter';
 
 interface Props {
   children: ReactNode;
-  topic: string;
+  topic: number;
 }
 
 export const TopicsButton = ({ children, topic }: Props) => {
   const { handleValueChange, searchParams, isPending } = useFilter();
   const searchParamsTopic = searchParams.get('topic');
-  const isFiltered = searchParamsTopic === topic;
+  const topicString = String(topic);
+  const isFiltered = searchParamsTopic === topicString;
   const { inContext } = useResourcesTable();
 
   const handleClick = () => {
@@ -23,7 +24,7 @@ export const TopicsButton = ({ children, topic }: Props) => {
       handleValueChange('topic', '');
       return;
     }
-    handleValueChange('topic', topic);
+    handleValueChange('topic', topicString);
   };
 
   if (!inContext) {
