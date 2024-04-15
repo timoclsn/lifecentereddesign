@@ -2,6 +2,8 @@ import { VariantProps, cva } from 'cva';
 import { ReactNode } from 'react';
 import { objectKeys } from './utils';
 
+export type ColorVariant = keyof typeof colorVariants;
+
 const colorVariants = {
   oak: 'bg-oak',
   forest: 'bg-forest',

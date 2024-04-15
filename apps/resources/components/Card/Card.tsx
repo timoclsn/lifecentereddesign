@@ -1,12 +1,19 @@
+import { creatorList, topicsList } from 'components/utils';
 import { Resource } from 'data/resources/query';
-import { Card as CardPrimitive, Tag, Text, Tooltip } from 'design-system';
+import {
+  Card as CardPrimitive,
+  ColorVariant,
+  Tag,
+  Text,
+  Tooltip,
+} from 'design-system';
 import { formateDate, getHostname } from 'lib/utils/utils';
 import {
   CalendarDays,
   ExternalLink,
   StickyNote,
-  Users2,
   TagIcon,
+  Users2,
 } from 'lucide-react';
 import { CategoryButton } from './CategoryButton';
 import { CommentsButton } from './CommentsButton/CommentsButton';
@@ -18,7 +25,27 @@ import { ResourceLink } from './ResourceLink';
 import { ShareButton } from './ShareButton';
 import { Title } from './Title';
 import { TypeButton } from './TypeButton';
-import { creatorList, topicsList } from 'components/utils';
+
+const variantsMap: Record<string, ColorVariant> = {
+  Agency: 'morning',
+  Article: 'forest',
+  Book: 'oak',
+  Community: 'morning',
+  Course: 'evening',
+  Directory: 'oak',
+  Example: 'lime',
+  Magazine: 'sky',
+  Newsletter: 'sand',
+  Paper: 'forest',
+  Podcast: 'sky',
+  'Podcast Episode': 'sand',
+  Report: 'oak',
+  Slide: 'evening',
+  'Social Media Profile': 'lime',
+  Thoughtleader: 'evening',
+  Tool: 'stone',
+  Video: 'lime',
+};
 
 interface Props {
   resource: Resource;
@@ -31,7 +58,9 @@ export const Card = async ({ resource, showPreview }: Props) => {
 
   return (
     <CardPrimitive
-      // variant={variant}
+      variant={
+        resource.type?.name ? variantsMap[resource.type.name] : undefined
+      }
       className="group/card @container relative flex h-full w-full flex-col gap-8"
     >
       <DetailsLink slug={resource.id} link={resource.link} />
