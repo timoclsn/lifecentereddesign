@@ -25,6 +25,7 @@ import { ResourceLink } from './ResourceLink';
 import { ShareButton } from './ShareButton';
 import { Title } from './Title';
 import { TypeButton } from './TypeButton';
+import { Details } from './Details';
 
 const variantsMap: Record<string, ColorVariant> = {
   Agency: 'morning',
@@ -164,6 +165,11 @@ export const Card = async ({ resource, showPreview }: Props) => {
               <Text className="text-text-secondary">
                 {resource.description}
               </Text>
+            )}
+
+            {/* Details */}
+            {resource.details && (
+              <Details slug={resource.id}>{resource.details}</Details>
             )}
 
             {/* Add to collection */}
