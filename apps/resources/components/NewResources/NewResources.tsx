@@ -11,7 +11,7 @@ import { AlertTriangle, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Await } from '../Await/Await';
-import { Card as ResourceCard } from '../Card/Card';
+import { ResourceCard } from '../ResourceCard/ResourceCard';
 import groundImg from './ground.jpg';
 
 export const NewResources = () => {

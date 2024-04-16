@@ -1,7 +1,7 @@
 import { Slide } from 'lib/resources';
 import { BookOpen, CalendarDays, Tag } from 'lucide-react';
 import { formateDate, getHostname } from '../../lib/utils/utils';
-import { Card } from '../Card/Card';
+import { ResourceCard } from '../ResourceCard/ResourceCard';
 import { thoughtleadersList, topicsList } from '../utils';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 export const SlideCard = ({ slide, showPreview }: Props) => {
   return (
-    <Card
+    <ResourceCard
       resourceId={slide.id}
       resourceType={slide.type}
       variant="evening"

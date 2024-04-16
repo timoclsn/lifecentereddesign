@@ -22,7 +22,7 @@ import {
 } from 'lib/resources';
 import Link from 'next/link';
 import { Fragment } from 'react';
-import { TopicsButton } from './Card/TopicsButton';
+import { TopicsButton } from './ResourceCard/TopicsButton';
 import { AgencyCard } from './ResourceCards/AgencyCard';
 import { ArticleCard } from './ResourceCards/ArticleCard';
 import { BookCard } from './ResourceCards/BookCard';

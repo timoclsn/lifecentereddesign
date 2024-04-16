@@ -1,4 +1,4 @@
-import { Card } from 'components/Card/Card';
+import { ResourceCard } from 'components/ResourceCard/ResourceCard';
 import { Resources } from 'data/resources/query';
 import { Heading } from 'design-system';
 import { AutoAnimate } from '../../../../../components/AutoAnimate/AutoAnimate';
@@ -29,7 +29,7 @@ export const ResourcesList = ({ resources, hasMore, isFiltered }: Props) => {
             {resources.map((resource) => {
               return (
                 <li key={`${resource.type}-${resource.id}`}>
-                  <Card resource={resource} />
+                  <ResourceCard resource={resource} />
                 </li>
               );
             })}

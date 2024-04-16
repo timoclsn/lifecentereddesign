@@ -1,7 +1,7 @@
 import { Newsletter } from 'lib/resources';
 import { BookOpen, Tag } from 'lucide-react';
 import { getHostname } from '../../lib/utils/utils';
-import { Card } from '../Card/Card';
+import { ResourceCard } from '../ResourceCard/ResourceCard';
 import { thoughtleadersList, topicsList } from '../utils';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 export const NewsletterCard = ({ newsletter, showPreview }: Props) => {
   return (
-    <Card
+    <ResourceCard
       resourceId={newsletter.id}
       resourceType={newsletter.type}
       variant="sand"

@@ -1,7 +1,7 @@
 import { Video } from 'lib/resources';
 import { CalendarDays, Clock3, Tag, VideoIcon } from 'lucide-react';
 import { formateDate, getHostname } from '../../lib/utils/utils';
-import { Card } from '../Card/Card';
+import { ResourceCard } from '../ResourceCard/ResourceCard';
 import { thoughtleadersList, topicsList } from '../utils';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 export const VideoCard = ({ video, showPreview }: Props) => {
   return (
-    <Card
+    <ResourceCard
       resourceId={video.id}
       resourceType={video.type}
       variant="lime"

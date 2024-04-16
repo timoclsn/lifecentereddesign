@@ -7,7 +7,7 @@ import {
   Tag,
 } from 'lucide-react';
 import { formateDate, getHostname } from '../../lib/utils/utils';
-import { Card } from '../Card/Card';
+import { ResourceCard } from '../ResourceCard/ResourceCard';
 import { thoughtleadersList, topicsList } from '../utils';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 
 export const BookCard = ({ book, showPreview }: Props) => {
   return (
-    <Card
+    <ResourceCard
       resourceId={book.id}
       resourceType={book.type}
       variant="oak"

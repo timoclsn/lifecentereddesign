@@ -1,7 +1,7 @@
 import { Podcast } from 'lib/resources';
 import { Smile, Tag } from 'lucide-react';
 import { getHostname } from '../../lib/utils/utils';
-import { Card } from '../Card/Card';
+import { ResourceCard } from '../ResourceCard/ResourceCard';
 import { thoughtleadersList, topicsList } from '../utils';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 export const PodcastCard = ({ podcast, showPreview }: Props) => {
   return (
-    <Card
+    <ResourceCard
       resourceId={podcast.id}
       resourceType={podcast.type}
       variant="sky"

@@ -1,7 +1,7 @@
 import { SocialMediaProfile } from 'lib/resources';
 import { AtSign, Tag } from 'lucide-react';
 import { getHostname } from '../../lib/utils/utils';
-import { Card } from '../Card/Card';
+import { ResourceCard } from '../ResourceCard/ResourceCard';
 import { topicsList } from '../utils';
 
 interface Props {
@@ -14,7 +14,7 @@ export const SocialMediaProfileCard = ({
   showPreview,
 }: Props) => {
   return (
-    <Card
+    <ResourceCard
       resourceId={socielaMediaProfile.id}
       resourceType={socielaMediaProfile.type}
       variant="lime"

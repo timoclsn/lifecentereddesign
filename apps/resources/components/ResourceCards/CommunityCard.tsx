@@ -1,7 +1,7 @@
 import { Community } from 'lib/resources';
 import { Tag } from 'lucide-react';
 import { getHostname } from '../../lib/utils/utils';
-import { Card } from '../Card/Card';
+import { ResourceCard } from '../ResourceCard/ResourceCard';
 import { topicsList } from '../utils';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 export const CommunityCard = ({ community, showPreview }: Props) => {
   return (
-    <Card
+    <ResourceCard
       resourceId={community.id}
       resourceType={community.type}
       variant="morning"

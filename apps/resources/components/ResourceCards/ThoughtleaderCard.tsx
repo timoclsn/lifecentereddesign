@@ -1,7 +1,7 @@
 import { Thoughtleader } from 'lib/resources';
 import { Briefcase, Tag } from 'lucide-react';
 import { getHostname } from '../../lib/utils/utils';
-import { Card } from '../Card/Card';
+import { ResourceCard } from '../ResourceCard/ResourceCard';
 import { topicsList } from '../utils';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 export const ThoughtleaderCard = ({ thoughtleader, showPreview }: Props) => {
   return (
-    <Card
+    <ResourceCard
       resourceId={thoughtleader.id}
       resourceType={thoughtleader.type}
       variant="evening"

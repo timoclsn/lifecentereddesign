@@ -4,7 +4,7 @@ import { RelatedResources } from 'components/RelatedResources/RelatedResources';
 import { notFound } from 'next/navigation';
 import { Comments } from '../../../components/Comments/Comments';
 import { Newsletter } from '../../../components/Newsletter/Newsletter';
-import { ResourceDetailCard } from '../../../components/ResourceCard/ResourceCard';
+import { ResourceDetailCard } from '../../../components/ResourceDetailCard/ResourceDetailCard';
 import { createGenerateMetadata } from '../../../lib/metadata';
 import { getBaseUrl } from '../../../lib/utils/utils';
 
