@@ -4,7 +4,7 @@ import { RelatedResources } from 'components/RelatedResources/RelatedResources';
 import { notFound } from 'next/navigation';
 import { Comments } from '../../../components/Comments/Comments';
 import { Newsletter } from '../../../components/Newsletter/Newsletter';
-import { ResourceDetailCard } from '../../../components/ResourceDetailCard/ResourceDetailCard';
+import { ResourceDetailsCard } from '../../../components/ResourceDetailsCard/ResourceDetailsCard';
 import { createGenerateMetadata } from '../../../lib/metadata';
 import { getBaseUrl } from '../../../lib/utils/utils';
 
@@ -72,7 +72,7 @@ const ResourcePage = async ({ params }: Props) => {
 
   return (
     <>
-      <ResourceDetailCard id={slug} showPreview />
+      <ResourceDetailsCard id={slug} showPreview />
       <Comments id={slug} />
       <RelatedResources id={slug} />
       <NewResources />

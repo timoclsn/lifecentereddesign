@@ -18,6 +18,7 @@ import {
 import { CategoryButton } from './CategoryButton';
 import { CommentsButton } from './CommentsButton/CommentsButton';
 import { CopyButton } from './CopyButton';
+import { Details } from './Details';
 import { DetailsLink } from './DetailsLink';
 import { LikesButton } from './LikesButton/LikesButton';
 import { Preview } from './Preview';
@@ -25,7 +26,6 @@ import { ResourceLink } from './ResourceLink';
 import { ShareButton } from './ShareButton';
 import { Title } from './Title';
 import { TypeButton } from './TypeButton';
-import { Details } from './Details';
 
 const variantsMap: Record<string, ColorVariant> = {
   Agency: 'morning',
@@ -54,9 +54,6 @@ interface Props {
 }
 
 export const ResourceCard = async ({ resource, showPreview }: Props) => {
-  // const flags = await featureFlags();
-  // const { userId } = auth();
-
   return (
     <CardPrimitive
       variant={
@@ -171,14 +168,6 @@ export const ResourceCard = async ({ resource, showPreview }: Props) => {
             {resource.details && (
               <Details slug={resource.id}>{resource.details}</Details>
             )}
-
-            {/* Add to collection */}
-            {/* {flags.collections && userId && (
-              <CollectionButton
-                resourceId={resourceId}
-                resourceType={resourceType}
-              />
-            )} */}
           </div>
 
           {/* Preview */}

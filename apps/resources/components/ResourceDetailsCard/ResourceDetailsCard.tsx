@@ -9,7 +9,7 @@ interface Props {
   showPreview?: boolean;
 }
 
-export const ResourceDetailCard = ({ id, showPreview }: Props) => {
+export const ResourceDetailsCard = ({ id, showPreview }: Props) => {
   const promise = query.resources.getResource({
     id,
   });

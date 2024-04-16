@@ -14,5 +14,5 @@ Visit on: https://lifecentereddesign.net
 - [CVA](https://cva.style/docs)
 - [Zod](https://github.com/colinhacks/zod)
 - [React Hook Form](https://react-hook-form.com/)
-- [Prisma](https://www.prisma.io/)
+- [Drizzle](https://orm.drizzle.team/)
 - [Vercel](https://vercel.com/)

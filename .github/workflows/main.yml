@@ -55,10 +55,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Generate prisma type
-        working-directory: ./packages/database
-        run: pnpm db:generate
-
       - name: Type check
         run: pnpm typecheck
 
@@ -85,10 +81,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-
-      - name: Generate prisma type
-        working-directory: ./packages/database
-        run: pnpm db:generate
 
       - name: Test
         run: pnpm test

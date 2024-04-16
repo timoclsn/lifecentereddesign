@@ -2,8 +2,7 @@
 
 import { createAction, createProtectedAction } from 'data/clients';
 import { and, eq } from 'drizzle-orm';
-import { db as dbNew } from 'lib/db';
-import { resourceTypes } from 'lib/resources';
+import { db } from 'lib/db';
 import { revalidatePath, revalidateTag } from 'next/cache';
 import nodemailer from 'nodemailer';
 import { z } from 'zod';
@@ -20,7 +19,7 @@ export const like = createProtectedAction({
     const { id } = input;
     const { userId } = ctx;
 
-    await dbNew.insert(likeSchema).values({
+    await db.insert(likeSchema).values({
       resourceId: id,
       userId,
     });
@@ -37,7 +36,7 @@ export const unLike = createProtectedAction({
     const { id } = input;
     const { userId } = ctx;
 
-    await dbNew
+    await db
       .delete(likeSchema)
       .where(and(eq(likeSchema.resourceId, id), eq(likeSchema.userId, userId)));
 
@@ -57,9 +56,9 @@ export const addComment = createProtectedAction({
   }),
   action: async ({ input, ctx }) => {
     const { id, text } = input;
-    const { db, userId } = ctx;
+    const { userId } = ctx;
 
-    await dbNew.insert(comment).values({
+    await db.insert(comment).values({
       resourceId: id,
       userId,
       text,
@@ -84,7 +83,7 @@ export const deleteComment = createProtectedAction({
       throw new Error('You can only delete your own comments');
     }
 
-    await dbNew.delete(comment).where(eq(comment.id, commentId));
+    await db.delete(comment).where(eq(comment.id, commentId));
 
     const tag = resourceCommentsTag(resourceId);
     revalidateTag(tag);

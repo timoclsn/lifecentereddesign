@@ -1,5 +1,4 @@
 import { auth } from '@clerk/nextjs/server';
-import { Prisma } from 'database';
 import { resourceFts } from 'db/ftsSchema';
 import {
   category,
@@ -27,7 +26,7 @@ import {
   sql,
 } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
-import { db as dbNew } from 'lib/db';
+import { db } from 'lib/db';
 import 'server-only';
 
 export const selectResources = async (
@@ -82,7 +81,7 @@ export const selectResources = async (
     return desc(resource.createdAt);
   };
 
-  const likesQuery = dbNew
+  const likesQuery = db
     .select({
       resourceId: like.resourceId,
       likesCount: count(like.resourceId).as('likesCount'),
@@ -94,7 +93,7 @@ export const selectResources = async (
     .groupBy(like.resourceId)
     .as('likesQuery');
 
-  const commentsQuery = dbNew
+  const commentsQuery = db
     .select({
       resourceId: comment.resourceId,
       commentsCount: count(comment.resourceId).as('commentsCount'),
@@ -106,7 +105,7 @@ export const selectResources = async (
     .groupBy(comment.resourceId)
     .as('commentsQuery');
 
-  const resourceIdsQuery = dbNew
+  const resourceIdsQuery = db
     .select({
       id: resource.id,
     })
@@ -194,7 +193,7 @@ export const selectResources = async (
     .groupBy(resource.id)
     .limit(limit ? limit + 1 : 0);
 
-  return await dbNew
+  return await db
     .select({
       id: resource.id,
       createdAt: resource.createdAt,
@@ -293,221 +292,4 @@ export const selectResources = async (
         hasMore: limit ? resources.length > limit : false,
       };
     });
-};
-
-export const resourceTypes = [
-  'thoughtleader',
-  'article',
-  'book',
-  'podcast',
-  'podcastEpisode',
-  'directory',
-  'video',
-  'tool',
-  'community',
-  'course',
-  'example',
-  'agency',
-  'slide',
-  'magazine',
-  'newsletter',
-  'paper',
-  'socialMediaProfile',
-  'report',
-] as const;
-
-export type ThoughtleaderBasic = Prisma.ThoughtleaderGetPayload<{}>;
-export type Thoughtleader = Prisma.ThoughtleaderGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-  };
-}>;
-
-export type Article = Prisma.ArticleGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-    authors: true;
-  };
-}>;
-
-export type Book = Prisma.BookGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-    authors: true;
-  };
-}>;
-
-export type Podcast = Prisma.PodcastGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-    hosts: true;
-  };
-}>;
-
-export type PodcastEpisode = Prisma.PodcastEpisodeGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-    guests: true;
-    podcast: true;
-  };
-}>;
-
-export type Directory = Prisma.DirectoryGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-  };
-}>;
-
-export type Video = Prisma.VideoGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-    creators: true;
-  };
-}>;
-
-export type Tool = Prisma.ToolGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-  };
-}>;
-
-export type Community = Prisma.CommunityGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-  };
-}>;
-
-export type Course = Prisma.CourseGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-  };
-}>;
-
-export type Example = Prisma.ExampleGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-  };
-}>;
-
-export type Agency = Prisma.AgencyGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-  };
-}>;
-
-export type Slide = Prisma.SlideGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-    authors: true;
-  };
-}>;
-
-export type Magazine = Prisma.MagazineGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-  };
-}>;
-
-export type Newsletter = Prisma.NewsletterGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-    authors: true;
-  };
-}>;
-
-export type Paper = Prisma.PaperGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-    authors: true;
-  };
-}>;
-
-export type SocialMediaProfile = Prisma.SocialMediaProfileGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-  };
-}>;
-
-export type Report = Prisma.ReportGetPayload<{
-  include: {
-    category: true;
-    topics: true;
-    authors: true;
-  };
-}>;
-
-export type Resource = (
-  | Thoughtleader
-  | Article
-  | Book
-  | Podcast
-  | PodcastEpisode
-  | Video
-  | Directory
-  | Tool
-  | Community
-  | Course
-  | Example
-  | Agency
-  | Slide
-  | Magazine
-  | Newsletter
-  | Paper
-  | SocialMediaProfile
-  | Report
-) & { comments: number };
-
-export type Resources = Array<Resource>;
-export type ContentType = Resource['type'];
-
-export const includes = (type: ContentType) => {
-  return {
-    category: true,
-    topics: true,
-    ...(type === 'book' && {
-      authors: true,
-    }),
-    ...(type === 'article' && {
-      authors: true,
-    }),
-    ...(type === 'podcastEpisode' && {
-      guests: true,
-      podcast: true,
-    }),
-    ...(type === 'podcast' && {
-      hosts: true,
-    }),
-    ...(type === 'video' && {
-      creators: true,
-    }),
-    ...(type === 'slide' && {
-      authors: true,
-    }),
-    ...(type === 'newsletter' && {
-      authors: true,
-    }),
-    ...(type === 'paper' && {
-      authors: true,
-    }),
-    ...(type === 'report' && {
-      authors: true,
-    }),
-  };
 };

@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio';
 import { createQuery } from 'data/clients';
 import { comment, like, resource } from 'db/schema';
 import { count, countDistinct, desc, eq } from 'drizzle-orm';
-import { db as dbNew } from 'lib/db';
+import { db } from 'lib/db';
 import { selectResources } from 'lib/resources';
 import { withUserCollection } from 'lib/users';
 import { isUrl, wait } from 'lib/utils/utils';
@@ -87,7 +87,7 @@ export const getLikedResourcesCount = createQuery({
       return 0;
     }
 
-    const [result] = await dbNew
+    const [result] = await db
       .select({ count: count() })
       .from(like)
       .where(eq(like.userId, userId));
@@ -117,7 +117,7 @@ export const getResourceComments = createQuery({
   query: async ({ input }) => {
     const { id } = input;
 
-    const comments = await dbNew.query.comment.findMany({
+    const comments = await db.query.comment.findMany({
       where: eq(comment.resourceId, id),
       orderBy: desc(comment.createdAt),
     });
@@ -137,7 +137,7 @@ export const getCommentedResourcesCount = createQuery({
       return 0;
     }
 
-    const [result] = await dbNew
+    const [result] = await db
       .select({ count: countDistinct(comment.resourceId) })
       .from(comment)
       .where(eq(comment.userId, userId));
@@ -186,7 +186,7 @@ export const getResourcesCount = createQuery({
   query: async () => {
     await wait(2000);
 
-    const [result] = await dbNew
+    const [result] = await db
       .select({
         count: count(),
       })

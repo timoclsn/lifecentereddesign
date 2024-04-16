@@ -1,6 +1,5 @@
-import { MetadataRoute } from 'next';
-import { featureFlags } from 'lib/featureFlags';
 import { query } from 'api/query';
+import { MetadataRoute } from 'next';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,32 +31,14 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     },
   ];
 
-  const resources = await query.resources.getResources();
+  const { resources } = await query.resources.getResources({});
 
   resources.forEach((resource) => {
     pages.push({
-      url: `https://lifecentereddesign.net/resources/${resource.type}-${resource.id}`,
+      url: `https://lifecentereddesign.net/resources/${resource.id}`,
       lastModified: new Date(),
     });
   });
-
-  const flags = await featureFlags();
-
-  if (flags.collections) {
-    pages.push({
-      url: 'https://lifecentereddesign.net/collections',
-      lastModified: new Date(),
-    });
-
-    const collections = await query.collections.getCollections();
-
-    collections.forEach((collection) => {
-      pages.push({
-        url: `https://lifecentereddesign.net/collections/${collection.id}`,
-        lastModified: new Date(),
-      });
-    });
-  }
 
   return pages;
 };
