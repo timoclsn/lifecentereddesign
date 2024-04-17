@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import { z } from 'zod';
+import { cx } from 'cva';
 
 const NEXT_PUBLIC_VERCEL_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV;
 const NEXT_PUBLIC_VERCEL_URL = process.env.NEXT_PUBLIC_VERCEL_URL;
@@ -111,3 +112,12 @@ export const isEmpty = (obj: Record<string, unknown>) => {
   }
   return true;
 };
+
+/**
+ * A utility function that assigns class names to an element based on the provided conditions.
+ * This function is an alias for the `cx` function.
+ *
+ * @param classNames - The class names to be assigned.
+ * @returns The assigned class names.
+ */
+export const cn = cx;
