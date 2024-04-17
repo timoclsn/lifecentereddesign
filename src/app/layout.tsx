@@ -1,7 +1,7 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import { StorageProvider } from '@/components/StorageProvider/StorageProvider';
 import { Container } from '@/design-system';
-import '@/components/design-system/themes/resources.css';
+import '@/design-system/themes/resources.css';
 import { Metadata } from 'next';
 import { DM_Sans, Source_Serif_4 } from 'next/font/google';
 import Script from 'next/script';
