@@ -1,6 +1,6 @@
 import { ResourceCard } from '@/components/ResourceCard/ResourceCard';
 import { Resources } from '@/data/resources/query';
-import { Heading } from '@/components/design-system';
+import { Heading } from '@/design-system';
 import { AutoAnimate } from '../../../../../components/AutoAnimate/AutoAnimate';
 import { ClearAllButton } from './ClearAllButton';
 import { DownloadButton } from './DownloadButton/DownloadButton';

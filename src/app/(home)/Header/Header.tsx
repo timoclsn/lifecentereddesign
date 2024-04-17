@@ -1,4 +1,4 @@
-import { Bleed, Button, Heading, Text } from '@/components/design-system';
+import { Bleed, Button, Heading, Text } from '@/design-system';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ResourcesCount } from './ResourcesCount/ResourcesCount';
@@ -11,7 +11,7 @@ export function Header() {
         <span className="font-bold">Life-centered design</span> related
         resources
       </Heading>
-      <Text as="p" size="large" className="text-text-secondary mb-20 max-w-5xl">
+      <Text as="p" size="large" className="mb-20 max-w-5xl text-text-secondary">
         LifeCenteredDesign.Net is a curated directory of resources to help us
         design more responsible, sustainable, ethical and all in all more
         meaningful products, systems, and services.

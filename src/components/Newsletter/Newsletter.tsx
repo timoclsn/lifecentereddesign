@@ -1,4 +1,4 @@
-import { Heading, Link, Text } from '@/components/design-system';
+import { Heading, Link, Text } from '@/design-system';
 import NextLink from 'next/link';
 import { ForrestSection } from '../ForrestSection/ForrestSection';
 import { NewsletterForm } from './NewsletterForm';
@@ -9,7 +9,7 @@ export const Newsletter = () => {
       <Heading level="2" className="text-primary mb-6">
         Newsletter
       </Heading>
-      <Text as="p" size="large" className="text-text-secondary mb-16">
+      <Text as="p" size="large" className="mb-16 text-text-secondary">
         Sign up for our Newsletter to get all the new resources and other
         Life-centered Design related news delivered to your inbox once a month.
       </Text>

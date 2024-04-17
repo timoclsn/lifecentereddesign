@@ -1,5 +1,5 @@
 import { cva } from 'cva';
-import { Bleed, Container } from '@/components/design-system';
+import { Bleed, Container } from '@/design-system';
 import Image from 'next/image';
 import { ReactNode } from 'react';
 import forestImg from './forest.jpg';

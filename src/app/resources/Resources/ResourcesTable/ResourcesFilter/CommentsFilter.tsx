@@ -1,7 +1,7 @@
 'use client';
 
 import * as Toggle from '@radix-ui/react-toggle';
-import { Tooltip } from '@/components/design-system';
+import { Tooltip } from '@/design-system';
 import { Loader2, MessageCircle } from 'lucide-react';
 import { SolidMessageCircle } from '../../../../../components/Icons/SolidMessageCircle';
 import { useFilter } from '../../../../../hooks/useFilter';
@@ -29,7 +29,7 @@ export const CommentsFilter = ({ commentedResourcesCount }: Props) => {
         <Toggle.Root
           aria-label="Filter by comments"
           disabled={isPending}
-          className="ease text-text-primary flex items-center justify-center transition-transform hover:scale-110 active:scale-90"
+          className="ease flex items-center justify-center text-text-primary transition-transform hover:scale-110 active:scale-90"
           onPressedChange={() => {
             if (filterByLikes) {
               searchParams.delete('commented');

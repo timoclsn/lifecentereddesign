@@ -1,6 +1,6 @@
 'use client';
 
-import { Tag, Tooltip } from '@/components/design-system';
+import { Tag, Tooltip } from '@/design-system';
 import { track } from '@/lib/tracking';
 import { Check, Share } from 'lucide-react';
 import { useState } from 'react';

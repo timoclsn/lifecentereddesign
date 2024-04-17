@@ -1,5 +1,5 @@
 import { query } from '@/api/query';
-import { Heading } from '@/components/design-system';
+import { Heading } from '@/design-system';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

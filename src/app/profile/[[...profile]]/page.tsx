@@ -4,7 +4,7 @@ import {
   SignedOut,
   UserProfile,
 } from '@clerk/nextjs';
-import { Heading } from '@/components/design-system';
+import { Heading } from '@/design-system';
 import { DeleteAccountButton } from './DeleteAccountButton';
 
 const ProfilePage = () => {

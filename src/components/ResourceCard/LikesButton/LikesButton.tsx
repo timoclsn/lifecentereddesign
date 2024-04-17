@@ -3,7 +3,7 @@
 import { useAuth } from '@clerk/nextjs';
 import { action } from '@/api/action';
 import { cva } from 'cva';
-import { Tooltip } from '@/components/design-system';
+import { Tooltip } from '@/design-system';
 import { useAction } from '@/lib/data/client';
 import { track } from '@/lib/tracking';
 import { Heart } from 'lucide-react';

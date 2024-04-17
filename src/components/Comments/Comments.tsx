@@ -1,6 +1,6 @@
 import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
 import { query } from '@/api/query';
-import { Button, Container, Heading, InfoBox, Text } from '@/components/design-system';
+import { Button, Container, Heading, InfoBox, Text } from '@/design-system';
 import { AlertTriangle } from 'lucide-react';
 import { AutoAnimate } from '../AutoAnimate/AutoAnimate';
 import { Await } from '../Await/Await';
@@ -56,7 +56,7 @@ export const Comments = ({ id }: Props) => {
                               text={comment.text}
                             />
                             {index !== comments.length - 1 && (
-                              <div className="bg-stone mt-8 h-0.5 w-full" />
+                              <div className="mt-8 h-0.5 w-full bg-stone" />
                             )}
                           </li>
                         ))}
@@ -90,13 +90,13 @@ const Loading = () => {
             <div key={index}>
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
-                  <div className="bg-stone h-6 w-6 animate-pulse rounded-full" />
-                  <div className="bg-stone h-6 flex-1 animate-pulse rounded-md" />
+                  <div className="h-6 w-6 animate-pulse rounded-full bg-stone" />
+                  <div className="h-6 flex-1 animate-pulse rounded-md bg-stone" />
                 </div>
-                <div className="bg-stone h-16 w-full animate-pulse rounded-md" />
+                <div className="h-16 w-full animate-pulse rounded-md bg-stone" />
               </div>
               {index !== items - 1 && (
-                <div className="bg-stone mt-8 h-0.5 w-full animate-pulse" />
+                <div className="mt-8 h-0.5 w-full animate-pulse bg-stone" />
               )}
             </div>
           );
@@ -110,7 +110,7 @@ const Error = () => {
     <InfoBox
       variant="error"
       icon={<AlertTriangle />}
-      className="animate-in zoom-in-50 fade-in duration-150 ease-in-out"
+      className="duration-150 ease-in-out animate-in fade-in zoom-in-50"
     >
       Something went wrong loading the comments. Please try again.
     </InfoBox>

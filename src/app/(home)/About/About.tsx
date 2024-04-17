@@ -1,6 +1,6 @@
-import { query } from "@/api/query";
-import { Heading } from "@/components/design-system";
-import { ProfileCards } from "./ProfileCards/ProfileCards";
+import { query } from '@/api/query';
+import { Heading } from '@/design-system';
+import { ProfileCards } from './ProfileCards/ProfileCards';
 
 export const About = async () => {
   const { data, content } = await query.content.getPage('about');

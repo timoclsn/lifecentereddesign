@@ -2,7 +2,7 @@
 
 import { action } from '@/api/action';
 import { cva } from 'cva';
-import { Button, InfoBox } from '@/components/design-system';
+import { Button, InfoBox } from '@/design-system';
 import { useAction } from '@/lib/data/client';
 import { track } from '@/lib/tracking';
 import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
@@ -94,7 +94,7 @@ export const AddCommentForm = ({ id }: Props) => {
           <InfoBox
             variant="error"
             icon={<AlertTriangle />}
-            className="animate-in zoom-in-50 fade-in duration-150 ease-in-out"
+            className="duration-150 ease-in-out animate-in fade-in zoom-in-50"
           >
             {error}
           </InfoBox>

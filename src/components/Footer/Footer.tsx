@@ -1,9 +1,9 @@
-import { Text } from '@/components/design-system';
+import { Text } from '@/design-system';
 import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="text-text-secondary mt-20 flex justify-between gap-4 px-6 py-10 sm:mt-40 sm:gap-10 sm:px-8 xl:px-10">
+    <footer className="mt-20 flex justify-between gap-4 px-6 py-10 text-text-secondary sm:mt-40 sm:gap-10 sm:px-8 xl:px-10">
       <ul className="flex flex-col gap-4 sm:flex-row sm:gap-10">
         <li className="hover:underline">
           <Link href="/#about">

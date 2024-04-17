@@ -1,4 +1,4 @@
-import { Heading } from '@/components/design-system';
+import { Heading } from '@/design-system';
 import Link from 'next/link';
 import { NavigationLink } from './NavigationLink';
 import { UserButton } from './UserButton';
@@ -11,7 +11,7 @@ export const Navigation = async () => {
           <Heading
             as="span"
             level="4"
-            className="hover:text-text-secondary break-all transition-colors"
+            className="break-all transition-colors hover:text-text-secondary"
           >
             LifeCenteredDesign.Net
           </Heading>

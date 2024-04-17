@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/design-system';
+import { Button } from '@/design-system';
 import { ArrowDown, Check, Loader2 } from 'lucide-react';
 import { useFilter } from '../../../../../hooks/useFilter';
 

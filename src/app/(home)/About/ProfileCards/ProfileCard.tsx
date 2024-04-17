@@ -1,4 +1,4 @@
-import { Card, CardProps, Heading, Text } from '@/components/design-system';
+import { Card, CardProps, Heading, Text } from '@/design-system';
 import { Globe, Instagram, Linkedin, Twitter } from 'lucide-react';
 import Image, { StaticImageData } from 'next/image';
 import { ReactNode } from 'react';
@@ -31,13 +31,13 @@ export function ProfileCard({
           src={image}
           alt={`Portrait image of ${name}`}
           placeholder="blur"
-          className="border-primary-contrast-text w-[120px] rounded-full border-4 border-solid leading-none"
+          className="w-[120px] rounded-full border-4 border-solid border-primary-contrast-text leading-none"
         />
         <div className="flex-1">
           <Heading as="h2" level="4" className="mb-1">
             {name}
           </Heading>
-          <Text as="p" className="text-text-secondary mb-6">
+          <Text as="p" className="mb-6 text-text-secondary">
             {children}
           </Text>
           <ul className="flex space-x-4">

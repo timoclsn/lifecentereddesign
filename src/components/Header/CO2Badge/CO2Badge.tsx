@@ -1,7 +1,7 @@
 'use client';
 
 import * as Dialog from '@radix-ui/react-dialog';
-import { Heading, Link, Text } from '@/components/design-system';
+import { Heading, Link, Text } from '@/design-system';
 import { track } from '@/lib/tracking';
 import { ArrowRight, Leaf, X } from 'lucide-react';
 import { useState } from 'react';
@@ -23,7 +23,7 @@ export const CO2Badge = ({ co2, cleanerThan }: Props) => {
   };
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Trigger className="bg-lime animate-in slide-in-from-top-full group flex items-center gap-1 rounded-b-lg px-4 py-2 font-bold transition-transform duration-200 ease-in-out">
+      <Dialog.Trigger className="group flex items-center gap-1 rounded-b-lg bg-lime px-4 py-2 font-bold transition-transform duration-200 ease-in-out animate-in slide-in-from-top-full">
         <Leaf
           size={22}
           className="transition-transform group-hover:scale-110"
@@ -34,9 +34,9 @@ export const CO2Badge = ({ co2, cleanerThan }: Props) => {
         </Text>
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="bg-text-primary animate-in fade-in fixed inset-0 z-20 opacity-20" />
+        <Dialog.Overlay className="fixed inset-0 z-20 bg-text-primary opacity-20 animate-in fade-in" />
         <Dialog.Content
-          className={`bg-lime fixed left-1/2 top-1/2 z-20 max-h-[85vh] w-[90vw] max-w-xl -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-3xl p-10 ${styles.content}`}
+          className={`fixed left-1/2 top-1/2 z-20 max-h-[85vh] w-[90vw] max-w-xl -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-3xl bg-lime p-10 ${styles.content}`}
         >
           <div className="mb-4">
             <Dialog.Close className="hover:opacity-80 focus:outline-none">

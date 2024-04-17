@@ -2,7 +2,7 @@
 
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { action } from '@/api/action';
-import { Button, InfoBox } from '@/components/design-system';
+import { Button, InfoBox } from '@/design-system';
 import { useAction } from '@/lib/data/client';
 import { track } from '@/lib/tracking';
 import {
@@ -87,7 +87,7 @@ export const NewsletterForm = () => {
           className={checkboxStyles({ error: !!validationErrors?.consens })}
         >
           <span className="sr-only">Consens checkbox toggle button</span>
-          <Checkbox.Indicator className="animate-in zoom-in-150 fade-in-50 duration-100">
+          <Checkbox.Indicator className="duration-100 animate-in fade-in-50 zoom-in-150">
             <Check />
           </Checkbox.Indicator>
         </Checkbox.Root>
@@ -113,7 +113,7 @@ export const NewsletterForm = () => {
           <InfoBox
             variant="success"
             icon={<CheckCircle2 />}
-            className="animate-in zoom-in-0 fade-in duration-150 ease-in-out"
+            className="duration-150 ease-in-out animate-in fade-in zoom-in-0"
           >
             Almost finished... We need to confirm your email address. To
             complete the subscription process, please click the link in the
@@ -126,7 +126,7 @@ export const NewsletterForm = () => {
           <InfoBox
             variant="error"
             icon={<AlertTriangle />}
-            className="animate-in zoom-in-50 fade-in duration-150 ease-in-out"
+            className="duration-150 ease-in-out animate-in fade-in zoom-in-50"
           >
             {error}
           </InfoBox>

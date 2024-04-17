@@ -1,5 +1,5 @@
 import { query } from '@/api/query';
-import { Card, InfoBox, getRandomCardVariant } from '@/components/design-system';
+import { Card, InfoBox, getRandomCardVariant } from '@/design-system';
 import { isEmpty } from '@/lib/utils/utils';
 import { AlertTriangle } from 'lucide-react';
 import { Await } from '../../../../components/Await/Await';
@@ -75,7 +75,7 @@ const Loading = () => {
   return (
     <div className="space-y-10">
       {/* Filter loading state */}
-      <div className="bg-stone h-[100px] w-full animate-pulse" />
+      <div className="h-[100px] w-full animate-pulse bg-stone" />
 
       {/* Resources loading state */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

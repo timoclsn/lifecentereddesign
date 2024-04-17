@@ -1,4 +1,4 @@
-import { Text } from '@/components/design-system';
+import { Text } from '@/design-system';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

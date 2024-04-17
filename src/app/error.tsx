@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Heading } from '@/components/design-system';
+import { Button, Heading } from '@/design-system';
 
 interface Props {
   reset: () => void;

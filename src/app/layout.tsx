@@ -1,6 +1,6 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import { StorageProvider } from '@/components/StorageProvider/StorageProvider';
-import { Container } from '@/components/design-system';
+import { Container } from '@/design-system';
 import '@/components/design-system/themes/resources.css';
 import { Metadata } from 'next';
 import { DM_Sans, Source_Serif_4 } from 'next/font/google';
@@ -74,7 +74,7 @@ const RootLayout = ({ children }: Props) => {
           lang="en"
           className={`${sans.variable} ${serif.variable} min-h-screen`}
         >
-          <body className="bg-bg-primary text-text-primary flex min-h-screen flex-col font-sans text-base font-normal">
+          <body className="flex min-h-screen flex-col bg-bg-primary font-sans text-base font-normal text-text-primary">
             <Header />
             <main className="flex-1">
               <Container inset className="space-y-10 sm:space-y-40">

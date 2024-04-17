@@ -1,5 +1,5 @@
 import { query } from '@/api/query';
-import { Card, getRandomCardVariant } from '@/components/design-system';
+import { Card, getRandomCardVariant } from '@/design-system';
 import { AlertTriangle } from 'lucide-react';
 import { Await } from '../Await/Await';
 import { ResourceCard } from '../ResourceCard/ResourceCard';

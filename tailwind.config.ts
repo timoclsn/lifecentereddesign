@@ -1,5 +1,4 @@
-
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   future: {
@@ -8,6 +7,7 @@ const config: Config = {
   content: [
     'src/app/**/*.{js,ts,jsx,tsx}',
     'src/components/**/*.{js,ts,jsx,tsx}',
+    'src/design-system/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {

@@ -1,7 +1,7 @@
 'use client';
 
 import { action } from '@/api/action';
-import { Button, InfoBox } from '@/components/design-system';
+import { Button, InfoBox } from '@/design-system';
 import { useAction } from '@/lib/data/client';
 import { track } from '@/lib/tracking';
 import { AlertTriangle, CheckCircle2, Loader2, Mail } from 'lucide-react';
@@ -122,7 +122,7 @@ export const SuggestionForm = () => {
           <InfoBox
             variant="success"
             icon={<CheckCircle2 />}
-            className="animate-in zoom-in-0 fade-in duration-150 ease-in-out"
+            className="duration-150 ease-in-out animate-in fade-in zoom-in-0"
           >
             Thanks for your contribution! We&apos;ll get the resource on the
             site as soon as possible.
@@ -134,7 +134,7 @@ export const SuggestionForm = () => {
           <InfoBox
             variant="error"
             icon={<AlertTriangle />}
-            className="animate-in zoom-in-50 fade-in duration-150 ease-in-out"
+            className="duration-150 ease-in-out animate-in fade-in zoom-in-50"
           >
             {error}
           </InfoBox>

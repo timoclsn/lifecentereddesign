@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/design-system';
+import { Button } from '@/design-system';
 import { track } from '@/lib/tracking';
 import { Download } from 'lucide-react';
 

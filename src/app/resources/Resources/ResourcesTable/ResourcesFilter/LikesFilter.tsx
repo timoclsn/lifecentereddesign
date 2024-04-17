@@ -1,7 +1,7 @@
 'use client';
 
 import * as Toggle from '@radix-ui/react-toggle';
-import { Tooltip } from '@/components/design-system';
+import { Tooltip } from '@/design-system';
 import { Heart, Loader2 } from 'lucide-react';
 import { SolidHeart } from '../../../../../components/Icons/SolidHeart';
 import { useFilter } from '../../../../../hooks/useFilter';
@@ -29,7 +29,7 @@ export const LikesFilter = ({ likedResourcesCount }: Props) => {
         <Toggle.Root
           aria-label="Filter by likes"
           disabled={isPending}
-          className="ease text-text-primary flex items-center justify-center transition-transform hover:scale-110 active:scale-90"
+          className="ease flex items-center justify-center text-text-primary transition-transform hover:scale-110 active:scale-90"
           onPressedChange={() => {
             if (filterByLikes) {
               searchParams.delete('liked');

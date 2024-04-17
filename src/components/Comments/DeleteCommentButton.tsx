@@ -1,7 +1,7 @@
 'use client';
 
 import { action } from '@/api/action';
-import { Alert } from '@/components/design-system';
+import { Alert } from '@/design-system';
 import { useAction } from '@/lib/data/client';
 import { Loader2, Trash2 } from 'lucide-react';
 
@@ -37,7 +37,7 @@ export const DeleteCommentButton = ({
       destructive
     >
       <button
-        className="text-text-secondary ease flex items-center justify-center transition-transform hover:scale-110 active:scale-90 disabled:opacity-80"
+        className="ease flex items-center justify-center text-text-secondary transition-transform hover:scale-110 active:scale-90 disabled:opacity-80"
         disabled={isRunning}
       >
         {isRunning && <Loader2 size={16} className="animate-spin" />}

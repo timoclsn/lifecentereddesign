@@ -1,7 +1,7 @@
 'use client';
 
 import { action } from '@/api/action';
-import { Alert, Button, InfoBox } from '@/components/design-system';
+import { Alert, Button, InfoBox } from '@/design-system';
 import { useAction } from '@/lib/data/client';
 import { useAuth } from '@clerk/nextjs';
 import { AlertTriangle, CheckCircle2, Loader2, XCircle } from 'lucide-react';
@@ -41,7 +41,7 @@ export const DeleteAccountButton = () => {
         <InfoBox
           variant="success"
           icon={<CheckCircle2 />}
-          className="animate-in zoom-in-0 fade-in duration-150 ease-in-out"
+          className="duration-150 ease-in-out animate-in fade-in zoom-in-0"
         >
           Succesfully deleted your account! We are sad to see you go.
         </InfoBox>
@@ -51,7 +51,7 @@ export const DeleteAccountButton = () => {
         <InfoBox
           variant="error"
           icon={<AlertTriangle />}
-          className="animate-in zoom-in-50 fade-in duration-150 ease-in-out"
+          className="duration-150 ease-in-out animate-in fade-in zoom-in-50"
         >
           Something went wrong while deleting your account. Please try again or
           contact us at hello@lifecentereddesign.net.

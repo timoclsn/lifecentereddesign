@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/design-system';
+import { Button } from '@/design-system';
 import { Loader2, XCircle } from 'lucide-react';
 import { useFilter } from '../../../../../hooks/useFilter';
 

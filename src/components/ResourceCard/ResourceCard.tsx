@@ -6,7 +6,7 @@ import {
   Tag,
   Text,
   Tooltip,
-} from '@/components/design-system';
+} from '@/design-system';
 import { formateDate, getHostname } from '@/lib/utils/utils';
 import {
   CalendarDays,
@@ -59,7 +59,7 @@ export const ResourceCard = async ({ resource, showPreview }: Props) => {
       variant={
         resource.type?.name ? variantsMap[resource.type.name] : undefined
       }
-      className="group/card @container relative flex h-full w-full flex-col gap-8"
+      className="group/card relative flex h-full w-full flex-col gap-8 @container"
     >
       <DetailsLink slug={resource.id} link={resource.link} />
 
@@ -118,13 +118,13 @@ export const ResourceCard = async ({ resource, showPreview }: Props) => {
             <ShareButton slug={resource.id} name={resource.name} />
           </div>
         </div>
-        <div className="@3xl:flex-row flex w-full flex-col justify-between gap-8">
+        <div className="flex w-full flex-col justify-between gap-8 @3xl:flex-row">
           <div className="flex flex-col items-start gap-4 sm:mb-16">
             {/* Title */}
             <Title slug={resource.id}>{resource.name}</Title>
 
             {/* Meta infos */}
-            <ul className="text-text-secondary -mt-1 flex flex-wrap gap-x-2 gap-y-1 sm:gap-x-8 sm:gap-y-3">
+            <ul className="-mt-1 flex flex-wrap gap-x-2 gap-y-1 text-text-secondary sm:gap-x-8 sm:gap-y-3">
               {resource.creators.length > 0 && (
                 <li className="flex items-center gap-1">
                   <Users2 size="18" className="flex-none" />
@@ -204,7 +204,7 @@ export const ResourceCard = async ({ resource, showPreview }: Props) => {
                 </span>
                 <ExternalLink
                   size={16}
-                  className="text-text-secondary flex-none"
+                  className="flex-none text-text-secondary"
                 />
               </div>
             </Tag>

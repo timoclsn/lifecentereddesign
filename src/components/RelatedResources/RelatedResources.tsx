@@ -6,7 +6,7 @@ import {
   Heading,
   Text,
   getRandomCardVariant,
-} from '@/components/design-system';
+} from '@/design-system';
 import { AlertTriangle, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -35,7 +35,7 @@ export const RelatedResources = ({ id }: Props) => {
               src={birdsImg}
               alt="Image of desert ground."
               placeholder="blur"
-              className="rounded-4xl h-full object-cover"
+              className="h-full rounded-4xl object-cover"
             />
           </li>
           <Await promise={promise} loading={<Loading />} error={<Error />}>
@@ -58,13 +58,13 @@ export const RelatedResources = ({ id }: Props) => {
               );
             }}
           </Await>
-          <li className="rounded-4xl flex-none snap-center snap-always">
+          <li className="flex-none snap-center snap-always rounded-4xl">
             <Link href="/resources" className="block h-full hover:opacity-80">
               <Card
                 variant="primary"
                 className="flex h-full items-center justify-center"
               >
-                <div className="text-primary-contrast-text flex items-center justify-center gap-2 [&>svg]:size-[25px]">
+                <div className="flex items-center justify-center gap-2 text-primary-contrast-text [&>svg]:size-[25px]">
                   <ArrowRight />
                   <Text size="large">All Resources</Text>
                 </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { Text } from '@/components/design-system';
+import { Text } from '@/design-system';
 import { usePathname } from 'next/navigation';
 
 interface Props {

@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs/server';
 import { formatDistance, parseISO } from 'date-fns';
-import { Heading, Text } from '@/components/design-system';
+import { Heading, Text } from '@/design-system';
 import { Avatar } from './Avatar';
 import { DeleteCommentButton } from './DeleteCommentButton';
 

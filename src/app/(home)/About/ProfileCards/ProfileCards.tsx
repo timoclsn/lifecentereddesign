@@ -1,4 +1,4 @@
-import { Link } from '@/components/design-system';
+import { Link } from '@/design-system';
 import kathaImg from './katharina-clasen.png';
 import timoImg from './timo-clasen.png';
 import { ProfileCard } from './ProfileCard';
@@ -15,7 +15,7 @@ export const ProfileCards = () => {
         instagramUrl="https://www.instagram.com/katharinaclasen/"
         twitterUrl="https://twitter.com/KatharinaClasen"
       >
-        <span className="text-text-primary mb-4 block">
+        <span className="mb-4 block text-text-primary">
           Idea, concept, design & content
         </span>
         UX Designer (self-employed), Lecturer (
@@ -32,7 +32,7 @@ export const ProfileCards = () => {
         linkedInUrl="https://www.linkedin.com/in/timoclsn"
         twitterUrl="https://twitter.com/timoclsn"
       >
-        <span className="text-text-primary mb-4 block">Development</span>
+        <span className="mb-4 block text-text-primary">Development</span>
         Frontend Engineer (
         <Link url="https://steuerbot.com" external>
           Steuerbot

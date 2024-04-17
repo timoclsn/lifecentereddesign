@@ -1,4 +1,4 @@
-import { Tooltip } from '@/components/design-system';
+import { Tooltip } from '@/design-system';
 import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 
@@ -11,7 +11,7 @@ export const CommentsButton = ({ commentsCount, slug }: Props) => {
   return (
     <Link href={`/resources/${slug}#cmnts`} className="group relative">
       <div className="ease flex items-center justify-center gap-2 disabled:opacity-80">
-        <div className="animate-in slide-in-from-right-full fade-in transition-transform duration-100 ease-in">
+        <div className="transition-transform duration-100 ease-in animate-in fade-in slide-in-from-right-full">
           {commentsCount}
         </div>
 

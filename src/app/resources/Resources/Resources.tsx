@@ -1,4 +1,4 @@
-import { Heading, Text } from '@/components/design-system';
+import { Heading, Text } from '@/design-system';
 import { SearchParams } from '@/lib/types';
 import { z } from 'zod';
 import { formateDate } from '../../../lib/utils/utils';
@@ -54,7 +54,7 @@ export const Resources = async ({ searchParams }: Props) => {
         <Heading level="1" className="mb-8 max-w-3xl">
           {title ? title : 'Resources'}
         </Heading>
-        <Text as="p" size="large" className="text-text-secondary max-w-5xl">
+        <Text as="p" size="large" className="max-w-5xl text-text-secondary">
           {description()}
         </Text>
       </div>

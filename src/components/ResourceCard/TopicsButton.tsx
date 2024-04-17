@@ -1,6 +1,6 @@
 'use client';
 
-import { Tooltip } from '@/components/design-system';
+import { Tooltip } from '@/design-system';
 import { Filter, Loader2, XCircle } from 'lucide-react';
 import Link from 'next/link';
 import { ReactNode } from 'react';

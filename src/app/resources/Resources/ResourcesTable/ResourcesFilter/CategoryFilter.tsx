@@ -1,6 +1,6 @@
 'use client';
 
-import { Select } from '@/components/design-system';
+import { Select } from '@/design-system';
 import { useFilter } from '../../../../../hooks/useFilter';
 import { Categories } from '@/data/categories/query';
 
