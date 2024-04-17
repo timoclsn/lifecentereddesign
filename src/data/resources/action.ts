@@ -11,6 +11,20 @@ import { resourceCommentsTag } from './query';
 
 const { SUGGESTION_MAIL_PASSWORD } = process.env;
 
+export const addResource = createProtectedAction({
+  input: z.object({
+    typeId: z.number(),
+  }),
+  action: async ({ input, ctx }) => {
+    const { typeId } = input;
+    const { db } = ctx;
+
+    console.log({ typeId });
+
+    revalidatePath('/');
+  },
+});
+
 export const like = createProtectedAction({
   input: z.object({
     id: z.string(),

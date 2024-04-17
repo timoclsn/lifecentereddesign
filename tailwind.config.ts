@@ -10,6 +10,7 @@ const config: Config = {
     'src/app/**/*.{js,ts,jsx,tsx}',
     'src/components/**/*.{js,ts,jsx,tsx}',
     'src/design-system/**/*.{js,ts,jsx,tsx}',
+    'src/ui/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     container: {

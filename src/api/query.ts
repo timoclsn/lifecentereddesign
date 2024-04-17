@@ -5,6 +5,7 @@ import * as content from '../data/content/query';
 import * as resources from '../data/resources/query';
 import * as topics from '../data/topics/query';
 import * as types from '../data/types/query';
+import * as users from '../data/users/query';
 
 export const query = {
   categories,
@@ -13,4 +14,5 @@ export const query = {
   resources,
   topics,
   types,
+  users,
 };

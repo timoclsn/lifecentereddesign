@@ -15,6 +15,7 @@ export const createProtectedAction = createActionClient({
     if (!userId) {
       throw new Error('You must be logged in to perform this action.');
     }
+
     return { db, userId };
   },
 });
@@ -22,5 +23,16 @@ export const createProtectedAction = createActionClient({
 export const createQuery = createQueryClient({
   middleware: () => {
     return { db };
+  },
+});
+
+export const createProtectedQuery = createQueryClient({
+  middleware: () => {
+    const { userId } = auth();
+
+    if (!userId) {
+      throw new Error('You must be logged in to perform this query.');
+    }
+    return { db, userId };
   },
 });

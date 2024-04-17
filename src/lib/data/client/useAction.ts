@@ -32,7 +32,6 @@ const createReducer =
         return {
           ...state,
           status: 'running',
-          data: null,
           validationErrors: null,
           error: null,
         };
@@ -48,7 +47,6 @@ const createReducer =
         return {
           ...state,
           status: 'validationError',
-          data: null,
           validationErrors: action.validationErrors,
           error: null,
         };
@@ -56,7 +54,6 @@ const createReducer =
         return {
           ...state,
           status: 'error',
-          data: null,
           validationErrors: null,
           error: action.error,
         };

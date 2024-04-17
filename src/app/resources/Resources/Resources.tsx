@@ -1,7 +1,9 @@
 import { Heading, Text } from '@/design-system';
 import { SearchParams } from '@/lib/types';
+import { auth } from '@clerk/nextjs/server';
 import { z } from 'zod';
 import { formateDate } from '../../../lib/utils/utils';
+import { AddResourceButton } from './AddResourceButton';
 import { ResourcesTable } from './ResourcesTable/ResourcesTable';
 
 export type ReseourcesFilter = z.infer<typeof reseourcesFilterSchema>;
@@ -30,6 +32,8 @@ export const Resources = async ({ searchParams }: Props) => {
   const from = resourcesFilter.from;
   const till = resourcesFilter.till;
 
+  const user = auth();
+
   const description = () => {
     if (from && till) {
       return `New resources added between ${formateDate(
@@ -51,9 +55,12 @@ export const Resources = async ({ searchParams }: Props) => {
   return (
     <section id="resources" className="flex flex-col gap-10">
       <div>
-        <Heading level="1" className="mb-8 max-w-3xl">
-          {title ? title : 'Resources'}
-        </Heading>
+        <div className="mb-8 flex items-center gap-2">
+          <Heading level="1" className="max-w-3xl">
+            {title ? title : 'Resources'}
+          </Heading>
+          {user.userId && <AddResourceButton />}
+        </div>
         <Text as="p" size="large" className="max-w-5xl text-text-secondary">
           {description()}
         </Text>

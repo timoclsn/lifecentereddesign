@@ -1,7 +1,4 @@
 import { createQuery } from '@/data/clients';
-import { type } from '@/db/schema';
-import { asc } from 'drizzle-orm';
-import { db } from '@/lib/db';
 import 'server-only';
 
 export type Types = Awaited<ReturnType<typeof getTypes>>;
@@ -14,9 +11,10 @@ export const getTypes = createQuery({
       tags: ['types'],
     },
   },
-  query: async () => {
-    return db.query.type.findMany({
-      orderBy: asc(type.name),
+  query: async ({ ctx }) => {
+    const { db } = ctx;
+    return await db.query.type.findMany({
+      orderBy: (model, { asc }) => asc(model.name),
     });
   },
 });
