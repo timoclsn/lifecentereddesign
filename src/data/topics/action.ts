@@ -1,6 +1,6 @@
 'use server';
 
-import { type } from '@/db/schema';
+import { topic } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import {
@@ -8,15 +8,15 @@ import {
   createAdminAction,
   createProtectedAction,
 } from '../clients';
-import { selectTypes } from './types';
+import { selectTopics } from './topics';
 
-export const getTypes = createAction({
+export const getTopics = createAction({
   action: async () => {
-    return await selectTypes();
+    return await selectTopics();
   },
 });
 
-export const addType = createAdminAction({
+export const addTopic = createAdminAction({
   input: z.object({
     name: z.string(),
   }),
@@ -24,7 +24,7 @@ export const addType = createAdminAction({
     const { name } = input;
     const { db } = ctx;
 
-    await db.insert(type).values({
+    await db.insert(topic).values({
       name,
     });
 

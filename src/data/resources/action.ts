@@ -1,6 +1,10 @@
 'use server';
 
-import { createAction, createProtectedAction } from '@/data/clients';
+import {
+  createAction,
+  createAdminAction,
+  createProtectedAction,
+} from '@/data/clients';
 import { and, eq } from 'drizzle-orm';
 import { db } from '@/lib/db';
 import { revalidatePath, revalidateTag } from 'next/cache';
@@ -11,9 +15,21 @@ import { resourceCommentsTag } from './query';
 
 const { SUGGESTION_MAIL_PASSWORD } = process.env;
 
-export const addResource = createProtectedAction({
+export const addResource = createAdminAction({
   input: z.object({
+    id: z.string(),
+    name: z.string(),
+    suggestion: z.boolean().optional(),
+    link: z.string(),
     typeId: z.number(),
+    categoryId: z.number(),
+    description: z.string().optional(),
+    details: z.string().optional(),
+    note: z.string().optional(),
+    date: z.date().optional(),
+    datePlain: z.string().optional(),
+    creatorIds: z.array(z.string()).optional(),
+    creatorsPlain: z.string().optional(),
   }),
   action: async ({ input, ctx }) => {
     const { typeId } = input;

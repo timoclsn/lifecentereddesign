@@ -1,18 +1,13 @@
-import { clerkClient } from '@clerk/nextjs/server';
+import { isAdmin as isAdminLib } from '@/lib/users';
 import { createProtectedQuery } from '../clients';
 
-export const canEdit = createProtectedQuery({
+export const isAdmin = createProtectedQuery({
   cache: {
     noStore: true,
   },
   query: async ({ ctx }) => {
     const { userId } = ctx;
 
-    const fullUserData = await clerkClient.users.getUser(userId);
-    const canEdit = fullUserData?.privateMetadata['canAdd'] as
-      | boolean
-      | undefined;
-
-    return canEdit;
+    return await isAdminLib(userId);
   },
 });

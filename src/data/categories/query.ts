@@ -1,8 +1,6 @@
 import { createQuery } from '@/data/clients';
-import { category } from '@/db/schema';
-import { asc } from 'drizzle-orm';
-import { db } from '@/lib/db';
 import 'server-only';
+import { selectCategories } from './categories';
 
 export type Categories = Awaited<ReturnType<typeof getCategories>>;
 
@@ -15,8 +13,6 @@ export const getCategories = createQuery({
     },
   },
   query: async () => {
-    return db.query.category.findMany({
-      orderBy: asc(category.name),
-    });
+    return await selectCategories();
   },
 });

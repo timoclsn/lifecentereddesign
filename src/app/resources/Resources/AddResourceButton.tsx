@@ -4,11 +4,11 @@ import { AddOrEditResourceSheet } from '@/components/Sheets/AddOrEditResourceShe
 import { PlusCircle } from 'lucide-react';
 
 export const AddResourceButton = () => {
-  const promise = query.users.canEdit();
+  const promise = query.users.isAdmin();
   return (
     <Await promise={promise}>
-      {(canEdit) => {
-        if (!canEdit) return null;
+      {(isAdmin) => {
+        if (!isAdmin) return null;
 
         return (
           <AddOrEditResourceSheet>

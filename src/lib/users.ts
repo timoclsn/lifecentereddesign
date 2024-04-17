@@ -51,3 +51,14 @@ export const withUserCollection = async <TData extends Data>(
     };
   });
 };
+
+export const isAdmin = async (userId: string) => {
+  const fullUserData = await clerkClient.users.getUser(userId);
+  const admin = fullUserData?.privateMetadata['admin'] as boolean | undefined;
+
+  if (!admin) {
+    return false;
+  }
+
+  return true;
+};

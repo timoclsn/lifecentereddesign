@@ -12,11 +12,9 @@ export const deleteAccount = createProtectedAction({
 
     try {
       await clerkClient.users.deleteUser(userId);
-
       await db.delete(like).where(eq(like.userId, userId));
-
       await db.delete(comment).where(eq(comment.userId, userId));
-      
+
       revalidatePath('/');
     } catch (error) {
       throw new Error(

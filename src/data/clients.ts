@@ -1,5 +1,6 @@
-import { auth } from '@clerk/nextjs/server';
 import { db } from '@/lib/db';
+import { isAdmin } from '@/lib/users';
+import { auth } from '@clerk/nextjs/server';
 import { createActionClient, createQueryClient } from '../lib/data/server';
 
 export const createAction = createActionClient({
@@ -14,6 +15,23 @@ export const createProtectedAction = createActionClient({
 
     if (!userId) {
       throw new Error('You must be logged in to perform this action.');
+    }
+
+    return { db, userId };
+  },
+});
+
+export const createAdminAction = createActionClient({
+  middleware: async () => {
+    const { userId } = auth();
+    if (!userId) {
+      throw new Error('You must be logged in to perform this action.');
+    }
+
+    const admin = await isAdmin(userId);
+
+    if (!admin) {
+      throw new Error('You must be an admin to perform this action.');
     }
 
     return { db, userId };

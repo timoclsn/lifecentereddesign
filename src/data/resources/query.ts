@@ -4,7 +4,7 @@ import { createQuery } from '@/data/clients';
 import { comment, like, resource } from '@/db/schema';
 import { count, countDistinct, desc, eq } from 'drizzle-orm';
 import { db } from '@/lib/db';
-import { selectResources } from '@/lib/resources';
+import { selectResources } from '@/data/resources/resources';
 import { withUserCollection } from '@/lib/users';
 import { isUrl, wait } from '@/lib/utils/utils';
 import 'server-only';
