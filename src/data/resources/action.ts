@@ -10,12 +10,18 @@ import { db } from '@/lib/db';
 import { revalidatePath, revalidateTag } from 'next/cache';
 import nodemailer from 'nodemailer';
 import { z } from 'zod';
-import { comment, like as likeSchema } from '../../db/schema';
+import {
+  comment,
+  like as likeSchema,
+  resource,
+  resourceToCreator,
+  resourceToTopic,
+} from '../../db/schema';
 import { resourceCommentsTag } from './query';
 
 const { SUGGESTION_MAIL_PASSWORD } = process.env;
 
-export const addResource = createAdminAction({
+export const add = createAdminAction({
   input: z.object({
     id: z.string(),
     name: z.string(),
@@ -23,6 +29,7 @@ export const addResource = createAdminAction({
     link: z.string(),
     typeId: z.number(),
     categoryId: z.number(),
+    topicIds: z.array(z.number()).optional(),
     description: z.string().optional(),
     details: z.string().optional(),
     note: z.string().optional(),
@@ -32,10 +39,42 @@ export const addResource = createAdminAction({
     creatorsPlain: z.string().optional(),
   }),
   action: async ({ input, ctx }) => {
-    const { typeId } = input;
     const { db } = ctx;
 
-    console.log({ typeId });
+    console.log(input);
+
+    await db.insert(resource).values({
+      id: input.id,
+      name: input.name,
+      suggestion: input.suggestion,
+      link: input.link,
+      typeId: input.typeId,
+      categoryId: input.categoryId,
+      description: input.description,
+      details: input.details,
+      note: input.note,
+      date: input.date,
+      datePlain: input.datePlain,
+      creatorsPlain: input.creatorsPlain,
+    });
+
+    if (input.topicIds) {
+      await db.insert(resourceToTopic).values(
+        input.topicIds.map((topicId) => ({
+          resourceId: input.id,
+          topicId,
+        })),
+      );
+    }
+
+    if (input.creatorIds) {
+      await db.insert(resourceToCreator).values(
+        input.creatorIds.map((creatorId) => ({
+          resourceId: input.id,
+          creatorId,
+        })),
+      );
+    }
 
     revalidatePath('/');
   },

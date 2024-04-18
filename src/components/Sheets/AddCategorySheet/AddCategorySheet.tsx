@@ -24,10 +24,10 @@ interface Props {
   onAdd?: () => void;
 }
 
-export const AddTypeSheet = ({ children, onAdd }: Props) => {
+export const AddCategorySheet = ({ children, onAdd }: Props) => {
   const [open, setOpen] = useState(false);
   const { runAction, isRunning, error, validationErrors } = useAction(
-    action.types.addType,
+    action.categories.addCategory,
     {
       onSuccess: () => {
         onAdd?.();
@@ -48,8 +48,8 @@ export const AddTypeSheet = ({ children, onAdd }: Props) => {
           }}
         >
           <SheetHeader>
-            <SheetTitle>Add type</SheetTitle>
-            <SheetDescription>Add a new resource type.</SheetDescription>
+            <SheetTitle>Add category</SheetTitle>
+            <SheetDescription>Add a new resource category.</SheetDescription>
           </SheetHeader>
           <div className="my-8 flex flex-col gap-8">
             {/* Name */}
@@ -59,7 +59,7 @@ export const AddTypeSheet = ({ children, onAdd }: Props) => {
                 id="name"
                 name="name"
                 type="text"
-                placeholder="Thoughtleader"
+                placeholder="Design"
                 required
               />
               {validationErrors?.name && (
