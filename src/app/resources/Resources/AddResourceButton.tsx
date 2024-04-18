@@ -1,6 +1,6 @@
 import { query } from '@/api/query';
 import { Await } from '@/components/Await/Await';
-import { AddOrEditResourceSheet } from '@/components/Sheets/AddOrEditResourceSheet/AddOrEditResourceSheet';
+import { AddOrEditResourceSheet } from '@/components/Sheets/AddOrEditResourceSheet';
 import { PlusCircle } from 'lucide-react';
 
 export const AddResourceButton = () => {

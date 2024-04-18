@@ -18,6 +18,7 @@ import {
   resourceToTopic,
 } from '../../db/schema';
 import { resourceCommentsTag } from './query';
+import { selectThoughtleaders } from './resources';
 
 const { SUGGESTION_MAIL_PASSWORD } = process.env;
 
@@ -197,5 +198,11 @@ export const suggest = createAction({
         'There was an error submitting your suggestion. Please try again or send it via email at hello@lifecentereddesign.net.',
       );
     }
+  },
+});
+
+export const getThoughtleaders = createAction({
+  action: async () => {
+    return await selectThoughtleaders();
   },
 });

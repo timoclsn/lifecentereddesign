@@ -15,8 +15,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/ui/sheet';
-import { AlertTriangle } from 'lucide-react';
-import { Loader2 } from 'lucide-react';
+import { AlertTriangle, Loader2 } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 
 interface Props {
@@ -39,7 +38,14 @@ export const AddTypeSheet = ({ children, onAdd }: Props) => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>{children}</SheetTrigger>
-      <SheetContent>
+      <SheetContent
+        onPointerDownOutside={(e) => {
+          e.preventDefault();
+        }}
+        onInteractOutside={(e) => {
+          e.preventDefault();
+        }}
+      >
         <form
           action={(formData) => {
             runAction({

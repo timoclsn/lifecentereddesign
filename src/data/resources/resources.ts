@@ -293,3 +293,14 @@ export const selectResources = async (
       };
     });
 };
+
+export const selectThoughtleaders = async () => {
+  return await db
+    .select({
+      id: resource.id,
+      name: resource.name,
+    })
+    .from(resource)
+    .leftJoin(type, eq(resource.typeId, type.id))
+    .where(eq(type.name, 'Thoughtleader'));
+};

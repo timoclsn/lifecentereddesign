@@ -18,6 +18,7 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
       limit: reseourcesFilter.limit,
       sort: reseourcesFilter.sort ? [reseourcesFilter.sort] : undefined,
       filter: {
+        type: reseourcesFilter.type ? [reseourcesFilter.type] : undefined,
         category: reseourcesFilter.category
           ? [reseourcesFilter.category]
           : undefined,

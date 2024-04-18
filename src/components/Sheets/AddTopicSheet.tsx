@@ -15,8 +15,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/ui/sheet';
-import { AlertTriangle } from 'lucide-react';
-import { Loader2 } from 'lucide-react';
+import { AlertTriangle, Loader2 } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 
 interface Props {
@@ -24,10 +23,10 @@ interface Props {
   onAdd?: () => void;
 }
 
-export const AddCategorySheet = ({ children, onAdd }: Props) => {
+export const AddTopicSheet = ({ children, onAdd }: Props) => {
   const [open, setOpen] = useState(false);
   const { runAction, isRunning, error, validationErrors } = useAction(
-    action.categories.addCategory,
+    action.topics.addTopic,
     {
       onSuccess: () => {
         onAdd?.();
@@ -39,7 +38,14 @@ export const AddCategorySheet = ({ children, onAdd }: Props) => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>{children}</SheetTrigger>
-      <SheetContent>
+      <SheetContent
+        onPointerDownOutside={(e) => {
+          e.preventDefault();
+        }}
+        onInteractOutside={(e) => {
+          e.preventDefault();
+        }}
+      >
         <form
           action={(formData) => {
             runAction({
@@ -48,8 +54,8 @@ export const AddCategorySheet = ({ children, onAdd }: Props) => {
           }}
         >
           <SheetHeader>
-            <SheetTitle>Add category</SheetTitle>
-            <SheetDescription>Add a new resource category.</SheetDescription>
+            <SheetTitle>Add topic</SheetTitle>
+            <SheetDescription>Add a new resource topic.</SheetDescription>
           </SheetHeader>
           <div className="my-8 flex flex-col gap-8">
             {/* Name */}
@@ -59,7 +65,7 @@ export const AddCategorySheet = ({ children, onAdd }: Props) => {
                 id="name"
                 name="name"
                 type="text"
-                placeholder="Design"
+                placeholder="Sustainability"
                 required
               />
               {validationErrors?.name && (
@@ -80,7 +86,7 @@ export const AddCategorySheet = ({ children, onAdd }: Props) => {
           <SheetFooter>
             <Button type="submit">
               {isRunning && <Loader2 size={16} className="animate-spin" />}
-              Add category
+              Add topic
             </Button>
           </SheetFooter>
         </form>

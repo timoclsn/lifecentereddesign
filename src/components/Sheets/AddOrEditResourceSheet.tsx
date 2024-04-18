@@ -3,7 +3,13 @@
 import { action } from '@/api/action';
 import { InfoBox } from '@/design-system';
 import { useAction } from '@/lib/data/client';
+import { sluggify } from '@/lib/utils/utils';
 import { Button } from '@/ui/button';
+import { Checkbox } from '@/ui/checkbox';
+import { DatePicker } from '@/ui/datepicker';
+import { Input, InputError } from '@/ui/input';
+import { Label } from '@/ui/label';
+import MultiSelect from '@/ui/multiselect';
 import {
   Select,
   SelectContent,
@@ -20,22 +26,19 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/ui/sheet';
+import { Textarea } from '@/ui/textarea';
 import { AlertTriangle, Loader2 } from 'lucide-react';
 import { ReactNode, useRef, useState } from 'react';
-import { AddTypeSheet } from '../AddTypeSheet/AddTypeSheet';
-import { Input, InputError } from '@/ui/input';
-import { Label } from '@/ui/label';
-import { sluggify } from '@/lib/utils/utils';
-import { Checkbox } from '@/ui/checkbox';
-import { AddCategorySheet } from '../AddCategorySheet/AddCategorySheet';
-import { Textarea } from '@/ui/textarea';
-import { DatePicker } from '@/ui/datepicker';
+import { AddCategorySheet } from './AddCategorySheet';
+import { AddTopicSheet } from './AddTopicSheet';
+import { AddTypeSheet } from './AddTypeSheet';
 
 interface Props {
   children: ReactNode;
+  onAdd?: () => void;
 }
 
-export const AddOrEditResourceSheet = ({ children }: Props) => {
+export const AddOrEditResourceSheet = ({ children, onAdd }: Props) => {
   const formRef = useRef<HTMLFormElement>(null);
   const [open, setOpen] = useState(false);
   const { data: types, runAction: fetchTypes } = useAction(
@@ -44,25 +47,38 @@ export const AddOrEditResourceSheet = ({ children }: Props) => {
   const { data: categories, runAction: fetchCategories } = useAction(
     action.categories.getCategories,
   );
+  const { data: topics, runAction: fetchTopics } = useAction(
+    action.topics.getTopics,
+  );
+  const { data: thoughtleaders, runAction: fetchThoughtleaders } = useAction(
+    action.resources.getThoughtleaders,
+  );
   const {
     runAction: addResource,
     isRunning: isAddResourceRunning,
-    error,
+    error: addResourceError,
     validationErrors: addResourceValidationErrors,
   } = useAction(action.resources.add, {
     onSuccess: () => {
+      onAdd?.();
       onOpenChange(false);
       resetForm();
     },
   });
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
+  const [topicIds, setTopicIds] = useState<Array<string>>([]);
+  const [thoughtleaderIds, setThoughtleaderIds] = useState<Array<string>>([]);
   const [date, setDate] = useState<Date>();
 
   const onOpenChange = (open: boolean) => {
     if (open) {
       fetchTypes();
       fetchCategories();
+      fetchTopics();
+      fetchThoughtleaders();
+    } else {
+      resetForm();
     }
 
     setOpen(open);
@@ -73,28 +89,39 @@ export const AddOrEditResourceSheet = ({ children }: Props) => {
     setName('');
     setSlug('');
     setDate(undefined);
+    setTopicIds([]);
+    setThoughtleaderIds([]);
   };
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetTrigger asChild>{children}</SheetTrigger>
-      <SheetContent>
+      <SheetContent
+        onPointerDownOutside={(e) => {
+          e.preventDefault();
+        }}
+        onInteractOutside={(e) => {
+          e.preventDefault();
+        }}
+      >
         <form
           ref={formRef}
           action={(formData) => {
             console.log('formData', formData.get('type'));
             addResource({
-              id: String(formData.get('slug')),
-              name: String(formData.get('name')),
+              id: slug,
+              name,
               suggestion: Boolean(formData.get('suggestion') === 'on'),
               link: String(formData.get('link')),
               typeId: Number(formData.get('type')),
               categoryId: Number(formData.get('category')),
+              topicIds: topicIds.map(Number),
               description: String(formData.get('description')),
               details: String(formData.get('details')),
               note: String(formData.get('note')),
               date,
               datePlain: String(formData.get('datePlain')),
+              creatorIds: thoughtleaderIds,
               creatorsPlain: String(formData.get('creatorsPlain')),
             });
           }}
@@ -192,7 +219,7 @@ export const AddOrEditResourceSheet = ({ children }: Props) => {
                 </Select>
 
                 <AddTypeSheet onAdd={fetchTypes}>
-                  <Button>Add</Button>
+                  <Button variant="secondary">Add</Button>
                 </AddTypeSheet>
               </div>
               {addResourceValidationErrors?.typeId && (
@@ -223,12 +250,39 @@ export const AddOrEditResourceSheet = ({ children }: Props) => {
                 </Select>
 
                 <AddCategorySheet onAdd={fetchCategories}>
-                  <Button>Add</Button>
+                  <Button variant="secondary">Add</Button>
                 </AddCategorySheet>
               </div>
               {addResourceValidationErrors?.categoryId && (
                 <InputError>
                   {addResourceValidationErrors.categoryId[0]}
+                </InputError>
+              )}
+            </div>
+
+            {/* Topics */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="topics">Topics*</Label>
+              <div className="flex gap-4">
+                <MultiSelect
+                  name="topics"
+                  onValueChange={setTopicIds}
+                  options={
+                    topics?.map((topic) => ({
+                      label: topic.name,
+                      value: String(topic.id),
+                    })) || []
+                  }
+                  placeholder="Select topics"
+                />
+
+                <AddTopicSheet onAdd={fetchTopics}>
+                  <Button variant="secondary">Add</Button>
+                </AddTopicSheet>
+              </div>
+              {addResourceValidationErrors?.topicIds && (
+                <InputError>
+                  {addResourceValidationErrors.topicIds[0]}
                 </InputError>
               )}
             </div>
@@ -241,6 +295,11 @@ export const AddOrEditResourceSheet = ({ children }: Props) => {
                 id="description"
                 name="description"
               />
+              {addResourceValidationErrors?.description && (
+                <InputError>
+                  {addResourceValidationErrors.description[0]}
+                </InputError>
+              )}
             </div>
 
             {/* Details */}
@@ -251,6 +310,11 @@ export const AddOrEditResourceSheet = ({ children }: Props) => {
                 id="details"
                 name="details"
               />
+              {addResourceValidationErrors?.details && (
+                <InputError>
+                  {addResourceValidationErrors.details[0]}
+                </InputError>
+              )}
             </div>
 
             {/* Note */}
@@ -261,6 +325,9 @@ export const AddOrEditResourceSheet = ({ children }: Props) => {
                 id="note"
                 name="note"
               />
+              {addResourceValidationErrors?.note && (
+                <InputError>{addResourceValidationErrors.note[0]}</InputError>
+              )}
             </div>
 
             {/* Date */}
@@ -288,6 +355,33 @@ export const AddOrEditResourceSheet = ({ children }: Props) => {
               )}
             </div>
 
+            {/* Creators */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="creators">Creators</Label>
+              <div className="flex gap-4">
+                <MultiSelect
+                  name="creators"
+                  onValueChange={setThoughtleaderIds}
+                  options={
+                    thoughtleaders?.map((thoughtleader) => ({
+                      label: thoughtleader.name,
+                      value: thoughtleader.id,
+                    })) || []
+                  }
+                  placeholder="Select creators"
+                />
+
+                <AddOrEditResourceSheet onAdd={fetchCategories}>
+                  <Button variant="secondary">Add</Button>
+                </AddOrEditResourceSheet>
+              </div>
+              {addResourceValidationErrors?.creatorIds && (
+                <InputError>
+                  {addResourceValidationErrors.creatorIds[0]}
+                </InputError>
+              )}
+            </div>
+
             {/* Creators plain */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="creatorsPlain">Creators plain</Label>
@@ -304,13 +398,13 @@ export const AddOrEditResourceSheet = ({ children }: Props) => {
               )}
             </div>
 
-            {error && (
+            {addResourceError && (
               <InfoBox
                 variant="error"
                 icon={<AlertTriangle />}
                 className="duration-150 ease-in-out animate-in fade-in zoom-in-50"
               >
-                {error}
+                {addResourceError}
               </InfoBox>
             )}
           </div>
