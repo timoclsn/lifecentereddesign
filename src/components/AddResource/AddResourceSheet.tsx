@@ -27,12 +27,11 @@ import {
   SheetTrigger,
 } from '@/ui/sheet';
 import { Textarea } from '@/ui/textarea';
-import { AlertTriangle, Loader2 } from 'lucide-react';
+import { AlertTriangle, Loader2, Plus, WandSparkles } from 'lucide-react';
 import { ReactNode, useRef, useState } from 'react';
 import { AddCategorySheet } from './AddCategorySheet';
 import { AddTopicSheet } from './AddTopicSheet';
 import { AddTypeSheet } from './AddTypeSheet';
-import { Plus } from 'lucide-react';
 
 interface Props {
   children: ReactNode;
@@ -54,6 +53,25 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
   const { data: thoughtleaders, runAction: fetchThoughtleaders } = useAction(
     action.resources.getThoughtleaders,
   );
+  const { runAction: analyzeLink, isRunning: isAnalyzeLinkRunning } = useAction(
+    action.resources.analizeLink,
+    {
+      onSuccess: (data) => {
+        if (!data) return;
+        const { name, type, category, topics, description } = data;
+
+        setName(name);
+        setSlug(sluggify(name));
+        setTypeId(String(type));
+        setCategoryId(String(category));
+        setTopicIds(topics.map(String));
+        setDescription(description);
+      },
+      onError: ({ error }) => {
+        console.error(error);
+      },
+    },
+  );
   const {
     runAction: addResource,
     isRunning: isAddResourceRunning,
@@ -66,11 +84,17 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
       resetForm();
     },
   });
+
+  // Controlled inputs
+  const [link, setLink] = useState('');
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
+  const [typeId, setTypeId] = useState('');
+  const [categoryId, setCategoryId] = useState('');
   const [topicIds, setTopicIds] = useState<Array<string>>([]);
-  const [thoughtleaderIds, setThoughtleaderIds] = useState<Array<string>>([]);
+  const [description, setDescription] = useState('');
   const [date, setDate] = useState<Date>();
+  const [thoughtleaderIds, setThoughtleaderIds] = useState<Array<string>>([]);
 
   const onOpenChange = (open: boolean) => {
     if (open) {
@@ -87,10 +111,14 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
 
   const resetForm = () => {
     formRef.current?.reset();
+    setLink('');
     setName('');
     setSlug('');
-    setDate(undefined);
+    setTypeId('');
+    setCategoryId('');
     setTopicIds([]);
+    setDescription('');
+    setDate(undefined);
     setThoughtleaderIds([]);
   };
 
@@ -113,9 +141,9 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               id: slug,
               name,
               suggestion: Boolean(formData.get('suggestion') === 'on'),
-              link: String(formData.get('link')),
-              typeId: Number(formData.get('type')),
-              categoryId: Number(formData.get('category')),
+              link,
+              typeId: Number(typeId),
+              categoryId: Number(categoryId),
               topicIds: topicIds.map(Number),
               description: String(formData.get('description')),
               details: String(formData.get('details')),
@@ -138,13 +166,37 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
             {/* Link */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="name">Link*</Label>
-              <Input
-                id="link"
-                name="link"
-                type="url"
-                placeholder="https://the-best-resource-ever.com"
-                required
-              />
+              <div className="flex gap-4">
+                <Input
+                  id="link"
+                  name="link"
+                  type="url"
+                  placeholder="https://the-best-resource-ever.com"
+                  required
+                  value={link}
+                  onChange={(e) => {
+                    setLink(e.target.value);
+                  }}
+                />
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="icon"
+                  onClick={() => {
+                    analyzeLink({
+                      link,
+                    });
+                  }}
+                  disabled={!link || isAnalyzeLinkRunning}
+                >
+                  {isAnalyzeLinkRunning ? (
+                    <Loader2 className="animate-spin" />
+                  ) : (
+                    <WandSparkles />
+                  )}
+                  <span className="sr-only">Analyze link</span>
+                </Button>
+              </div>
               {addResourceValidationErrors?.link && (
                 <InputError>{addResourceValidationErrors.link[0]}</InputError>
               )}
@@ -191,7 +243,12 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
             <div className="flex flex-col gap-2">
               <Label htmlFor="type">Type*</Label>
               <div className="flex gap-4">
-                <Select name="type" required>
+                <Select
+                  name="type"
+                  required
+                  value={typeId}
+                  onValueChange={setTypeId}
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a type" />
                   </SelectTrigger>
@@ -207,7 +264,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 </Select>
 
                 <AddTypeSheet onAdd={fetchTypes}>
-                  <Button variant="secondary" size="icon">
+                  <Button type="button" variant="secondary" size="icon">
                     <Plus />
                     <span className="sr-only">Add type</span>
                   </Button>
@@ -222,7 +279,12 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
             <div className="flex flex-col gap-2">
               <Label htmlFor="type">Category*</Label>
               <div className="flex gap-4">
-                <Select name="category" required>
+                <Select
+                  name="category"
+                  required
+                  value={categoryId}
+                  onValueChange={setCategoryId}
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
@@ -241,7 +303,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 </Select>
 
                 <AddCategorySheet onAdd={fetchCategories}>
-                  <Button variant="secondary" size="icon">
+                  <Button type="button" variant="secondary" size="icon">
                     <Plus />
                     <span className="sr-only">Add type</span>
                   </Button>
@@ -260,6 +322,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               <div className="flex gap-4">
                 <MultiSelect
                   name="topics"
+                  value={topicIds}
                   onValueChange={setTopicIds}
                   options={
                     topics?.map((topic) => ({
@@ -271,7 +334,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 />
 
                 <AddTopicSheet onAdd={fetchTopics}>
-                  <Button variant="secondary" size="icon">
+                  <Button type="button" variant="secondary" size="icon">
                     <Plus />
                     <span className="sr-only">Add type</span>
                   </Button>
@@ -291,6 +354,8 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 placeholder="This is the best resource ever."
                 id="description"
                 name="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               />
               {addResourceValidationErrors?.description && (
                 <InputError>
@@ -345,6 +410,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               <div className="flex gap-4">
                 <MultiSelect
                   name="creators"
+                  value={thoughtleaderIds}
                   onValueChange={setThoughtleaderIds}
                   options={
                     thoughtleaders?.map((thoughtleader) => ({
@@ -356,7 +422,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 />
 
                 <AddResourceSheet onAdd={fetchCategories}>
-                  <Button variant="secondary" size="icon">
+                  <Button type="button" variant="secondary" size="icon">
                     <Plus />
                     <span className="sr-only">Add type</span>
                   </Button>
@@ -423,7 +489,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
           </div>
 
           <SheetFooter>
-            <Button type="submit">
+            <Button type="submit" disabled={isAddResourceRunning}>
               {isAddResourceRunning && (
                 <Loader2 size={16} className="animate-spin" />
               )}

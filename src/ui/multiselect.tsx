@@ -55,6 +55,7 @@ interface MultiSelectProps
   placeholder: string;
   className?: string;
   animation?: number;
+  value: string[];
   onValueChange: (value: string[]) => void;
 }
 
@@ -66,6 +67,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
       asChild = false,
       options,
       defaultValue,
+      value,
       onValueChange,
       disabled,
       placeholder,
@@ -74,38 +76,37 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
     },
     ref,
   ) => {
-    const [selectedValues, setSelectedValues] = React.useState<string[]>(
-      defaultValue || [],
-    );
-    const selectedValuesSet = React.useRef(new Set(selectedValues));
+    const selectedValuesSet = React.useRef(new Set(value));
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
     const [isAnimating, setIsAnimating] = React.useState(animation > 0);
 
     React.useEffect(() => {
-      setSelectedValues(defaultValue || []);
+      onValueChange(defaultValue || []);
       selectedValuesSet.current = new Set(defaultValue);
-    }, [defaultValue]);
+    }, [defaultValue, onValueChange, selectedValuesSet]);
+
+    React.useEffect(() => {
+      selectedValuesSet.current = new Set(value);
+    }, [value]);
 
     const handleInputKeyDown = (event: any) => {
       if (event.key === 'Enter') {
         setIsPopoverOpen(true);
       } else if (event.key === 'Backspace' && !event.target.value) {
-        selectedValues.pop();
-        setSelectedValues([...selectedValues]);
-        selectedValuesSet.current.delete(
-          selectedValues[selectedValues.length - 1],
-        );
-        onValueChange([...selectedValues]);
+        value.pop();
+        onValueChange([...value]);
+        selectedValuesSet.current.delete(value[value.length - 1]);
+        onValueChange([...value]);
       }
     };
 
-    const toggleOption = (value: string) => {
-      if (selectedValuesSet.current.has(value)) {
-        selectedValuesSet.current.delete(value);
-        setSelectedValues(selectedValues.filter((v) => v !== value));
+    const toggleOption = (valueItem: string) => {
+      if (selectedValuesSet.current.has(valueItem)) {
+        selectedValuesSet.current.delete(valueItem);
+        onValueChange(value.filter((v) => v !== valueItem));
       } else {
-        selectedValuesSet.current.add(value);
-        setSelectedValues([...selectedValues, value]);
+        selectedValuesSet.current.add(valueItem);
+        onValueChange([...value, valueItem]);
       }
       onValueChange(Array.from(selectedValuesSet.current));
     };
@@ -119,11 +120,14 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
             variant="outline"
             onClick={() => setIsPopoverOpen(!isPopoverOpen)}
             className="flex h-auto min-h-10 w-full items-center justify-between rounded-md border bg-inherit hover:bg-card"
+            style={{
+              padding: '8px 12px',
+            }}
           >
-            {selectedValues.length > 0 ? (
+            {value.length > 0 ? (
               <div className="flex w-full items-center justify-between">
                 <div className="flex flex-wrap items-center">
-                  {selectedValues.map((value) => {
+                  {value.map((value) => {
                     const option = options.find((o) => o.value === value);
                     const IconComponent = option?.icon;
                     return (
@@ -161,7 +165,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
                     onClick={(
                       event: React.MouseEvent<HTMLDivElement, MouseEvent>,
                     ) => {
-                      setSelectedValues([]);
+                      onValueChange([]);
                       selectedValuesSet.current.clear();
                       onValueChange([]);
                       event.stopPropagation();
@@ -176,10 +180,8 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
               </div>
             ) : (
               <div className="mx-auto flex w-full items-center justify-between">
-                <span className="mx-3 text-sm text-muted-foreground">
-                  {placeholder}
-                </span>
-                <ChevronDown className="mx-2 h-4 cursor-pointer text-muted-foreground" />
+                <span className="text-sm text-foreground">{placeholder}</span>
+                <ChevronDown className="h-4 cursor-pointer text-muted-foreground" />
               </div>
             )}
           </Button>
@@ -237,11 +239,11 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
               <CommandSeparator />
               <CommandGroup>
                 <div className="flex items-center justify-between">
-                  {selectedValues.length > 0 && (
+                  {value.length > 0 && (
                     <>
                       <CommandItem
                         onSelect={() => {
-                          setSelectedValues([]);
+                          onValueChange([]);
                           selectedValuesSet.current.clear();
                           onValueChange([]);
                         }}
@@ -275,7 +277,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
             </CommandList>
           </Command>
         </PopoverContent>
-        {animation > 0 && selectedValues.length > 0 && (
+        {animation > 0 && value.length > 0 && (
           <WandSparkles
             className={cn(
               'my-2 h-3 w-3 cursor-pointer bg-background text-foreground',

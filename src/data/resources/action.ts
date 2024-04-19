@@ -5,10 +5,11 @@ import {
   createAdminAction,
   createProtectedAction,
 } from '@/data/clients';
-import { and, eq } from 'drizzle-orm';
 import { db } from '@/lib/db';
+import { and, eq } from 'drizzle-orm';
 import { revalidatePath, revalidateTag } from 'next/cache';
 import nodemailer from 'nodemailer';
+import OpenAI from 'openai';
 import { z } from 'zod';
 import {
   comment,
@@ -19,6 +20,9 @@ import {
 } from '../../db/schema';
 import { resourceCommentsTag } from './query';
 import { selectThoughtleaders } from './resources';
+import { selectTypes } from '../types/types';
+import { selectCategories } from '../categories/categories';
+import { selectTopics } from '../topics/topics';
 
 const { SUGGESTION_MAIL_PASSWORD } = process.env;
 
@@ -204,5 +208,121 @@ export const suggest = createAction({
 export const getThoughtleaders = createAction({
   action: async () => {
     return await selectThoughtleaders();
+  },
+});
+
+const analizeLinkSchema = z.object({
+  name: z.string(),
+  type: z.number(),
+  category: z.number(),
+  topics: z.array(z.number()),
+  description: z.string(),
+});
+
+export const analizeLink = createAdminAction({
+  input: z.object({
+    link: z.string().url(),
+  }),
+  action: async ({ input }) => {
+    const { link } = input;
+
+    const urlResponse = await fetch(link);
+    const websiteSource = await urlResponse.text();
+
+    const titleRegex = /<title>(.*?)<\/title>/i;
+    const titleMatch = websiteSource.match(titleRegex);
+    const title = titleMatch ? titleMatch[1] : '';
+
+    const descriptionRegex = /<meta\s+name="description"\s+content="([^"]*)"/i;
+    const descriptionMatch = websiteSource.match(descriptionRegex);
+    const description = descriptionMatch ? descriptionMatch[1] : '';
+
+    const websiteTextClean =
+      websiteSource
+        // Remove script tag content
+        .replace(
+          /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+          '<script></script>',
+        )
+        // Remove style tag content
+        .replace(
+          /<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi,
+          '<style></style>',
+        )
+        // Remove all xml tags
+        .replace(/<[^>]*>/g, '|')
+        // Replace all line breaks
+        .replace(/\r?\n|\r/g, '')
+        // Replace multiple spaces
+        .replace(/ {2,}/g, '')
+        // Replace multiple dots with one
+        .replace(/\.{2,}/g, '. ')
+        // Replace multiple pipes with one
+        .replace(/\|{2,}/g, '|')
+        // Only use the first 10000 characters
+        .substring(0, 10000) + '...';
+
+    const [types, categories, topcis] = await Promise.all([
+      selectTypes(),
+      selectCategories(),
+      selectTopics(),
+    ]);
+
+    const prompt = `
+        I am going to give you the content of a website i am also goinf to give you input data that you are going to use to categorize the website. These are your instructions:
+
+        - Choose which type, categroy and topcis are the most relevant for the website.
+        - You are going to answer in JSON format. This is the format you are going to use:
+        {
+          name: 'Name of the website',
+          type: 1,
+          category: 1,
+          topics: [1, 2, 3],
+          description: 'Description of the website',
+        }
+
+        TYPES: ${JSON.stringify(types)}
+        CATEGORIES: ${JSON.stringify(categories)}
+        TOPICS: ${JSON.stringify(topcis)}
+    
+        WEBSITE TITLE: ${title}
+    
+        WEBSITE DESCRIPTION: ${description}
+    
+        WEBSITE CONTENT: \`\`\`
+        ${websiteTextClean}
+        \`\`\`
+      `;
+
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY!,
+    });
+
+    const aiResponse = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      stream: false,
+      response_format: { type: 'json_object' },
+      messages: [
+        {
+          role: 'system',
+          content:
+            'You are my AI web scraper. Your job is to make sense of the text content of a website and put it into a category.',
+        },
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+    });
+
+    const content = aiResponse.choices[0].message.content;
+
+    if (!content) {
+      throw new Error('No response from AI');
+    }
+
+    const contentJson = JSON.parse(content);
+
+    return analizeLinkSchema.parse(contentJson);
   },
 });
