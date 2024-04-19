@@ -1,9 +1,7 @@
 import { Heading, Text } from '@/design-system';
 import { SearchParams } from '@/lib/types';
-import { auth } from '@clerk/nextjs/server';
 import { z } from 'zod';
 import { formateDate } from '../../../lib/utils/utils';
-import { AddResourceButton } from './AddResourceButton';
 import { ResourcesTable } from './ResourcesTable/ResourcesTable';
 
 export type ReseourcesFilter = z.infer<typeof reseourcesFilterSchema>;
@@ -27,12 +25,7 @@ interface Props {
 
 export const Resources = async ({ searchParams }: Props) => {
   const resourcesFilter = reseourcesFilterSchema.parse(searchParams);
-
-  const title = resourcesFilter.title;
-  const from = resourcesFilter.from;
-  const till = resourcesFilter.till;
-
-  const user = auth();
+  const { title, from, till } = resourcesFilter;
 
   const description = () => {
     if (from && till) {
@@ -55,12 +48,9 @@ export const Resources = async ({ searchParams }: Props) => {
   return (
     <section id="resources" className="flex flex-col gap-10">
       <div>
-        <div className="mb-8 flex items-center gap-2">
-          <Heading level="1" className="max-w-3xl">
-            {title ? title : 'Resources'}
-          </Heading>
-          {user.userId && <AddResourceButton />}
-        </div>
+        <Heading level="1" className="mb-8 max-w-3xl">
+          {title ? title : 'Resources'}
+        </Heading>
         <Text as="p" size="large" className="max-w-5xl text-text-secondary">
           {description()}
         </Text>

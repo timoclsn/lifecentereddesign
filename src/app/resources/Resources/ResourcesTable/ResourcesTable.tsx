@@ -7,31 +7,41 @@ import { ReseourcesFilter } from '../Resources';
 import { ResourcesFilter } from './ResourcesFilter/ResourcesFilter';
 import { ResourcesList } from './ResourcesList/ResourcesList';
 import { ResourcesTableProvider } from './ResourcesTableProvider';
+import { auth } from '@clerk/nextjs/server';
+import { AddResourceButton } from '../../../../components/AddResource/AddResourceButton';
 
 interface Props {
   reseourcesFilter: ReseourcesFilter;
 }
 
 export const ResourcesTable = ({ reseourcesFilter }: Props) => {
+  const {
+    limit,
+    sort,
+    type,
+    category,
+    topic,
+    search,
+    liked,
+    commented,
+    from,
+    till,
+  } = reseourcesFilter;
+  const user = auth();
+
   const promises = Promise.all([
     query.resources.getResources({
-      limit: reseourcesFilter.limit,
-      sort: reseourcesFilter.sort ? [reseourcesFilter.sort] : undefined,
+      limit,
+      sort: sort ? [sort] : undefined,
       filter: {
-        type: reseourcesFilter.type ? [reseourcesFilter.type] : undefined,
-        category: reseourcesFilter.category
-          ? [reseourcesFilter.category]
-          : undefined,
-        topic: reseourcesFilter.topic ? [reseourcesFilter.topic] : undefined,
-        search: reseourcesFilter.search,
-        liked: reseourcesFilter.liked,
-        commented: reseourcesFilter.commented,
-        from: reseourcesFilter.from
-          ? new Date(reseourcesFilter.from)
-          : undefined,
-        till: reseourcesFilter.till
-          ? new Date(reseourcesFilter.till)
-          : undefined,
+        type: type ? [type] : undefined,
+        category: category ? [category] : undefined,
+        topic: topic ? [topic] : undefined,
+        search,
+        liked,
+        commented,
+        from: from ? new Date(from) : undefined,
+        till: till ? new Date(till) : undefined,
       },
     }),
     query.types.getTypes(),
@@ -65,6 +75,7 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
               hasMore={hasMore}
               isFiltered={!isEmpty(reseourcesFilter)}
             />
+            {user.userId && <AddResourceButton />}
           </div>
         </ResourcesTableProvider>
       )}

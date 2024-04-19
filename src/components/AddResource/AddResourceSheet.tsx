@@ -32,13 +32,14 @@ import { ReactNode, useRef, useState } from 'react';
 import { AddCategorySheet } from './AddCategorySheet';
 import { AddTopicSheet } from './AddTopicSheet';
 import { AddTypeSheet } from './AddTypeSheet';
+import { Plus } from 'lucide-react';
 
 interface Props {
   children: ReactNode;
   onAdd?: () => void;
 }
 
-export const AddOrEditResourceSheet = ({ children, onAdd }: Props) => {
+export const AddResourceSheet = ({ children, onAdd }: Props) => {
   const formRef = useRef<HTMLFormElement>(null);
   const [open, setOpen] = useState(false);
   const { data: types, runAction: fetchTypes } = useAction(
@@ -134,6 +135,21 @@ export const AddOrEditResourceSheet = ({ children, onAdd }: Props) => {
           </SheetHeader>
 
           <div className="my-8 flex flex-col gap-8">
+            {/* Link */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="name">Link*</Label>
+              <Input
+                id="link"
+                name="link"
+                type="url"
+                placeholder="https://the-best-resource-ever.com"
+                required
+              />
+              {addResourceValidationErrors?.link && (
+                <InputError>{addResourceValidationErrors.link[0]}</InputError>
+              )}
+            </div>
+
             {/* Name */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="name">Name*</Label>
@@ -171,34 +187,6 @@ export const AddOrEditResourceSheet = ({ children, onAdd }: Props) => {
               )}
             </div>
 
-            {/* Suggestion */}
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="suggestion" name="suggestion" />
-                <Label htmlFor="suggestion">Suggestion</Label>
-              </div>
-              {addResourceValidationErrors?.suggestion && (
-                <InputError>
-                  {addResourceValidationErrors.suggestion[0]}
-                </InputError>
-              )}
-            </div>
-
-            {/* Link */}
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="name">Link*</Label>
-              <Input
-                id="link"
-                name="link"
-                type="url"
-                placeholder="https://the-best-resource-ever.com"
-                required
-              />
-              {addResourceValidationErrors?.link && (
-                <InputError>{addResourceValidationErrors.link[0]}</InputError>
-              )}
-            </div>
-
             {/* Type */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="type">Type*</Label>
@@ -219,7 +207,10 @@ export const AddOrEditResourceSheet = ({ children, onAdd }: Props) => {
                 </Select>
 
                 <AddTypeSheet onAdd={fetchTypes}>
-                  <Button variant="secondary">Add</Button>
+                  <Button variant="secondary" size="icon">
+                    <Plus />
+                    <span className="sr-only">Add type</span>
+                  </Button>
                 </AddTypeSheet>
               </div>
               {addResourceValidationErrors?.typeId && (
@@ -250,7 +241,10 @@ export const AddOrEditResourceSheet = ({ children, onAdd }: Props) => {
                 </Select>
 
                 <AddCategorySheet onAdd={fetchCategories}>
-                  <Button variant="secondary">Add</Button>
+                  <Button variant="secondary" size="icon">
+                    <Plus />
+                    <span className="sr-only">Add type</span>
+                  </Button>
                 </AddCategorySheet>
               </div>
               {addResourceValidationErrors?.categoryId && (
@@ -277,7 +271,10 @@ export const AddOrEditResourceSheet = ({ children, onAdd }: Props) => {
                 />
 
                 <AddTopicSheet onAdd={fetchTopics}>
-                  <Button variant="secondary">Add</Button>
+                  <Button variant="secondary" size="icon">
+                    <Plus />
+                    <span className="sr-only">Add type</span>
+                  </Button>
                 </AddTopicSheet>
               </div>
               {addResourceValidationErrors?.topicIds && (
@@ -314,19 +311,6 @@ export const AddOrEditResourceSheet = ({ children, onAdd }: Props) => {
                 <InputError>
                   {addResourceValidationErrors.details[0]}
                 </InputError>
-              )}
-            </div>
-
-            {/* Note */}
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="notes">Note</Label>
-              <Textarea
-                placeholder="Thoughts from the editor."
-                id="note"
-                name="note"
-              />
-              {addResourceValidationErrors?.note && (
-                <InputError>{addResourceValidationErrors.note[0]}</InputError>
               )}
             </div>
 
@@ -371,9 +355,12 @@ export const AddOrEditResourceSheet = ({ children, onAdd }: Props) => {
                   placeholder="Select creators"
                 />
 
-                <AddOrEditResourceSheet onAdd={fetchCategories}>
-                  <Button variant="secondary">Add</Button>
-                </AddOrEditResourceSheet>
+                <AddResourceSheet onAdd={fetchCategories}>
+                  <Button variant="secondary" size="icon">
+                    <Plus />
+                    <span className="sr-only">Add type</span>
+                  </Button>
+                </AddResourceSheet>
               </div>
               {addResourceValidationErrors?.creatorIds && (
                 <InputError>
@@ -395,6 +382,32 @@ export const AddOrEditResourceSheet = ({ children, onAdd }: Props) => {
                 <InputError>
                   {addResourceValidationErrors.creatorsPlain[0]}
                 </InputError>
+              )}
+            </div>
+
+            {/* Suggestion */}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="suggestion" name="suggestion" />
+                <Label htmlFor="suggestion">Suggestion</Label>
+              </div>
+              {addResourceValidationErrors?.suggestion && (
+                <InputError>
+                  {addResourceValidationErrors.suggestion[0]}
+                </InputError>
+              )}
+            </div>
+
+            {/* Note */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="notes">Note</Label>
+              <Textarea
+                placeholder="Thoughts from the editor."
+                id="note"
+                name="note"
+              />
+              {addResourceValidationErrors?.note && (
+                <InputError>{addResourceValidationErrors.note[0]}</InputError>
               )}
             </div>
 
