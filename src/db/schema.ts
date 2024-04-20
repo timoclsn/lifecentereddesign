@@ -25,15 +25,16 @@ export const resource = sqliteTable(
     typeId: integer('type_id', { mode: 'number' })
       .notNull()
       .references(() => type.id),
-    categoryId: integer('category_id', { mode: 'number' })
-      .notNull()
-      .references(() => category.id),
+    categoryId: integer('category_id', { mode: 'number' }).references(
+      () => category.id,
+    ),
     description: text('description', { mode: 'text' }),
     details: text('details', { mode: 'text' }),
     note: text('note', { mode: 'text' }),
     date: integer('date', { mode: 'timestamp' }),
     datePlain: text('date_plain', { mode: 'text', length: 256 }),
     creatorsPlain: text('creators_plain', { mode: 'text', length: 256 }),
+    oldSlug: text('old_slug', { mode: 'text', length: 256 }),
   },
   (table) => ({
     typeIdx: index('type_idx').on(table.typeId),
