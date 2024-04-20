@@ -32,6 +32,8 @@ import { ReactNode, useRef, useState } from 'react';
 import { AddCategorySheet } from './AddCategorySheet';
 import { AddTopicSheet } from './AddTopicSheet';
 import { AddTypeSheet } from './AddTypeSheet';
+import { useToast } from '@/ui/use-toast';
+import { ToastAction } from '@/ui/toast';
 
 interface Props {
   children: ReactNode;
@@ -41,6 +43,8 @@ interface Props {
 export const AddResourceSheet = ({ children, onAdd }: Props) => {
   const formRef = useRef<HTMLFormElement>(null);
   const [open, setOpen] = useState(false);
+  const { toast } = useToast();
+
   const { data: types, runAction: fetchTypes } = useAction(
     action.types.getTypes,
   );
@@ -66,9 +70,27 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
         setCategoryId(String(category));
         setTopicIds(topics.map(String));
         setDescription(description);
+
+        toast({
+          title: 'Succesfully analized link',
+        });
       },
       onError: ({ error }) => {
-        console.error(error);
+        toast({
+          title: 'Error analizing link',
+          description: error,
+          variant: 'destructive',
+          action: (
+            <ToastAction
+              altText="Try again"
+              onClick={() => {
+                analyzeLink({ link });
+              }}
+            >
+              Try again
+            </ToastAction>
+          ),
+        });
       },
     },
   );

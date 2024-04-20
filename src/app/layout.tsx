@@ -13,6 +13,7 @@ import { description, title } from '../lib/metadata';
 import '../lib/polyfills';
 import { getBaseUrl } from '../lib/utils/utils';
 import '../styles/globals.css';
+import { Toaster } from '@/ui/toaster';
 
 const sans = DM_Sans({
   weight: ['400', '700'],
@@ -82,6 +83,7 @@ const RootLayout = ({ children }: Props) => {
               </Container>
             </main>
             <Footer />
+            <Toaster />
           </body>
           <Script data-no-cookie data-api="/_hive" src="/bee.js" />
         </html>

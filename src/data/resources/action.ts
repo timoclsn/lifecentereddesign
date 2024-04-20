@@ -262,6 +262,10 @@ export const analizeLink = createAdminAction({
         // Only use the first 10000 characters
         .substring(0, 10000) + '...';
 
+    if (!websiteTextClean) {
+      throw new Error('Could not get website content');
+    }
+
     const [types, categories, topcis] = await Promise.all([
       selectTypes(),
       selectCategories(),
