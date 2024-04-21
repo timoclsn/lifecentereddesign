@@ -1,4 +1,4 @@
-import { creatorList, topicsList } from '@/components/utils';
+import { relatedResourceList, topicsList } from '@/components/utils';
 import { Resource } from '@/data/resources/query';
 import {
   Card as CardPrimitive,
@@ -11,6 +11,7 @@ import { formateDate, getHostname } from '@/lib/utils/utils';
 import {
   CalendarDays,
   ExternalLink,
+  Leaf,
   StickyNote,
   TagIcon,
   Users2,
@@ -125,16 +126,16 @@ export const ResourceCard = async ({ resource, showPreview }: Props) => {
 
             {/* Meta infos */}
             <ul className="-mt-1 flex flex-wrap gap-x-2 gap-y-1 text-text-secondary sm:gap-x-8 sm:gap-y-3">
-              {resource.creators.length > 0 && (
+              {resource.relatedResources.length > 0 && (
                 <li className="flex items-center gap-1">
-                  <Users2 size="18" className="flex-none" />
-                  <Text>{creatorList(resource.creators)}</Text>
+                  <Leaf size="18" className="flex-none" />
+                  <Text>{relatedResourceList(resource.relatedResources)}</Text>
                 </li>
               )}
-              {resource.creatorsPlain && (
+              {resource.relatedResourcesPlain && (
                 <li className="flex items-center gap-1">
-                  <Users2 size="18" className="flex-none" />
-                  <Text>{resource.creatorsPlain}</Text>
+                  <Leaf size="18" className="flex-none" />
+                  <Text>{resource.relatedResourcesPlain}</Text>
                 </li>
               )}
               {resource.date && (

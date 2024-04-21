@@ -33,7 +33,10 @@ export const resource = sqliteTable(
     note: text('note', { mode: 'text' }),
     date: integer('date', { mode: 'timestamp' }),
     datePlain: text('date_plain', { mode: 'text', length: 256 }),
-    creatorsPlain: text('creators_plain', { mode: 'text', length: 256 }),
+    relatedResourcesPlain: text('related_resources_plain', {
+      mode: 'text',
+      length: 256,
+    }),
     anonymousLikes: integer('anonymous_likes', { mode: 'number' })
       .notNull()
       .default(0),
@@ -55,38 +58,43 @@ export const resourceRelations = relations(resource, ({ one, many }) => ({
     references: [category.id],
   }),
   topics: many(resourceToTopic),
-  creators: many(resourceToCreator, { relationName: 'creator' }),
+  relatedResources: many(resourceToRelatedResource, {
+    relationName: 'related_resource',
+  }),
   likes: many(like),
 }));
 
-// Resource to creator table (self referenceing many-to-many relation)
+// Resource to relatedResource table (self referenceing many-to-many relation)
 
-export const resourceToCreator = sqliteTable(
-  'resource_to_creator',
+export const resourceToRelatedResource = sqliteTable(
+  'resource_to_related_resource',
   {
     resourceId: text('resource_id', { mode: 'text', length: 256 })
       .notNull()
       .references(() => resource.id),
-    creatorId: text('creator_id', { mode: 'text', length: 256 })
+    relatedResourceId: text('related_resource_id', {
+      mode: 'text',
+      length: 256,
+    })
       .notNull()
       .references(() => resource.id),
   },
   (table) => ({
-    pk: primaryKey({ columns: [table.resourceId, table.creatorId] }),
+    pk: primaryKey({ columns: [table.resourceId, table.relatedResourceId] }),
   }),
 );
 
-export const resourceToCreatorRelations = relations(
-  resourceToCreator,
+export const resourceToRelatedResourceRelations = relations(
+  resourceToRelatedResource,
   ({ one }) => ({
-    creator: one(resource, {
+    relatedResource: one(resource, {
       relationName: 'resource',
-      fields: [resourceToCreator.creatorId],
+      fields: [resourceToRelatedResource.relatedResourceId],
       references: [resource.id],
     }),
     resource: one(resource, {
-      relationName: 'creator',
-      fields: [resourceToCreator.resourceId],
+      relationName: 'related_resource',
+      fields: [resourceToRelatedResource.resourceId],
       references: [resource.id],
     }),
   }),

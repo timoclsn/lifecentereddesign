@@ -1,4 +1,4 @@
-import { Creators, Topics } from '@/data/resources/query';
+import { RelatedResources, Topics } from '@/data/resources/query';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { TopicsButton } from './ResourceCard/TopicsButton';
@@ -14,17 +14,17 @@ export const topicsList = (topics: Topics) => {
   });
 };
 
-export const creatorList = (creators: Creators) => {
-  return creators.map((creator, index) => {
+export const relatedResourceList = (relatedResources: RelatedResources) => {
+  return relatedResources.map((relatedResource, index) => {
     return (
-      <Fragment key={creator.id}>
+      <Fragment key={relatedResource.id}>
         <Link
-          href={`/resources/${creator.id}`}
+          href={`/resources/${relatedResource.id}`}
           className="relative inline-flex items-center justify-center gap-0.5 hover:underline"
         >
-          {creator.name}
+          {relatedResource.name}
         </Link>
-        {index !== creators.length - 1 && ', '}
+        {index !== relatedResources.length - 1 && ', '}
       </Fragment>
     );
   });

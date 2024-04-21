@@ -15,18 +15,30 @@ import {
   comment,
   like as likeSchema,
   resource,
-  resourceToCreator,
+  resourceToRelatedResource,
   resourceToTopic,
 } from '../../db/schema';
-import { resourceCommentsTag } from './query';
-import { selectThoughtleaders } from './resources';
-import { selectTypes } from '../types/types';
 import { selectCategories } from '../categories/categories';
 import { selectTopics } from '../topics/topics';
+import { selectTypes } from '../types/types';
+import { resourceCommentsTag } from './query';
 
 const { SUGGESTION_MAIL_PASSWORD } = process.env;
 
-export const add = createAdminAction({
+export const getResources = createAction({
+  action: async ({ ctx }) => {
+    const { db } = ctx;
+    return await db.query.resource.findMany({
+      columns: {
+        id: true,
+        name: true,
+      },
+      orderBy: (resource, { asc }) => asc(resource.name),
+    });
+  },
+});
+
+export const addResource = createAdminAction({
   input: z.object({
     id: z.string(),
     name: z.string(),
@@ -40,8 +52,8 @@ export const add = createAdminAction({
     note: z.string().optional(),
     date: z.date().optional(),
     datePlain: z.string().optional(),
-    creatorIds: z.array(z.string()).optional(),
-    creatorsPlain: z.string().optional(),
+    relatedResourceIds: z.array(z.string()).optional(),
+    relatedResourcesPlain: z.string().optional(),
   }),
   action: async ({ input, ctx }) => {
     const { db } = ctx;
@@ -60,7 +72,7 @@ export const add = createAdminAction({
       note: input.note,
       date: input.date,
       datePlain: input.datePlain,
-      creatorsPlain: input.creatorsPlain,
+      relatedResourcesPlain: input.relatedResourcesPlain,
     });
 
     if (input.topicIds) {
@@ -72,11 +84,11 @@ export const add = createAdminAction({
       );
     }
 
-    if (input.creatorIds) {
-      await db.insert(resourceToCreator).values(
-        input.creatorIds.map((creatorId) => ({
+    if (input.relatedResourceIds) {
+      await db.insert(resourceToRelatedResource).values(
+        input.relatedResourceIds.map((relatedResourceId) => ({
           resourceId: input.id,
-          creatorId,
+          relatedResourceId,
         })),
       );
     }
@@ -202,12 +214,6 @@ export const suggest = createAction({
         'There was an error submitting your suggestion. Please try again or send it via email at hello@lifecentereddesign.net.',
       );
     }
-  },
-});
-
-export const getThoughtleaders = createAction({
-  action: async () => {
-    return await selectThoughtleaders();
   },
 });
 

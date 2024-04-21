@@ -13,8 +13,8 @@ import { z } from 'zod';
 type GetResourcesResult = Awaited<ReturnType<typeof getResources>>;
 export type Resources = GetResourcesResult['resources'];
 export type Resource = Resources[number];
-export type Creators = Resource['creators'];
-export type Creator = Creators[number];
+export type RelatedResources = Resource['relatedResources'];
+export type Creator = RelatedResources[number];
 export type Topics = Resource['topics'];
 export type Topic = Topics[number];
 
@@ -31,7 +31,7 @@ export const getResources = createQuery({
         type: z.array(z.number()).optional(),
         category: z.array(z.number()).optional(),
         topic: z.array(z.number()).optional(),
-        creator: z.array(z.string()).optional(),
+        relatedResource: z.array(z.string()).optional(),
         search: z.string().optional().optional(),
         from: z.date().optional(),
         till: z.date().optional(),
@@ -225,14 +225,14 @@ export const getRelatedResources = createQuery({
         limit: 10,
         sort: ['likes', 'comments', 'date'],
         filter: {
-          creator: [resource.id],
+          relatedResource: [resource.id],
         },
       });
 
       relatedResources.push(...resources);
     } else {
-      const relatedThoughtleaders = resource.creators.map(
-        (creator) => creator.id,
+      const relatedThoughtleaders = resource.relatedResources.map(
+        (relatedResource) => relatedResource.id,
       );
 
       const relatedTopics = resource.topics.map((topic) => topic.id);
@@ -242,7 +242,7 @@ export const getRelatedResources = createQuery({
         sort: ['likes', 'comments', 'date'],
         filter: {
           mode: 'or',
-          creator: relatedThoughtleaders,
+          relatedResource: relatedThoughtleaders,
           topic: relatedTopics,
           exclude: [resource.id],
         },

@@ -7,7 +7,7 @@ import {
   comment,
   like,
   resource,
-  resourceToCreator,
+  resourceToRelatedResource,
   resourceToTopic,
   topic,
   type,
@@ -71,7 +71,7 @@ export type Video = Prisma.VideoGetPayload<{
   include: {
     category: true;
     topics: true;
-    creators: true;
+    relatedResources: true;
   };
 }>;
 
@@ -277,7 +277,7 @@ const main = async () => {
       name,
       description,
       details,
-      creator_names,
+      related_resource_names,
     );`,
   );
 
@@ -302,19 +302,19 @@ const main = async () => {
           details = NEW.details
         WHERE id = NEW.id;
 
-        -- Update the creator fields of all resources that have this creator
+        -- Update the relatedResource fields of all resources that have this relatedResource
         UPDATE resource_fts
         SET
-          creator_names = (
+          related_resource_names = (
             SELECT GROUP_CONCAT(r.name, '; ')
-            FROM resource_to_creator rtc
-            JOIN resource r ON rtc.creator_id = r.id
+            FROM resource_to_related_resource rtc
+            JOIN resource r ON rtc.related_resource_id = r.id
             WHERE rtc.resource_id = resource_fts.id
           )
         WHERE EXISTS (
           SELECT 1
-          FROM resource_to_creator rtc
-          WHERE rtc.creator_id = NEW.id AND rtc.resource_id = resource_fts.id
+          FROM resource_to_related_resource rtc
+          WHERE rtc.related_resource_id = NEW.id AND rtc.resource_id = resource_fts.id
         );
       END;
     `,
@@ -331,15 +331,15 @@ const main = async () => {
   );
 
   await db.run(
-    sql`CREATE TRIGGER insert_creator_fts after INSERT on resource_to_creator
+    sql`CREATE TRIGGER insert_relatedResource_fts after INSERT on resource_to_related_resource
     BEGIN
-      -- Update the creator fields of the resource
+      -- Update the relatedResource fields of the resource
       UPDATE resource_fts
       SET
-        creator_names = (
+        related_resource_names = (
           SELECT GROUP_CONCAT(r.name, '; ')
-          FROM resource_to_creator rtc
-          JOIN resource r ON rtc.creator_id = r.id
+          FROM resource_to_related_resource rtc
+          JOIN resource r ON rtc.related_resource_id = r.id
           WHERE rtc.resource_id = NEW.resource_id
         )
       WHERE id = NEW.resource_id;
@@ -348,15 +348,15 @@ const main = async () => {
   );
 
   await db.run(
-    sql`CREATE TRIGGER delete_creator_fts after DELETE on resource_to_creator
+    sql`CREATE TRIGGER delete_relatedResource_fts after DELETE on resource_to_related_resource
     BEGIN
-      -- Update the creator fields of the resource
+      -- Update the relatedResource fields of the resource
       UPDATE resource_fts
       SET
-        creator_names = (
+        related_resource_names = (
           SELECT GROUP_CONCAT(r.name, '; ')
-          FROM resource_to_creator rtc
-          JOIN resource r ON rtc.creator_id = r.id
+          FROM resource_to_related_resource rtc
+          JOIN resource r ON rtc.related_resource_id = r.id
           WHERE rtc.resource_id = NEW.resource_id
         )
       WHERE id = NEW.resource_id;
@@ -459,12 +459,16 @@ const main = async () => {
         details.push(`Duration: ${oldResource.duration}`);
       }
 
-      if (oldResource.publisher) {
-        details.push(`Publisher: ${oldResource.publisher}`);
+      if (oldResource.isbn) {
+        details.push(`ISBN: ${oldResource.isbn}`);
       }
 
-      if (oldResource.isbn) {
-        details.push(`Isbn: ${oldResource.isbn}`);
+      if (oldResource.frequency) {
+        details.push(`Frequency: ${oldResource.frequency}`);
+      }
+
+      if (oldResource.handle) {
+        details.push(`Handle: ${oldResource.handle}`);
       }
 
       if (details.length > 0) {
@@ -474,13 +478,29 @@ const main = async () => {
       return undefined;
     };
 
-    const creatorsPlain = () => {
+    const relatedResourcesPlain = () => {
       if (oldResource.authorsPlain) {
         return oldResource.authorsPlain;
       }
 
       if (oldResource.hostsPlain) {
         return oldResource.hostsPlain;
+      }
+
+      if (oldResource.podcastPlain) {
+        return oldResource.podcastPlain;
+      }
+
+      if (oldResource.creatorsPlain) {
+        return oldResource.creatorsPlain;
+      }
+
+      if (oldResource.publisher) {
+        return oldResource.publisher;
+      }
+
+      if (oldResource.journal) {
+        return oldResource.journal;
       }
     };
 
@@ -502,7 +522,7 @@ const main = async () => {
         datePlain: oldResource.datePlain,
         anonymousLikes: oldResource.likes,
         oldSlug: `${oldResource.type}-${oldResource.id}`,
-        creatorsPlain: creatorsPlain(),
+        relatedResourcesPlain: relatedResourcesPlain(),
       })
       .returning();
 
@@ -534,11 +554,9 @@ const main = async () => {
 
   const newResources = await db.query.resource.findMany();
 
-  console.log(newResources.length);
-
-  // Creators
+  // RelatedResources
   oldResources.forEach(async (oldResource) => {
-    const getOldCreators = () => {
+    const getOldRelatedResources = () => {
       if (oldResource.authors) {
         return oldResource.authors;
       }
@@ -551,6 +569,14 @@ const main = async () => {
         return oldResource.guests;
       }
 
+      if (oldResource.relatedResources) {
+        return oldResource.relatedResources;
+      }
+
+      if (oldResource.podcast) {
+        return oldResource.podcast;
+      }
+
       if (oldResource.creators) {
         return oldResource.creators;
       }
@@ -558,23 +584,27 @@ const main = async () => {
       return [];
     };
 
-    const oldCreators = getOldCreators();
+    const oldRelatedResources = getOldRelatedResources();
 
-    if (oldCreators.length === 0) {
+    if (oldRelatedResources.length === 0) {
       return;
     }
 
-    const newCreatorIds = oldCreators.map((oldCreator) => {
-      const newCreator = newResources.find(
-        (newResource) => newResource.name === oldCreator.name,
-      );
+    const newRelatedResourceIds = oldRelatedResources.map(
+      (oldRelatedResource) => {
+        const newRelatedResource = newResources.find(
+          (newResource) => newResource.name === oldRelatedResource.name,
+        );
 
-      if (!newCreator) {
-        throw new Error(`Creator ${oldCreator.name} not found`);
-      }
+        if (!newRelatedResource) {
+          throw new Error(
+            `RelatedResource ${oldRelatedResource.name} not found`,
+          );
+        }
 
-      return newCreator.id;
-    });
+        return newRelatedResource.id;
+      },
+    );
 
     const newResource = newResources.find(
       (resource) =>
@@ -587,10 +617,10 @@ const main = async () => {
       );
     }
 
-    await db.insert(resourceToCreator).values(
-      newCreatorIds.map((creatorId) => ({
+    await db.insert(resourceToRelatedResource).values(
+      newRelatedResourceIds.map((relatedResourceId) => ({
         resourceId: newResource.id,
-        creatorId,
+        relatedResourceId,
       })),
     );
 
@@ -605,11 +635,11 @@ const main = async () => {
   //   })),
   // );
 
-  // Link resources to creators
-  // await db.insert(resourceToCreator).values(
+  // Link resources to relatedResources
+  // await db.insert(resourceToRelatedResource).values(
   //   Array.from({ length: COUNT }, (_, i) => ({
   //     resourceId: String(i + 1),
-  //     creatorId: String(i + 1),
+  //     relatedResourceId: String(i + 1),
   //   })),
   // );
 

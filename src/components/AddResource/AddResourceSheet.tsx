@@ -54,8 +54,8 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
   const { data: topics, runAction: fetchTopics } = useAction(
     action.topics.getTopics,
   );
-  const { data: thoughtleaders, runAction: fetchThoughtleaders } = useAction(
-    action.resources.getThoughtleaders,
+  const { data: resources, runAction: fetchResources } = useAction(
+    action.resources.getResources,
   );
   const { runAction: analyzeLink, isRunning: isAnalyzeLinkRunning } = useAction(
     action.resources.analizeLink,
@@ -99,7 +99,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
     isRunning: isAddResourceRunning,
     error: addResourceError,
     validationErrors: addResourceValidationErrors,
-  } = useAction(action.resources.add, {
+  } = useAction(action.resources.addResource, {
     onSuccess: () => {
       onAdd?.();
       onOpenChange(false);
@@ -116,14 +116,16 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
   const [topicIds, setTopicIds] = useState<Array<string>>([]);
   const [description, setDescription] = useState('');
   const [date, setDate] = useState<Date>();
-  const [thoughtleaderIds, setThoughtleaderIds] = useState<Array<string>>([]);
+  const [relatedResourceIds, setRelatedrelatedResourceIds] = useState<
+    Array<string>
+  >([]);
 
   const onOpenChange = (open: boolean) => {
     if (open) {
       fetchTypes();
       fetchCategories();
       fetchTopics();
-      fetchThoughtleaders();
+      fetchResources();
     } else {
       resetForm();
     }
@@ -141,7 +143,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
     setTopicIds([]);
     setDescription('');
     setDate(undefined);
-    setThoughtleaderIds([]);
+    setRelatedrelatedResourceIds([]);
   };
 
   return (
@@ -172,8 +174,10 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               note: String(formData.get('note')),
               date,
               datePlain: String(formData.get('datePlain')),
-              creatorIds: thoughtleaderIds,
-              creatorsPlain: String(formData.get('creatorsPlain')),
+              relatedResourceIds: relatedResourceIds,
+              relatedResourcesPlain: String(
+                formData.get('relatedResourcesPlain'),
+              ),
             });
           }}
         >
@@ -426,49 +430,51 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               )}
             </div>
 
-            {/* Creators */}
+            {/* RelatedResources */}
             <div className="flex flex-col gap-2">
-              <Label htmlFor="creators">Creators</Label>
+              <Label htmlFor="relatedResources">Related resources</Label>
               <div className="flex gap-4">
                 <MultiSelect
-                  name="creators"
-                  value={thoughtleaderIds}
-                  onValueChange={setThoughtleaderIds}
+                  name="relatedResources"
+                  value={relatedResourceIds}
+                  onValueChange={setRelatedrelatedResourceIds}
                   options={
-                    thoughtleaders?.map((thoughtleader) => ({
-                      label: thoughtleader.name,
-                      value: thoughtleader.id,
+                    resources?.map((resource) => ({
+                      label: resource.name,
+                      value: resource.id,
                     })) || []
                   }
-                  placeholder="Select creators"
+                  placeholder="Select related resources"
                 />
 
                 <AddResourceSheet onAdd={fetchCategories}>
                   <Button type="button" variant="secondary" size="icon">
                     <Plus />
-                    <span className="sr-only">Add type</span>
+                    <span className="sr-only">Add resource</span>
                   </Button>
                 </AddResourceSheet>
               </div>
-              {addResourceValidationErrors?.creatorIds && (
+              {addResourceValidationErrors?.relatedResourceIds && (
                 <InputError>
-                  {addResourceValidationErrors.creatorIds[0]}
+                  {addResourceValidationErrors.relatedResourceIds[0]}
                 </InputError>
               )}
             </div>
 
-            {/* Creators plain */}
+            {/* Related resources plain */}
             <div className="flex flex-col gap-2">
-              <Label htmlFor="creatorsPlain">Creators plain</Label>
+              <Label htmlFor="relatedResourcesPlain">
+                Related resources plain
+              </Label>
               <Input
-                id="creatorsPlain"
-                name="creatorsPlain"
+                id="relatedResourcesPlain"
+                name="relatedResourcesPlain"
                 type="text"
                 placeholder="Katharina & Timo Clasen"
               />
-              {addResourceValidationErrors?.creatorsPlain && (
+              {addResourceValidationErrors?.relatedResourcesPlain && (
                 <InputError>
-                  {addResourceValidationErrors.creatorsPlain[0]}
+                  {addResourceValidationErrors.relatedResourcesPlain[0]}
                 </InputError>
               )}
             </div>

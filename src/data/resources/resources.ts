@@ -5,7 +5,7 @@ import {
   comment,
   like,
   resource,
-  resourceToCreator,
+  resourceToRelatedResource,
   resourceToTopic,
   topic,
   type,
@@ -37,7 +37,7 @@ export const selectResources = async (
       type?: number[];
       category?: number[];
       topic?: number[];
-      creator?: string[];
+      relatedResource?: string[];
       search?: string;
       from?: Date;
       till?: Date;
@@ -52,7 +52,7 @@ export const selectResources = async (
   const { filter, sort, limit } = options;
   const { userId } = auth();
 
-  const creator = alias(resource, 'creator');
+  const relatedResource = alias(resource, 'relatedResource');
 
   const orderBy = () => {
     if (filter.search) {
@@ -114,8 +114,14 @@ export const selectResources = async (
     .leftJoin(category, eq(resource.categoryId, category.id))
     .leftJoin(resourceToTopic, eq(resource.id, resourceToTopic.resourceId))
     .leftJoin(topic, eq(resourceToTopic.topicId, topic.id))
-    .leftJoin(resourceToCreator, eq(resource.id, resourceToCreator.resourceId))
-    .leftJoin(creator, eq(resourceToCreator.creatorId, creator.id))
+    .leftJoin(
+      resourceToRelatedResource,
+      eq(resource.id, resourceToRelatedResource.resourceId),
+    )
+    .leftJoin(
+      relatedResource,
+      eq(resourceToRelatedResource.relatedResourceId, relatedResource.id),
+    )
     .leftJoin(likesQuery, eq(resource.id, likesQuery.resourceId))
     .leftJoin(commentsQuery, eq(resource.id, commentsQuery.resourceId))
     .innerJoin(resourceFts, eq(resourceFts.id, resource.id))
@@ -152,9 +158,9 @@ export const selectResources = async (
         });
       }
 
-      if (filter.creator) {
-        filter.creator.forEach((creatorId) => {
-          where.push(eq(creator.id, creatorId));
+      if (filter.relatedResource) {
+        filter.relatedResource.forEach((relatedResourceId) => {
+          where.push(eq(relatedResource.id, relatedResourceId));
         });
       }
 
@@ -205,7 +211,7 @@ export const selectResources = async (
       suggestion: resource.suggestion,
       date: resource.date,
       datePlain: resource.datePlain,
-      creatorsPlain: resource.creatorsPlain,
+      relatedResourcesPlain: resource.relatedResourcesPlain,
       type: {
         id: type.id,
         name: type.name,
@@ -218,10 +224,10 @@ export const selectResources = async (
         id: topic.id,
         name: topic.name,
       },
-      creator: {
-        id: creator.id,
-        name: creator.name,
-        description: creator.description,
+      relatedResource: {
+        id: relatedResource.id,
+        name: relatedResource.name,
+        description: relatedResource.description,
       },
       likesCount: likesQuery.likesCount,
       likedByUser: likesQuery.likedByUser,
@@ -233,8 +239,14 @@ export const selectResources = async (
     .leftJoin(category, eq(resource.categoryId, category.id))
     .leftJoin(resourceToTopic, eq(resource.id, resourceToTopic.resourceId))
     .leftJoin(topic, eq(resourceToTopic.topicId, topic.id))
-    .leftJoin(resourceToCreator, eq(resource.id, resourceToCreator.resourceId))
-    .leftJoin(creator, eq(resourceToCreator.creatorId, creator.id))
+    .leftJoin(
+      resourceToRelatedResource,
+      eq(resource.id, resourceToRelatedResource.resourceId),
+    )
+    .leftJoin(
+      relatedResource,
+      eq(resourceToRelatedResource.relatedResourceId, relatedResource.id),
+    )
     .innerJoin(resourceFts, eq(resourceFts.id, resource.id))
     .leftJoin(likesQuery, eq(resource.id, likesQuery.resourceId))
     .leftJoin(commentsQuery, eq(resource.id, commentsQuery.resourceId))
@@ -258,11 +270,11 @@ export const selectResources = async (
       type Resource = ReturnType<typeof createResource>;
 
       const createResource = (row: Row) => {
-        const { topic, creator, ...rest } = row;
+        const { topic, relatedResource, ...rest } = row;
         return {
           ...rest,
           topics: topic ? [topic] : [],
-          creators: creator ? [creator] : [],
+          relatedResources: relatedResource ? [relatedResource] : [],
         };
       };
 
@@ -278,11 +290,13 @@ export const selectResources = async (
             if (!resource.topics.some((topic) => topic.id === row.topic?.id))
               resource.topics.push(row.topic);
           }
-          if (row.creator) {
+          if (row.relatedResource) {
             if (
-              !resource.creators.some((topic) => topic.id === row.creator?.id)
+              !resource.relatedResources.some(
+                (topic) => topic.id === row.relatedResource?.id,
+              )
             )
-              resource.creators.push(row.creator);
+              resource.relatedResources.push(row.relatedResource);
           }
         }
       }

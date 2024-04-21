@@ -6,7 +6,9 @@ export const resourceFts = sqliteTable('resource_fts', {
   name: text('name', { mode: 'text', length: 256 }).notNull(),
   description: text('description', { mode: 'text' }),
   details: text('details', { mode: 'text' }),
-  creatorNames: text('creator_names', { mode: 'text' }),
-  creatorDescriptions: text('creator_descriptions', { mode: 'text' }),
-  creatorDetails: text('creator_details', { mode: 'text' }),
+  relatedResourceNames: text('related_resource_names', { mode: 'text' }),
+  relatedResourceDescriptions: text('related_resource_descriptions', {
+    mode: 'text',
+  }),
+  relatedResourceDetails: text('related_resource_details', { mode: 'text' }),
 });
