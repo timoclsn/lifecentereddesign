@@ -37,7 +37,7 @@ export const resource = sqliteTable(
       mode: 'text',
       length: 256,
     }),
-    anonymousLikes: integer('anonymous_likes', { mode: 'number' })
+    anonymousLikesCount: integer('anonymous_likes_count', { mode: 'number' })
       .notNull()
       .default(0),
     oldSlug: text('old_slug', { mode: 'text', length: 256 }),

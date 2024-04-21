@@ -6,7 +6,7 @@ import {
   createProtectedAction,
 } from '@/data/clients';
 import { db } from '@/lib/db';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { revalidatePath, revalidateTag } from 'next/cache';
 import nodemailer from 'nodemailer';
 import OpenAI from 'openai';
@@ -22,6 +22,7 @@ import { selectCategories } from '../categories/categories';
 import { selectTopics } from '../topics/topics';
 import { selectTypes } from '../types/types';
 import { resourceCommentsTag } from './query';
+import { auth } from '@clerk/nextjs/server';
 
 const { SUGGESTION_MAIL_PASSWORD } = process.env;
 
@@ -97,18 +98,27 @@ export const addResource = createAdminAction({
   },
 });
 
-export const like = createProtectedAction({
+export const like = createAction({
   input: z.object({
     id: z.string(),
   }),
   action: async ({ input, ctx }) => {
     const { id } = input;
-    const { userId } = ctx;
+    const { userId } = auth();
 
-    await db.insert(likeSchema).values({
-      resourceId: id,
-      userId,
-    });
+    if (userId) {
+      await db.insert(likeSchema).values({
+        resourceId: id,
+        userId,
+      });
+    } else {
+      await db
+        .update(resource)
+        .set({
+          anonymousLikesCount: sql`${resource.anonymousLikesCount} + 1`,
+        })
+        .where(eq(resource.id, id));
+    }
 
     revalidatePath('/');
   },

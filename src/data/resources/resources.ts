@@ -65,7 +65,9 @@ export const selectResources = async (
           case 'name':
             return asc(resource.name);
           case 'likes':
-            return desc(likesQuery.likesCount);
+            return desc(
+              sql<number>`coalesce(${likesQuery.likesCount}, 0) + ${resource.anonymousLikesCount}`,
+            );
           case 'comments':
             return desc(commentsQuery.commentsCount);
           case 'random':
@@ -229,9 +231,9 @@ export const selectResources = async (
         name: relatedResource.name,
         description: relatedResource.description,
       },
-      likesCount: likesQuery.likesCount,
+      likesCount: sql<number>`coalesce(${likesQuery.likesCount}, 0) + ${resource.anonymousLikesCount}`,
       likedByUser: likesQuery.likedByUser,
-      commentsCount: commentsQuery.commentsCount,
+      commentsCount: sql<number>`coalesce(${commentsQuery.commentsCount}, 0)`,
       commentedByUser: commentsQuery.commentedByUser,
     })
     .from(resource)

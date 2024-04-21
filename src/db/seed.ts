@@ -520,7 +520,7 @@ const main = async () => {
         note: oldResource.note,
         date: date(),
         datePlain: oldResource.datePlain,
-        anonymousLikes: oldResource.likes,
+        anonymousLikesCount: oldResource.likes,
         oldSlug: `${oldResource.type}-${oldResource.id}`,
         relatedResourcesPlain: relatedResourcesPlain(),
       })
@@ -623,6 +623,37 @@ const main = async () => {
         relatedResourceId,
       })),
     );
+
+    await wait(500);
+  });
+
+  const oldLikes = await prisma.like.findMany();
+
+  oldLikes.forEach(async (oldLike) => {
+    const oldResource = oldResources.find(
+      (resource) =>
+        resource.id === oldLike.resourceId && resource.type === oldLike.type,
+    );
+
+    if (!oldResource) {
+      throw new Error(`Resource ${oldLike.resourceId} not found`);
+    }
+
+    const newResource = newResources.find(
+      (resource) =>
+        resource.oldSlug === `${oldResource.type}-${oldResource.id}`,
+    );
+
+    if (!newResource) {
+      throw new Error(
+        `Resource ${oldResource.type}-${oldResource.id} not found`,
+      );
+    }
+
+    await db.insert(like).values({
+      resourceId: newResource.id,
+      userId: oldLike.userId,
+    });
 
     await wait(500);
   });

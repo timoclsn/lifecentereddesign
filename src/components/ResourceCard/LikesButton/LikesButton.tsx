@@ -54,12 +54,16 @@ export const LikesButton = ({ id, count, liked }: Props) => {
       if (liked) {
         // Un-like
         setOptimisticCount(optimisticCount - 1);
-        setOptimisticLiked(false);
+        if (isSignedIn) {
+          setOptimisticLiked(false);
+        }
         await runUnLikeAction({ id });
       } else {
         // Like
         setOptimisticCount(optimisticCount + 1);
-        setOptimisticLiked(true);
+        if (isSignedIn) {
+          setOptimisticLiked(true);
+        }
         await runLikeAction({ id });
       }
     });
@@ -67,7 +71,7 @@ export const LikesButton = ({ id, count, liked }: Props) => {
   return (
     <button
       onClick={handleClick}
-      disabled={!isSignedIn || isRunning}
+      disabled={isRunning}
       className="ease group relative flex items-center justify-center gap-2 disabled:opacity-80"
     >
       <div>{optimisticCount}</div>
@@ -77,7 +81,7 @@ export const LikesButton = ({ id, count, liked }: Props) => {
             ? optimisticLiked
               ? 'Remove resource from your favourites'
               : 'Like resource to show support and mark as favourite'
-            : 'Sign in to like resources'
+            : 'Like resource anonymously or sign-in to add resource to your favourites'
         }
         delayDuration={500}
       >
