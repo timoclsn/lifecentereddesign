@@ -658,6 +658,39 @@ const main = async () => {
     await wait(500);
   });
 
+  const oldComments = await prisma.comment.findMany();
+
+  oldComments.forEach(async (oldComment) => {
+    const oldResource = oldResources.find(
+      (resource) =>
+        resource.id === oldComment.resourceId &&
+        resource.type === oldComment.type,
+    );
+
+    if (!oldResource) {
+      throw new Error(`Resource ${oldComment.resourceId} not found`);
+    }
+
+    const newResource = newResources.find(
+      (resource) =>
+        resource.oldSlug === `${oldResource.type}-${oldResource.id}`,
+    );
+
+    if (!newResource) {
+      throw new Error(
+        `Resource ${oldResource.type}-${oldResource.id} not found`,
+      );
+    }
+
+    await db.insert(comment).values({
+      resourceId: newResource.id,
+      userId: oldComment.userId,
+      text: oldComment.text,
+    });
+
+    await wait(500);
+  });
+
   // Link resources to topics
   // await db.insert(resourceToTopic).values(
   //   Array.from({ length: COUNT }, (_, i) => ({
