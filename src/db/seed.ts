@@ -263,9 +263,9 @@ const main = async () => {
   console.info('Seeding database...');
 
   const turso = createClient({
-    // url: 'file:local.db',
-    url: TURSO_DATABASE_URL!,
-    authToken: TURSO_AUTH_TOKEN,
+    url: 'file:local.db',
+    // url: TURSO_DATABASE_URL!,
+    // authToken: TURSO_AUTH_TOKEN,
   });
   const db = drizzle(turso, { schema });
 
@@ -436,16 +436,52 @@ const main = async () => {
       (category) => category.name === oldResource.category?.name,
     );
 
-    const description = () => {
-      if (oldResource.description) {
-        return oldResource.description;
+    const date = () => {
+      if (oldResource.date) {
+        return oldResource.date;
       }
 
-      if (oldResource.jobDescription) {
-        return oldResource.jobDescription;
+      if (oldResource.publishingDate) {
+        return oldResource.publishingDate;
       }
 
       return undefined;
+    };
+
+    const details = () => {
+      const details = [];
+
+      if (oldResource.jobDescription) {
+        details.push(`Job Description: ${oldResource.jobDescription}`);
+      }
+
+      if (oldResource.duration) {
+        details.push(`Duration: ${oldResource.duration}`);
+      }
+
+      if (oldResource.publisher) {
+        details.push(`Publisher: ${oldResource.publisher}`);
+      }
+
+      if (oldResource.isbn) {
+        details.push(`Isbn: ${oldResource.isbn}`);
+      }
+
+      if (details.length > 0) {
+        return details.join(' | ');
+      }
+
+      return undefined;
+    };
+
+    const creatorsPlain = () => {
+      if (oldResource.authorsPlain) {
+        return oldResource.authorsPlain;
+      }
+
+      if (oldResource.hostsPlain) {
+        return oldResource.hostsPlain;
+      }
     };
 
     // Resource
@@ -459,12 +495,14 @@ const main = async () => {
         link: oldResource.link || '',
         typeId: type.id,
         categoryId: category?.id,
-        description: description(),
+        description: oldResource.description,
+        details: details(),
         note: oldResource.note,
-        date: oldResource.date,
+        date: date(),
         datePlain: oldResource.datePlain,
+        anonymousLikes: oldResource.likes,
         oldSlug: `${oldResource.type}-${oldResource.id}`,
-        // Details
+        creatorsPlain: creatorsPlain(),
       })
       .returning();
 

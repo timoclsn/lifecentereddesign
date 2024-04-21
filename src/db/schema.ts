@@ -34,6 +34,9 @@ export const resource = sqliteTable(
     date: integer('date', { mode: 'timestamp' }),
     datePlain: text('date_plain', { mode: 'text', length: 256 }),
     creatorsPlain: text('creators_plain', { mode: 'text', length: 256 }),
+    anonymousLikes: integer('anonymous_likes', { mode: 'number' })
+      .notNull()
+      .default(0),
     oldSlug: text('old_slug', { mode: 'text', length: 256 }),
   },
   (table) => ({
