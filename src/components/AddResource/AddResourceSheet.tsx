@@ -72,12 +72,12 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
         setDescription(description);
 
         toast({
-          title: 'Succesfully analized link',
+          title: '✅ Succesfully analized link',
         });
       },
       onError: ({ error }) => {
         toast({
-          title: 'Error analizing link',
+          title: '❌ Error analizing link',
           description: error,
           variant: 'destructive',
           action: (
@@ -106,6 +106,31 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
       resetForm();
     },
   });
+  const { runAction: revalidateCache, isRunning: isRevalidateCacheRunning } =
+    useAction(action.cache.revalidateCache, {
+      onSuccess: () => {
+        toast({
+          title: '✅ Succesfully revalidated cache',
+        });
+      },
+      onError: ({ error }) => {
+        toast({
+          title: '❌ Error revalidateCache',
+          description: error,
+          variant: 'destructive',
+          action: (
+            <ToastAction
+              altText="Try again"
+              onClick={() => {
+                analyzeLink({ link });
+              }}
+            >
+              Try again
+            </ToastAction>
+          ),
+        });
+      },
+    });
 
   // Controlled inputs
   const [link, setLink] = useState('');
@@ -517,6 +542,19 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
           </div>
 
           <SheetFooter>
+            <Button
+              type="button"
+              onClick={() => {
+                revalidateCache();
+              }}
+              disabled={isRevalidateCacheRunning}
+              variant="outline"
+            >
+              {isRevalidateCacheRunning && (
+                <Loader2 size={16} className="animate-spin" />
+              )}
+              Revalidate Cache
+            </Button>
             <Button type="submit" disabled={isAddResourceRunning}>
               {isAddResourceRunning && (
                 <Loader2 size={16} className="animate-spin" />
