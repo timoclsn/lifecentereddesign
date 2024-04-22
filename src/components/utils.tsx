@@ -20,6 +20,7 @@ export const relatedResourceList = (relatedResources: RelatedResources) => {
       <Fragment key={relatedResource.id}>
         <Link
           href={`/resources/${relatedResource.id}`}
+          prefetch={false}
           className="relative inline-flex items-center justify-center gap-0.5 hover:underline"
         >
           {relatedResource.name}

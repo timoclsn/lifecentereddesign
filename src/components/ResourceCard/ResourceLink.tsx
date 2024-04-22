@@ -16,6 +16,7 @@ export const ResourceLink = ({ children, id, link, className }: Props) => {
   return (
     <Link
       href={link}
+      prefetch={false}
       target="_blank"
       rel="noopener"
       className={cx('relative hover:opacity-80', className)}

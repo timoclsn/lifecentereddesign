@@ -9,7 +9,11 @@ interface Props {
 
 export const CommentsButton = ({ commentsCount, slug }: Props) => {
   return (
-    <Link href={`/resources/${slug}#cmnts`} className="group relative">
+    <Link
+      href={`/resources/${slug}#cmnts`}
+      prefetch={false}
+      className="group relative"
+    >
       <div className="ease flex items-center justify-center gap-2 disabled:opacity-80">
         <div className="transition-transform duration-100 ease-in animate-in fade-in slide-in-from-right-full">
           {commentsCount}

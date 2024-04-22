@@ -33,6 +33,7 @@ export const CategoryButton = ({ children, categoryId }: Props) => {
     return (
       <Link
         href={`/resources?category=${categoryIdString}#resources`}
+        prefetch={false}
         className="relative hover:opacity-80"
       >
         {tag(children)}

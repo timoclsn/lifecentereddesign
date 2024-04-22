@@ -31,6 +31,7 @@ export const TopicsButton = ({ children, topic }: Props) => {
     return (
       <Link
         href={`/resources?topic=${topic}#resources`}
+        prefetch={false}
         className="relative inline-flex items-center justify-center gap-0.5 hover:opacity-80"
       >
         {children}

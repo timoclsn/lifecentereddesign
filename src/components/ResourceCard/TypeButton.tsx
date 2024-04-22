@@ -33,6 +33,7 @@ export const TypeButton = ({ children, typeId }: Props) => {
     return (
       <Link
         href={`/resources?type=${typeIdString}#resources`}
+        prefetch={false}
         className="relative hover:opacity-80"
       >
         {tag(children)}

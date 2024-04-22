@@ -23,5 +23,7 @@ export const DetailsLink = ({ slug, link }: Props) => {
     );
   }
 
-  return <Link href={detailsPath} className="absolute inset-0" />;
+  return (
+    <Link href={detailsPath} prefetch={false} className="absolute inset-0" />
+  );
 };
