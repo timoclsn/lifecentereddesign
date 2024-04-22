@@ -17,21 +17,35 @@ function Calendar({
 }: CalendarProps) {
   return (
     <DayPicker
+      captionLayout="dropdown-buttons"
+      fromYear={1970}
+      toYear={new Date().getFullYear()}
       weekStartsOn={1}
       showOutsideDays={showOutsideDays}
       className={cn('p-3', className)}
       classNames={{
+        caption_dropdowns: 'flex gap-2',
+        dropdown: 'bg-transparent',
+        dropdown_month: cn(
+          buttonVariants({ variant: 'outline', size: 'sm' }),
+          'bg-transparent opacity-50 hover:opacity-100',
+        ),
+        dropdown_year: cn(
+          buttonVariants({ variant: 'outline', size: 'sm' }),
+          'bg-transparent opacity-50 hover:opacity-100',
+        ),
+        dropdown_icon: 'hidden',
         months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
         month: 'space-y-4',
-        caption: 'flex justify-center pt-1 relative items-center',
-        caption_label: 'text-sm font-medium',
+        caption: 'flex justify-center relative items-center gap-4',
+        caption_label: 'hidden',
         nav: 'space-x-1 flex items-center',
         nav_button: cn(
           buttonVariants({ variant: 'outline', size: 'icon' }),
           'bg-transparent opacity-50 hover:opacity-100',
         ),
-        nav_button_previous: 'absolute left-1',
-        nav_button_next: 'absolute right-1',
+        // nav_button_previous: 'absolute left-1',
+        // nav_button_next: 'absolute right-1',
         table: 'w-full border-collapse space-y-1',
         head_row: 'flex',
         head_cell:
