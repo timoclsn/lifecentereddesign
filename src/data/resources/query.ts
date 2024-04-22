@@ -250,13 +250,13 @@ export const getRelatedResources = createQuery({
       relatedResources.push(...resources);
     }
 
-    // Fallback
-    if (relatedResources.length === 0) {
+    // If we don't have enough related resources, we'll fetch some more
+    if (relatedResources.length < 10) {
       const { resources } = await selectResources({
-        limit: 10,
-        sort: ['random'],
+        limit: 10 - relatedResources.length,
+        sort: ['likes', 'comments', 'random'],
         filter: {
-          exclude: [resource.id],
+          exclude: [resource.id, ...relatedResources.map(({ id }) => id)],
         },
       });
 
