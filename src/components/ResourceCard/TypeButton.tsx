@@ -9,14 +9,13 @@ import { useFilter } from '../../hooks/useFilter';
 
 interface Props {
   children: ReactNode;
-  typeId: number;
+  typeId: string;
 }
 
 export const TypeButton = ({ children, typeId }: Props) => {
   const { handleValueChange, searchParams, isPending } = useFilter();
   const searchParamsType = searchParams.get('type');
-  const typeIdString = String(typeId);
-  const isFiltered = searchParamsType === typeIdString;
+  const isFiltered = searchParamsType === typeId;
   const { inContext } = useResourcesTable();
 
   const handleClick = () => {
@@ -24,7 +23,7 @@ export const TypeButton = ({ children, typeId }: Props) => {
       handleValueChange('type', '');
       return;
     }
-    handleValueChange('type', typeIdString);
+    handleValueChange('type', typeId);
   };
 
   const tag = (children: ReactNode) => <Tag variant="outline">{children}</Tag>;
@@ -32,7 +31,7 @@ export const TypeButton = ({ children, typeId }: Props) => {
   if (!inContext) {
     return (
       <Link
-        href={`/resources?type=${typeIdString}#resources`}
+        href={`/resources?type=${typeId}#resources`}
         prefetch={false}
         className="relative hover:opacity-80"
       >

@@ -34,9 +34,9 @@ export const selectResources = async (
     filter: {
       mode?: 'and' | 'or';
       id?: string[];
-      type?: number[];
-      category?: number[];
-      topic?: number[];
+      type?: string[];
+      category?: string[];
+      topic?: string[];
       relatedResource?: string[];
       search?: string;
       from?: Date;
@@ -112,10 +112,10 @@ export const selectResources = async (
       id: resource.id,
     })
     .from(resource)
-    .leftJoin(type, eq(resource.typeId, type.id))
-    .leftJoin(category, eq(resource.categoryId, category.id))
+    .leftJoin(type, eq(resource.typeId, type.name))
+    .leftJoin(category, eq(resource.categoryId, category.name))
     .leftJoin(resourceToTopic, eq(resource.id, resourceToTopic.resourceId))
-    .leftJoin(topic, eq(resourceToTopic.topicId, topic.id))
+    .leftJoin(topic, eq(resourceToTopic.topicId, topic.name))
     .leftJoin(
       resourceToRelatedResource,
       eq(resource.id, resourceToRelatedResource.resourceId),
@@ -144,19 +144,19 @@ export const selectResources = async (
 
       if (filter.type) {
         filter.type.forEach((typeId) => {
-          where.push(eq(type.id, typeId));
+          where.push(eq(type.name, typeId));
         });
       }
 
       if (filter.category) {
         filter.category.forEach((categoryId) => {
-          where.push(eq(category.id, categoryId));
+          where.push(eq(category.name, categoryId));
         });
       }
 
       if (filter.topic) {
         filter.topic.forEach((topicId) => {
-          where.push(eq(topic.id, topicId));
+          where.push(eq(topic.name, topicId));
         });
       }
 
@@ -206,6 +206,7 @@ export const selectResources = async (
       id: resource.id,
       createdAt: resource.createdAt,
       name: resource.name,
+      shortDescription: resource.shortDescription,
       description: resource.description,
       note: resource.note,
       details: resource.details,
@@ -215,21 +216,18 @@ export const selectResources = async (
       datePlain: resource.datePlain,
       relatedResourcesPlain: resource.relatedResourcesPlain,
       type: {
-        id: type.id,
         name: type.name,
       },
       category: {
-        id: category.id,
         name: category.name,
       },
       topic: {
-        id: topic.id,
         name: topic.name,
       },
       relatedResource: {
         id: relatedResource.id,
         name: relatedResource.name,
-        description: relatedResource.description,
+        type: relatedResource.typeId,
       },
       likesCount: sql<number>`coalesce(${likesQuery.likesCount}, 0) + ${resource.anonymousLikesCount}`,
       likedByUser: likesQuery.likedByUser,
@@ -237,10 +235,10 @@ export const selectResources = async (
       commentedByUser: commentsQuery.commentedByUser,
     })
     .from(resource)
-    .leftJoin(type, eq(resource.typeId, type.id))
-    .leftJoin(category, eq(resource.categoryId, category.id))
+    .leftJoin(type, eq(resource.typeId, type.name))
+    .leftJoin(category, eq(resource.categoryId, category.name))
     .leftJoin(resourceToTopic, eq(resource.id, resourceToTopic.resourceId))
-    .leftJoin(topic, eq(resourceToTopic.topicId, topic.id))
+    .leftJoin(topic, eq(resourceToTopic.topicId, topic.name))
     .leftJoin(
       resourceToRelatedResource,
       eq(resource.id, resourceToRelatedResource.resourceId),
@@ -289,13 +287,16 @@ export const selectResources = async (
           resources.push(createResource(row));
         } else {
           if (row.topic) {
-            if (!resource.topics.some((topic) => topic.id === row.topic?.id))
+            if (
+              !resource.topics.some((topic) => topic.name === row.topic?.name)
+            )
               resource.topics.push(row.topic);
           }
           if (row.relatedResource) {
             if (
               !resource.relatedResources.some(
-                (topic) => topic.id === row.relatedResource?.id,
+                (relatedResource) =>
+                  relatedResource.id === row.relatedResource?.id,
               )
             )
               resource.relatedResources.push(row.relatedResource);
@@ -317,6 +318,6 @@ export const selectThoughtleaders = async () => {
       name: resource.name,
     })
     .from(resource)
-    .leftJoin(type, eq(resource.typeId, type.id))
+    .leftJoin(type, eq(resource.typeId, type.name))
     .where(eq(type.name, 'Thoughtleader'));
 };

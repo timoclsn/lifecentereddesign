@@ -191,9 +191,10 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               name,
               suggestion: Boolean(formData.get('suggestion') === 'on'),
               link,
-              typeId: Number(typeId),
-              categoryId: Number(categoryId),
-              topicIds: topicIds.map(Number),
+              typeId,
+              categoryId,
+              topicIds,
+              shortDescription: String(formData.get('shortDescription')),
               description: String(formData.get('description')),
               details: String(formData.get('details')),
               note: String(formData.get('note')),
@@ -306,7 +307,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                   <SelectContent>
                     {types?.map((type) => {
                       return (
-                        <SelectItem key={type.id} value={String(type.id)}>
+                        <SelectItem key={type.name} value={type.name}>
                           {type.name}
                         </SelectItem>
                       );
@@ -342,10 +343,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                   <SelectContent>
                     {categories?.map((category) => {
                       return (
-                        <SelectItem
-                          key={category.id}
-                          value={String(category.id)}
-                        >
+                        <SelectItem key={category.name} value={category.name}>
                           {category.name}
                         </SelectItem>
                       );
@@ -378,7 +376,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                   options={
                     topics?.map((topic) => ({
                       label: topic.name,
-                      value: String(topic.id),
+                      value: topic.name,
                     })) || []
                   }
                   placeholder="Select topics"
@@ -394,6 +392,22 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               {addResourceValidationErrors?.topicIds && (
                 <InputError>
                   {addResourceValidationErrors.topicIds[0]}
+                </InputError>
+              )}
+            </div>
+
+            {/* Short Description */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="name">Short Description</Label>
+              <Input
+                id="shortDescription"
+                name="shortDescription"
+                type="text"
+                placeholder="UX Designer"
+              />
+              {addResourceValidationErrors?.shortDescription && (
+                <InputError>
+                  {addResourceValidationErrors.shortDescription[0]}
                 </InputError>
               )}
             </div>
@@ -419,7 +433,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
             <div className="flex flex-col gap-2">
               <Label htmlFor="details">Details</Label>
               <Textarea
-                placeholder="These are the details of the best resource ever."
+                placeholder="ISBN: 978-3-16-148410-0 | Duration: 1h 30m"
                 id="details"
                 name="details"
               />

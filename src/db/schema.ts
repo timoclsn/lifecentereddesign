@@ -22,12 +22,13 @@ export const resource = sqliteTable(
       .notNull()
       .default(false),
     link: text('link', { mode: 'text', length: 256 }).notNull(),
-    typeId: integer('type_id', { mode: 'number' })
+    typeId: text('type_id', { mode: 'text', length: 256 })
       .notNull()
-      .references(() => type.id),
-    categoryId: integer('category_id', { mode: 'number' }).references(
-      () => category.id,
+      .references(() => type.name),
+    categoryId: text('category_id', { mode: 'text', length: 256 }).references(
+      () => category.name,
     ),
+    shortDescription: text('short_description', { mode: 'text' }),
     description: text('description', { mode: 'text' }),
     details: text('details', { mode: 'text' }),
     note: text('note', { mode: 'text' }),
@@ -51,11 +52,11 @@ export const resource = sqliteTable(
 export const resourceRelations = relations(resource, ({ one, many }) => ({
   type: one(type, {
     fields: [resource.typeId],
-    references: [type.id],
+    references: [type.name],
   }),
   category: one(category, {
     fields: [resource.categoryId],
-    references: [category.id],
+    references: [category.name],
   }),
   topics: many(resourceToTopic),
   relatedResources: many(resourceToRelatedResource, {
@@ -103,11 +104,10 @@ export const resourceToRelatedResourceRelations = relations(
 // Type table
 
 export const type = sqliteTable('type', {
-  id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+  name: text('name', { mode: 'text', length: 256 }).primaryKey(),
   createdAt: integer('created_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`),
-  name: text('name', { mode: 'text', length: 256 }).unique().notNull(),
 });
 
 export const typeRelations = relations(type, ({ many }) => ({
@@ -117,11 +117,10 @@ export const typeRelations = relations(type, ({ many }) => ({
 // Category table
 
 export const category = sqliteTable('category', {
-  id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+  name: text('name', { mode: 'text', length: 256 }).primaryKey(),
   createdAt: integer('created_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`),
-  name: text('name', { mode: 'text', length: 256 }).unique().notNull(),
 });
 
 export const categoryRelations = relations(category, ({ many }) => ({
@@ -131,11 +130,10 @@ export const categoryRelations = relations(category, ({ many }) => ({
 // Topic table
 
 export const topic = sqliteTable('topic', {
-  id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+  name: text('name', { mode: 'text', length: 256 }).primaryKey(),
   createdAt: integer('created_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`),
-  name: text('name', { mode: 'text', length: 256 }).unique().notNull(),
 });
 
 export const topicRelations = relations(topic, ({ many }) => ({
@@ -150,9 +148,9 @@ export const resourceToTopic = sqliteTable(
     resourceId: text('resource_id', { mode: 'text', length: 256 })
       .notNull()
       .references(() => resource.id),
-    topicId: integer('topic_id')
+    topicId: text('topic_id', { mode: 'text', length: 256 })
       .notNull()
-      .references(() => topic.id),
+      .references(() => topic.name),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.resourceId, table.topicId] }),
@@ -168,7 +166,7 @@ export const resourceToTopicRelations = relations(
     }),
     topic: one(topic, {
       fields: [resourceToTopic.topicId],
-      references: [topic.id],
+      references: [topic.name],
     }),
   }),
 );

@@ -6,10 +6,9 @@ import { ResourceCard } from '../ResourceCard/ResourceCard';
 
 interface Props {
   id: string;
-  showPreview?: boolean;
 }
 
-export const ResourceDetailsCard = ({ id, showPreview }: Props) => {
+export const ResourceDetailsCard = ({ id }: Props) => {
   const promise = query.resources.getResource({
     id,
   });
@@ -17,9 +16,7 @@ export const ResourceDetailsCard = ({ id, showPreview }: Props) => {
   return (
     <section>
       <Await promise={promise} loading={<Loading />} error={<Error />}>
-        {(resource) => (
-          <ResourceCard resource={resource} showPreview={showPreview} />
-        )}
+        {(resource) => <ResourceCard resource={resource} details />}
       </Await>
     </section>
   );

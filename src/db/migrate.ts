@@ -263,9 +263,9 @@ const main = async () => {
   console.info('Migrating database...');
 
   const turso = createClient({
-    // url: 'file:local.db',
-    url: TURSO_DATABASE_URL!,
-    authToken: TURSO_AUTH_TOKEN,
+    url: 'file:local.db',
+    // url: TURSO_DATABASE_URL!,
+    // authToken: TURSO_AUTH_TOKEN,
   });
   const db = drizzle(turso, { schema });
 
@@ -451,10 +451,6 @@ const main = async () => {
     const details = () => {
       const details = [];
 
-      if (oldResource.jobDescription) {
-        details.push(`Job Description: ${oldResource.jobDescription}`);
-      }
-
       if (oldResource.duration) {
         details.push(`Duration: ${oldResource.duration}`);
       }
@@ -502,6 +498,16 @@ const main = async () => {
       if (oldResource.journal) {
         return oldResource.journal;
       }
+
+      return undefined;
+    };
+
+    const shortDescription = () => {
+      if (oldResource.jobDescription) {
+        return oldResource.jobDescription;
+      }
+
+      return undefined;
     };
 
     // Resource
@@ -513,8 +519,9 @@ const main = async () => {
         id,
         suggestion: oldResource.suggestion,
         link: oldResource.link || '',
-        typeId: type.id,
-        categoryId: category?.id,
+        typeId: type.name,
+        categoryId: category?.name,
+        shortDescription: shortDescription(),
         description: oldResource.description,
         details: details(),
         note: oldResource.note,
@@ -536,7 +543,7 @@ const main = async () => {
         throw new Error(`Topic ${topic.name} not found`);
       }
 
-      return newTopic.id;
+      return newTopic.name;
     });
 
     if (newTopicIds.length > 0) {
@@ -567,10 +574,6 @@ const main = async () => {
 
       if (oldResource.guests) {
         return oldResource.guests;
-      }
-
-      if (oldResource.relatedResources) {
-        return oldResource.relatedResources;
       }
 
       if (oldResource.podcast) {

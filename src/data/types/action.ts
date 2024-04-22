@@ -3,11 +3,7 @@
 import { type } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import {
-  createAction,
-  createAdminAction,
-  createProtectedAction,
-} from '../clients';
+import { createAction, createAdminAction } from '../clients';
 import { selectTypes } from './types';
 
 export const getTypes = createAction({

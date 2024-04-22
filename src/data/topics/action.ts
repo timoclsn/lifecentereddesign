@@ -3,11 +3,7 @@
 import { topic } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import {
-  createAction,
-  createAdminAction,
-  createProtectedAction,
-} from '../clients';
+import { createAction, createAdminAction } from '../clients';
 import { selectTopics } from './topics';
 
 export const getTopics = createAction({

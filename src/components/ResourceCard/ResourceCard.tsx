@@ -1,4 +1,8 @@
-import { relatedResourceList, topicsList } from '@/components/utils';
+import {
+  catagorizeRelatedResources,
+  relatedResourceList,
+  topicsList,
+} from '@/components/utils';
 import { Resource } from '@/data/resources/query';
 import {
   Card as CardPrimitive,
@@ -9,9 +13,12 @@ import {
 } from '@/design-system';
 import { formateDate, getHostname } from '@/lib/utils/utils';
 import {
+  Briefcase,
   CalendarDays,
+  CircleDot,
   ExternalLink,
-  Leaf,
+  Info,
+  Mic,
   StickyNote,
   TagIcon,
   Users2,
@@ -19,7 +26,6 @@ import {
 import { CategoryButton } from './CategoryButton';
 import { CommentsButton } from './CommentsButton/CommentsButton';
 import { CopyButton } from './CopyButton';
-import { Details } from './Details';
 import { DetailsLink } from './DetailsLink';
 import { LikesButton } from './LikesButton/LikesButton';
 import { Preview } from './Preview';
@@ -51,10 +57,14 @@ const variantsMap: Record<string, ColorVariant> = {
 
 interface Props {
   resource: Resource;
-  showPreview?: boolean;
+  details?: boolean;
 }
 
-export const ResourceCard = async ({ resource, showPreview }: Props) => {
+export const ResourceCard = async ({ resource, details }: Props) => {
+  const relatedResources = catagorizeRelatedResources(
+    resource.relatedResources,
+  );
+
   return (
     <CardPrimitive
       variant={
@@ -69,7 +79,7 @@ export const ResourceCard = async ({ resource, showPreview }: Props) => {
           <div className="flex items-center gap-2">
             {/* Type */}
             {resource.type && (
-              <TypeButton typeId={resource.type.id}>
+              <TypeButton typeId={resource.type.name}>
                 {resource.type.name}
               </TypeButton>
             )}
@@ -126,15 +136,37 @@ export const ResourceCard = async ({ resource, showPreview }: Props) => {
 
             {/* Meta infos */}
             <ul className="-mt-1 flex flex-wrap gap-x-2 gap-y-1 text-text-secondary sm:gap-x-8 sm:gap-y-3">
-              {resource.relatedResources.length > 0 && (
+              {resource.shortDescription && (
                 <li className="flex items-center gap-1">
-                  <Leaf size="18" className="flex-none" />
+                  {resource.type?.name === 'Thoughtleader' ? (
+                    <Briefcase size="18" className="flex-none" />
+                  ) : (
+                    <Info size="18" className="flex-none" />
+                  )}
+                  <Text>{resource.shortDescription}</Text>
+                </li>
+              )}
+              {relatedResources.thoughtleaders.length > 0 && (
+                <li className="flex items-center gap-1">
+                  <Users2 size="18" className="flex-none" />
+                  <Text>{relatedResourceList(resource.relatedResources)}</Text>
+                </li>
+              )}
+              {relatedResources.podcasts.length > 0 && (
+                <li className="flex items-center gap-1">
+                  <Mic size="18" className="flex-none" />
+                  <Text>{relatedResourceList(resource.relatedResources)}</Text>
+                </li>
+              )}
+              {relatedResources.others.length > 0 && (
+                <li className="flex items-center gap-1">
+                  <CircleDot size="18" className="flex-none" />
                   <Text>{relatedResourceList(resource.relatedResources)}</Text>
                 </li>
               )}
               {resource.relatedResourcesPlain && (
                 <li className="flex items-center gap-1">
-                  <Leaf size="18" className="flex-none" />
+                  <CircleDot size="18" className="flex-none" />
                   <Text>{resource.relatedResourcesPlain}</Text>
                 </li>
               )}
@@ -158,21 +190,21 @@ export const ResourceCard = async ({ resource, showPreview }: Props) => {
               )}
             </ul>
 
-            {/* Description */}
-            {resource.description && (
+            {/* Details and Description */}
+            {details && (resource.details || resource.description) && (
               <Text className="text-text-secondary">
-                {resource.description}
+                <>
+                  {resource.details}
+                  <br />
+                  <br />
+                  {resource.description}
+                </>
               </Text>
-            )}
-
-            {/* Details */}
-            {resource.details && (
-              <Details slug={resource.id}>{resource.details}</Details>
             )}
           </div>
 
           {/* Preview */}
-          {showPreview && <Preview url={resource.link} id={resource.id} />}
+          {details && <Preview url={resource.link} id={resource.id} />}
         </div>
       </div>
 
@@ -183,7 +215,7 @@ export const ResourceCard = async ({ resource, showPreview }: Props) => {
       >
         {/* Category */}
         {resource.category && (
-          <CategoryButton categoryId={resource.category.id}>
+          <CategoryButton categoryId={resource.category.name}>
             {resource.category.name}
           </CategoryButton>
         )}

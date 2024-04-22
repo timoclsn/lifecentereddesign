@@ -6,9 +6,9 @@ import { ResourcesTable } from './ResourcesTable/ResourcesTable';
 
 export type ReseourcesFilter = z.infer<typeof reseourcesFilterSchema>;
 const reseourcesFilterSchema = z.object({
-  type: z.coerce.number().optional(),
-  category: z.coerce.number().optional(),
-  topic: z.coerce.number().optional(),
+  type: z.coerce.string().optional(),
+  category: z.coerce.string().optional(),
+  topic: z.coerce.string().optional(),
   sort: z.enum(['date', 'name', 'likes', 'comments']).optional(),
   search: z.string().optional(),
   liked: z.coerce.boolean().optional(),

@@ -185,8 +185,8 @@ const main = async () => {
       id: sluggify(`Resource ${i + 1}`),
       name: `Resource ${i + 1}`,
       link: `Link ${i + 1}`,
-      typeId: Math.floor(Math.random() * COUNT) + 1,
-      categoryId: Math.floor(Math.random() * COUNT) + 1,
+      typeId: String(Math.floor(Math.random() * COUNT) + 1),
+      categoryId: String(Math.floor(Math.random() * COUNT) + 1),
     })),
   );
 
@@ -194,7 +194,7 @@ const main = async () => {
   await db.insert(resourceToTopic).values(
     Array.from({ length: COUNT }, (_, i) => ({
       resourceId: String(i + 1),
-      topicId: i + 1,
+      topicId: String(i + 1),
     })),
   );
 

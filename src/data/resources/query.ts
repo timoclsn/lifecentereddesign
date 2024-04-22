@@ -28,9 +28,9 @@ export const getResources = createQuery({
       .object({
         mode: z.enum(['and', 'or']).optional(),
         id: z.array(z.string()).optional(),
-        type: z.array(z.number()).optional(),
-        category: z.array(z.number()).optional(),
-        topic: z.array(z.number()).optional(),
+        type: z.array(z.string()).optional(),
+        category: z.array(z.string()).optional(),
+        topic: z.array(z.string()).optional(),
         relatedResource: z.array(z.string()).optional(),
         search: z.string().optional().optional(),
         from: z.date().optional(),
@@ -234,7 +234,7 @@ export const getRelatedResources = createQuery({
         (relatedResource) => relatedResource.id,
       );
 
-      const relatedTopics = resource.topics.map((topic) => topic.id);
+      const relatedTopics = resource.topics.map((topic) => topic.name);
 
       const { resources } = await selectResources({
         limit: 10,
