@@ -195,7 +195,7 @@ export const getResourcesCount = createQuery({
   },
 });
 
-export const getRelatedResources = createQuery({
+export const getRecommendedResources = createQuery({
   input: z.object({
     id: z.string(),
   }),
@@ -205,7 +205,7 @@ export const getRelatedResources = createQuery({
   query: async ({ input }) => {
     const { id } = input;
 
-    const relatedResources: Resources = [];
+    const recommendedResources: Resources = [];
 
     const { resources } = await selectResources({
       filter: {
@@ -228,41 +228,41 @@ export const getRelatedResources = createQuery({
         },
       });
 
-      relatedResources.push(...resources);
+      recommendedResources.push(...resources);
     } else {
-      const relatedThoughtleaders = resource.relatedResources.map(
+      const relatedResourceIds = resource.relatedResources.map(
         (relatedResource) => relatedResource.id,
       );
 
-      const relatedTopics = resource.topics.map((topic) => topic.name);
+      const relatedTopicIds = resource.topics.map((topic) => topic.name);
 
       const { resources } = await selectResources({
         limit: 10,
         sort: ['likes', 'comments', 'date'],
         filter: {
           mode: 'or',
-          relatedResource: relatedThoughtleaders,
-          topic: relatedTopics,
+          relatedResource: relatedResourceIds,
+          topic: relatedTopicIds,
           exclude: [resource.id],
         },
       });
 
-      relatedResources.push(...resources);
+      recommendedResources.push(...resources);
     }
 
     // If we don't have enough related resources, we'll fetch some more
-    if (relatedResources.length < 10) {
+    if (recommendedResources.length < 10) {
       const { resources } = await selectResources({
-        limit: 10 - relatedResources.length,
+        limit: 10 - recommendedResources.length,
         sort: ['likes', 'comments', 'random'],
         filter: {
-          exclude: [resource.id, ...relatedResources.map(({ id }) => id)],
+          exclude: [resource.id, ...recommendedResources.map(({ id }) => id)],
         },
       });
 
-      relatedResources.push(...resources);
+      recommendedResources.push(...resources);
     }
 
-    return relatedResources;
+    return recommendedResources;
   },
 });

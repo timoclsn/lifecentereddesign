@@ -18,16 +18,16 @@ interface Props {
   id: string;
 }
 
-export const RelatedResources = ({ id }: Props) => {
-  const promise = query.resources.getRelatedResources({
+export const RecommendedResources = ({ id }: Props) => {
+  const promise = query.resources.getRecommendedResources({
     id,
   });
 
   return (
     <Bleed>
-      <section id="related-resources">
-        <Heading level="2" className="text-primary mb-10 px-6 sm:px-8 xl:px-10">
-          Related Resources
+      <section id="recommended-resources">
+        <Heading level="2" className="mb-10 px-6 text-primary sm:px-8 xl:px-10">
+          Recommended Resources
         </Heading>
         <ul className="mb-14 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 sm:snap-none sm:px-8 xl:px-10">
           <li className="hidden flex-none snap-center snap-always sm:block">
@@ -47,7 +47,7 @@ export const RelatedResources = ({ id }: Props) => {
                       <Track
                         as="li"
                         key={`${resource.type}-${resource.id}`}
-                        event="Related resource clicked"
+                        event="Recommended resource clicked"
                         className="relative w-[330px] flex-none snap-center snap-always sm:w-[600px]"
                       >
                         <ResourceCard resource={resource} />
@@ -104,7 +104,7 @@ const Error = () => {
         className="flex h-full items-center justify-center gap-2 text-xl text-white"
       >
         <AlertTriangle />
-        Error loading related resources. Please try again…
+        Error loading recommended resources. Please try again…
       </Card>
     </li>
   );

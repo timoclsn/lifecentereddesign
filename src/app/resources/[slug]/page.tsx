@@ -1,6 +1,6 @@
 import { query } from '@/api/query';
 import { NewResources } from '@/components/NewResources/NewResources';
-import { RelatedResources } from '@/components/RelatedResources/RelatedResources';
+import { RecommendedResources } from '@/components/RecommendedResources/RecommendedResources';
 import { notFound } from 'next/navigation';
 import { Comments } from '../../../components/Comments/Comments';
 import { Newsletter } from '../../../components/Newsletter/Newsletter';
@@ -74,7 +74,7 @@ const ResourcePage = async ({ params }: Props) => {
     <>
       <ResourceDetailsCard id={slug} />
       <Comments id={slug} />
-      <RelatedResources id={slug} />
+      <RecommendedResources id={slug} />
       <NewResources />
       <Newsletter />
     </>
