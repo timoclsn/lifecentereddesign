@@ -96,6 +96,9 @@ export const isUrl = (url: string) => {
 export const sluggify = (text: string) =>
   text
     .toLowerCase()
+    .replace(/ä/g, 'ae')
+    .replace(/ö/g, 'oe')
+    .replace(/ü/g, 'ue')
     .replace(/ /g, '-')
     .replace(/[^\w-]+/g, '');
 

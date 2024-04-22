@@ -481,7 +481,7 @@ const redirects = [
   {
     source: '/resources/book-7',
     destination:
-      '/resources/digitale-ethik-ein-wertesystem-fr-das-21-jahrhundert',
+      '/resources/digitale-ethik-ein-wertesystem-fuer-das-21-jahrhundert',
     permanent: true,
   },
   {
@@ -884,7 +884,7 @@ const redirects = [
   },
   {
     source: '/resources/podcastEpisode-26',
-    destination: '/resources/digital-das-klima-schtzen',
+    destination: '/resources/digital-das-klima-schuetzen',
     permanent: true,
   },
   {
@@ -1048,7 +1048,7 @@ const redirects = [
   },
   {
     source: '/resources/tool-7',
-    destination: '/resources/ziele-fr-nachhaltige-entwicklung',
+    destination: '/resources/ziele-fuer-nachhaltige-entwicklung',
     permanent: true,
   },
   {
@@ -1458,7 +1458,7 @@ const redirects = [
   },
   {
     source: '/resources/thoughtleader-67',
-    destination: '/resources/sandy-dhnert',
+    destination: '/resources/sandy-daehnert',
     permanent: true,
   },
   {
@@ -1772,7 +1772,7 @@ const redirects = [
   },
   {
     source: '/resources/thoughtleader-73',
-    destination: '/resources/prof-dr-maja-gpel',
+    destination: '/resources/prof-dr-maja-goepel',
     permanent: true,
   },
   {
@@ -1824,7 +1824,7 @@ const redirects = [
   },
   {
     source: '/resources/tool-60',
-    destination: '/resources/klimatest-fr-websites',
+    destination: '/resources/klimatest-fuer-websites',
     permanent: true,
   },
   {

@@ -263,6 +263,7 @@ const main = async () => {
   console.info('Migrating database...');
 
   const turso = createClient({
+    // url: 'file:local.db',
     url: TURSO_DATABASE_URL!,
     authToken: TURSO_AUTH_TOKEN,
   });
