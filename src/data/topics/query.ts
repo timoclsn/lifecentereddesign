@@ -8,7 +8,6 @@ export const getTopics = createQuery({
   cache: {
     keyParts: ['topics'],
     options: {
-      revalidate: 3600,
       tags: ['topics'],
     },
   },

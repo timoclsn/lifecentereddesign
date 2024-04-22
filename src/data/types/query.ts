@@ -8,7 +8,6 @@ export const getTypes = createQuery({
   cache: {
     keyParts: ['types'],
     options: {
-      revalidate: 3600,
       tags: ['types'],
     },
   },

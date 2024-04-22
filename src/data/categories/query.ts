@@ -8,7 +8,6 @@ export const getCategories = createQuery({
   cache: {
     keyParts: ['categories'],
     options: {
-      revalidate: 3600,
       tags: ['categories'],
     },
   },

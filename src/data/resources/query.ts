@@ -179,7 +179,6 @@ export const getResourcesCount = createQuery({
   cache: {
     keyParts: ['resources-count'],
     options: {
-      revalidate: 3600,
       tags: ['resources-count'],
     },
   },
