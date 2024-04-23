@@ -60,6 +60,7 @@ export const getResources = createQuery({
   },
   query: async ({ input, ctx }) => {
     const { userId } = ctx;
+    console.log('getResurces');
     return await selectResources({
       userId,
       ...input,
