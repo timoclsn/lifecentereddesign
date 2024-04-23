@@ -49,6 +49,8 @@ export const getResources = createQuery({
       ...input,
     };
 
+    console.log('Cache Key: ', JSON.stringify(cacheKeyObj));
+
     return {
       keyParts: [JSON.stringify(cacheKeyObj)],
       options: {
