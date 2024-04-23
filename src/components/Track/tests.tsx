@@ -1,10 +1,10 @@
 import { Track } from './Track';
 
-const Test1 = <Track event="Related resource clicked">Test</Track>;
+const Test1 = <Track event="Recommended resource clicked">Test</Track>;
 
 const Test2 = (
   <Track
-    event="Related resource clicked"
+    event="Recommended resource clicked"
     // @ts-expect-error
     data={{
       test: 'test',
