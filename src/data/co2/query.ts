@@ -40,12 +40,14 @@ export const getConsumtion = createQuery({
   query: async ({ input }) => {
     const { url } = input;
 
-    if (NODE_ENV === 'development') {
-      return {
-        co2: 0.14,
-        cleanerThan: 86,
-      };
-    }
+    // if (NODE_ENV === 'development') {
+    return {
+      co2: 0.14,
+      cleanerThan: 86,
+    };
+    // }
+
+    // Need to request API access
 
     const response = await fetch(
       `https://api.websitecarbon.com/site?url=${url}`,
