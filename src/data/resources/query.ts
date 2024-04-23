@@ -55,6 +55,7 @@ export const getResources = createQuery({
       keyParts: [JSON.stringify(cacheKeyObj)],
       options: {
         tags: [cacheTags.resources],
+        revalidate: 86400,
       },
     };
   },
