@@ -32,7 +32,7 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
   const promises = Promise.all([
     query.resources.getResources({
       limit: limit || 10,
-      sort: sort ? [sort] : undefined,
+      sort: sort ? [sort] : ['date'],
       filter: {
         type: type ? [type] : undefined,
         category: category ? [category] : undefined,

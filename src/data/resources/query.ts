@@ -48,6 +48,7 @@ export const getResources = createQuery({
       userId,
       ...input,
     };
+
     return {
       keyParts: [JSON.stringify(cacheKeyObj)],
       options: {
