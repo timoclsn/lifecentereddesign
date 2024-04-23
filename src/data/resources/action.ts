@@ -5,9 +5,8 @@ import {
   createAdminAction,
   createProtectedAction,
 } from '@/data/clients';
-import { db } from '@/lib/db';
 import { and, eq, sql } from 'drizzle-orm';
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 import nodemailer from 'nodemailer';
 import OpenAI from 'openai';
 import { z } from 'zod';
@@ -19,10 +18,9 @@ import {
   resourceToTopic,
 } from '../../db/schema';
 import { selectCategories } from '../categories/categories';
+import { cacheTags } from '../tags';
 import { selectTopics } from '../topics/topics';
 import { selectTypes } from '../types/types';
-import { resourceCommentsTag } from './query';
-import { auth } from '@clerk/nextjs/server';
 
 const { SUGGESTION_MAIL_PASSWORD } = process.env;
 
@@ -60,8 +58,6 @@ export const addResource = createAdminAction({
   action: async ({ input, ctx }) => {
     const { db } = ctx;
 
-    console.log(input);
-
     await db.insert(resource).values({
       id: input.id,
       name: input.name,
@@ -96,7 +92,7 @@ export const addResource = createAdminAction({
       );
     }
 
-    revalidatePath('/');
+    revalidateTag(cacheTags.resources);
   },
 });
 
@@ -106,13 +102,15 @@ export const like = createAction({
   }),
   action: async ({ input, ctx }) => {
     const { id } = input;
-    const { userId } = auth();
+    const { db, userId } = ctx;
 
     if (userId) {
       await db.insert(likeSchema).values({
         resourceId: id,
         userId,
       });
+
+      revalidateTag(cacheTags.likedResourcesCount(userId));
     } else {
       await db
         .update(resource)
@@ -122,7 +120,7 @@ export const like = createAction({
         .where(eq(resource.id, id));
     }
 
-    revalidatePath('/');
+    revalidateTag(cacheTags.resources);
   },
 });
 
@@ -132,13 +130,14 @@ export const unLike = createProtectedAction({
   }),
   action: async ({ input, ctx }) => {
     const { id } = input;
-    const { userId } = ctx;
+    const { userId, db } = ctx;
 
     await db
       .delete(likeSchema)
       .where(and(eq(likeSchema.resourceId, id), eq(likeSchema.userId, userId)));
 
-    revalidatePath('/');
+    revalidateTag(cacheTags.likedResourcesCount(userId));
+    revalidateTag(cacheTags.resources);
   },
 });
 
@@ -154,7 +153,7 @@ export const addComment = createProtectedAction({
   }),
   action: async ({ input, ctx }) => {
     const { id, text } = input;
-    const { userId } = ctx;
+    const { userId, db } = ctx;
 
     await db.insert(comment).values({
       resourceId: id,
@@ -162,7 +161,7 @@ export const addComment = createProtectedAction({
       text,
     });
 
-    const tag = resourceCommentsTag(id);
+    const tag = cacheTags.resourceComments(id);
     revalidateTag(tag);
   },
 });
@@ -175,7 +174,7 @@ export const deleteComment = createProtectedAction({
   }),
   action: async ({ input, ctx }) => {
     const { resourceId, commentId, commentUserId } = input;
-    const { userId } = ctx;
+    const { userId, db } = ctx;
 
     if (userId !== commentUserId) {
       throw new Error('You can only delete your own comments');
@@ -183,7 +182,7 @@ export const deleteComment = createProtectedAction({
 
     await db.delete(comment).where(eq(comment.id, commentId));
 
-    const tag = resourceCommentsTag(resourceId);
+    const tag = cacheTags.resourceComments(resourceId);
     revalidateTag(tag);
   },
 });

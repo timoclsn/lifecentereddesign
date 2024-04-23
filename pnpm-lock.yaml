@@ -87,8 +87,8 @@ dependencies:
     specifier: ^6.9.13
     version: 6.9.13
   openai:
-    specifier: ^4.38.2
-    version: 4.38.2
+    specifier: ^4.38.3
+    version: 4.38.3
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -111,8 +111,8 @@ dependencies:
     specifier: ^10.0.0
     version: 10.0.0(react@18.2.0)
   zod:
-    specifier: 3.22.5
-    version: 3.22.5
+    specifier: 3.23.3
+    version: 3.23.3
 
 devDependencies:
   '@tailwindcss/container-queries':
@@ -152,8 +152,8 @@ devDependencies:
     specifier: 8.56.0
     version: 8.56.0
   eslint-config-next:
-    specifier: ^14.2.1
-    version: 14.2.1(eslint@8.56.0)(typescript@5.4.5)
+    specifier: ^14.2.2
+    version: 14.2.2(eslint@8.56.0)(typescript@5.4.5)
   jest:
     specifier: ^29.7.0
     version: 29.7.0(@types/node@20.12.7)
@@ -1285,14 +1285,14 @@ packages:
     engines: {node: '>=18.14.1'}
     dev: true
 
-  /@hono/zod-validator@0.2.1(hono@4.2.5)(zod@3.22.5):
+  /@hono/zod-validator@0.2.1(hono@4.2.5)(zod@3.23.3):
     resolution: {integrity: sha512-HFoxln7Q6JsE64qz2WBS28SD33UB2alp3aRKmcWnNLDzEL1BLsWfbdX6e1HIiUprHYTIXf5y7ax8eYidKUwyaA==}
     peerDependencies:
       hono: '>=3.9.0'
       zod: ^3.19.1
     dependencies:
       hono: 4.2.5
-      zod: 3.22.5
+      zod: 3.23.3
     dev: true
 
   /@humanwhocodes/config-array@0.11.14:
@@ -1915,8 +1915,8 @@ packages:
       glob: 7.1.7
     dev: false
 
-  /@next/eslint-plugin-next@14.2.1:
-    resolution: {integrity: sha512-Fp+mthEBjkn8r9qd6o4JgxKp0IDEzW0VYHD8ZC05xS5/lFNwHKuOdr2kVhWG7BQCO9L6eeepshM1Wbs2T+LgSg==}
+  /@next/eslint-plugin-next@14.2.2:
+    resolution: {integrity: sha512-q+Ec2648JtBpKiu/FSJm8HAsFXlNvioHeBCbTP12T1SGcHYwhqHULSfQgFkPgHDu3kzNp2Kem4J54bK4rPQ5SQ==}
     dependencies:
       glob: 10.3.10
     dev: true
@@ -4230,7 +4230,7 @@ packages:
     dependencies:
       '@esbuild-kit/esm-loader': 2.6.5
       '@hono/node-server': 1.11.0
-      '@hono/zod-validator': 0.2.1(hono@4.2.5)(zod@3.22.5)
+      '@hono/zod-validator': 0.2.1(hono@4.2.5)(zod@3.23.3)
       camelcase: 7.0.1
       chalk: 5.3.0
       commander: 9.5.0
@@ -4244,7 +4244,7 @@ packages:
       minimatch: 7.4.6
       semver: 7.6.0
       superjson: 2.2.1
-      zod: 3.22.5
+      zod: 3.23.3
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -4688,8 +4688,8 @@ packages:
       - supports-color
     dev: false
 
-  /eslint-config-next@14.2.1(eslint@8.56.0)(typescript@5.4.5):
-    resolution: {integrity: sha512-BgD0kPCWMlqoItRf3xe9fG0MqwObKfVch+f2ccwDpZiCJA8ghkz2wrASH+bI6nLZzGcOJOpMm1v1Q1euhfpt4Q==}
+  /eslint-config-next@14.2.2(eslint@8.56.0)(typescript@5.4.5):
+    resolution: {integrity: sha512-12/uFc0KX+wUs7EDpOUGKMXBXZJiBVGdK5/m/QgXOCg2mQ0bQWoKSWNrCeOg7Vum6Kw1d1TW453W6xh+GbHquw==}
     peerDependencies:
       eslint: ^7.23.0 || ^8.0.0
       typescript: '>=3.3.1'
@@ -4697,7 +4697,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@next/eslint-plugin-next': 14.2.1
+      '@next/eslint-plugin-next': 14.2.2
       '@rushstack/eslint-patch': 1.10.2
       '@typescript-eslint/parser': 6.18.1(eslint@8.56.0)(typescript@5.4.5)
       eslint: 8.56.0
@@ -7406,8 +7406,8 @@ packages:
       mimic-fn: 2.1.0
     dev: true
 
-  /openai@4.38.2:
-    resolution: {integrity: sha512-M16ehj0D84Gjq5cjvBzXRb5X+UvtWlxPDRAWAWMC0EN+6nHqnULIn5fWWeiexDPup25FeSZYv/ldp8KefcZVJQ==}
+  /openai@4.38.3:
+    resolution: {integrity: sha512-mIL9WtrFNOanpx98mJ+X/wkoepcxdqqu0noWFoNQHl/yODQ47YM7NEYda7qp8JfjqpLFVxY9mQhshoS/Fqac0A==}
     hasBin: true
     dependencies:
       '@types/node': 18.19.31
@@ -9079,8 +9079,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  /zod@3.22.5:
-    resolution: {integrity: sha512-HqnGsCdVZ2xc0qWPLdO25WnseXThh0kEYKIdV5F/hTHO75hNZFp8thxSeHhiPrHZKrFTo1SOgkAj9po5bexZlw==}
+  /zod@3.23.3:
+    resolution: {integrity: sha512-tPvq1B/2Yu/dh2uAIH2/BhUlUeLIUvAjr6dpL/75I0pCYefHgjhXk1o1Kob3kTU8C7yU1j396jFHlsVWFi9ogg==}
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}

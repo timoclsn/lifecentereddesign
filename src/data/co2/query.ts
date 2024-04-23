@@ -1,5 +1,6 @@
 import { createQuery } from '@/data/clients';
 import { z } from 'zod';
+import { cacheTags } from '../tags';
 
 const { NODE_ENV } = process.env;
 
@@ -30,10 +31,10 @@ export const getConsumtion = createQuery({
     url: z.string().url(),
   }),
   cache: {
-    keyParts: ['co2'],
+    keyParts: [cacheTags.co2],
     options: {
       revalidate: 3600,
-      tags: ['co2'],
+      tags: [cacheTags.co2],
     },
   },
   query: async ({ input }) => {

@@ -25,7 +25,10 @@ export const createQueryClient = <Context>(
     }) => MaybePromise<TResponse>;
     cache?:
       | CacheOptions
-      | ((queryArgs: { input: z.output<TInputSchema> }) => CacheOptions);
+      | ((queryArgs: {
+          input: z.output<TInputSchema>;
+          ctx: Context;
+        }) => CacheOptions);
   }) => {
     let cacheOptions: CacheOptions | undefined;
 
@@ -40,10 +43,13 @@ export const createQueryClient = <Context>(
         parsedInput = queryBuilderOpts.input.parse(input);
       }
 
+      // Run middleware if provided and get context
+      const ctx = (await createClientOpts?.middleware?.()) ?? ({} as Context);
+
       // Resolve cache options
       cacheOptions =
         typeof queryBuilderOpts.cache === 'function'
-          ? queryBuilderOpts.cache({ input: parsedInput })
+          ? queryBuilderOpts.cache({ input: parsedInput, ctx })
           : queryBuilderOpts.cache;
 
       if (cacheOptions?.noStore) {
@@ -52,9 +58,6 @@ export const createQueryClient = <Context>(
 
       // Wrapper function to allow for caching
       const innerQuery = async () => {
-        // Run middleware if provided and get context
-        const ctx = (await createClientOpts?.middleware?.()) ?? ({} as Context);
-
         // Call query
         return await queryBuilderOpts.query({
           input: parsedInput,

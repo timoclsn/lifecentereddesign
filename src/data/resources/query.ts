@@ -1,14 +1,13 @@
-import { auth } from '@clerk/nextjs/server';
-import * as cheerio from 'cheerio';
 import { createQuery } from '@/data/clients';
-import { comment, like, resource } from '@/db/schema';
-import { count, countDistinct, desc, eq } from 'drizzle-orm';
-import { db } from '@/lib/db';
 import { selectResources } from '@/data/resources/resources';
+import { comment, like, resource } from '@/db/schema';
 import { withUserCollection } from '@/lib/users';
 import { isUrl, wait } from '@/lib/utils/utils';
+import * as cheerio from 'cheerio';
+import { count, countDistinct, desc, eq } from 'drizzle-orm';
 import 'server-only';
 import { z } from 'zod';
+import { cacheTags } from '../tags';
 
 type GetResourcesResult = Awaited<ReturnType<typeof getResources>>;
 export type Resources = GetResourcesResult['resources'];
@@ -42,11 +41,26 @@ export const getResources = createQuery({
       .optional()
       .default({}),
   }),
-  cache: {
-    noStore: true,
+  cache: ({ input, ctx }) => {
+    const { userId } = ctx;
+
+    const cacheKeyObj = {
+      userId,
+      ...input,
+    };
+    return {
+      keyParts: [JSON.stringify(cacheKeyObj)],
+      options: {
+        tags: [cacheTags.resources],
+      },
+    };
   },
-  query: async ({ input }) => {
-    return await selectResources(input);
+  query: async ({ input, ctx }) => {
+    const { userId } = ctx;
+    return await selectResources({
+      userId,
+      ...input,
+    });
   },
 });
 
@@ -54,13 +68,22 @@ export const getResource = createQuery({
   input: z.object({
     id: z.string(),
   }),
-  cache: {
-    noStore: true,
-  },
-  query: async ({ input }) => {
+  cache: ({ input }) => {
     const { id } = input;
+    const key = `resource-${id}`;
+    return {
+      keyParts: [key],
+      options: {
+        tags: [cacheTags.resources],
+      },
+    };
+  },
+  query: async ({ input, ctx }) => {
+    const { id } = input;
+    const { userId } = ctx;
 
     const { resources } = await selectResources({
+      userId,
       filter: {
         id: [id],
       },
@@ -77,11 +100,19 @@ export const getResource = createQuery({
 });
 
 export const getLikedResourcesCount = createQuery({
-  cache: {
-    noStore: true,
+  cache: ({ ctx }) => {
+    const { userId } = ctx;
+    const tag = cacheTags.likedResourcesCount(userId || '');
+
+    return {
+      keyParts: [tag],
+      options: {
+        tags: [tag],
+      },
+    };
   },
-  query: async () => {
-    const { userId } = auth();
+  query: async ({ ctx }) => {
+    const { userId, db } = ctx;
 
     if (!userId) {
       return 0;
@@ -96,26 +127,23 @@ export const getLikedResourcesCount = createQuery({
   },
 });
 
-export const resourceCommentsTag = (resourceId: string) =>
-  `comments-${resourceId}`;
-
 export const getResourceComments = createQuery({
   input: z.object({
     id: z.string(),
   }),
   cache: ({ input }) => {
     const { id } = input;
-    const tag = resourceCommentsTag(id);
+    const tag = cacheTags.resourceComments(id);
     return {
       keyParts: [tag],
       options: {
-        revalidate: 3600,
         tags: [tag],
       },
     };
   },
-  query: async ({ input }) => {
+  query: async ({ input, ctx }) => {
     const { id } = input;
+    const { db } = ctx;
 
     const comments = await db.query.comment.findMany({
       where: eq(comment.resourceId, id),
@@ -127,11 +155,19 @@ export const getResourceComments = createQuery({
 });
 
 export const getCommentedResourcesCount = createQuery({
-  cache: {
-    noStore: true,
+  cache: ({ ctx }) => {
+    const { userId } = ctx;
+    const tag = cacheTags.commentedResourcesCount(userId || '');
+
+    return {
+      keyParts: [tag],
+      options: {
+        tags: [tag],
+      },
+    };
   },
-  query: async () => {
-    const { userId } = auth();
+  query: async ({ ctx }) => {
+    const { userId, db } = ctx;
 
     if (!userId) {
       return 0;
@@ -153,7 +189,7 @@ export const getOgImageLink = createQuery({
   }),
   cache: ({ input }) => {
     const { id } = input;
-    const tag = `resource-og-image-${id}`;
+    const tag = cacheTags.ogImageLink(id);
     return {
       keyParts: [tag],
       options: {
@@ -177,12 +213,14 @@ export const getOgImageLink = createQuery({
 
 export const getResourcesCount = createQuery({
   cache: {
-    keyParts: ['resources-count'],
+    keyParts: [cacheTags.resourcesCount],
     options: {
-      tags: ['resources-count'],
+      tags: [cacheTags.resourcesCount],
     },
   },
-  query: async () => {
+  query: async ({ ctx }) => {
+    const { db } = ctx;
+
     await wait(2000);
 
     const [result] = await db
@@ -199,15 +237,25 @@ export const getRecommendedResources = createQuery({
   input: z.object({
     id: z.string(),
   }),
-  cache: {
-    noStore: true,
-  },
-  query: async ({ input }) => {
+  cache: ({ input, ctx }) => {
     const { id } = input;
+    const { userId } = ctx;
+    const key = `recommended-resources-${id}-${userId}`;
+    return {
+      keyParts: [key],
+      options: {
+        tags: [cacheTags.resources],
+      },
+    };
+  },
+  query: async ({ input, ctx }) => {
+    const { id } = input;
+    const { userId } = ctx;
 
     const recommendedResources: Resources = [];
 
     const { resources } = await selectResources({
+      userId,
       filter: {
         id: [id],
       },
@@ -221,6 +269,7 @@ export const getRecommendedResources = createQuery({
 
     if (resource.type?.name === 'Thoughtleader') {
       const { resources } = await selectResources({
+        userId,
         limit: 10,
         sort: ['likes', 'comments', 'date'],
         filter: {
@@ -237,6 +286,7 @@ export const getRecommendedResources = createQuery({
       const relatedTopicIds = resource.topics.map((topic) => topic.name);
 
       const { resources } = await selectResources({
+        userId,
         limit: 10,
         sort: ['likes', 'comments', 'date'],
         filter: {
@@ -253,6 +303,7 @@ export const getRecommendedResources = createQuery({
     // If we don't have enough related resources, we'll fetch some more
     if (recommendedResources.length < 10) {
       const { resources } = await selectResources({
+        userId,
         limit: 10 - recommendedResources.length,
         sort: ['likes', 'comments', 'random'],
         filter: {

@@ -5,7 +5,9 @@ import { createActionClient, createQueryClient } from '../lib/data/server';
 
 export const createAction = createActionClient({
   middleware: () => {
-    return { db };
+    const { userId } = auth();
+
+    return { db, userId };
   },
 });
 
@@ -24,6 +26,7 @@ export const createProtectedAction = createActionClient({
 export const createAdminAction = createActionClient({
   middleware: async () => {
     const { userId } = auth();
+
     if (!userId) {
       throw new Error('You must be logged in to perform this action.');
     }
@@ -40,7 +43,9 @@ export const createAdminAction = createActionClient({
 
 export const createQuery = createQueryClient({
   middleware: () => {
-    return { db };
+    const { userId } = auth();
+
+    return { db, userId };
   },
 });
 
@@ -51,6 +56,7 @@ export const createProtectedQuery = createQueryClient({
     if (!userId) {
       throw new Error('You must be logged in to perform this query.');
     }
+
     return { db, userId };
   },
 });

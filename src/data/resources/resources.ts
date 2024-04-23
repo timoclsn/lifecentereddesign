@@ -1,4 +1,3 @@
-import { auth } from '@clerk/nextjs/server';
 import { resourceFts } from '@/db/ftsSchema';
 import {
   category,
@@ -10,6 +9,7 @@ import {
   topic,
   type,
 } from '@/db/schema';
+import { db } from '@/lib/db';
 import {
   SQL,
   and,
@@ -26,11 +26,11 @@ import {
   sql,
 } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/sqlite-core';
-import { db } from '@/lib/db';
 import 'server-only';
 
 export const selectResources = async (
   options: {
+    userId: string | null;
     filter: {
       mode?: 'and' | 'or';
       id?: string[];
@@ -47,10 +47,12 @@ export const selectResources = async (
     };
     limit?: number;
     sort?: Array<'date' | 'name' | 'likes' | 'comments' | 'random'>;
-  } = { filter: {} },
+  } = {
+    userId: '',
+    filter: {},
+  },
 ) => {
-  const { filter, sort, limit } = options;
-  const { userId } = auth();
+  const { userId, filter, sort, limit } = options;
 
   const relatedResource = alias(resource, 'relatedResource');
 
@@ -309,15 +311,4 @@ export const selectResources = async (
         hasMore: limit ? resources.length > limit : false,
       };
     });
-};
-
-export const selectThoughtleaders = async () => {
-  return await db
-    .select({
-      id: resource.id,
-      name: resource.name,
-    })
-    .from(resource)
-    .leftJoin(type, eq(resource.typeId, type.name))
-    .where(eq(type.name, 'Thoughtleader'));
 };

@@ -13,4 +13,7 @@ Visit on: https://lifecentereddesign.net
 - [CVA](https://cva.style/docs)
 - [Zod](https://github.com/colinhacks/zod)
 - [Drizzle](https://orm.drizzle.team/)
+- [SQLite](https://www.sqlite.org/)
+- [Turso](https://turso.tech/)
+- [Clerk](https://clerk.com/)
 - [Vercel](https://vercel.com/)

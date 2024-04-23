@@ -4,6 +4,7 @@ import { type } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { createAction, createAdminAction } from '../clients';
+import { cacheTags } from '../tags';
 import { selectTypes } from './types';
 
 export const getTypes = createAction({
@@ -24,6 +25,6 @@ export const addType = createAdminAction({
       name,
     });
 
-    revalidatePath('/');
+    revalidatePath(cacheTags.types);
   },
 });

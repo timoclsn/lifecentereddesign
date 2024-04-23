@@ -1,14 +1,15 @@
 import { createQuery } from '@/data/clients';
 import 'server-only';
+import { cacheTags } from '../tags';
 import { selectCategories } from './categories';
 
 export type Categories = Awaited<ReturnType<typeof getCategories>>;
 
 export const getCategories = createQuery({
   cache: {
-    keyParts: ['categories'],
+    keyParts: [cacheTags.categories],
     options: {
-      tags: ['categories'],
+      tags: [cacheTags.categories],
     },
   },
   query: async () => {

@@ -4,6 +4,7 @@ import { topic } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { createAction, createAdminAction } from '../clients';
+import { cacheTags } from '../tags';
 import { selectTopics } from './topics';
 
 export const getTopics = createAction({
@@ -24,6 +25,6 @@ export const addTopic = createAdminAction({
       name,
     });
 
-    revalidatePath('/');
+    revalidatePath(cacheTags.topics);
   },
 });
