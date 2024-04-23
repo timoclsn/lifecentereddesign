@@ -263,9 +263,8 @@ const main = async () => {
   console.info('Migrating database...');
 
   const turso = createClient({
-    url: 'file:local.db',
-    // url: TURSO_DATABASE_URL!,
-    // authToken: TURSO_AUTH_TOKEN,
+    url: TURSO_DATABASE_URL,
+    authToken: TURSO_AUTH_TOKEN,
   });
   const db = drizzle(turso, { schema });
 
@@ -275,6 +274,8 @@ const main = async () => {
     sql`CREATE VIRTUAL TABLE resource_fts USING FTS5(
       id,
       name,
+      link,
+      short_description,
       description,
       details,
       related_resource_names,
@@ -285,8 +286,8 @@ const main = async () => {
     sql`CREATE TRIGGER insert_resource_fts after INSERT on resource
       BEGIN
         -- Insert the resource
-        INSERT INTO resource_fts (id, name, description, details)
-        VALUES (NEW.id, NEW.name, NEW.description, NEW.details);
+        INSERT INTO resource_fts (id, name, link, short_description,description, details)
+        VALUES (NEW.id, NEW.name, NEW.link, NEW.short_description, NEW.description, NEW.details);
       END;
     `,
   );
@@ -298,7 +299,9 @@ const main = async () => {
         UPDATE resource_fts
         SET
           name = NEW.name,
+          link = NEW.link,
           description = NEW.description,
+          short_description = NEW.short_description,
           details = NEW.details
         WHERE id = NEW.id;
 

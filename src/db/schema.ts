@@ -44,8 +44,13 @@ export const resource = sqliteTable(
     oldSlug: text('old_slug', { mode: 'text', length: 256 }),
   },
   (table) => ({
+    createdAtIdx: index('created_at_idx').on(table.createdAt),
+    nameIdx: index('name_idx').on(table.name),
     typeIdx: index('type_idx').on(table.typeId),
     categoryIdx: index('category_idx').on(table.categoryId),
+    anonymousLikesCountIdx: index('anonymous_likes_count_idx').on(
+      table.anonymousLikesCount,
+    ),
   }),
 );
 
@@ -213,6 +218,7 @@ export const comment = sqliteTable(
     text: text('text', { mode: 'text' }).notNull(),
   },
   (table) => ({
+    userIdIdx: index('user_id_idx').on(table.userId),
     resourceIdx: index('resource_idx').on(table.resourceId),
   }),
 );

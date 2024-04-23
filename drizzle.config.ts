@@ -7,7 +7,7 @@ export default {
   schema: './src/db/schema.ts',
   driver: 'turso',
   dbCredentials: {
-    url: TURSO_DATABASE_URL!,
+    url: TURSO_DATABASE_URL,
     authToken: TURSO_AUTH_TOKEN,
   },
 } satisfies Config;

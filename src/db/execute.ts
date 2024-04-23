@@ -10,9 +10,8 @@ const main = async () => {
   console.info('Execute SQL...');
 
   const turso = createClient({
-    url: 'file:local.db',
-    // url: TURSO_DATABASE_URL!,
-    // authToken: TURSO_AUTH_TOKEN,
+    url: TURSO_DATABASE_URL,
+    authToken: TURSO_AUTH_TOKEN,
   });
 
   const db = drizzle(turso, { schema });
