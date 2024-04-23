@@ -7,9 +7,6 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -34,9 +31,6 @@ jobs:
   typecheck:
     name: Type check
     runs-on: ubuntu-latest
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -55,9 +49,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Generate prisma type
-        working-directory: ./packages/database
-        run: pnpm db:generate
+      - name: Generate Prisma Client
+        run: pnpm run prisma:generate
 
       - name: Type check
         run: pnpm typecheck
@@ -65,9 +58,6 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -85,10 +75,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-
-      - name: Generate prisma type
-        working-directory: ./packages/database
-        run: pnpm db:generate
 
       - name: Test
         run: pnpm test
