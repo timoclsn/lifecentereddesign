@@ -30,8 +30,6 @@ export const createQueryClient = <Context>(
           ctx: Context;
         }) => CacheOptions);
   }) => {
-    let cacheOptions: CacheOptions | undefined;
-
     const query: ServerQuery<TInputSchema, TResponse> = async (
       ...inputArgs
     ) => {
@@ -47,7 +45,7 @@ export const createQueryClient = <Context>(
       const ctx = (await createClientOpts?.middleware?.()) ?? ({} as Context);
 
       // Resolve cache options
-      cacheOptions =
+      const cacheOptions =
         typeof queryBuilderOpts.cache === 'function'
           ? queryBuilderOpts.cache({ input: parsedInput, ctx })
           : queryBuilderOpts.cache;

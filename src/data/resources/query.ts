@@ -49,19 +49,16 @@ export const getResources = createQuery({
       ...input,
     };
 
-    console.log('Cache Key: ', JSON.stringify(cacheKeyObj));
-
     return {
       keyParts: [JSON.stringify(cacheKeyObj)],
       options: {
         tags: [cacheTags.resources],
-        revalidate: 86400,
       },
     };
   },
   query: async ({ input, ctx }) => {
     const { userId } = ctx;
-    console.log('getResurces');
+
     return await selectResources({
       userId,
       ...input,
