@@ -9,4 +9,4 @@ const turso = createClient({
   authToken: TURSO_AUTH_TOKEN,
 });
 
-export const db = drizzle(turso, { schema });
+export const db = drizzle(turso, { schema, logger: false });

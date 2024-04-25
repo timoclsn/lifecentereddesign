@@ -67,7 +67,14 @@ export const createQueryClient = <Context>(
         return await nextCache(
           innerQuery,
           cacheOptions.keyParts,
-          cacheOptions.options,
+          cacheOptions.options
+            ? {
+                revalidate: cacheOptions.options.revalidate,
+                tags: cacheOptions.options.tags
+                  ? ['all', ...cacheOptions.options.tags]
+                  : undefined,
+              }
+            : undefined,
         )();
       }
 

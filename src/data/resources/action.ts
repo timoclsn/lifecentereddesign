@@ -6,7 +6,6 @@ import {
   createProtectedAction,
 } from '@/data/clients';
 import { and, eq, sql } from 'drizzle-orm';
-import { revalidateTag } from 'next/cache';
 import nodemailer from 'nodemailer';
 import OpenAI from 'openai';
 import { z } from 'zod';
@@ -18,7 +17,7 @@ import {
   resourceToTopic,
 } from '../../db/schema';
 import { selectCategories } from '../categories/categories';
-import { cacheTags } from '../tags';
+import { revalidateTag } from '../tags';
 import { selectTopics } from '../topics/topics';
 import { selectTypes } from '../types/types';
 
@@ -92,7 +91,7 @@ export const addResource = createAdminAction({
       );
     }
 
-    revalidateTag(cacheTags.resources);
+    revalidateTag('resources');
   },
 });
 
@@ -110,7 +109,7 @@ export const like = createAction({
         userId,
       });
 
-      revalidateTag(cacheTags.likedResourcesCount(userId));
+      revalidateTag('likedResourcesCount', userId);
     } else {
       await db
         .update(resource)
@@ -120,7 +119,7 @@ export const like = createAction({
         .where(eq(resource.id, id));
     }
 
-    revalidateTag(cacheTags.resources);
+    revalidateTag('resources');
   },
 });
 
@@ -136,8 +135,8 @@ export const unLike = createProtectedAction({
       .delete(likeSchema)
       .where(and(eq(likeSchema.resourceId, id), eq(likeSchema.userId, userId)));
 
-    revalidateTag(cacheTags.likedResourcesCount(userId));
-    revalidateTag(cacheTags.resources);
+    revalidateTag('likedResourcesCount', userId);
+    revalidateTag('resources');
   },
 });
 
@@ -161,8 +160,7 @@ export const addComment = createProtectedAction({
       text,
     });
 
-    const tag = cacheTags.resourceComments(id);
-    revalidateTag(tag);
+    revalidateTag('resourceComments', id);
   },
 });
 
@@ -182,8 +180,7 @@ export const deleteComment = createProtectedAction({
 
     await db.delete(comment).where(eq(comment.id, commentId));
 
-    const tag = cacheTags.resourceComments(resourceId);
-    revalidateTag(tag);
+    revalidateTag('resourceComments', resourceId);
   },
 });
 
