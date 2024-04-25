@@ -109,11 +109,13 @@ export const selectResources = async (
     .groupBy(comment.resourceId)
     .as('commentsQuery');
 
-  const resourceIdsQuery = db
+  let resourceIdsQuery = db
     .select({
       id: resource.id,
     })
-    .from(resource)
+    .from(resource);
+
+  resourceIdsQuery
     .leftJoin(type, eq(resource.typeId, type.name))
     .leftJoin(category, eq(resource.categoryId, category.name))
     .leftJoin(resourceToTopic, eq(resource.id, resourceToTopic.resourceId))
@@ -127,86 +129,90 @@ export const selectResources = async (
       eq(resourceToRelatedResource.relatedResourceId, relatedResource.id),
     )
     .leftJoin(likesQuery, eq(resource.id, likesQuery.resourceId))
-    .leftJoin(commentsQuery, eq(resource.id, commentsQuery.resourceId))
-    .innerJoin(resourceFts, eq(resourceFts.id, resource.id))
-    .where(() => {
-      const where: Array<SQL<unknown> | undefined> = [];
+    .leftJoin(commentsQuery, eq(resource.id, commentsQuery.resourceId));
 
-      // Search
-      if (filter.search) {
-        where.push(sql`${resourceFts} MATCH ${filter.search}`);
-      }
+  if (filter.search) {
+    resourceIdsQuery.innerJoin(resourceFts, eq(resourceFts.id, resource.id));
+  }
 
-      // Filters
-      if (filter.id) {
-        filter.id.forEach((id) => {
-          where.push(eq(resource.id, id));
-        });
-      }
+  resourceIdsQuery.where(() => {
+    const where: Array<SQL<unknown> | undefined> = [];
 
-      if (filter.type) {
-        filter.type.forEach((typeId) => {
-          where.push(eq(type.name, typeId));
-        });
-      }
+    // Search
+    if (filter.search) {
+      where.push(sql`${resourceFts} MATCH ${filter.search}`);
+    }
 
-      if (filter.category) {
-        filter.category.forEach((categoryId) => {
-          where.push(eq(category.name, categoryId));
-        });
-      }
+    // Filters
+    if (filter.id) {
+      filter.id.forEach((id) => {
+        where.push(eq(resource.id, id));
+      });
+    }
 
-      if (filter.topic) {
-        filter.topic.forEach((topicId) => {
-          where.push(eq(topic.name, topicId));
-        });
-      }
+    if (filter.type) {
+      filter.type.forEach((typeId) => {
+        where.push(eq(type.name, typeId));
+      });
+    }
 
-      if (filter.relatedResource) {
-        filter.relatedResource.forEach((relatedResourceId) => {
-          where.push(eq(relatedResource.id, relatedResourceId));
-        });
-      }
+    if (filter.category) {
+      filter.category.forEach((categoryId) => {
+        where.push(eq(category.name, categoryId));
+      });
+    }
 
-      if (filter.from) {
-        where.push(gte(resource.createdAt, filter.from));
-      }
+    if (filter.topic) {
+      filter.topic.forEach((topicId) => {
+        where.push(eq(topic.name, topicId));
+      });
+    }
 
-      if (filter.till) {
-        where.push(lte(resource.createdAt, filter.till));
-      }
+    if (filter.relatedResource) {
+      filter.relatedResource.forEach((relatedResourceId) => {
+        where.push(eq(relatedResource.id, relatedResourceId));
+      });
+    }
 
-      if (filter.liked) {
-        where.push(eq(likesQuery.likedByUser, filter.liked));
-      }
+    if (filter.from) {
+      where.push(gte(resource.createdAt, filter.from));
+    }
 
-      if (filter.commented) {
-        where.push(eq(commentsQuery.commentedByUser, filter.commented));
-      }
+    if (filter.till) {
+      where.push(lte(resource.createdAt, filter.till));
+    }
 
-      // Collect exclude separately because it always should be and
-      const exclude: Array<SQL<unknown> | undefined> = [];
+    if (filter.liked) {
+      where.push(eq(likesQuery.likedByUser, filter.liked));
+    }
 
-      if (filter.exclude) {
-        filter.exclude.forEach((id) => {
-          exclude.push(ne(resource.id, id));
-        });
-      }
+    if (filter.commented) {
+      where.push(eq(commentsQuery.commentedByUser, filter.commented));
+    }
 
-      if (filter.mode === 'or') {
-        return and(or(...where), ...exclude);
-      }
+    // Collect exclude separately because it always should be and
+    const exclude: Array<SQL<unknown> | undefined> = [];
 
-      return and(...where, ...exclude);
-    })
-    .orderBy(orderBy)
-    .groupBy(resource.id)
-    .limit(limit ? limit + 1 : 0);
+    if (filter.exclude) {
+      filter.exclude.forEach((id) => {
+        exclude.push(ne(resource.id, id));
+      });
+    }
 
-  return await db
+    if (filter.mode === 'or') {
+      return and(or(...where), ...exclude);
+    }
+
+    return and(...where, ...exclude);
+  });
+
+  resourceIdsQuery.orderBy(orderBy);
+  resourceIdsQuery.groupBy(resource.id);
+  resourceIdsQuery.limit(limit ? limit + 1 : 0);
+
+  let resourcesQuery = db
     .select({
       id: resource.id,
-      createdAt: resource.createdAt,
       name: resource.name,
       shortDescription: resource.shortDescription,
       description: resource.description,
@@ -236,7 +242,9 @@ export const selectResources = async (
       commentsCount: sql<number>`coalesce(${commentsQuery.commentsCount}, 0)`,
       commentedByUser: commentsQuery.commentedByUser,
     })
-    .from(resource)
+    .from(resource);
+
+  resourcesQuery
     .leftJoin(type, eq(resource.typeId, type.name))
     .leftJoin(category, eq(resource.categoryId, category.name))
     .leftJoin(resourceToTopic, eq(resource.id, resourceToTopic.resourceId))
@@ -249,66 +257,70 @@ export const selectResources = async (
       relatedResource,
       eq(resourceToRelatedResource.relatedResourceId, relatedResource.id),
     )
-    .innerJoin(resourceFts, eq(resourceFts.id, resource.id))
     .leftJoin(likesQuery, eq(resource.id, likesQuery.resourceId))
-    .leftJoin(commentsQuery, eq(resource.id, commentsQuery.resourceId))
-    .where(() => {
-      const where: Array<SQL<unknown> | undefined> = [
-        inArray(resource.id, resourceIdsQuery),
-      ];
+    .leftJoin(commentsQuery, eq(resource.id, commentsQuery.resourceId));
 
-      // Search
-      if (filter.search) {
-        where.push(sql`${resourceFts} MATCH ${filter.search}`);
-      }
+  if (filter.search) {
+    resourcesQuery.innerJoin(resourceFts, eq(resourceFts.id, resource.id));
+  }
 
-      return and(...where);
-    })
-    .orderBy(orderBy)
-    .then((result) => {
-      // Aggregate resources
+  resourcesQuery.where(() => {
+    const where: Array<SQL<unknown> | undefined> = [
+      inArray(resource.id, resourceIdsQuery),
+    ];
 
-      type Row = (typeof result)[number];
-      type Resource = ReturnType<typeof createResource>;
+    // Search
+    if (filter.search) {
+      where.push(sql`${resourceFts} MATCH ${filter.search}`);
+    }
 
-      const createResource = (row: Row) => {
-        const { topic, relatedResource, ...rest } = row;
-        return {
-          ...rest,
-          topics: topic ? [topic] : [],
-          relatedResources: relatedResource ? [relatedResource] : [],
-        };
+    return and(...where);
+  });
+
+  resourcesQuery.orderBy(orderBy);
+
+  return await resourcesQuery.execute().then((result) => {
+    // Aggregate resources
+
+    type Row = (typeof result)[number];
+    type Resource = ReturnType<typeof createResource>;
+
+    const createResource = (row: Row) => {
+      const { topic, relatedResource, ...rest } = row;
+      return {
+        ...rest,
+        topics: topic ? [topic] : [],
+        relatedResources: relatedResource ? [relatedResource] : [],
       };
+    };
 
-      const resources: Array<Resource> = [];
+    const resources: Array<Resource> = [];
 
-      for (const row of result) {
-        const resource = resources.find((resource) => resource.id === row.id);
+    for (const row of result) {
+      const resource = resources.find((resource) => resource.id === row.id);
 
-        if (!resource) {
-          resources.push(createResource(row));
-        } else {
-          if (row.topic) {
-            if (
-              !resource.topics.some((topic) => topic.name === row.topic?.name)
+      if (!resource) {
+        resources.push(createResource(row));
+      } else {
+        if (row.topic) {
+          if (!resource.topics.some((topic) => topic.name === row.topic?.name))
+            resource.topics.push(row.topic);
+        }
+        if (row.relatedResource) {
+          if (
+            !resource.relatedResources.some(
+              (relatedResource) =>
+                relatedResource.id === row.relatedResource?.id,
             )
-              resource.topics.push(row.topic);
-          }
-          if (row.relatedResource) {
-            if (
-              !resource.relatedResources.some(
-                (relatedResource) =>
-                  relatedResource.id === row.relatedResource?.id,
-              )
-            )
-              resource.relatedResources.push(row.relatedResource);
-          }
+          )
+            resource.relatedResources.push(row.relatedResource);
         }
       }
+    }
 
-      return {
-        resources: limit ? resources.slice(0, limit) : resources,
-        hasMore: limit ? resources.length > limit : false,
-      };
-    });
+    return {
+      resources: limit ? resources.slice(0, limit) : resources,
+      hasMore: limit ? resources.length > limit : false,
+    };
+  });
 };
