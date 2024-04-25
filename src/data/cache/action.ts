@@ -1,10 +1,10 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
 import { createAdminAction } from '../clients';
+import { revalidateTag } from '../tags';
 
 export const revalidateCache = createAdminAction({
   action: async () => {
-    revalidatePath('/');
+    revalidateTag('all');
   },
 });

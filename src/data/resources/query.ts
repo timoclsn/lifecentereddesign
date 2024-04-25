@@ -7,7 +7,7 @@ import * as cheerio from 'cheerio';
 import { count, countDistinct, desc, eq } from 'drizzle-orm';
 import 'server-only';
 import { z } from 'zod';
-import { cacheTags } from '../tags';
+import { getTag } from '../tags';
 
 type GetResourcesResult = Awaited<ReturnType<typeof getResources>>;
 export type Resources = GetResourcesResult['resources'];
@@ -54,7 +54,7 @@ export const getResources = createQuery({
     return {
       keyParts: [JSON.stringify(cacheKeyArray)],
       options: {
-        tags: [cacheTags.resources],
+        tags: [getTag('resources')],
       },
     };
   },
@@ -78,7 +78,7 @@ export const getResource = createQuery({
     return {
       keyParts: [key],
       options: {
-        tags: [cacheTags.resources],
+        tags: [getTag('resources')],
       },
     };
   },
@@ -106,7 +106,7 @@ export const getResource = createQuery({
 export const getLikedResourcesCount = createQuery({
   cache: ({ ctx }) => {
     const { userId } = ctx;
-    const tag = cacheTags.likedResourcesCount(userId || '');
+    const tag = getTag('likedResourcesCount', userId || '');
 
     return {
       keyParts: [tag],
@@ -137,7 +137,7 @@ export const getResourceComments = createQuery({
   }),
   cache: ({ input }) => {
     const { id } = input;
-    const tag = cacheTags.resourceComments(id);
+    const tag = getTag('resourceComments', id);
     return {
       keyParts: [tag],
       options: {
@@ -161,7 +161,7 @@ export const getResourceComments = createQuery({
 export const getCommentedResourcesCount = createQuery({
   cache: ({ ctx }) => {
     const { userId } = ctx;
-    const tag = cacheTags.commentedResourcesCount(userId || '');
+    const tag = getTag('commentedResourcesCount', userId || '');
 
     return {
       keyParts: [tag],
@@ -193,7 +193,7 @@ export const getOgImageLink = createQuery({
   }),
   cache: ({ input }) => {
     const { id } = input;
-    const tag = cacheTags.ogImageLink(id);
+    const tag = getTag('ogImageLink', id);
     return {
       keyParts: [tag],
       options: {
@@ -217,9 +217,9 @@ export const getOgImageLink = createQuery({
 
 export const getResourcesCount = createQuery({
   cache: {
-    keyParts: [cacheTags.resourcesCount],
+    keyParts: [getTag('resourcesCount')],
     options: {
-      tags: [cacheTags.resourcesCount],
+      tags: [getTag('resourcesCount')],
     },
   },
   query: async ({ ctx }) => {
@@ -248,7 +248,7 @@ export const getRecommendedResources = createQuery({
     return {
       keyParts: [key],
       options: {
-        tags: [cacheTags.resources],
+        tags: [getTag('resources')],
       },
     };
   },

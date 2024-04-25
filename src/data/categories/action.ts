@@ -1,10 +1,9 @@
 'use server';
 
 import { category } from '@/db/schema';
-import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 import { createAction } from '../clients';
-import { cacheTags } from '../tags';
+import { revalidateTag } from '../tags';
 import { selectCategories } from './categories';
 
 export const getCategories = createAction({
@@ -25,6 +24,6 @@ export const addCategory = createAction({
       name,
     });
 
-    revalidateTag(cacheTags.categories);
+    revalidateTag('categories');
   },
 });

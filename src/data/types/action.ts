@@ -1,10 +1,9 @@
 'use server';
 
 import { type } from '@/db/schema';
-import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { createAction, createAdminAction } from '../clients';
-import { cacheTags } from '../tags';
+import { revalidateTag } from '../tags';
 import { selectTypes } from './types';
 
 export const getTypes = createAction({
@@ -25,6 +24,6 @@ export const addType = createAdminAction({
       name,
     });
 
-    revalidatePath(cacheTags.types);
+    revalidateTag('types');
   },
 });
