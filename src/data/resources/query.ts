@@ -44,13 +44,15 @@ export const getResources = createQuery({
   cache: ({ input, ctx }) => {
     const { userId } = ctx;
 
-    const cacheKeyObj = {
+    const cacheKeyArray = Object.entries({
       userId,
-      ...input,
-    };
+      limit: input.limit,
+      sort: input.sort,
+      ...input.filter,
+    }).sort((a, b) => a[0].localeCompare(b[0]));
 
     return {
-      keyParts: [JSON.stringify(cacheKeyObj)],
+      keyParts: [JSON.stringify(cacheKeyArray)],
       options: {
         tags: [cacheTags.resources],
       },
