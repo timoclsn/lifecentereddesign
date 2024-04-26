@@ -89,7 +89,7 @@ export const selectResources = async (
     .select({
       resourceId: like.resourceId,
       likesCount: count(like.resourceId).as('likesCount'),
-      likedByUser: max(eq(like.userId, userId ?? ''))
+      likedByUser: (userId ? max(eq(like.userId, userId)) : sql<number>`0`)
         .mapWith(Boolean)
         .as('likedByUser'),
     })
@@ -101,7 +101,10 @@ export const selectResources = async (
     .select({
       resourceId: comment.resourceId,
       commentsCount: count(comment.resourceId).as('commentsCount'),
-      commentedByUser: max(eq(comment.userId, userId ?? ''))
+      commentedByUser: (userId
+        ? max(eq(comment.userId, userId))
+        : sql<number>`0`
+      )
         .mapWith(Boolean)
         .as('commentedByUser'),
     })
@@ -109,27 +112,52 @@ export const selectResources = async (
     .groupBy(comment.resourceId)
     .as('commentsQuery');
 
-  let resourceIdsQuery = db
+  // Build up resource id query
+  const resourceIdsQuery = db
     .select({
       id: resource.id,
     })
     .from(resource);
 
-  resourceIdsQuery
-    .leftJoin(type, eq(resource.typeId, type.name))
-    .leftJoin(category, eq(resource.categoryId, category.name))
-    .leftJoin(resourceToTopic, eq(resource.id, resourceToTopic.resourceId))
-    .leftJoin(topic, eq(resourceToTopic.topicId, topic.name))
-    .leftJoin(
-      resourceToRelatedResource,
-      eq(resource.id, resourceToRelatedResource.resourceId),
-    )
-    .leftJoin(
-      relatedResource,
-      eq(resourceToRelatedResource.relatedResourceId, relatedResource.id),
-    )
-    .leftJoin(likesQuery, eq(resource.id, likesQuery.resourceId))
-    .leftJoin(commentsQuery, eq(resource.id, commentsQuery.resourceId));
+  if (filter.type) {
+    resourceIdsQuery.leftJoin(type, eq(resource.typeId, type.name));
+  }
+
+  if (filter.category) {
+    resourceIdsQuery.leftJoin(category, eq(resource.categoryId, category.name));
+  }
+
+  if (filter.topic) {
+    resourceIdsQuery
+      .leftJoin(resourceToTopic, eq(resource.id, resourceToTopic.resourceId))
+      .leftJoin(topic, eq(resourceToTopic.topicId, topic.name));
+  }
+
+  if (filter.relatedResource) {
+    resourceIdsQuery
+      .leftJoin(
+        resourceToRelatedResource,
+        eq(resource.id, resourceToRelatedResource.resourceId),
+      )
+      .leftJoin(
+        relatedResource,
+        eq(resourceToRelatedResource.relatedResourceId, relatedResource.id),
+      );
+  }
+
+  if (filter.liked || sort?.includes('likes')) {
+    resourceIdsQuery.leftJoin(
+      likesQuery,
+      eq(resource.id, likesQuery.resourceId),
+    );
+  }
+
+  if (filter.commented || sort?.includes('comments')) {
+    resourceIdsQuery.leftJoin(
+      commentsQuery,
+      eq(resource.id, commentsQuery.resourceId),
+    );
+  }
 
   if (filter.search) {
     resourceIdsQuery.innerJoin(resourceFts, eq(resourceFts.id, resource.id));
@@ -210,7 +238,8 @@ export const selectResources = async (
   resourceIdsQuery.groupBy(resource.id);
   resourceIdsQuery.limit(limit ? limit + 1 : 0);
 
-  let resourcesQuery = db
+  // Build up resource query
+  const resourcesQuery = db
     .select({
       id: resource.id,
       name: resource.name,
@@ -279,6 +308,7 @@ export const selectResources = async (
 
   resourcesQuery.orderBy(orderBy);
 
+  // Execute resource query
   return await resourcesQuery.execute().then((result) => {
     // Aggregate resources
 
