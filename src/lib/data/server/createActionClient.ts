@@ -67,9 +67,7 @@ export const createActionClient = <Context>(
           throw error;
         }
 
-        console.log(error instanceof ServerActionError);
-
-        console.error('An error occurred:', error);
+        console.error('🚨 Error:', error);
 
         const message =
           error instanceof ServerActionError
