@@ -1,7 +1,7 @@
 'use server';
 
 import { createAction } from '@/data/clients';
-import { ServerActionError } from '@/lib/data/errors';
+import { ActionError } from '@/lib/data/errors';
 import { z } from 'zod';
 
 const {
@@ -54,7 +54,7 @@ export const subscribe = createAction({
       },
       body: JSON.stringify(data),
     }).catch((error) => {
-      throw new ServerActionError({
+      throw new ActionError({
         message: genericError,
         log: 'POST subscription failed',
         cause: error,
@@ -63,7 +63,7 @@ export const subscribe = createAction({
 
     if (!response.ok) {
       const responseJson = await response.json().catch((error) => {
-        throw new ServerActionError({
+        throw new ActionError({
           message: genericError,
           log: 'Failed to parse response JSON from Mailchimp API',
           cause: error,
@@ -73,7 +73,7 @@ export const subscribe = createAction({
       const result = apiErrorSchema.safeParse(responseJson);
 
       if (!result.success) {
-        throw new ServerActionError({
+        throw new ActionError({
           message: genericError,
           log: "Unexpected error response format from Mailchimp's API",
         });
@@ -82,13 +82,13 @@ export const subscribe = createAction({
       const { title } = result.data;
 
       if (title === 'Member Exists') {
-        throw new ServerActionError({
+        throw new ActionError({
           message: `${email} is already subscribed to our newsletter.`,
           log: 'User is already subscribed to the newsletter',
         });
       }
 
-      throw new ServerActionError({
+      throw new ActionError({
         message: genericError,
         log: "Response from Mailchimp's API indicated an error",
       });

@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { createAction, createAdminAction } from '../clients';
 import { revalidateTag } from '../tags';
 import { selectTopics } from './topics';
-import { ServerActionError } from '@/lib/data/errors';
+import { ActionError } from '@/lib/data/errors';
 
 export const getTopics = createAction({
   action: async () => {
@@ -27,7 +27,7 @@ export const addTopic = createAdminAction({
         name,
       })
       .catch((error) => {
-        throw new ServerActionError({
+        throw new ActionError({
           message: 'Error adding topic',
           cause: error,
         });

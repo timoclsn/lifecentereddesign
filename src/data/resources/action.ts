@@ -20,7 +20,7 @@ import { selectCategories } from '../categories/categories';
 import { revalidateTag } from '../tags';
 import { selectTopics } from '../topics/topics';
 import { selectTypes } from '../types/types';
-import { ServerActionError } from '@/lib/data/errors';
+import { ActionError } from '@/lib/data/errors';
 
 const { SUGGESTION_MAIL_PASSWORD } = process.env;
 
@@ -76,7 +76,7 @@ export const addResource = createAdminAction({
         relatedResourcesPlain: input.relatedResourcesPlain,
       })
       .catch((error) => {
-        throw new ServerActionError({
+        throw new ActionError({
           message: 'Error adding resource',
           log: 'Error adding resource to resources table',
           cause: error,
@@ -93,7 +93,7 @@ export const addResource = createAdminAction({
           })),
         )
         .catch((error) => {
-          throw new ServerActionError({
+          throw new ActionError({
             message: 'Error adding resource',
             log: 'Error adding resource to resourceToTopic table',
             cause: error,
@@ -111,7 +111,7 @@ export const addResource = createAdminAction({
           })),
         )
         .catch((error) => {
-          throw new ServerActionError({
+          throw new ActionError({
             message: 'Error adding resource',
             log: 'Error adding resource to resourceToRelatedResource table',
             cause: error,
@@ -139,7 +139,7 @@ export const like = createAction({
           userId,
         })
         .catch((error) => {
-          throw new ServerActionError({
+          throw new ActionError({
             message: 'Error liking resource',
             log: 'Error adding like to likes table',
             cause: error,
@@ -155,7 +155,7 @@ export const like = createAction({
         })
         .where(eq(resource.id, id))
         .catch((error) => {
-          throw new ServerActionError({
+          throw new ActionError({
             message: 'Error liking resource',
             log: 'Error updating anonymousLikesCount in resources table',
             cause: error,
@@ -179,7 +179,7 @@ export const unLike = createProtectedAction({
       .delete(likeSchema)
       .where(and(eq(likeSchema.resourceId, id), eq(likeSchema.userId, userId)))
       .catch((error) => {
-        throw new ServerActionError({
+        throw new ActionError({
           message: 'Error un-liking resource',
           log: 'Error deleting like from likes table',
           cause: error,
@@ -213,7 +213,7 @@ export const addComment = createProtectedAction({
         text,
       })
       .catch((error) => {
-        throw new ServerActionError({
+        throw new ActionError({
           message: 'Error adding comment',
           log: 'Error adding comment to comments table',
           cause: error,
@@ -242,7 +242,7 @@ export const deleteComment = createProtectedAction({
       .delete(comment)
       .where(eq(comment.id, commentId))
       .catch((error) => {
-        throw new ServerActionError({
+        throw new ActionError({
           message: 'Error deleting comment',
           log: 'Error deleting comment from comments table',
           cause: error,
@@ -284,7 +284,7 @@ export const suggest = createAction({
     };
 
     await transporter.sendMail(mailData).catch((error) => {
-      throw new ServerActionError({
+      throw new ActionError({
         message:
           'There was an error submitting your suggestion. Please try again or send it via email at hello@lifecentereddesign.net.',
         log: 'Error sending suggestion email',
@@ -310,7 +310,7 @@ export const analizeLink = createAdminAction({
     const { link } = input;
 
     const urlResponse = await fetch(link).catch((error) => {
-      throw new ServerActionError({
+      throw new ActionError({
         message: 'Error analyzing link',
         log: 'Error fetching website content',
         cause: error,
@@ -318,7 +318,7 @@ export const analizeLink = createAdminAction({
     });
 
     const websiteSource = await urlResponse.text().catch((error) => {
-      throw new ServerActionError({
+      throw new ActionError({
         message: 'Error analyzing link',
         log: 'Error reading website content',
         cause: error,
@@ -359,7 +359,7 @@ export const analizeLink = createAdminAction({
         .substring(0, 10000) + '...';
 
     if (!websiteTextClean) {
-      throw new ServerActionError({
+      throw new ActionError({
         message: 'Error analyzing link',
         log: 'Could not get website content',
       });
@@ -370,7 +370,7 @@ export const analizeLink = createAdminAction({
       selectCategories(),
       selectTopics(),
     ]).catch((error) => {
-      throw new ServerActionError({
+      throw new ActionError({
         message: 'Error analyzing link',
         log: 'Error getting types, categories and topics from database',
         cause: error,
@@ -425,7 +425,7 @@ export const analizeLink = createAdminAction({
         ],
       })
       .catch((error) => {
-        throw new ServerActionError({
+        throw new ActionError({
           message: 'Error analyzing link',
           log: 'Error getting response from AI',
           cause: error,
@@ -435,7 +435,7 @@ export const analizeLink = createAdminAction({
     const content = aiResponse.choices[0].message.content;
 
     if (!content) {
-      throw new ServerActionError({
+      throw new ActionError({
         message: 'Error analyzing link',
         log: 'No response from AI',
       });

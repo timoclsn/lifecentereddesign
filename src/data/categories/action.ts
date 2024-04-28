@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { createAction } from '../clients';
 import { revalidateTag } from '../tags';
 import { selectCategories } from './categories';
-import { ServerActionError } from '@/lib/data/errors';
+import { ActionError } from '@/lib/data/errors';
 
 export const getCategories = createAction({
   action: async () => {
@@ -27,7 +27,7 @@ export const addCategory = createAction({
         name,
       })
       .catch((error) => {
-        throw new ServerActionError({
+        throw new ActionError({
           message: 'Error adding category',
           cause: error,
         });

@@ -1,7 +1,7 @@
 import { isNotFoundError } from 'next/dist/client/components/not-found';
 import { isRedirectError } from 'next/dist/client/components/redirect';
 import { z } from 'zod';
-import { ServerActionError } from '../errors';
+import { ActionError } from '../errors';
 import { CreateClientOptions, MaybePromise, ServerAction } from '../types';
 import { id } from '../utils';
 
@@ -70,9 +70,9 @@ export const createActionClient = <Context>(
         console.error('🚨 Error:', error);
 
         const message =
-          error instanceof ServerActionError
+          error instanceof ActionError
             ? error.message
-            : 'Something went wrong';
+            : 'Something went wrong.';
 
         return {
           status: 'error',

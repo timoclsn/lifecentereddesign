@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { createAction, createAdminAction } from '../clients';
 import { revalidateTag } from '../tags';
 import { selectTypes } from './types';
-import { ServerActionError } from '@/lib/data/errors';
+import { ActionError } from '@/lib/data/errors';
 
 export const getTypes = createAction({
   action: async () => {
@@ -27,7 +27,7 @@ export const addType = createAdminAction({
         name,
       })
       .catch((error) => {
-        throw new ServerActionError({
+        throw new ActionError({
           message: 'Error adding type',
           cause: error,
         });
