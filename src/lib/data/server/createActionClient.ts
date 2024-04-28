@@ -30,7 +30,7 @@ export const createActionClient = <Context>(
         // Validate input if schema is provided
         let parsedInput = input;
         if (actionBuilderOpts.input) {
-          const result = actionBuilderOpts.input.safeParse(input);
+          const result = await actionBuilderOpts.input.safeParseAsync(input);
           if (!result.success) {
             return {
               status: 'validationError',
