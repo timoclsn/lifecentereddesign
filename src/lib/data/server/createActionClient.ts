@@ -3,6 +3,7 @@ import { isRedirectError } from 'next/dist/client/components/redirect';
 import { z } from 'zod';
 import { CreateClientOptions, MaybePromise, ServerAction } from '../types';
 import { getErrorMessage, id } from '../utils';
+import { ServerActionError } from '../errors';
 
 export const createActionClient = <Context>(
   createClientOpts?: CreateClientOptions<Context>,
@@ -66,12 +67,21 @@ export const createActionClient = <Context>(
           throw error;
         }
 
+        console.log(error instanceof ServerActionError);
+
+        console.error('An error occurred:', error);
+
+        const message =
+          error instanceof ServerActionError
+            ? error.message
+            : 'Something went wrong';
+
         return {
           status: 'error',
           id: id(),
           data: null,
           validationErrors: null,
-          error: getErrorMessage(error),
+          error: message,
         };
       }
     };

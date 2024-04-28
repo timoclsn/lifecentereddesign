@@ -20,6 +20,7 @@ import { selectCategories } from '../categories/categories';
 import { revalidateTag } from '../tags';
 import { selectTopics } from '../topics/topics';
 import { selectTypes } from '../types/types';
+import { ServerActionError } from '@/lib/data/errors';
 
 const { SUGGESTION_MAIL_PASSWORD } = process.env;
 
@@ -57,38 +58,65 @@ export const addResource = createAdminAction({
   action: async ({ input, ctx }) => {
     const { db } = ctx;
 
-    await db.insert(resource).values({
-      id: input.id,
-      name: input.name,
-      suggestion: input.suggestion,
-      link: input.link,
-      typeId: input.typeId,
-      categoryId: input.categoryId,
-      shortDescription: input.shortDescription,
-      description: input.description,
-      details: input.details,
-      note: input.note,
-      date: input.date,
-      datePlain: input.datePlain,
-      relatedResourcesPlain: input.relatedResourcesPlain,
-    });
+    await db
+      .insert(resource)
+      .values({
+        id: input.id,
+        name: input.name,
+        suggestion: input.suggestion,
+        link: input.link,
+        typeId: input.typeId,
+        categoryId: input.categoryId,
+        shortDescription: input.shortDescription,
+        description: input.description,
+        details: input.details,
+        note: input.note,
+        date: input.date,
+        datePlain: input.datePlain,
+        relatedResourcesPlain: input.relatedResourcesPlain,
+      })
+      .catch((error) => {
+        throw new ServerActionError({
+          message: 'Error adding resource',
+          log: 'Error adding resource to resources table',
+          cause: error,
+        });
+      });
 
     if (input.topicIds) {
-      await db.insert(resourceToTopic).values(
-        input.topicIds.map((topicId) => ({
-          resourceId: input.id,
-          topicId,
-        })),
-      );
+      await db
+        .insert(resourceToTopic)
+        .values(
+          input.topicIds.map((topicId) => ({
+            resourceId: input.id,
+            topicId,
+          })),
+        )
+        .catch((error) => {
+          throw new ServerActionError({
+            message: 'Error adding resource',
+            log: 'Error adding resource to resourceToTopic table',
+            cause: error,
+          });
+        });
     }
 
     if (input.relatedResourceIds) {
-      await db.insert(resourceToRelatedResource).values(
-        input.relatedResourceIds.map((relatedResourceId) => ({
-          resourceId: input.id,
-          relatedResourceId,
-        })),
-      );
+      await db
+        .insert(resourceToRelatedResource)
+        .values(
+          input.relatedResourceIds.map((relatedResourceId) => ({
+            resourceId: input.id,
+            relatedResourceId,
+          })),
+        )
+        .catch((error) => {
+          throw new ServerActionError({
+            message: 'Error adding resource',
+            log: 'Error adding resource to resourceToRelatedResource table',
+            cause: error,
+          });
+        });
     }
 
     revalidateTag('resources');
@@ -104,10 +132,19 @@ export const like = createAction({
     const { db, userId } = ctx;
 
     if (userId) {
-      await db.insert(likeSchema).values({
-        resourceId: id,
-        userId,
-      });
+      await db
+        .insert(likeSchema)
+        .values({
+          resourceId: id,
+          userId,
+        })
+        .catch((error) => {
+          throw new ServerActionError({
+            message: 'Error liking resource',
+            log: 'Error adding like to likes table',
+            cause: error,
+          });
+        });
 
       revalidateTag('likedResourcesCount', userId);
     } else {
@@ -116,7 +153,14 @@ export const like = createAction({
         .set({
           anonymousLikesCount: sql`${resource.anonymousLikesCount} + 1`,
         })
-        .where(eq(resource.id, id));
+        .where(eq(resource.id, id))
+        .catch((error) => {
+          throw new ServerActionError({
+            message: 'Error liking resource',
+            log: 'Error updating anonymousLikesCount in resources table',
+            cause: error,
+          });
+        });
     }
 
     revalidateTag('resources');
@@ -133,7 +177,14 @@ export const unLike = createProtectedAction({
 
     await db
       .delete(likeSchema)
-      .where(and(eq(likeSchema.resourceId, id), eq(likeSchema.userId, userId)));
+      .where(and(eq(likeSchema.resourceId, id), eq(likeSchema.userId, userId)))
+      .catch((error) => {
+        throw new ServerActionError({
+          message: 'Error un-liking resource',
+          log: 'Error deleting like from likes table',
+          cause: error,
+        });
+      });
 
     revalidateTag('likedResourcesCount', userId);
     revalidateTag('resources');
@@ -154,11 +205,20 @@ export const addComment = createProtectedAction({
     const { id, text } = input;
     const { userId, db } = ctx;
 
-    await db.insert(comment).values({
-      resourceId: id,
-      userId,
-      text,
-    });
+    await db
+      .insert(comment)
+      .values({
+        resourceId: id,
+        userId,
+        text,
+      })
+      .catch((error) => {
+        throw new ServerActionError({
+          message: 'Error adding comment',
+          log: 'Error adding comment to comments table',
+          cause: error,
+        });
+      });
 
     revalidateTag('resourceComments', id);
   },
@@ -178,7 +238,16 @@ export const deleteComment = createProtectedAction({
       throw new Error('You can only delete your own comments');
     }
 
-    await db.delete(comment).where(eq(comment.id, commentId));
+    await db
+      .delete(comment)
+      .where(eq(comment.id, commentId))
+      .catch((error) => {
+        throw new ServerActionError({
+          message: 'Error deleting comment',
+          log: 'Error deleting comment from comments table',
+          cause: error,
+        });
+      });
 
     revalidateTag('resourceComments', resourceId);
   },
@@ -214,14 +283,14 @@ export const suggest = createAction({
       }\nName: ${name ? name : 'No name provided'}`,
     };
 
-    try {
-      await transporter.sendMail(mailData);
-    } catch (e) {
-      console.error(e);
-      throw new Error(
-        'There was an error submitting your suggestion. Please try again or send it via email at hello@lifecentereddesign.net.',
-      );
-    }
+    await transporter.sendMail(mailData).catch((error) => {
+      throw new ServerActionError({
+        message:
+          'There was an error submitting your suggestion. Please try again or send it via email at hello@lifecentereddesign.net.',
+        log: 'Error sending suggestion email',
+        cause: error,
+      });
+    });
   },
 });
 
@@ -240,8 +309,21 @@ export const analizeLink = createAdminAction({
   action: async ({ input }) => {
     const { link } = input;
 
-    const urlResponse = await fetch(link);
-    const websiteSource = await urlResponse.text();
+    const urlResponse = await fetch(link).catch((error) => {
+      throw new ServerActionError({
+        message: 'Error analyzing link',
+        log: 'Error fetching website content',
+        cause: error,
+      });
+    });
+
+    const websiteSource = await urlResponse.text().catch((error) => {
+      throw new ServerActionError({
+        message: 'Error analyzing link',
+        log: 'Error reading website content',
+        cause: error,
+      });
+    });
 
     const titleRegex = /<title>(.*?)<\/title>/i;
     const titleMatch = websiteSource.match(titleRegex);
@@ -277,14 +359,23 @@ export const analizeLink = createAdminAction({
         .substring(0, 10000) + '...';
 
     if (!websiteTextClean) {
-      throw new Error('Could not get website content');
+      throw new ServerActionError({
+        message: 'Error analyzing link',
+        log: 'Could not get website content',
+      });
     }
 
     const [types, categories, topcis] = await Promise.all([
       selectTypes(),
       selectCategories(),
       selectTopics(),
-    ]);
+    ]).catch((error) => {
+      throw new ServerActionError({
+        message: 'Error analyzing link',
+        log: 'Error getting types, categories and topics from database',
+        cause: error,
+      });
+    });
 
     const prompt = `
         I am going to give you the content of a website i am also goinf to give you input data that you are going to use to categorize the website. These are your instructions:
@@ -316,27 +407,38 @@ export const analizeLink = createAdminAction({
       apiKey: process.env.OPENAI_API_KEY!,
     });
 
-    const aiResponse = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      stream: false,
-      response_format: { type: 'json_object' },
-      messages: [
-        {
-          role: 'system',
-          content:
-            'You are my AI web scraper. Your job is to make sense of the text content of a website and put it into a category.',
-        },
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-    });
+    const aiResponse = await openai.chat.completions
+      .create({
+        model: 'gpt-3.5-turbo',
+        stream: false,
+        response_format: { type: 'json_object' },
+        messages: [
+          {
+            role: 'system',
+            content:
+              'You are my AI web scraper. Your job is to make sense of the text content of a website and put it into a category.',
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+      })
+      .catch((error) => {
+        throw new ServerActionError({
+          message: 'Error analyzing link',
+          log: 'Error getting response from AI',
+          cause: error,
+        });
+      });
 
     const content = aiResponse.choices[0].message.content;
 
     if (!content) {
-      throw new Error('No response from AI');
+      throw new ServerActionError({
+        message: 'Error analyzing link',
+        log: 'No response from AI',
+      });
     }
 
     const contentJson = JSON.parse(content);
