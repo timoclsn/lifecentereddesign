@@ -131,6 +131,8 @@ export const like = createAction({
     const { id } = input;
     const { db, userId } = ctx;
 
+    const likeResourceError = 'Error liking resource';
+
     if (userId) {
       await db
         .insert(likeSchema)
@@ -140,7 +142,7 @@ export const like = createAction({
         })
         .catch((error) => {
           throw new ActionError({
-            message: 'Error liking resource',
+            message: likeResourceError,
             log: 'Error adding like to likes table',
             cause: error,
           });
@@ -156,7 +158,7 @@ export const like = createAction({
         .where(eq(resource.id, id))
         .catch((error) => {
           throw new ActionError({
-            message: 'Error liking resource',
+            message: likeResourceError,
             log: 'Error updating anonymousLikesCount in resources table',
             cause: error,
           });
@@ -235,7 +237,10 @@ export const deleteComment = createProtectedAction({
     const { userId, db } = ctx;
 
     if (userId !== commentUserId) {
-      throw new Error('You can only delete your own comments');
+      throw new ActionError({
+        message: 'You can only delete your own comments',
+        log: `User ${userId} tried to delete comment ${commentId} from user ${commentUserId}`,
+      });
     }
 
     await db

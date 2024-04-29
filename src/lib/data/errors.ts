@@ -1,3 +1,5 @@
+export const DEFAULT_ERROR_MESSAGE = 'Something went wrong.';
+
 export class ActionError extends Error {
   public override readonly cause?: Error;
   public readonly log?;
