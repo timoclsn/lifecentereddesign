@@ -82,3 +82,24 @@ export const createProtectedQuery = createQueryClient({
     console.error('🚨 Query error:', error);
   },
 });
+
+export const createAdminQuery = createQueryClient({
+  middleware: async () => {
+    const { userId } = auth();
+
+    if (!userId) {
+      throw new Error('You must be logged in to perform this query.');
+    }
+
+    const admin = await isAdmin(userId);
+
+    if (!admin) {
+      throw new Error('You must be an admin to perform this qzery.');
+    }
+
+    return { db, userId };
+  },
+  onError: (error) => {
+    console.error('🚨 Query Error:', error);
+  },
+});
