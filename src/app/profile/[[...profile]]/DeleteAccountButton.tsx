@@ -3,20 +3,28 @@
 import { action } from '@/api/action';
 import { Alert, Button, InfoBox } from '@/design-system';
 import { useAction } from '@/lib/data/client';
+import { useToast } from '@/ui/use-toast';
 import { useAuth } from '@clerk/nextjs';
 import { AlertTriangle, CheckCircle2, Loader2, XCircle } from 'lucide-react';
 
 export const DeleteAccountButton = () => {
+  const { signOut } = useAuth();
+  const { toast } = useToast();
+
   const { isRunning, isSuccess, error, runAction } = useAction(
     action.users.deleteAccount,
     {
-      onRunAction: () => {},
       onSuccess: () => {
         signOut();
       },
+      onError: ({ error }) => {
+        toast({
+          title: `❌ ${error}`,
+          variant: 'destructive',
+        });
+      },
     },
   );
-  const { signOut } = useAuth();
 
   const handleDeleteAccount = () => {
     runAction();

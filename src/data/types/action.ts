@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { createAction, createAdminAction } from '../clients';
 import { revalidateTag } from '../tags';
 import { selectTypes } from './types';
+import { ActionError } from '@/lib/data/errors';
 
 export const getTypes = createAction({
   action: async () => {
@@ -20,9 +21,17 @@ export const addType = createAdminAction({
     const { name } = input;
     const { db } = ctx;
 
-    await db.insert(type).values({
-      name,
-    });
+    await db
+      .insert(type)
+      .values({
+        name,
+      })
+      .catch((error) => {
+        throw new ActionError({
+          message: 'Error adding type',
+          cause: error,
+        });
+      });
 
     revalidateTag('types');
   },

@@ -12,6 +12,7 @@ export type InferValidationErrors<TInputSchema extends z.ZodTypeAny> =
 
 export interface CreateClientOptions<Context> {
   middleware?: () => MaybePromise<Context>;
+  onError?(error: unknown): void;
 }
 
 // Client Action

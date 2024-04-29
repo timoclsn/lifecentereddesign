@@ -3,6 +3,7 @@
 import { action } from '@/api/action';
 import { Alert } from '@/design-system';
 import { useAction } from '@/lib/data/client';
+import { useToast } from '@/ui/use-toast';
 import { Loader2, Trash2 } from 'lucide-react';
 
 interface Props {
@@ -16,11 +17,17 @@ export const DeleteCommentButton = ({
   commentId,
   commentUserId,
 }: Props) => {
+  const { toast } = useToast();
+
   const { isRunning, runAction } = useAction(action.resources.deleteComment, {
     onError: (error) => {
-      console.error(error);
+      toast({
+        title: `❌ ${error}`,
+        variant: 'destructive',
+      });
     },
   });
+
   const handleDeleteAccount = () => {
     runAction({
       resourceId,

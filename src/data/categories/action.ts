@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { createAction } from '../clients';
 import { revalidateTag } from '../tags';
 import { selectCategories } from './categories';
+import { ActionError } from '@/lib/data/errors';
 
 export const getCategories = createAction({
   action: async () => {
@@ -20,9 +21,17 @@ export const addCategory = createAction({
     const { name } = input;
     const { db } = ctx;
 
-    await db.insert(category).values({
-      name,
-    });
+    await db
+      .insert(category)
+      .values({
+        name,
+      })
+      .catch((error) => {
+        throw new ActionError({
+          message: 'Error adding category',
+          cause: error,
+        });
+      });
 
     revalidateTag('categories');
   },

@@ -1,11 +1,12 @@
 'use client';
 
-import { useAuth } from '@clerk/nextjs';
 import { action } from '@/api/action';
-import { cva } from 'cva';
 import { Tooltip } from '@/design-system';
 import { useAction } from '@/lib/data/client';
 import { track } from '@/lib/tracking';
+import { useToast } from '@/ui/use-toast';
+import { useAuth } from '@clerk/nextjs';
+import { cva } from 'cva';
 import { Heart } from 'lucide-react';
 import { useOptimistic, useTransition } from 'react';
 import { SolidHeart } from '../../Icons/SolidHeart';
@@ -28,11 +29,19 @@ interface Props {
 export const LikesButton = ({ id, count, liked }: Props) => {
   const { isSignedIn } = useAuth();
   let [, startTransition] = useTransition();
+  const { toast } = useToast();
+
   const { runAction: runLikeAction, isRunning: isLikeRunning } = useAction(
     action.resources.like,
     {
       onSuccess: () => {
         track('Like resource', { id });
+      },
+      onError: ({ error }) => {
+        toast({
+          title: `❌ ${error}`,
+          variant: 'destructive',
+        });
       },
     },
   );
@@ -41,6 +50,12 @@ export const LikesButton = ({ id, count, liked }: Props) => {
     {
       onSuccess: () => {
         track('Un-like resource', { id });
+      },
+      onError: ({ error }) => {
+        toast({
+          title: `❌ ${error}`,
+          variant: 'destructive',
+        });
       },
     },
   );
