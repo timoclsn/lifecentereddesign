@@ -8,7 +8,7 @@ import { ResourcesFilter } from './ResourcesFilter/ResourcesFilter';
 import { ResourcesList } from './ResourcesList/ResourcesList';
 import { ResourcesTableProvider } from './ResourcesTableProvider';
 import { auth } from '@clerk/nextjs/server';
-import { AddResourceButton } from '../../../../components/AddResource/AddResourceButton';
+import { AddResourceButton } from '../../../../components/AddOrEditResource/AddResourceButton';
 
 interface Props {
   reseourcesFilter: ReseourcesFilter;

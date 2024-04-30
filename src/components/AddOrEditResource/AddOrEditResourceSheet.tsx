@@ -52,7 +52,11 @@ interface Props {
   resource?: Resource;
 }
 
-export const AddResourceSheet = ({ children, onAdd, resource }: Props) => {
+export const AddOrEditResourceSheet = ({
+  children,
+  onAdd,
+  resource,
+}: Props) => {
   const isAddMode = !resource;
   const isEditMode = !!resource;
 
@@ -618,12 +622,12 @@ export const AddResourceSheet = ({ children, onAdd, resource }: Props) => {
                   placeholder="Select related resources"
                 />
 
-                <AddResourceSheet onAdd={fetchCategories}>
+                <AddOrEditResourceSheet onAdd={fetchCategories}>
                   <Button type="button" variant="secondary" size="icon">
                     <Plus />
                     <span className="sr-only">Add resource</span>
                   </Button>
-                </AddResourceSheet>
+                </AddOrEditResourceSheet>
               </div>
               {addResourceValidationErrors?.relatedResourceIds && (
                 <InputError>

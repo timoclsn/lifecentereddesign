@@ -1,5 +1,5 @@
 import { query } from '@/api/query';
-import { AddResourceSheet } from '@/components/AddResource/AddResourceSheet';
+import { AddOrEditResourceSheet } from '@/components/AddOrEditResource/AddOrEditResourceSheet';
 import { Await } from '@/components/Await/Await';
 import { Resource } from '@/data/resources/query';
 import { Button } from '@/ui/button';
@@ -17,12 +17,12 @@ export const EditResourceButton = ({ resource }: Props) => {
         if (!isAdmin) return null;
 
         return (
-          <AddResourceSheet resource={resource}>
+          <AddOrEditResourceSheet resource={resource}>
             <Button className="fixed bottom-4 right-4 z-10" size="icon">
               <Edit />
               <span className="sr-only">Edit resource</span>
             </Button>
-          </AddResourceSheet>
+          </AddOrEditResourceSheet>
         );
       }}
     </Await>

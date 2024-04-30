@@ -3,7 +3,7 @@ import { Card, getRandomCardVariant } from '@/design-system';
 import { AlertTriangle } from 'lucide-react';
 import { Await } from '../Await/Await';
 import { ResourceCard } from '../ResourceCard/ResourceCard';
-import { EditResourceButton } from '../AddResource/EditResourceButton';
+import { EditResourceButton } from '../AddOrEditResource/EditResourceButton';
 import { auth } from '@clerk/nextjs/server';
 
 interface Props {
