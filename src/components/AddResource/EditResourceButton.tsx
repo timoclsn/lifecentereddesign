@@ -18,7 +18,7 @@ export const EditResourceButton = ({ resource }: Props) => {
 
         return (
           <AddResourceSheet resource={resource}>
-            <Button className="fixed bottom-4 right-4" size="icon">
+            <Button className="fixed bottom-4 right-4 z-10" size="icon">
               <Edit />
               <span className="sr-only">Edit resource</span>
             </Button>

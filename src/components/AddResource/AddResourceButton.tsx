@@ -13,7 +13,7 @@ export const AddResourceButton = () => {
 
         return (
           <AddResourceSheet>
-            <Button className="fixed bottom-4 right-4" size="icon">
+            <Button className="fixed bottom-4 right-4 z-10" size="icon">
               <Plus />
               <span className="sr-only">Add resource</span>
             </Button>

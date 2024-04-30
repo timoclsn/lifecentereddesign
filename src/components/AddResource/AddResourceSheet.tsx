@@ -1,9 +1,21 @@
 'use client';
 
 import { action } from '@/api/action';
+import { Resource } from '@/data/resources/query';
 import { InfoBox } from '@/design-system';
 import { useAction } from '@/lib/data/client';
 import { sluggify } from '@/lib/utils/utils';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/ui/alert-dialog';
 import { Button } from '@/ui/button';
 import { Checkbox } from '@/ui/checkbox';
 import { DatePicker } from '@/ui/datepicker';
@@ -21,31 +33,18 @@ import {
   Sheet,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from '@/ui/sheet';
 import { Textarea } from '@/ui/textarea';
+import { ToastAction } from '@/ui/toast';
+import { useToast } from '@/ui/use-toast';
 import { AlertTriangle, Loader2, Plus, WandSparkles } from 'lucide-react';
 import { ReactNode, useRef, useState } from 'react';
 import { AddCategorySheet } from './AddCategorySheet';
 import { AddTopicSheet } from './AddTopicSheet';
 import { AddTypeSheet } from './AddTypeSheet';
-import { useToast } from '@/ui/use-toast';
-import { ToastAction } from '@/ui/toast';
-import { Resource } from '@/data/resources/query';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/ui/alert-dialog';
 
 interface Props {
   children: ReactNode;
@@ -54,7 +53,8 @@ interface Props {
 }
 
 export const AddResourceSheet = ({ children, onAdd, resource }: Props) => {
-  const mode = resource ? 'edit' : 'add';
+  const isAddMode = !resource;
+  const isEditMode = !!resource;
 
   const formRef = useRef<HTMLFormElement>(null);
   const [open, setOpen] = useState(false);
@@ -172,39 +172,31 @@ export const AddResourceSheet = ({ children, onAdd, resource }: Props) => {
     });
 
   // Controlled inputs
-  const [link, setLink] = useState(resource?.link || '');
-  const [name, setName] = useState(resource?.name || '');
-  const [slug, setSlug] = useState(resource?.id || '');
-  const [typeId, setTypeId] = useState(resource?.type.name || '');
-  const [categoryId, setCategoryId] = useState(resource?.category.name || '');
-  const [topicIds, setTopicIds] = useState<Array<string>>(
-    resource?.topics.map((topic) => topic.name) || [],
-  );
-  const [shortDescription, setShortDescription] = useState(
-    resource?.shortDescription || '',
-  );
-  const [details, setDetails] = useState(resource?.details || '');
-  const [description, setDescription] = useState(resource?.description || '');
-  const [date, setDate] = useState<Date | undefined>(
-    resource?.date ?? undefined,
-  );
-  const [datePlain, setDatePlain] = useState(resource?.datePlain || '');
+  const [link, setLink] = useState('');
+  const [name, setName] = useState('');
+  const [slug, setSlug] = useState('');
+  const [typeId, setTypeId] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+  const [topicIds, setTopicIds] = useState<Array<string>>([]);
+  const [shortDescription, setShortDescription] = useState('');
+  const [details, setDetails] = useState('');
+  const [description, setDescription] = useState('');
+  const [date, setDate] = useState<Date>();
+  const [datePlain, setDatePlain] = useState('');
   const [relatedResourceIds, setRelatedrelatedResourceIds] = useState<
     Array<string>
-  >(
-    resource?.relatedResources.map((relatedResource) => relatedResource.id) ||
-      [],
-  );
-  const [relatedResourcesPlain, setRelatedResourcesPlain] = useState(
-    resource?.relatedResourcesPlain || '',
-  );
+  >([]);
+  const [relatedResourcesPlain, setRelatedResourcesPlain] = useState('');
   const [suggestion, setSuggestion] = useState<boolean | 'indeterminate'>(
-    resource?.suggestion || false,
+    false,
   );
-  const [note, setNote] = useState(resource?.note || '');
+  const [note, setNote] = useState('');
 
   const onOpenChange = (open: boolean) => {
     if (open) {
+      if (isEditMode) {
+        setUpForm(resource);
+      }
       fetchTypes();
       fetchCategories();
       fetchTopics();
@@ -214,6 +206,26 @@ export const AddResourceSheet = ({ children, onAdd, resource }: Props) => {
     }
 
     setOpen(open);
+  };
+
+  const setUpForm = (resource: Resource) => {
+    setLink(resource.link);
+    setName(resource.name);
+    setSlug(resource.id);
+    setTypeId(resource.type.name);
+    setCategoryId(resource.category.name);
+    setTopicIds(resource.topics.map((topic) => topic.name));
+    setShortDescription(resource.shortDescription || '');
+    setDescription(resource.description || '');
+    setDetails(resource.details || '');
+    setDate(resource.date || undefined);
+    setDatePlain(resource.datePlain || '');
+    setRelatedrelatedResourceIds(
+      resource.relatedResources.map((resource) => resource.id),
+    );
+    setRelatedResourcesPlain(resource.relatedResourcesPlain || '');
+    setSuggestion(resource.suggestion);
+    setNote(resource.note || '');
   };
 
   const resetForm = () => {
@@ -248,11 +260,11 @@ export const AddResourceSheet = ({ children, onAdd, resource }: Props) => {
         <form
           ref={formRef}
           action={() => {
-            const action = mode === 'add' ? addResource : editResource;
+            const action = isAddMode ? addResource : editResource;
             action({
               link,
               name,
-              id: mode === 'add' ? slug : resource?.id || '',
+              id: isAddMode ? slug : resource?.id || '',
               typeId,
               categoryId,
               topicIds,
@@ -269,9 +281,9 @@ export const AddResourceSheet = ({ children, onAdd, resource }: Props) => {
           }}
         >
           <SheetHeader>
-            <SheetTitle>{mode === 'add' ? 'Add' : 'Edit'} Resource</SheetTitle>
+            <SheetTitle>{isAddMode ? 'Add' : 'Edit'} Resource</SheetTitle>
             <SheetDescription>
-              {mode === 'add'
+              {isAddMode
                 ? 'Add a new resource to the list of resources.'
                 : 'Edit the selected resource.'}
             </SheetDescription>
@@ -293,7 +305,7 @@ export const AddResourceSheet = ({ children, onAdd, resource }: Props) => {
                     setLink(e.target.value);
                   }}
                 />
-                {mode === 'add' && (
+                {isAddMode && (
                   <Button
                     type="button"
                     variant="secondary"
@@ -346,7 +358,7 @@ export const AddResourceSheet = ({ children, onAdd, resource }: Props) => {
             </div>
 
             {/* Slug */}
-            {mode === 'add' && (
+            {isAddMode && (
               <div className="flex flex-col gap-2">
                 <Label htmlFor="name">Slug*</Label>
                 <Input
@@ -691,13 +703,24 @@ export const AddResourceSheet = ({ children, onAdd, resource }: Props) => {
               )}
             </div>
 
-            {(addResourceError || editResourceError) && (
+            {/* Errors */}
+            {addResourceError && (
               <InfoBox
                 variant="error"
                 icon={<AlertTriangle />}
                 className="duration-150 ease-in-out animate-in fade-in zoom-in-50"
               >
-                {addResourceError || editResourceError}
+                {addResourceError}
+              </InfoBox>
+            )}
+
+            {editResourceError && (
+              <InfoBox
+                variant="error"
+                icon={<AlertTriangle />}
+                className="duration-150 ease-in-out animate-in fade-in zoom-in-50"
+              >
+                {editResourceError}
               </InfoBox>
             )}
           </div>
@@ -717,7 +740,7 @@ export const AddResourceSheet = ({ children, onAdd, resource }: Props) => {
               Revalidate Cache
             </Button>
             <div className="flex gap-4">
-              {resource && (
+              {isEditMode && (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button
@@ -764,7 +787,7 @@ export const AddResourceSheet = ({ children, onAdd, resource }: Props) => {
                 {(isAddResourceRunning || isEditResourceRunning) && (
                   <Loader2 size={16} className="animate-spin" />
                 )}
-                {mode === 'add' ? 'Add' : 'Edit'} resource
+                {isAddMode ? 'Add' : 'Edit'} resource
               </Button>
             </div>
           </div>
