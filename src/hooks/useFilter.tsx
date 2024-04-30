@@ -19,7 +19,7 @@ export const useFilter = () => {
   const filter = (
     { scrollTop = true }: FilterOptions = { scrollTop: true },
   ) => {
-    const searchParamsString = searchParams.toString();
+    const searchParamsString = searchParams.toString().toLowerCase();
     startTransition(() => {
       replace(
         `${pathname}${searchParamsString ? '?' : ''}${searchParamsString}`,

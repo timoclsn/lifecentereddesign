@@ -45,6 +45,7 @@ import { ReactNode, useRef, useState } from 'react';
 import { AddCategorySheet } from './AddCategorySheet';
 import { AddTopicSheet } from './AddTopicSheet';
 import { AddTypeSheet } from './AddTypeSheet';
+import { Info } from 'lucide-react';
 
 interface Props {
   children: ReactNode;
@@ -215,17 +216,17 @@ export const AddOrEditResourceSheet = ({
   const setUpForm = (resource: Resource) => {
     setLink(resource.link);
     setName(resource.name);
-    setSlug(resource.id);
-    setTypeId(resource.type.name);
-    setCategoryId(resource.category.name);
-    setTopicIds(resource.topics.map((topic) => topic.name));
+    setSlug(resource.slug);
+    setTypeId(String(resource.type.id));
+    setCategoryId(String(resource.category.id));
+    setTopicIds(resource.topics.map((topic) => String(topic.id)));
     setShortDescription(resource.shortDescription || '');
     setDescription(resource.description || '');
     setDetails(resource.details || '');
     setDate(resource.date || undefined);
     setDatePlain(resource.datePlain || '');
     setRelatedrelatedResourceIds(
-      resource.relatedResources.map((resource) => resource.id),
+      resource.relatedResources.map((resource) => String(resource.id)),
     );
     setRelatedResourcesPlain(resource.relatedResourcesPlain || '');
     setSuggestion(resource.suggestion);
@@ -266,18 +267,19 @@ export const AddOrEditResourceSheet = ({
           action={() => {
             const action = isAddMode ? addResource : editResource;
             action({
+              id: isEditMode ? resource.id : 0,
               link,
               name,
-              id: isAddMode ? slug : resource?.id || '',
-              typeId,
-              categoryId,
-              topicIds,
+              slug,
+              typeId: Number(typeId),
+              categoryId: Number(categoryId),
+              topicIds: topicIds.map(Number),
               shortDescription,
               description,
               details,
               date,
               datePlain,
-              relatedResourceIds: relatedResourceIds,
+              relatedResourceIds: relatedResourceIds.map(Number),
               relatedResourcesPlain,
               suggestion: suggestion === true,
               note,
@@ -362,25 +364,29 @@ export const AddOrEditResourceSheet = ({
             </div>
 
             {/* Slug */}
-            {isAddMode && (
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="name">Slug*</Label>
-                <Input
-                  id="slug"
-                  name="slug"
-                  type="text"
-                  placeholder="the-best-resource-ever"
-                  required
-                  value={slug}
-                  onChange={(e) => setSlug(sluggify(e.target.value))}
-                />
-                {addResourceValidationErrors?.id && (
-                  <InputError>{addResourceValidationErrors.id[0]}</InputError>
-                )}
-                {editResourceValidationErrors?.id && (
-                  <InputError>{editResourceValidationErrors.id[0]}</InputError>
-                )}
-              </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="name">Slug*</Label>
+              <Input
+                id="slug"
+                name="slug"
+                type="text"
+                placeholder="the-best-resource-ever"
+                required
+                value={slug}
+                onChange={(e) => setSlug(sluggify(e.target.value))}
+              />
+              {addResourceValidationErrors?.id && (
+                <InputError>{addResourceValidationErrors.id[0]}</InputError>
+              )}
+              {editResourceValidationErrors?.id && (
+                <InputError>{editResourceValidationErrors.id[0]}</InputError>
+              )}
+            </div>
+
+            {isEditMode && (
+              <InfoBox variant="info" icon={<Info />}>
+                Add redirect when changing the slug.
+              </InfoBox>
             )}
 
             {/* Type */}
@@ -399,7 +405,7 @@ export const AddOrEditResourceSheet = ({
                   <SelectContent>
                     {types?.map((type) => {
                       return (
-                        <SelectItem key={type.name} value={type.name}>
+                        <SelectItem key={type.name} value={String(type.id)}>
                           {type.name}
                         </SelectItem>
                       );
@@ -440,7 +446,10 @@ export const AddOrEditResourceSheet = ({
                   <SelectContent>
                     {categories?.map((category) => {
                       return (
-                        <SelectItem key={category.name} value={category.name}>
+                        <SelectItem
+                          key={category.name}
+                          value={String(category.id)}
+                        >
                           {category.name}
                         </SelectItem>
                       );
@@ -478,7 +487,7 @@ export const AddOrEditResourceSheet = ({
                   options={
                     topics?.map((topic) => ({
                       label: topic.name,
-                      value: topic.name,
+                      value: String(topic.id),
                     })) || []
                   }
                   placeholder="Select topics"
@@ -616,7 +625,7 @@ export const AddOrEditResourceSheet = ({
                   options={
                     resources?.map((resource) => ({
                       label: resource.name,
-                      value: resource.id,
+                      value: String(resource.id),
                     })) || []
                   }
                   placeholder="Select related resources"

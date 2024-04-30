@@ -13,20 +13,21 @@ import {
 export const resource = sqliteTable(
   'resource',
   {
-    id: text('id', { mode: 'text', length: 256 }).primaryKey(),
+    id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
     createdAt: integer('created_at', { mode: 'timestamp' })
       .notNull()
       .default(sql`(unixepoch())`),
     name: text('name', { mode: 'text', length: 256 }).notNull(),
+    slug: text('slug', { mode: 'text', length: 256 }).unique().notNull(),
     suggestion: integer('suggestion', { mode: 'boolean' })
       .notNull()
       .default(false),
     link: text('link', { mode: 'text', length: 256 }).notNull(),
-    typeId: text('type_id', { mode: 'text', length: 256 })
+    typeId: integer('type_id', { mode: 'number' })
       .notNull()
-      .references(() => type.name),
-    categoryId: text('category_id', { mode: 'text', length: 256 }).references(
-      () => category.name,
+      .references(() => type.id),
+    categoryId: integer('category_id', { mode: 'number' }).references(
+      () => category.id,
     ),
     shortDescription: text('short_description', { mode: 'text' }),
     description: text('description', { mode: 'text' }),
@@ -57,11 +58,11 @@ export const resource = sqliteTable(
 export const resourceRelations = relations(resource, ({ one, many }) => ({
   type: one(type, {
     fields: [resource.typeId],
-    references: [type.name],
+    references: [type.id],
   }),
   category: one(category, {
     fields: [resource.categoryId],
-    references: [category.name],
+    references: [category.id],
   }),
   topics: many(resourceToTopic),
   relatedResources: many(resourceToRelatedResource, {
@@ -75,13 +76,10 @@ export const resourceRelations = relations(resource, ({ one, many }) => ({
 export const resourceToRelatedResource = sqliteTable(
   'resource_to_related_resource',
   {
-    resourceId: text('resource_id', { mode: 'text', length: 256 })
+    resourceId: integer('resource_id', { mode: 'number' })
       .notNull()
       .references(() => resource.id),
-    relatedResourceId: text('related_resource_id', {
-      mode: 'text',
-      length: 256,
-    })
+    relatedResourceId: integer('related_resource_id', { mode: 'number' })
       .notNull()
       .references(() => resource.id),
   },
@@ -109,7 +107,8 @@ export const resourceToRelatedResourceRelations = relations(
 // Type table
 
 export const type = sqliteTable('type', {
-  name: text('name', { mode: 'text', length: 256 }).primaryKey(),
+  id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+  name: text('name', { mode: 'text', length: 256 }).unique().notNull(),
   createdAt: integer('created_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`),
@@ -122,7 +121,8 @@ export const typeRelations = relations(type, ({ many }) => ({
 // Category table
 
 export const category = sqliteTable('category', {
-  name: text('name', { mode: 'text', length: 256 }).primaryKey(),
+  id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+  name: text('name', { mode: 'text', length: 256 }).unique().notNull(),
   createdAt: integer('created_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`),
@@ -135,7 +135,8 @@ export const categoryRelations = relations(category, ({ many }) => ({
 // Topic table
 
 export const topic = sqliteTable('topic', {
-  name: text('name', { mode: 'text', length: 256 }).primaryKey(),
+  id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+  name: text('name', { mode: 'text', length: 256 }).unique().notNull(),
   createdAt: integer('created_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`),
@@ -150,12 +151,12 @@ export const topicRelations = relations(topic, ({ many }) => ({
 export const resourceToTopic = sqliteTable(
   'resource_to_topic',
   {
-    resourceId: text('resource_id', { mode: 'text', length: 256 })
+    resourceId: integer('resource_id', { mode: 'number' })
       .notNull()
       .references(() => resource.id),
-    topicId: text('topic_id', { mode: 'text', length: 256 })
+    topicId: integer('topic_id', { mode: 'number' })
       .notNull()
-      .references(() => topic.name),
+      .references(() => topic.id),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.resourceId, table.topicId] }),
@@ -171,7 +172,7 @@ export const resourceToTopicRelations = relations(
     }),
     topic: one(topic, {
       fields: [resourceToTopic.topicId],
-      references: [topic.name],
+      references: [topic.id],
     }),
   }),
 );
@@ -186,7 +187,7 @@ export const like = sqliteTable(
       .notNull()
       .default(sql`(unixepoch())`),
     userId: text('user_id', { mode: 'text', length: 256 }).notNull(),
-    resourceId: text('resource_id', { mode: 'text', length: 256 })
+    resourceId: integer('resource_id', { mode: 'number' })
       .notNull()
       .references(() => resource.id),
   },
@@ -212,7 +213,7 @@ export const comment = sqliteTable(
       .notNull()
       .default(sql`(unixepoch())`),
     userId: text('user_id', { mode: 'text', length: 256 }).notNull(),
-    resourceId: text('resource_id', { mode: 'text', length: 256 })
+    resourceId: integer('resource_id', { mode: 'number' })
       .notNull()
       .references(() => resource.id),
     text: text('text', { mode: 'text' }).notNull(),

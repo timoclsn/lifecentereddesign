@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { wait } from '../../lib/utils/utils';
 
 interface Props {
-  id: string;
+  id: number;
   link: string;
 }
 

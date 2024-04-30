@@ -39,20 +39,21 @@ export const getResources = createAction({
 });
 
 const addOrEditResourceSchema = z.object({
-  id: z.string(),
+  id: z.number(),
   name: z.string(),
+  slug: z.string(),
   suggestion: z.boolean().optional(),
   link: z.string(),
-  typeId: z.string(),
-  categoryId: z.string(),
-  topicIds: z.array(z.string()).optional(),
+  typeId: z.number(),
+  categoryId: z.number(),
+  topicIds: z.array(z.number()).optional(),
   shortDescription: z.string().optional(),
   description: z.string().optional(),
   details: z.string().optional(),
   note: z.string().optional(),
   date: z.date().optional(),
   datePlain: z.string().optional(),
-  relatedResourceIds: z.array(z.string()).optional(),
+  relatedResourceIds: z.array(z.number()).optional(),
   relatedResourcesPlain: z.string().optional(),
 });
 
@@ -61,11 +62,11 @@ export const addResource = createAdminAction({
   action: async ({ input, ctx }) => {
     const { db } = ctx;
 
-    await db
+    const [newResource] = await db
       .insert(resource)
       .values({
-        id: input.id,
         name: input.name,
+        slug: input.slug,
         suggestion: input.suggestion,
         link: input.link,
         typeId: input.typeId,
@@ -78,6 +79,7 @@ export const addResource = createAdminAction({
         datePlain: input.datePlain,
         relatedResourcesPlain: input.relatedResourcesPlain,
       })
+      .returning()
       .catch((error) => {
         throw new ActionError({
           message: 'Error adding resource',
@@ -91,7 +93,7 @@ export const addResource = createAdminAction({
         .insert(resourceToTopic)
         .values(
           input.topicIds.map((topicId) => ({
-            resourceId: input.id,
+            resourceId: newResource.id,
             topicId,
           })),
         )
@@ -109,7 +111,7 @@ export const addResource = createAdminAction({
         .insert(resourceToRelatedResource)
         .values(
           input.relatedResourceIds.map((relatedResourceId) => ({
-            resourceId: input.id,
+            resourceId: newResource.id,
             relatedResourceId,
           })),
         )
@@ -131,10 +133,11 @@ export const editResource = createAdminAction({
   action: async ({ input, ctx }) => {
     const { db } = ctx;
 
-    await db
+    const [editedResource] = await db
       .update(resource)
       .set({
         name: input.name,
+        slug: input.slug,
         suggestion: input.suggestion,
         link: input.link,
         typeId: input.typeId,
@@ -148,6 +151,7 @@ export const editResource = createAdminAction({
         relatedResourcesPlain: input.relatedResourcesPlain,
       })
       .where(eq(resource.id, input.id))
+      .returning()
       .catch((error) => {
         throw new ActionError({
           message: 'Error editing resource',
@@ -215,12 +219,13 @@ export const editResource = createAdminAction({
     }
 
     revalidateTag('resources');
+    redirect(`/resources/${editedResource.slug}`);
   },
 });
 
 export const deleteResource = createAdminAction({
   input: z.object({
-    id: z.string(),
+    id: z.number(),
   }),
   action: async ({ input, ctx }) => {
     const { db } = ctx;
@@ -287,7 +292,7 @@ export const deleteResource = createAdminAction({
 
 export const like = createAction({
   input: z.object({
-    id: z.string(),
+    id: z.number(),
   }),
   action: async ({ input, ctx }) => {
     const { id } = input;
@@ -333,7 +338,7 @@ export const like = createAction({
 
 export const unLike = createProtectedAction({
   input: z.object({
-    id: z.string(),
+    id: z.number(),
   }),
   action: async ({ input, ctx }) => {
     const { id } = input;
@@ -357,7 +362,7 @@ export const unLike = createProtectedAction({
 
 export const addComment = createProtectedAction({
   input: z.object({
-    id: z.string(),
+    id: z.number(),
     text: z
       .string()
       .min(3, { message: 'Your comment has to be at least 3 characters.' })
@@ -390,7 +395,7 @@ export const addComment = createProtectedAction({
 
 export const deleteComment = createProtectedAction({
   input: z.object({
-    resourceId: z.string(),
+    resourceId: z.number(),
     commentId: z.number(),
     commentUserId: z.string(),
   }),

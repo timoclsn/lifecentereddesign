@@ -5,24 +5,24 @@ export interface TrackingEvents {
   'Download Resources': null;
   'Resource Suggestion': null;
   'Copy Resource Link': {
-    id: string;
+    id: number;
     link: string;
   };
   'Open resource': {
-    id: string;
+    id: number;
   };
   'Share Resource Link': {
-    id: string;
+    id: number;
     link: string;
   };
   'Like resource': {
-    id: string;
+    id: number;
   };
   'Un-like resource': {
-    id: string;
+    id: number;
   };
   'Comment Added': {
-    id: string;
+    id: number;
   };
   'Uncaught error': {
     message: string;

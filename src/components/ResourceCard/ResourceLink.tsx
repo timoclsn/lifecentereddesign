@@ -7,7 +7,7 @@ import { ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
-  id: string;
+  id: number;
   link: string;
   className?: string;
 }

@@ -33,7 +33,7 @@ export const CategoryFilter = ({ categories }: Props) => {
           All
         </Select.Item>
         {categories.map((category) => (
-          <Select.Item key={category.name} value={category.name}>
+          <Select.Item key={category.name} value={category.name.toLowerCase()}>
             {category.name}
           </Select.Item>
         ))}

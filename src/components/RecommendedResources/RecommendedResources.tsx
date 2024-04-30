@@ -15,12 +15,12 @@ import { ResourceCard } from '../ResourceCard/ResourceCard';
 import birdsImg from './birds.jpg';
 
 interface Props {
-  id: string;
+  slug: string;
 }
 
-export const RecommendedResources = ({ id }: Props) => {
-  const promise = query.resources.getRecommendedResources({
-    id,
+export const RecommendedResources = ({ slug }: Props) => {
+  const promise = query.resources.getRecommendedResourcesBySlug({
+    slug,
   });
 
   return (

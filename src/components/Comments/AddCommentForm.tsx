@@ -22,7 +22,7 @@ const errorStyles =
   'absolute left-0 bottom-0 -mb-4 text-red-700 text-sm slide-in-from-top-full duration-100 ease-in-out fade-in animate-in';
 
 interface Props {
-  id: string;
+  id: number;
 }
 
 export const AddCommentForm = ({ id }: Props) => {

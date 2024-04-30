@@ -7,13 +7,13 @@ import { EditResourceButton } from '../AddOrEditResource/EditResourceButton';
 import { auth } from '@clerk/nextjs/server';
 
 interface Props {
-  id: string;
+  slug: string;
 }
 
-export const ResourceDetailsCard = ({ id }: Props) => {
+export const ResourceDetailsCard = ({ slug }: Props) => {
   const { userId } = auth();
-  const promise = query.resources.getResource({
-    id,
+  const promise = query.resources.getResourceBySlug({
+    slug,
   });
 
   return (

@@ -33,7 +33,7 @@ export const TypeFilter = ({ types }: Props) => {
           All
         </Select.Item>
         {types.map((type) => (
-          <Select.Item key={type.name} value={type.name}>
+          <Select.Item key={type.name} value={type.name.toLowerCase()}>
             {type.name}
           </Select.Item>
         ))}

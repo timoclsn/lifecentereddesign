@@ -26,17 +26,17 @@ export const getResources = createQuery({
     filter: z
       .object({
         mode: z.enum(['and', 'or']).optional(),
-        id: z.array(z.string()).optional(),
+        id: z.array(z.number()).optional(),
         type: z.array(z.string()).optional(),
         category: z.array(z.string()).optional(),
         topic: z.array(z.string()).optional(),
-        relatedResource: z.array(z.string()).optional(),
+        relatedResource: z.array(z.number()).optional(),
         search: z.string().optional().optional(),
         from: z.date().optional(),
         till: z.date().optional(),
         liked: z.boolean().optional(),
         commented: z.boolean().optional(),
-        exclude: z.array(z.string()).optional(),
+        exclude: z.array(z.number()).optional(),
       })
       .optional()
       .default({}),
@@ -68,13 +68,13 @@ export const getResources = createQuery({
   },
 });
 
-export const getResource = createQuery({
+export const getResourceBySlug = createQuery({
   input: z.object({
-    id: z.string(),
+    slug: z.string(),
   }),
   cache: ({ input }) => {
-    const { id } = input;
-    const key = `resource-${id}`;
+    const { slug } = input;
+    const key = `resource-${slug}`;
     return {
       keyParts: [key],
       options: {
@@ -83,13 +83,13 @@ export const getResource = createQuery({
     };
   },
   query: async ({ input, ctx }) => {
-    const { id } = input;
+    const { slug } = input;
     const { userId } = ctx;
 
     const { resources } = await selectResources({
       userId,
       filter: {
-        id: [id],
+        slug: [slug],
       },
     });
 
@@ -133,7 +133,7 @@ export const getLikedResourcesCount = createQuery({
 
 export const getResourceComments = createQuery({
   input: z.object({
-    id: z.string(),
+    id: z.number(),
   }),
   cache: ({ input }) => {
     const { id } = input;
@@ -188,7 +188,7 @@ export const getCommentedResourcesCount = createQuery({
 
 export const getOgImageLink = createQuery({
   input: z.object({
-    id: z.string(),
+    id: z.number(),
     url: z.string().url(),
   }),
   cache: ({ input }) => {
@@ -237,14 +237,14 @@ export const getResourcesCount = createQuery({
   },
 });
 
-export const getRecommendedResources = createQuery({
+export const getRecommendedResourcesBySlug = createQuery({
   input: z.object({
-    id: z.string(),
+    slug: z.string(),
   }),
   cache: ({ input, ctx }) => {
-    const { id } = input;
+    const { slug } = input;
     const { userId } = ctx;
-    const key = `recommended-resources-${id}-${userId}`;
+    const key = `recommended-resources-${slug}-${userId}`;
     return {
       keyParts: [key],
       options: {
@@ -253,7 +253,7 @@ export const getRecommendedResources = createQuery({
     };
   },
   query: async ({ input, ctx }) => {
-    const { id } = input;
+    const { slug } = input;
     const { userId } = ctx;
 
     const recommendedResources: Resources = [];
@@ -261,7 +261,7 @@ export const getRecommendedResources = createQuery({
     const { resources } = await selectResources({
       userId,
       filter: {
-        id: [id],
+        slug: [slug],
       },
     });
 

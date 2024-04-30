@@ -7,6 +7,7 @@ const styles = cva({
     variant: {
       success: 'bg-green-700',
       error: 'bg-red-700',
+      info: 'bg-blue-700',
     },
   },
 });

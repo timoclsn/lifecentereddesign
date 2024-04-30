@@ -21,7 +21,7 @@ const heartVariants = cva({
 });
 
 interface Props {
-  id: string;
+  id: number;
   count: number;
   liked: boolean;
 }

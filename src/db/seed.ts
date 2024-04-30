@@ -148,27 +148,27 @@ const main = async () => {
   // Insert resources
   await db.insert(resource).values(
     Array.from({ length: COUNT }, (_, i) => ({
-      id: sluggify(`Resource ${i + 1}`),
+      slug: sluggify(`Resource ${i + 1}`),
       name: `Resource ${i + 1}`,
-      link: `Link ${i + 1}`,
-      typeId: String(Math.floor(Math.random() * COUNT) + 1),
-      categoryId: String(Math.floor(Math.random() * COUNT) + 1),
+      link: `https://timoclasen.de#${i + 1}`,
+      typeId: Math.floor(Math.random() * COUNT) + 1,
+      categoryId: Math.floor(Math.random() * COUNT) + 1,
     })),
   );
 
   // Link resources to topics
   await db.insert(resourceToTopic).values(
     Array.from({ length: COUNT }, (_, i) => ({
-      resourceId: String(i + 1),
-      topicId: String(i + 1),
+      resourceId: i + 1,
+      topicId: i + 1,
     })),
   );
 
   // Link resources to creators
   await db.insert(resourceToRelatedResource).values(
     Array.from({ length: COUNT }, (_, i) => ({
-      resourceId: String(i + 1),
-      relatedResourceId: String(i + 1),
+      resourceId: i + 1,
+      relatedResourceId: i + 1,
     })),
   );
 
@@ -176,7 +176,7 @@ const main = async () => {
   await db.insert(like).values(
     Array.from({ length: 50 }, (_, i) => ({
       userId: `userId-${i + 1}`,
-      resourceId: String(Math.floor(Math.random() * COUNT) + 1),
+      resourceId: Math.floor(Math.random() * COUNT) + 1,
     })),
   );
 
@@ -184,7 +184,7 @@ const main = async () => {
   await db.insert(comment).values(
     Array.from({ length: 50 }, (_, i) => ({
       userId: `userId-${i + 1}`,
-      resourceId: String(Math.floor(Math.random() * COUNT) + 1),
+      resourceId: Math.floor(Math.random() * COUNT) + 1,
       text: `Comment ${i + 1}`,
     })),
   );

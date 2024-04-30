@@ -11,8 +11,8 @@ import { getBaseUrl } from '../../../lib/utils/utils';
 export const generateMetadata = createGenerateMetadata(async ({ params }) => {
   const { slug } = params;
 
-  const resource = await query.resources.getResource({
-    id: slug,
+  const resource = await query.resources.getResourceBySlug({
+    slug,
   });
 
   if (!resource) {
@@ -72,9 +72,9 @@ const ResourcePage = async ({ params }: Props) => {
 
   return (
     <>
-      <ResourceDetailsCard id={slug} />
-      <Comments id={slug} />
-      <RecommendedResources id={slug} />
+      <ResourceDetailsCard slug={slug} />
+      <Comments slug={slug} />
+      <RecommendedResources slug={slug} />
       <NewResources />
       <Newsletter />
     </>

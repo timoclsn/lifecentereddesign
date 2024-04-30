@@ -5,7 +5,7 @@ import { Avatar } from './Avatar';
 import { DeleteCommentButton } from './DeleteCommentButton';
 
 interface Props {
-  resourceId: string;
+  resourceId: number;
   commentId: number;
   userId: string;
   username: string;

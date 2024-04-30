@@ -7,7 +7,7 @@ import { useToast } from '@/ui/use-toast';
 import { Loader2, Trash2 } from 'lucide-react';
 
 interface Props {
-  resourceId: string;
+  resourceId: number;
   commentId: number;
   commentUserId: string;
 }

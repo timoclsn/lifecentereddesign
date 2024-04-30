@@ -7,7 +7,7 @@ export const topicsList = (topics: Topics) => {
   return topics.map((topic, index) => {
     return (
       <Fragment key={topic.name}>
-        <TopicsButton topic={topic.name}>{topic.name}</TopicsButton>
+        <TopicsButton topicName={topic.name}>{topic.name}</TopicsButton>
         {index !== topics.length - 1 && ', '}
       </Fragment>
     );
@@ -25,9 +25,9 @@ export const catagorizeRelatedResources = (resources: RelatedResources) => {
   };
 
   resources.forEach((resource) => {
-    if (resource.type === 'Thoughtleader') {
+    if (resource.type === 1) {
       relatedResources.thoughtleaders.push(resource);
-    } else if (resource.type === 'Podcast') {
+    } else if (resource.type === 2) {
       relatedResources.podcasts.push(resource);
     } else {
       relatedResources.others.push(resource);
