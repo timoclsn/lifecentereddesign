@@ -1,3 +1,4 @@
+import { resource } from '@/db/schema';
 import { revalidateTag as nextRevalidateTag } from 'next/cache';
 
 type CacheTags = typeof cacheTags;

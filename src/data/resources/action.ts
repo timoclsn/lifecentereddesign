@@ -5,7 +5,9 @@ import {
   createAdminAction,
   createProtectedAction,
 } from '@/data/clients';
+import { ActionError } from '@/lib/data/errors';
 import { and, eq, sql } from 'drizzle-orm';
+import { redirect } from 'next/navigation';
 import nodemailer from 'nodemailer';
 import OpenAI from 'openai';
 import { z } from 'zod';
@@ -20,7 +22,6 @@ import { selectCategories } from '../categories/categories';
 import { revalidateTag } from '../tags';
 import { selectTopics } from '../topics/topics';
 import { selectTypes } from '../types/types';
-import { ActionError } from '@/lib/data/errors';
 
 const { SUGGESTION_MAIL_PASSWORD } = process.env;
 
@@ -37,24 +38,26 @@ export const getResources = createAction({
   },
 });
 
+const addOrEditResourceSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  suggestion: z.boolean().optional(),
+  link: z.string(),
+  typeId: z.string(),
+  categoryId: z.string(),
+  topicIds: z.array(z.string()).optional(),
+  shortDescription: z.string().optional(),
+  description: z.string().optional(),
+  details: z.string().optional(),
+  note: z.string().optional(),
+  date: z.date().optional(),
+  datePlain: z.string().optional(),
+  relatedResourceIds: z.array(z.string()).optional(),
+  relatedResourcesPlain: z.string().optional(),
+});
+
 export const addResource = createAdminAction({
-  input: z.object({
-    id: z.string(),
-    name: z.string(),
-    suggestion: z.boolean().optional(),
-    link: z.string(),
-    typeId: z.string(),
-    categoryId: z.string(),
-    topicIds: z.array(z.string()).optional(),
-    shortDescription: z.string().optional(),
-    description: z.string().optional(),
-    details: z.string().optional(),
-    note: z.string().optional(),
-    date: z.date().optional(),
-    datePlain: z.string().optional(),
-    relatedResourceIds: z.array(z.string()).optional(),
-    relatedResourcesPlain: z.string().optional(),
-  }),
+  input: addOrEditResourceSchema,
   action: async ({ input, ctx }) => {
     const { db } = ctx;
 
@@ -83,7 +86,7 @@ export const addResource = createAdminAction({
         });
       });
 
-    if (input.topicIds) {
+    if (input.topicIds && input.topicIds.length > 0) {
       await db
         .insert(resourceToTopic)
         .values(
@@ -101,7 +104,7 @@ export const addResource = createAdminAction({
         });
     }
 
-    if (input.relatedResourceIds) {
+    if (input.relatedResourceIds && input.relatedResourceIds.length > 0) {
       await db
         .insert(resourceToRelatedResource)
         .values(
@@ -120,6 +123,165 @@ export const addResource = createAdminAction({
     }
 
     revalidateTag('resources');
+  },
+});
+
+export const editResource = createAdminAction({
+  input: addOrEditResourceSchema,
+  action: async ({ input, ctx }) => {
+    const { db } = ctx;
+
+    await db
+      .update(resource)
+      .set({
+        name: input.name,
+        suggestion: input.suggestion,
+        link: input.link,
+        typeId: input.typeId,
+        categoryId: input.categoryId,
+        shortDescription: input.shortDescription,
+        description: input.description,
+        details: input.details,
+        note: input.note,
+        date: input.date,
+        datePlain: input.datePlain,
+        relatedResourcesPlain: input.relatedResourcesPlain,
+      })
+      .where(eq(resource.id, input.id))
+      .catch((error) => {
+        throw new ActionError({
+          message: 'Error editing resource',
+          log: 'Error updating resource in resources table',
+          cause: error,
+        });
+      });
+
+    if (input.topicIds && input.topicIds.length > 0) {
+      await db
+        .delete(resourceToTopic)
+        .where(eq(resourceToTopic.resourceId, input.id))
+        .catch((error) => {
+          throw new ActionError({
+            message: 'Error editing resource',
+            log: 'Error deleting resource from resourceToTopic table',
+            cause: error,
+          });
+        });
+
+      await db
+        .insert(resourceToTopic)
+        .values(
+          input.topicIds.map((topicId) => ({
+            resourceId: input.id,
+            topicId,
+          })),
+        )
+        .catch((error) => {
+          throw new ActionError({
+            message: 'Error adding resource',
+            log: 'Error adding resource to resourceToTopic table',
+            cause: error,
+          });
+        });
+    }
+
+    if (input.relatedResourceIds && input.relatedResourceIds.length > 0) {
+      await db
+        .delete(resourceToRelatedResource)
+        .where(eq(resourceToRelatedResource.resourceId, input.id))
+        .catch((error) => {
+          throw new ActionError({
+            message: 'Error editing resource',
+            log: 'Error deleting resource from resourceToRelatedResource table',
+            cause: error,
+          });
+        });
+
+      await db
+        .insert(resourceToRelatedResource)
+        .values(
+          input.relatedResourceIds.map((relatedResourceId) => ({
+            resourceId: input.id,
+            relatedResourceId,
+          })),
+        )
+        .catch((error) => {
+          throw new ActionError({
+            message: 'Error adding resource',
+            log: 'Error adding resource to resourceToRelatedResource table',
+            cause: error,
+          });
+        });
+    }
+
+    revalidateTag('resources');
+  },
+});
+
+export const deleteResource = createAdminAction({
+  input: z.object({
+    id: z.string(),
+  }),
+  action: async ({ input, ctx }) => {
+    const { db } = ctx;
+
+    await db
+      .delete(resourceToTopic)
+      .where(eq(resourceToTopic.resourceId, input.id))
+      .catch((error) => {
+        throw new ActionError({
+          message: 'Error deleting resource',
+          log: 'Error deleting topics from resourceToTopic table',
+          cause: error,
+        });
+      });
+
+    await db
+      .delete(resourceToRelatedResource)
+      .where(eq(resourceToRelatedResource.resourceId, input.id))
+      .catch((error) => {
+        throw new ActionError({
+          message: 'Error deleting resource',
+          log: 'Error deleting related resources from resourceToRelatedResource table',
+          cause: error,
+        });
+      });
+
+    await db
+      .delete(likeSchema)
+      .where(eq(likeSchema.resourceId, input.id))
+      .catch((error) => {
+        throw new ActionError({
+          message: 'Error deleting resource',
+          log: 'Error deleting resource likes from likes table',
+          cause: error,
+        });
+      });
+
+    await db
+      .delete(comment)
+      .where(eq(comment.resourceId, input.id))
+      .catch((error) => {
+        throw new ActionError({
+          message: 'Error deleting resource',
+          log: 'Error deleting resource comments from comments table',
+          cause: error,
+        });
+      });
+
+    await db
+      .delete(resource)
+      .where(eq(resource.id, input.id))
+      .catch((error) => {
+        throw new ActionError({
+          message: 'Error deleting resource',
+          log: 'Error deleting resource from resources table',
+          cause: error,
+        });
+      });
+
+    revalidateTag('resources');
+    redirect('/resources');
   },
 });
 

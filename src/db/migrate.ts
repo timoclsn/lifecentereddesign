@@ -263,7 +263,7 @@ const main = async () => {
   console.info('Migrating database...');
 
   const turso = createClient({
-    url: TURSO_DATABASE_URL,
+    url: TURSO_DATABASE_URL!,
     authToken: TURSO_AUTH_TOKEN,
   });
   const db = drizzle(turso, { schema });
@@ -360,9 +360,9 @@ const main = async () => {
           SELECT GROUP_CONCAT(r.name, '; ')
           FROM resource_to_related_resource rtc
           JOIN resource r ON rtc.related_resource_id = r.id
-          WHERE rtc.resource_id = NEW.resource_id
+          WHERE rtc.resource_id = OLD.resource_id
         )
-      WHERE id = NEW.resource_id;
+      WHERE id = OLD.resource_id;
     END;
     `,
   );

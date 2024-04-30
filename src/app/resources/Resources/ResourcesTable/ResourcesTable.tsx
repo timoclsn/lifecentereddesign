@@ -27,7 +27,7 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
     from,
     till,
   } = reseourcesFilter;
-  const user = auth();
+  const { userId } = auth();
 
   const promises = Promise.all([
     query.resources.getResources({
@@ -75,7 +75,7 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
               hasMore={hasMore}
               isFiltered={!isEmpty(reseourcesFilter)}
             />
-            {user.userId && <AddResourceButton />}
+            {userId && <AddResourceButton />}
           </div>
         </ResourcesTableProvider>
       )}

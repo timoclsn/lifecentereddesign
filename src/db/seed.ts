@@ -31,11 +31,11 @@ const main = async () => {
     sql`CREATE VIRTUAL TABLE resource_fts USING FTS5(
       id,
       name,
+      link,
+      short_description,
       description,
       details,
-      creator_names,
-      creator_descriptions,
-      creator_details,
+      related_resource_names,
     );`,
   );
 
@@ -43,8 +43,8 @@ const main = async () => {
     sql`CREATE TRIGGER insert_resource_fts after INSERT on resource
       BEGIN
         -- Insert the resource
-        INSERT INTO resource_fts (id, name, description, details)
-        VALUES (NEW.id, NEW.name, NEW.description, NEW.details);
+        INSERT INTO resource_fts (id, name, link, short_description,description, details)
+        VALUES (NEW.id, NEW.name, NEW.link, NEW.short_description, NEW.description, NEW.details);
       END;
     `,
   );
@@ -56,35 +56,25 @@ const main = async () => {
         UPDATE resource_fts
         SET
           name = NEW.name,
+          link = NEW.link,
           description = NEW.description,
+          short_description = NEW.short_description,
           details = NEW.details
         WHERE id = NEW.id;
 
-        -- Update the creator fields of all resources that have this creator
+        -- Update the relatedResource fields of all resources that have this relatedResource
         UPDATE resource_fts
-        SET 
-          creator_names = (
+        SET
+          related_resource_names = (
             SELECT GROUP_CONCAT(r.name, '; ')
-            FROM resource_to_creator rtc
-            JOIN resource r ON rtc.creator_id = r.id
-            WHERE rtc.resource_id = resource_fts.id
-          ),
-          creator_descriptions = (
-            SELECT GROUP_CONCAT(r.description, '; ')
-            FROM resource_to_creator rtc
-            JOIN resource r ON rtc.creator_id = r.id
-            WHERE rtc.resource_id = resource_fts.id
-          ),
-          creator_details = (
-            SELECT GROUP_CONCAT(r.details, '; ')
-            FROM resource_to_creator rtc
-            JOIN resource r ON rtc.creator_id = r.id
+            FROM resource_to_related_resource rtc
+            JOIN resource r ON rtc.related_resource_id = r.id
             WHERE rtc.resource_id = resource_fts.id
           )
         WHERE EXISTS (
           SELECT 1
-          FROM resource_to_creator rtc
-          WHERE rtc.creator_id = NEW.id AND rtc.resource_id = resource_fts.id
+          FROM resource_to_related_resource rtc
+          WHERE rtc.related_resource_id = NEW.id AND rtc.resource_id = resource_fts.id
         );
       END;
     `,
@@ -101,27 +91,15 @@ const main = async () => {
   );
 
   await db.run(
-    sql`CREATE TRIGGER insert_creator_fts after INSERT on resource_to_creator
+    sql`CREATE TRIGGER insert_relatedResource_fts after INSERT on resource_to_related_resource
     BEGIN
-      -- Update the creator fields of the resource
+      -- Update the relatedResource fields of the resource
       UPDATE resource_fts
-      SET 
-        creator_names = (
+      SET
+        related_resource_names = (
           SELECT GROUP_CONCAT(r.name, '; ')
-          FROM resource_to_creator rtc
-          JOIN resource r ON rtc.creator_id = r.id
-          WHERE rtc.resource_id = NEW.resource_id
-        ),
-        creator_descriptions = (
-          SELECT GROUP_CONCAT(r.description, '; ')
-          FROM resource_to_creator rtc
-          JOIN resource r ON rtc.creator_id = r.id
-          WHERE rtc.resource_id = NEW.resource_id
-        ),
-        creator_details = (
-          SELECT GROUP_CONCAT(r.details, '; ')
-          FROM resource_to_creator rtc
-          JOIN resource r ON rtc.creator_id = r.id
+          FROM resource_to_related_resource rtc
+          JOIN resource r ON rtc.related_resource_id = r.id
           WHERE rtc.resource_id = NEW.resource_id
         )
       WHERE id = NEW.resource_id;
@@ -130,30 +108,18 @@ const main = async () => {
   );
 
   await db.run(
-    sql`CREATE TRIGGER delete_creator_fts after DELETE on resource_to_creator
+    sql`CREATE TRIGGER delete_relatedResource_fts after DELETE on resource_to_related_resource
     BEGIN
-      -- Update the creator fields of the resource
+      -- Update the relatedResource fields of the resource
       UPDATE resource_fts
-      SET 
-        creator_names = (
+      SET
+        related_resource_names = (
           SELECT GROUP_CONCAT(r.name, '; ')
-          FROM resource_to_creator rtc
-          JOIN resource r ON rtc.creator_id = r.id
-          WHERE rtc.resource_id = NEW.resource_id
-        ),
-        creator_descriptions = (
-          SELECT GROUP_CONCAT(r.description, '; ')
-          FROM resource_to_creator rtc
-          JOIN resource r ON rtc.creator_id = r.id
-          WHERE rtc.resource_id = NEW.resource_id
-        ),
-        creator_details = (
-          SELECT GROUP_CONCAT(r.details, '; ')
-          FROM resource_to_creator rtc
-          JOIN resource r ON rtc.creator_id = r.id
-          WHERE rtc.resource_id = NEW.resource_id
+          FROM resource_to_related_resource rtc
+          JOIN resource r ON rtc.related_resource_id = r.id
+          WHERE rtc.resource_id = OLD.resource_id
         )
-      WHERE id = NEW.resource_id;
+      WHERE id = OLD.resource_id;
     END;
     `,
   );

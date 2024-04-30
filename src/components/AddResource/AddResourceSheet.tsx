@@ -34,13 +34,28 @@ import { AddTopicSheet } from './AddTopicSheet';
 import { AddTypeSheet } from './AddTypeSheet';
 import { useToast } from '@/ui/use-toast';
 import { ToastAction } from '@/ui/toast';
+import { Resource } from '@/data/resources/query';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/ui/alert-dialog';
 
 interface Props {
   children: ReactNode;
   onAdd?: () => void;
+  resource?: Resource;
 }
 
-export const AddResourceSheet = ({ children, onAdd }: Props) => {
+export const AddResourceSheet = ({ children, onAdd, resource }: Props) => {
+  const mode = resource ? 'edit' : 'add';
+
   const formRef = useRef<HTMLFormElement>(null);
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
@@ -106,6 +121,30 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
       resetForm();
     },
   });
+  const {
+    runAction: editResource,
+    isRunning: isEditResourceRunning,
+    error: editResourceError,
+    validationErrors: editResourceValidationErrors,
+  } = useAction(action.resources.editResource, {
+    onSuccess: () => {
+      onOpenChange(false);
+      resetForm();
+    },
+  });
+  const { runAction: deleteResource, isRunning: isDeleteResourceRunning } =
+    useAction(action.resources.deleteResource, {
+      onSuccess: () => {
+        onOpenChange(false);
+        resetForm();
+      },
+      onError: ({ error }) => {
+        toast({
+          title: `❌ ${error}`,
+          variant: 'destructive',
+        });
+      },
+    });
   const { runAction: revalidateCache, isRunning: isRevalidateCacheRunning } =
     useAction(action.cache.revalidateCache, {
       onSuccess: () => {
@@ -133,17 +172,36 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
     });
 
   // Controlled inputs
-  const [link, setLink] = useState('');
-  const [name, setName] = useState('');
-  const [slug, setSlug] = useState('');
-  const [typeId, setTypeId] = useState('');
-  const [categoryId, setCategoryId] = useState('');
-  const [topicIds, setTopicIds] = useState<Array<string>>([]);
-  const [description, setDescription] = useState('');
-  const [date, setDate] = useState<Date>();
+  const [link, setLink] = useState(resource?.link || '');
+  const [name, setName] = useState(resource?.name || '');
+  const [slug, setSlug] = useState(resource?.id || '');
+  const [typeId, setTypeId] = useState(resource?.type.name || '');
+  const [categoryId, setCategoryId] = useState(resource?.category.name || '');
+  const [topicIds, setTopicIds] = useState<Array<string>>(
+    resource?.topics.map((topic) => topic.name) || [],
+  );
+  const [shortDescription, setShortDescription] = useState(
+    resource?.shortDescription || '',
+  );
+  const [details, setDetails] = useState(resource?.details || '');
+  const [description, setDescription] = useState(resource?.description || '');
+  const [date, setDate] = useState<Date | undefined>(
+    resource?.date ?? undefined,
+  );
+  const [datePlain, setDatePlain] = useState(resource?.datePlain || '');
   const [relatedResourceIds, setRelatedrelatedResourceIds] = useState<
     Array<string>
-  >([]);
+  >(
+    resource?.relatedResources.map((relatedResource) => relatedResource.id) ||
+      [],
+  );
+  const [relatedResourcesPlain, setRelatedResourcesPlain] = useState(
+    resource?.relatedResourcesPlain || '',
+  );
+  const [suggestion, setSuggestion] = useState<boolean | 'indeterminate'>(
+    resource?.suggestion || false,
+  );
+  const [note, setNote] = useState(resource?.note || '');
 
   const onOpenChange = (open: boolean) => {
     if (open) {
@@ -159,16 +217,21 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
   };
 
   const resetForm = () => {
-    formRef.current?.reset();
     setLink('');
     setName('');
     setSlug('');
     setTypeId('');
     setCategoryId('');
     setTopicIds([]);
+    setShortDescription('');
     setDescription('');
+    setDetails('');
     setDate(undefined);
+    setDatePlain('');
     setRelatedrelatedResourceIds([]);
+    setRelatedResourcesPlain('');
+    setSuggestion(false);
+    setNote('');
   };
 
   return (
@@ -184,33 +247,33 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
       >
         <form
           ref={formRef}
-          action={(formData) => {
-            console.log('formData', formData.get('type'));
-            addResource({
-              id: slug,
-              name,
-              suggestion: Boolean(formData.get('suggestion') === 'on'),
+          action={() => {
+            const action = mode === 'add' ? addResource : editResource;
+            action({
               link,
+              name,
+              id: mode === 'add' ? slug : resource?.id || '',
               typeId,
               categoryId,
               topicIds,
-              shortDescription: String(formData.get('shortDescription')),
-              description: String(formData.get('description')),
-              details: String(formData.get('details')),
-              note: String(formData.get('note')),
+              shortDescription,
+              description,
+              details,
               date,
-              datePlain: String(formData.get('datePlain')),
+              datePlain,
               relatedResourceIds: relatedResourceIds,
-              relatedResourcesPlain: String(
-                formData.get('relatedResourcesPlain'),
-              ),
+              relatedResourcesPlain,
+              suggestion: suggestion === true,
+              note,
             });
           }}
         >
           <SheetHeader>
-            <SheetTitle>Add Resource</SheetTitle>
+            <SheetTitle>{mode === 'add' ? 'Add' : 'Edit'} Resource</SheetTitle>
             <SheetDescription>
-              Add a new resource to the list of resources.
+              {mode === 'add'
+                ? 'Add a new resource to the list of resources.'
+                : 'Edit the selected resource.'}
             </SheetDescription>
           </SheetHeader>
 
@@ -230,27 +293,32 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                     setLink(e.target.value);
                   }}
                 />
-                <Button
-                  type="button"
-                  variant="secondary"
-                  size="icon"
-                  onClick={() => {
-                    analyzeLink({
-                      link,
-                    });
-                  }}
-                  disabled={!link || isAnalyzeLinkRunning}
-                >
-                  {isAnalyzeLinkRunning ? (
-                    <Loader2 className="animate-spin" />
-                  ) : (
-                    <WandSparkles />
-                  )}
-                  <span className="sr-only">Analyze link</span>
-                </Button>
+                {mode === 'add' && (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="icon"
+                    onClick={() => {
+                      analyzeLink({
+                        link,
+                      });
+                    }}
+                    disabled={!link || isAnalyzeLinkRunning}
+                  >
+                    {isAnalyzeLinkRunning ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      <WandSparkles />
+                    )}
+                    <span className="sr-only">Analyze link</span>
+                  </Button>
+                )}
               </div>
               {addResourceValidationErrors?.link && (
                 <InputError>{addResourceValidationErrors.link[0]}</InputError>
+              )}
+              {editResourceValidationErrors?.link && (
+                <InputError>{editResourceValidationErrors.link[0]}</InputError>
               )}
             </div>
 
@@ -272,24 +340,32 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               {addResourceValidationErrors?.name && (
                 <InputError>{addResourceValidationErrors.name[0]}</InputError>
               )}
+              {editResourceValidationErrors?.name && (
+                <InputError>{editResourceValidationErrors.name[0]}</InputError>
+              )}
             </div>
 
             {/* Slug */}
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="name">Slug*</Label>
-              <Input
-                id="slug"
-                name="slug"
-                type="text"
-                placeholder="the-best-resource-ever"
-                required
-                value={slug}
-                onChange={(e) => setSlug(sluggify(e.target.value))}
-              />
-              {addResourceValidationErrors?.id && (
-                <InputError>{addResourceValidationErrors.id[0]}</InputError>
-              )}
-            </div>
+            {mode === 'add' && (
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="name">Slug*</Label>
+                <Input
+                  id="slug"
+                  name="slug"
+                  type="text"
+                  placeholder="the-best-resource-ever"
+                  required
+                  value={slug}
+                  onChange={(e) => setSlug(sluggify(e.target.value))}
+                />
+                {addResourceValidationErrors?.id && (
+                  <InputError>{addResourceValidationErrors.id[0]}</InputError>
+                )}
+                {editResourceValidationErrors?.id && (
+                  <InputError>{editResourceValidationErrors.id[0]}</InputError>
+                )}
+              </div>
+            )}
 
             {/* Type */}
             <div className="flex flex-col gap-2">
@@ -324,6 +400,11 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               </div>
               {addResourceValidationErrors?.typeId && (
                 <InputError>{addResourceValidationErrors.typeId[0]}</InputError>
+              )}
+              {editResourceValidationErrors?.typeId && (
+                <InputError>
+                  {editResourceValidationErrors.typeId[0]}
+                </InputError>
               )}
             </div>
 
@@ -363,6 +444,11 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                   {addResourceValidationErrors.categoryId[0]}
                 </InputError>
               )}
+              {editResourceValidationErrors?.categoryId && (
+                <InputError>
+                  {editResourceValidationErrors.categoryId[0]}
+                </InputError>
+              )}
             </div>
 
             {/* Topics */}
@@ -394,6 +480,11 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                   {addResourceValidationErrors.topicIds[0]}
                 </InputError>
               )}
+              {editResourceValidationErrors?.topicIds && (
+                <InputError>
+                  {editResourceValidationErrors.topicIds[0]}
+                </InputError>
+              )}
             </div>
 
             {/* Short Description */}
@@ -404,10 +495,17 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 name="shortDescription"
                 type="text"
                 placeholder="UX Designer"
+                value={shortDescription}
+                onChange={(e) => setShortDescription(e.target.value)}
               />
               {addResourceValidationErrors?.shortDescription && (
                 <InputError>
                   {addResourceValidationErrors.shortDescription[0]}
+                </InputError>
+              )}
+              {editResourceValidationErrors?.shortDescription && (
+                <InputError>
+                  {editResourceValidationErrors.shortDescription[0]}
                 </InputError>
               )}
             </div>
@@ -427,6 +525,11 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                   {addResourceValidationErrors.description[0]}
                 </InputError>
               )}
+              {editResourceValidationErrors?.description && (
+                <InputError>
+                  {editResourceValidationErrors.description[0]}
+                </InputError>
+              )}
             </div>
 
             {/* Details */}
@@ -436,10 +539,17 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 placeholder="ISBN: 978-3-16-148410-0 | Duration: 1h 30m"
                 id="details"
                 name="details"
+                value={details}
+                onChange={(e) => setDetails(e.target.value)}
               />
               {addResourceValidationErrors?.details && (
                 <InputError>
                   {addResourceValidationErrors.details[0]}
+                </InputError>
+              )}
+              {editResourceValidationErrors?.details && (
+                <InputError>
+                  {editResourceValidationErrors.details[0]}
                 </InputError>
               )}
             </div>
@@ -451,6 +561,9 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               {addResourceValidationErrors?.date && (
                 <InputError>{addResourceValidationErrors.date[0]}</InputError>
               )}
+              {editResourceValidationErrors?.date && (
+                <InputError>{editResourceValidationErrors.date[0]}</InputError>
+              )}
             </div>
 
             {/* Date plain */}
@@ -461,10 +574,17 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 name="datePlain"
                 type="text"
                 placeholder="2020 - 2021"
+                value={datePlain}
+                onChange={(e) => setDatePlain(e.target.value)}
               />
               {addResourceValidationErrors?.datePlain && (
                 <InputError>
                   {addResourceValidationErrors.datePlain[0]}
+                </InputError>
+              )}
+              {editResourceValidationErrors?.datePlain && (
+                <InputError>
+                  {editResourceValidationErrors.datePlain[0]}
                 </InputError>
               )}
             </div>
@@ -498,6 +618,11 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                   {addResourceValidationErrors.relatedResourceIds[0]}
                 </InputError>
               )}
+              {editResourceValidationErrors?.relatedResourceIds && (
+                <InputError>
+                  {editResourceValidationErrors.relatedResourceIds[0]}
+                </InputError>
+              )}
             </div>
 
             {/* Related resources plain */}
@@ -510,10 +635,17 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 name="relatedResourcesPlain"
                 type="text"
                 placeholder="Katharina & Timo Clasen"
+                value={relatedResourcesPlain}
+                onChange={(e) => setRelatedResourcesPlain(e.target.value)}
               />
               {addResourceValidationErrors?.relatedResourcesPlain && (
                 <InputError>
                   {addResourceValidationErrors.relatedResourcesPlain[0]}
+                </InputError>
+              )}
+              {editResourceValidationErrors?.relatedResourcesPlain && (
+                <InputError>
+                  {editResourceValidationErrors.relatedResourcesPlain[0]}
                 </InputError>
               )}
             </div>
@@ -521,12 +653,22 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
             {/* Suggestion */}
             <div className="flex flex-col gap-2">
               <div className="flex items-center space-x-2">
-                <Checkbox id="suggestion" name="suggestion" />
+                <Checkbox
+                  id="suggestion"
+                  name="suggestion"
+                  checked={suggestion}
+                  onCheckedChange={(checked) => setSuggestion(checked)}
+                />
                 <Label htmlFor="suggestion">Suggestion</Label>
               </div>
               {addResourceValidationErrors?.suggestion && (
                 <InputError>
                   {addResourceValidationErrors.suggestion[0]}
+                </InputError>
+              )}
+              {editResourceValidationErrors?.suggestion && (
+                <InputError>
+                  {editResourceValidationErrors.suggestion[0]}
                 </InputError>
               )}
             </div>
@@ -538,24 +680,29 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 placeholder="Thoughts from the editor."
                 id="note"
                 name="note"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
               />
               {addResourceValidationErrors?.note && (
                 <InputError>{addResourceValidationErrors.note[0]}</InputError>
               )}
+              {editResourceValidationErrors?.note && (
+                <InputError>{editResourceValidationErrors.note[0]}</InputError>
+              )}
             </div>
 
-            {addResourceError && (
+            {(addResourceError || editResourceError) && (
               <InfoBox
                 variant="error"
                 icon={<AlertTriangle />}
                 className="duration-150 ease-in-out animate-in fade-in zoom-in-50"
               >
-                {addResourceError}
+                {addResourceError || editResourceError}
               </InfoBox>
             )}
           </div>
 
-          <SheetFooter>
+          <div className=" flex justify-between gap-4">
             <Button
               type="button"
               onClick={() => {
@@ -569,13 +716,58 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               )}
               Revalidate Cache
             </Button>
-            <Button type="submit" disabled={isAddResourceRunning}>
-              {isAddResourceRunning && (
-                <Loader2 size={16} className="animate-spin" />
+            <div className="flex gap-4">
+              {resource && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      disabled={isDeleteResourceRunning}
+                    >
+                      {isDeleteResourceRunning && (
+                        <Loader2 size={16} className="animate-spin" />
+                      )}
+                      Delete resource
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete the resource.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => {
+                          deleteResource({
+                            id: resource?.id,
+                          });
+                        }}
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               )}
-              Add resource
-            </Button>
-          </SheetFooter>
+
+              <Button
+                type="submit"
+                disabled={isAddResourceRunning || isEditResourceRunning}
+              >
+                {(isAddResourceRunning || isEditResourceRunning) && (
+                  <Loader2 size={16} className="animate-spin" />
+                )}
+                {mode === 'add' ? 'Add' : 'Edit'} resource
+              </Button>
+            </div>
+          </div>
         </form>
       </SheetContent>
     </Sheet>
