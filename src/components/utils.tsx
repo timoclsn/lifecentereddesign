@@ -3,6 +3,11 @@ import Link from 'next/link';
 import { Fragment } from 'react';
 import { TopicsButton } from './ResourceCard/TopicsButton';
 
+const types = {
+  Thoughtleader: 16,
+  Podcast: 11,
+};
+
 export const topicsList = (topics: Topics) => {
   return topics.map((topic, index) => {
     return (
@@ -25,9 +30,9 @@ export const catagorizeRelatedResources = (resources: RelatedResources) => {
   };
 
   resources.forEach((resource) => {
-    if (resource.type === 1) {
+    if (resource.type === types.Thoughtleader) {
       relatedResources.thoughtleaders.push(resource);
-    } else if (resource.type === 2) {
+    } else if (resource.type === types.Podcast) {
       relatedResources.podcasts.push(resource);
     } else {
       relatedResources.others.push(resource);
