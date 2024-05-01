@@ -1,12 +1,13 @@
 'use client';
 
+import { Resource } from '@/data/resources/query';
 import { Heading } from '@/design-system';
 import { ExternalLink } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 interface Props {
   children: string;
-  slug: string;
+  slug: Resource['slug'];
 }
 
 export const Title = ({ children, slug }: Props) => {

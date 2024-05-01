@@ -4,11 +4,12 @@ import { cx } from 'cva';
 import { track } from '@/lib/tracking';
 import Link from 'next/link';
 import { ReactNode } from 'react';
+import { Resource } from '@/data/resources/query';
 
 interface Props {
   children: ReactNode;
-  id: number;
-  link: string;
+  id: Resource['id'];
+  link: Resource['link'];
   className?: string;
 }
 

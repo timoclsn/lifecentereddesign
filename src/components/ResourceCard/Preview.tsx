@@ -1,15 +1,16 @@
 import { query } from '@/api/query';
 import { Await } from '@/components/Await/Await';
+import { Resource } from '@/data/resources/query';
 import Image from 'next/image';
 
 interface Props {
-  url: string;
-  id: number;
+  link: Resource['link'];
+  id: Resource['id'];
 }
 
-export const Preview = ({ url, id }: Props) => {
+export const Preview = ({ link, id }: Props) => {
   const promise = query.resources.getOgImageLink({
-    url,
+    url: link,
     id,
   });
 

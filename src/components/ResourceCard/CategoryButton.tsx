@@ -6,10 +6,11 @@ import Link from 'next/link';
 import { ReactNode } from 'react';
 import { useResourcesTable } from '../../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
 import { useFilter } from '../../hooks/useFilter';
+import { Resource } from '@/data/resources/query';
 
 interface Props {
   children: ReactNode;
-  categoryName: string;
+  categoryName: Resource['category']['name'];
 }
 
 export const CategoryButton = ({ children, categoryName }: Props) => {

@@ -10,6 +10,7 @@ import { cva } from 'cva';
 import { Heart } from 'lucide-react';
 import { useOptimistic, useTransition } from 'react';
 import { SolidHeart } from '../../Icons/SolidHeart';
+import { Resource } from '@/data/resources/query';
 
 const heartVariants = cva({
   base: 'group-hover:scale-110 group-active:scale-90 transition-transform ease',
@@ -21,7 +22,7 @@ const heartVariants = cva({
 });
 
 interface Props {
-  id: number;
+  id: Resource['id'];
   count: number;
   liked: boolean;
 }

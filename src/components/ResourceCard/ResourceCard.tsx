@@ -208,7 +208,7 @@ export const ResourceCard = async ({ resource, details }: Props) => {
           </div>
 
           {/* Preview */}
-          {details && <Preview url={resource.link} id={resource.id} />}
+          {details && <Preview link={resource.link} id={resource.id} />}
         </div>
       </div>
 

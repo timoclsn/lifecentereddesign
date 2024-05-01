@@ -1,10 +1,11 @@
+import { Resource } from '@/data/resources/query';
 import { Tooltip } from '@/design-system';
 import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 
 interface Props {
   commentsCount: number;
-  slug: string;
+  slug: Resource['slug'];
 }
 
 export const CommentsButton = ({ commentsCount, slug }: Props) => {

@@ -5,9 +5,10 @@ import { track } from '@/lib/tracking';
 import { Check, Share } from 'lucide-react';
 import { useState } from 'react';
 import { getBaseUrl, wait } from '../../lib/utils/utils';
+import { Resource } from '@/data/resources/query';
 
 interface Props {
-  id: number;
+  id: Resource['id'];
   slug: string;
   name: string;
 }
