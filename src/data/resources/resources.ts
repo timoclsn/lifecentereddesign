@@ -299,6 +299,7 @@ export const selectResources = async (
       },
       relatedResource: {
         id: relatedResource.id,
+        slug: relatedResource.slug,
         name: relatedResource.name,
         type: relatedResource.typeId,
       },
