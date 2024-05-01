@@ -295,6 +295,7 @@ export const getRecommendedResourcesBySlug = createQuery({
         sort: ['likes', 'comments', 'date'],
         filter: {
           mode: 'or',
+          ids: relatedResourceIds,
           relatedResourceIds: relatedResourceIds,
           topicIds: relatedTopicIds,
           excludeIds: [resource.id],
