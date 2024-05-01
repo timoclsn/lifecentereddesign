@@ -562,7 +562,7 @@ const main = async () => {
         })),
       );
     }
-    await wait(500);
+    await wait(1000);
   });
 
   await Promise.all(oldResourcePromises);
@@ -635,7 +635,7 @@ const main = async () => {
       })),
     );
 
-    await wait(500);
+    await wait(1000);
   });
 
   const oldLikes = await prisma.like.findMany();
@@ -671,7 +671,7 @@ const main = async () => {
       return;
     }
 
-    await wait(500);
+    await wait(1000);
   });
 
   const oldComments = await prisma.comment.findMany();
@@ -709,7 +709,7 @@ const main = async () => {
       return;
     }
 
-    await wait(500);
+    await wait(1000);
   });
 
   console.info('Migrating complete.');
