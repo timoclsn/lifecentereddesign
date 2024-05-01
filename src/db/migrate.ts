@@ -430,7 +430,7 @@ const main = async () => {
       return sluggify(resourceName) === sluggify(name);
     });
 
-    const id =
+    const slug =
       allInsatncesWithName.length > 1
         ? sluggify(`${name}-${oldResource.type}-${oldResource.id}`)
         : sluggify(name);
@@ -513,28 +513,33 @@ const main = async () => {
       return undefined;
     };
 
-    // Resource
-    const [resourceEntry] = await db
-      .insert(resource)
-      .values({
-        createdAt: oldResource.createdAt,
-        name,
-        id,
-        suggestion: oldResource.suggestion,
-        link: oldResource.link || '',
-        typeId: type.name,
-        categoryId: category?.name,
-        shortDescription: shortDescription(),
-        description: oldResource.description,
-        details: details(),
-        note: oldResource.note,
-        date: date(),
-        datePlain: oldResource.datePlain,
-        anonymousLikesCount: oldResource.likes,
-        oldSlug: `${oldResource.type}-${oldResource.id}`,
-        relatedResourcesPlain: relatedResourcesPlain(),
-      })
-      .returning();
+    try {
+      // Resource
+      var [resourceEntry] = await db
+        .insert(resource)
+        .values({
+          createdAt: oldResource.createdAt,
+          name,
+          slug,
+          suggestion: oldResource.suggestion,
+          link: oldResource.link || '',
+          typeId: type.id,
+          categoryId: category?.id,
+          shortDescription: shortDescription(),
+          description: oldResource.description,
+          details: details(),
+          note: oldResource.note,
+          date: date(),
+          datePlain: oldResource.datePlain,
+          anonymousLikesCount: oldResource.likes,
+          oldSlug: `${oldResource.type}-${oldResource.id}`,
+          relatedResourcesPlain: relatedResourcesPlain(),
+        })
+        .returning();
+    } catch (error) {
+      console.error(`Failed to insert resource: ${oldResource.id}`, error);
+      return;
+    }
 
     // Topics
     const newTopicIds = oldResource.topics.map((oldTopic) => {
@@ -546,7 +551,7 @@ const main = async () => {
         throw new Error(`Topic ${topic.name} not found`);
       }
 
-      return newTopic.name;
+      return newTopic.id;
     });
 
     if (newTopicIds.length > 0) {
@@ -656,10 +661,15 @@ const main = async () => {
       );
     }
 
-    await db.insert(like).values({
-      resourceId: newResource.id,
-      userId: oldLike.userId,
-    });
+    try {
+      await db.insert(like).values({
+        resourceId: newResource.id,
+        userId: oldLike.userId,
+      });
+    } catch (error) {
+      console.error(`Failed to insert like: ${oldLike.id}`, error);
+      return;
+    }
 
     await wait(500);
   });
@@ -688,11 +698,16 @@ const main = async () => {
       );
     }
 
-    await db.insert(comment).values({
-      resourceId: newResource.id,
-      userId: oldComment.userId,
-      text: oldComment.text,
-    });
+    try {
+      await db.insert(comment).values({
+        resourceId: newResource.id,
+        userId: oldComment.userId,
+        text: oldComment.text,
+      });
+    } catch (error) {
+      console.error(`Failed to insert comment: ${oldComment.id}`, error);
+      return;
+    }
 
     await wait(500);
   });
