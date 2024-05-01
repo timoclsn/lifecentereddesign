@@ -8,74 +8,87 @@ import { AddCommentForm } from './AddCommentForm';
 import { Comment } from './Comment';
 
 interface Props {
-  id: string;
+  slug: string;
 }
 
-export const Comments = ({ id }: Props) => {
-  const commentsPromise = query.resources.getResourceComments({
-    id,
+export const Comments = ({ slug }: Props) => {
+  const resourcePromise = query.resources.getResourceBySlug({
+    slug,
   });
+
   return (
-    <section id="cmnts">
-      <Container>
-        <div className="mx-auto flex w-full max-w-lg flex-col gap-12">
-          <Heading level="2">Comments</Heading>
-          <SignedIn>
-            <AddCommentForm id={id} />
-          </SignedIn>
-          <SignedOut>
-            <div className="flex h-16 w-full flex-col items-stretch justify-center">
-              <SignInButton>
-                <Button>Sign in to add comment</Button>
-              </SignInButton>
-            </div>
-          </SignedOut>
-          <div>
-            <Heading level="3" className="mb-8">
-              All comments
-            </Heading>
-            <Await
-              promise={commentsPromise}
-              loading={<Loading />}
-              error={<Error />}
-            >
-              {(comments) => {
-                return (
-                  <>
-                    {comments.length > 0 ? (
-                      <AutoAnimate as="ul" className="space-y-8">
-                        {comments.map((comment, index) => (
-                          <li key={comment.id}>
-                            <Comment
-                              resourceId={id}
-                              commentId={comment.id}
-                              userId={comment.userId}
-                              username={comment.user?.username ?? 'anonymous'}
-                              createdAt={comment.createdAt}
-                              avatarUrl={comment.user?.imageUrl}
-                              text={comment.text}
-                            />
-                            {index !== comments.length - 1 && (
-                              <div className="mt-8 h-0.5 w-full bg-stone" />
-                            )}
-                          </li>
-                        ))}
-                      </AutoAnimate>
-                    ) : (
-                      <div>
-                        <Text className="text-text-primary">
-                          Be the first to leave a comment…
-                        </Text>
-                      </div>
-                    )}
-                  </>
-                );
-              }}
-            </Await>
-          </div>
-        </div>
-      </Container>
-    </section>
+    <Await promise={resourcePromise}>
+      {({ id }) => {
+        const commentsPromise = query.resources.getResourceComments({
+          id,
+        });
+
+        return (
+          <section id="cmnts">
+            <Container>
+              <div className="mx-auto flex w-full max-w-lg flex-col gap-12">
+                <Heading level="2">Comments</Heading>
+                <SignedIn>
+                  <AddCommentForm id={id} />
+                </SignedIn>
+                <SignedOut>
+                  <div className="flex h-16 w-full flex-col items-stretch justify-center">
+                    <SignInButton>
+                      <Button>Sign in to add comment</Button>
+                    </SignInButton>
+                  </div>
+                </SignedOut>
+                <div>
+                  <Heading level="3" className="mb-8">
+                    All comments
+                  </Heading>
+                  <Await
+                    promise={commentsPromise}
+                    loading={<Loading />}
+                    error={<Error />}
+                  >
+                    {(comments) => {
+                      return (
+                        <>
+                          {comments.length > 0 ? (
+                            <AutoAnimate as="ul" className="space-y-8">
+                              {comments.map((comment, index) => (
+                                <li key={comment.id}>
+                                  <Comment
+                                    resourceId={id}
+                                    commentId={comment.id}
+                                    userId={comment.userId}
+                                    username={
+                                      comment.user?.username ?? 'anonymous'
+                                    }
+                                    createdAt={comment.createdAt}
+                                    avatarUrl={comment.user?.imageUrl}
+                                    text={comment.text}
+                                  />
+                                  {index !== comments.length - 1 && (
+                                    <div className="mt-8 h-0.5 w-full bg-stone" />
+                                  )}
+                                </li>
+                              ))}
+                            </AutoAnimate>
+                          ) : (
+                            <div>
+                              <Text className="text-text-primary">
+                                Be the first to leave a comment…
+                              </Text>
+                            </div>
+                          )}
+                        </>
+                      );
+                    }}
+                  </Await>
+                </div>
+              </div>
+            </Container>
+          </section>
+        );
+      }}
+    </Await>
   );
 };
 

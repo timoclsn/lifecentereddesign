@@ -81,11 +81,6 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
     const [isAnimating, setIsAnimating] = React.useState(animation > 0);
 
     React.useEffect(() => {
-      onValueChange(defaultValue || []);
-      selectedValuesSet.current = new Set(defaultValue);
-    }, [defaultValue, onValueChange, selectedValuesSet]);
-
-    React.useEffect(() => {
       selectedValuesSet.current = new Set(value);
     }, [value]);
 

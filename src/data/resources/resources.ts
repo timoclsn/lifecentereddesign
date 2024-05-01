@@ -2,7 +2,7 @@ import { resourceFts } from '@/db/ftsSchema';
 import {
   category,
   comment,
-  like,
+  like as likeSchema,
   resource,
   resourceToRelatedResource,
   resourceToTopic,
@@ -19,6 +19,7 @@ import {
   eq,
   gte,
   inArray,
+  like,
   lte,
   max,
   ne,
@@ -33,17 +34,21 @@ export const selectResources = async (
     userId: string | null;
     filter: {
       mode?: 'and' | 'or';
-      id?: string[];
-      type?: string[];
-      category?: string[];
-      topic?: string[];
-      relatedResource?: string[];
+      ids?: number[];
+      slugs?: string[];
+      typeIds?: number[];
+      typeNames?: string[];
+      categoryIds?: number[];
+      categoryNames?: string[];
+      topicIds?: number[];
+      topicNames?: string[];
+      relatedResourceIds?: number[];
       search?: string;
       from?: Date;
       till?: Date;
       liked?: boolean;
       commented?: boolean;
-      exclude?: string[];
+      excludeIds?: number[];
     };
     limit?: number;
     sort?: Array<'date' | 'name' | 'likes' | 'comments' | 'random'>;
@@ -87,14 +92,17 @@ export const selectResources = async (
 
   const likesQuery = db
     .select({
-      resourceId: like.resourceId,
-      likesCount: count(like.resourceId).as('likesCount'),
-      likedByUser: (userId ? max(eq(like.userId, userId)) : sql<number>`0`)
+      resourceId: likeSchema.resourceId,
+      likesCount: count(likeSchema.resourceId).as('likesCount'),
+      likedByUser: (userId
+        ? max(eq(likeSchema.userId, userId))
+        : sql<number>`0`
+      )
         .mapWith(Boolean)
         .as('likedByUser'),
     })
-    .from(like)
-    .groupBy(like.resourceId)
+    .from(likeSchema)
+    .groupBy(likeSchema.resourceId)
     .as('likesQuery');
 
   const commentsQuery = db
@@ -119,21 +127,21 @@ export const selectResources = async (
     })
     .from(resource);
 
-  if (filter.type) {
-    resourceIdsQuery.leftJoin(type, eq(resource.typeId, type.name));
+  if (filter.typeIds || filter.typeNames) {
+    resourceIdsQuery.leftJoin(type, eq(resource.typeId, type.id));
   }
 
-  if (filter.category) {
-    resourceIdsQuery.leftJoin(category, eq(resource.categoryId, category.name));
+  if (filter.categoryIds || filter.categoryNames) {
+    resourceIdsQuery.leftJoin(category, eq(resource.categoryId, category.id));
   }
 
-  if (filter.topic) {
+  if (filter.topicIds || filter.topicNames) {
     resourceIdsQuery
       .leftJoin(resourceToTopic, eq(resource.id, resourceToTopic.resourceId))
-      .leftJoin(topic, eq(resourceToTopic.topicId, topic.name));
+      .leftJoin(topic, eq(resourceToTopic.topicId, topic.id));
   }
 
-  if (filter.relatedResource) {
+  if (filter.relatedResourceIds) {
     resourceIdsQuery
       .leftJoin(
         resourceToRelatedResource,
@@ -172,32 +180,56 @@ export const selectResources = async (
     }
 
     // Filters
-    if (filter.id) {
-      filter.id.forEach((id) => {
+    if (filter.ids) {
+      filter.ids.forEach((id) => {
         where.push(eq(resource.id, id));
       });
     }
 
-    if (filter.type) {
-      filter.type.forEach((typeId) => {
-        where.push(eq(type.name, typeId));
+    if (filter.slugs) {
+      filter.slugs.forEach((slug) => {
+        where.push(eq(resource.slug, slug));
       });
     }
 
-    if (filter.category) {
-      filter.category.forEach((categoryId) => {
-        where.push(eq(category.name, categoryId));
+    if (filter.typeIds) {
+      filter.typeIds.forEach((typeId) => {
+        where.push(eq(type.id, typeId));
       });
     }
 
-    if (filter.topic) {
-      filter.topic.forEach((topicId) => {
-        where.push(eq(topic.name, topicId));
+    if (filter.typeNames) {
+      filter.typeNames.forEach((typeName) => {
+        where.push(like(type.name, typeName));
       });
     }
 
-    if (filter.relatedResource) {
-      filter.relatedResource.forEach((relatedResourceId) => {
+    if (filter.categoryIds) {
+      filter.categoryIds.forEach((categoryId) => {
+        where.push(eq(category.id, categoryId));
+      });
+    }
+
+    if (filter.categoryNames) {
+      filter.categoryNames.forEach((categoryName) => {
+        where.push(like(category.name, categoryName));
+      });
+    }
+
+    if (filter.topicIds) {
+      filter.topicIds.forEach((topicId) => {
+        where.push(eq(topic.id, topicId));
+      });
+    }
+
+    if (filter.topicNames) {
+      filter.topicNames.forEach((topicName) => {
+        where.push(like(topic.name, topicName));
+      });
+    }
+
+    if (filter.relatedResourceIds) {
+      filter.relatedResourceIds.forEach((relatedResourceId) => {
         where.push(eq(relatedResource.id, relatedResourceId));
       });
     }
@@ -221,8 +253,8 @@ export const selectResources = async (
     // Collect exclude separately because it always should be and
     const exclude: Array<SQL<unknown> | undefined> = [];
 
-    if (filter.exclude) {
-      filter.exclude.forEach((id) => {
+    if (filter.excludeIds) {
+      filter.excludeIds.forEach((id) => {
         exclude.push(ne(resource.id, id));
       });
     }
@@ -243,6 +275,7 @@ export const selectResources = async (
     .select({
       id: resource.id,
       name: resource.name,
+      slug: resource.slug,
       shortDescription: resource.shortDescription,
       description: resource.description,
       note: resource.note,
@@ -253,16 +286,20 @@ export const selectResources = async (
       datePlain: resource.datePlain,
       relatedResourcesPlain: resource.relatedResourcesPlain,
       type: {
+        id: type.id,
         name: type.name,
       },
       category: {
+        id: category.id,
         name: category.name,
       },
       topic: {
+        id: topic.id,
         name: topic.name,
       },
       relatedResource: {
         id: relatedResource.id,
+        slug: relatedResource.slug,
         name: relatedResource.name,
         type: relatedResource.typeId,
       },
@@ -274,10 +311,10 @@ export const selectResources = async (
     .from(resource);
 
   resourcesQuery
-    .leftJoin(type, eq(resource.typeId, type.name))
-    .leftJoin(category, eq(resource.categoryId, category.name))
+    .leftJoin(type, eq(resource.typeId, type.id))
+    .leftJoin(category, eq(resource.categoryId, category.id))
     .leftJoin(resourceToTopic, eq(resource.id, resourceToTopic.resourceId))
-    .leftJoin(topic, eq(resourceToTopic.topicId, topic.name))
+    .leftJoin(topic, eq(resourceToTopic.topicId, topic.id))
     .leftJoin(
       resourceToRelatedResource,
       eq(resource.id, resourceToRelatedResource.resourceId),
@@ -333,7 +370,7 @@ export const selectResources = async (
         resources.push(createResource(row));
       } else {
         if (row.topic) {
-          if (!resource.topics.some((topic) => topic.name === row.topic?.name))
+          if (!resource.topics.some((topic) => topic.id === row.topic?.id))
             resource.topics.push(row.topic);
         }
         if (row.relatedResource) {

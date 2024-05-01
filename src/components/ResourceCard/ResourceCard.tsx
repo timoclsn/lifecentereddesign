@@ -72,14 +72,14 @@ export const ResourceCard = async ({ resource, details }: Props) => {
       }
       className="group/card relative flex h-full w-full flex-col gap-8 @container"
     >
-      <DetailsLink slug={resource.id} link={resource.link} />
+      <DetailsLink slug={resource.slug} link={resource.link} />
 
       <div className="flex flex-1 flex-col items-start gap-8">
         <div className="flex w-full flex-wrap justify-between gap-2">
           <div className="flex items-center gap-2">
             {/* Type */}
             {resource.type && (
-              <TypeButton typeId={resource.type.name}>
+              <TypeButton typeName={resource.type.name}>
                 {resource.type.name}
               </TypeButton>
             )}
@@ -115,7 +115,7 @@ export const ResourceCard = async ({ resource, details }: Props) => {
             {/* Comments */}
             <CommentsButton
               commentsCount={resource.commentsCount}
-              slug={resource.id}
+              slug={resource.slug}
             />
 
             {/* Likes */}
@@ -126,13 +126,17 @@ export const ResourceCard = async ({ resource, details }: Props) => {
             />
 
             {/* Copy Share Link */}
-            <ShareButton slug={resource.id} name={resource.name} />
+            <ShareButton
+              id={resource.id}
+              slug={resource.slug}
+              name={resource.name}
+            />
           </div>
         </div>
         <div className="flex w-full flex-col justify-between gap-8 @3xl:flex-row">
           <div className="flex flex-col items-start gap-4 sm:mb-16">
             {/* Title */}
-            <Title slug={resource.id}>{resource.name}</Title>
+            <Title slug={resource.slug}>{resource.name}</Title>
 
             {/* Meta infos */}
             <ul className="-mt-1 flex flex-wrap gap-x-2 gap-y-1 text-text-secondary sm:gap-x-8 sm:gap-y-3">
@@ -204,7 +208,7 @@ export const ResourceCard = async ({ resource, details }: Props) => {
           </div>
 
           {/* Preview */}
-          {details && <Preview url={resource.link} id={resource.id} />}
+          {details && <Preview link={resource.link} id={resource.id} />}
         </div>
       </div>
 
@@ -215,7 +219,7 @@ export const ResourceCard = async ({ resource, details }: Props) => {
       >
         {/* Category */}
         {resource.category && (
-          <CategoryButton categoryId={resource.category.name}>
+          <CategoryButton categoryName={resource.category.name}>
             {resource.category.name}
           </CategoryButton>
         )}

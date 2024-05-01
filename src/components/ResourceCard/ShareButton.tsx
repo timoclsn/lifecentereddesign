@@ -5,13 +5,15 @@ import { track } from '@/lib/tracking';
 import { Check, Share } from 'lucide-react';
 import { useState } from 'react';
 import { getBaseUrl, wait } from '../../lib/utils/utils';
+import { Resource } from '@/data/resources/query';
 
 interface Props {
+  id: Resource['id'];
   slug: string;
   name: string;
 }
 
-export const ShareButton = ({ slug, name }: Props) => {
+export const ShareButton = ({ id, slug, name }: Props) => {
   const [copied, setCopied] = useState(false);
 
   const link = `${getBaseUrl()}/resources/${slug}`;
@@ -34,7 +36,7 @@ export const ShareButton = ({ slug, name }: Props) => {
       setCopied(false);
     }
 
-    track('Share Resource Link', { id: slug, link });
+    track('Share Resource Link', { id, link });
   };
 
   return (

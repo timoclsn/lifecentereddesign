@@ -1,3 +1,4 @@
+import { resource } from '@/db/schema';
 import { revalidateTag as nextRevalidateTag } from 'next/cache';
 
 type CacheTags = typeof cacheTags;
@@ -11,10 +12,10 @@ const cacheTags = {
   topics: 'topics',
   resources: 'resources',
   likedResourcesCount: (userId: string) => `liked-resources-count-${userId}`,
-  resourceComments: (resourceId: string) => `comments-${resourceId}`,
+  resourceComments: (resourceId: number) => `comments-${resourceId}`,
   commentedResourcesCount: (userId: string) =>
     `commented-resources-count-${userId}`,
-  ogImageLink: (resourceId: string) => `resource-og-image-${resourceId}`,
+  ogImageLink: (resourceId: number) => `resource-og-image-${resourceId}`,
   resourcesCount: 'resources-count',
 } satisfies Record<string, string | CacheFunction>;
 

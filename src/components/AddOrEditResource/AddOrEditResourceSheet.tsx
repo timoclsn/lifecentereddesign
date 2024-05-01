@@ -1,9 +1,21 @@
 'use client';
 
 import { action } from '@/api/action';
+import { Resource } from '@/data/resources/query';
 import { InfoBox } from '@/design-system';
 import { useAction } from '@/lib/data/client';
 import { sluggify } from '@/lib/utils/utils';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/ui/alert-dialog';
 import { Button } from '@/ui/button';
 import { Checkbox } from '@/ui/checkbox';
 import { DatePicker } from '@/ui/datepicker';
@@ -21,26 +33,34 @@ import {
   Sheet,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from '@/ui/sheet';
 import { Textarea } from '@/ui/textarea';
+import { ToastAction } from '@/ui/toast';
+import { useToast } from '@/ui/use-toast';
 import { AlertTriangle, Loader2, Plus, WandSparkles } from 'lucide-react';
 import { ReactNode, useRef, useState } from 'react';
 import { AddCategorySheet } from './AddCategorySheet';
 import { AddTopicSheet } from './AddTopicSheet';
 import { AddTypeSheet } from './AddTypeSheet';
-import { useToast } from '@/ui/use-toast';
-import { ToastAction } from '@/ui/toast';
+import { Info } from 'lucide-react';
 
 interface Props {
   children: ReactNode;
   onAdd?: () => void;
+  resource?: Resource;
 }
 
-export const AddResourceSheet = ({ children, onAdd }: Props) => {
+export const AddOrEditResourceSheet = ({
+  children,
+  onAdd,
+  resource,
+}: Props) => {
+  const isAddMode = !resource;
+  const isEditMode = !!resource;
+
   const formRef = useRef<HTMLFormElement>(null);
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
@@ -106,6 +126,30 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
       resetForm();
     },
   });
+  const {
+    runAction: editResource,
+    isRunning: isEditResourceRunning,
+    error: editResourceError,
+    validationErrors: editResourceValidationErrors,
+  } = useAction(action.resources.editResource, {
+    onSuccess: () => {
+      onOpenChange(false);
+      resetForm();
+    },
+  });
+  const { runAction: deleteResource, isRunning: isDeleteResourceRunning } =
+    useAction(action.resources.deleteResource, {
+      onSuccess: () => {
+        onOpenChange(false);
+        resetForm();
+      },
+      onError: ({ error }) => {
+        toast({
+          title: `❌ ${error}`,
+          variant: 'destructive',
+        });
+      },
+    });
   const { runAction: revalidateCache, isRunning: isRevalidateCacheRunning } =
     useAction(action.cache.revalidateCache, {
       onSuccess: () => {
@@ -139,14 +183,25 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
   const [typeId, setTypeId] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [topicIds, setTopicIds] = useState<Array<string>>([]);
+  const [shortDescription, setShortDescription] = useState('');
+  const [details, setDetails] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState<Date>();
+  const [datePlain, setDatePlain] = useState('');
   const [relatedResourceIds, setRelatedrelatedResourceIds] = useState<
     Array<string>
   >([]);
+  const [relatedResourcesPlain, setRelatedResourcesPlain] = useState('');
+  const [suggestion, setSuggestion] = useState<boolean | 'indeterminate'>(
+    false,
+  );
+  const [note, setNote] = useState('');
 
   const onOpenChange = (open: boolean) => {
     if (open) {
+      if (isEditMode) {
+        setUpForm(resource);
+      }
       fetchTypes();
       fetchCategories();
       fetchTopics();
@@ -158,17 +213,42 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
     setOpen(open);
   };
 
+  const setUpForm = (resource: Resource) => {
+    setLink(resource.link);
+    setName(resource.name);
+    setSlug(resource.slug);
+    setTypeId(String(resource.type.id));
+    setCategoryId(String(resource.category.id));
+    setTopicIds(resource.topics.map((topic) => String(topic.id)));
+    setShortDescription(resource.shortDescription || '');
+    setDescription(resource.description || '');
+    setDetails(resource.details || '');
+    setDate(resource.date || undefined);
+    setDatePlain(resource.datePlain || '');
+    setRelatedrelatedResourceIds(
+      resource.relatedResources.map((resource) => String(resource.id)),
+    );
+    setRelatedResourcesPlain(resource.relatedResourcesPlain || '');
+    setSuggestion(resource.suggestion);
+    setNote(resource.note || '');
+  };
+
   const resetForm = () => {
-    formRef.current?.reset();
     setLink('');
     setName('');
     setSlug('');
     setTypeId('');
     setCategoryId('');
     setTopicIds([]);
+    setShortDescription('');
     setDescription('');
+    setDetails('');
     setDate(undefined);
+    setDatePlain('');
     setRelatedrelatedResourceIds([]);
+    setRelatedResourcesPlain('');
+    setSuggestion(false);
+    setNote('');
   };
 
   return (
@@ -184,33 +264,34 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
       >
         <form
           ref={formRef}
-          action={(formData) => {
-            console.log('formData', formData.get('type'));
-            addResource({
-              id: slug,
-              name,
-              suggestion: Boolean(formData.get('suggestion') === 'on'),
+          action={() => {
+            const action = isAddMode ? addResource : editResource;
+            action({
+              id: isEditMode ? resource.id : 0,
               link,
-              typeId,
-              categoryId,
-              topicIds,
-              shortDescription: String(formData.get('shortDescription')),
-              description: String(formData.get('description')),
-              details: String(formData.get('details')),
-              note: String(formData.get('note')),
+              name,
+              slug,
+              typeId: Number(typeId),
+              categoryId: Number(categoryId),
+              topicIds: topicIds.map(Number),
+              shortDescription,
+              description,
+              details,
               date,
-              datePlain: String(formData.get('datePlain')),
-              relatedResourceIds: relatedResourceIds,
-              relatedResourcesPlain: String(
-                formData.get('relatedResourcesPlain'),
-              ),
+              datePlain,
+              relatedResourceIds: relatedResourceIds.map(Number),
+              relatedResourcesPlain,
+              suggestion: suggestion === true,
+              note,
             });
           }}
         >
           <SheetHeader>
-            <SheetTitle>Add Resource</SheetTitle>
+            <SheetTitle>{isAddMode ? 'Add' : 'Edit'} Resource</SheetTitle>
             <SheetDescription>
-              Add a new resource to the list of resources.
+              {isAddMode
+                ? 'Add a new resource to the list of resources.'
+                : 'Edit the selected resource.'}
             </SheetDescription>
           </SheetHeader>
 
@@ -230,27 +311,32 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                     setLink(e.target.value);
                   }}
                 />
-                <Button
-                  type="button"
-                  variant="secondary"
-                  size="icon"
-                  onClick={() => {
-                    analyzeLink({
-                      link,
-                    });
-                  }}
-                  disabled={!link || isAnalyzeLinkRunning}
-                >
-                  {isAnalyzeLinkRunning ? (
-                    <Loader2 className="animate-spin" />
-                  ) : (
-                    <WandSparkles />
-                  )}
-                  <span className="sr-only">Analyze link</span>
-                </Button>
+                {isAddMode && (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="icon"
+                    onClick={() => {
+                      analyzeLink({
+                        link,
+                      });
+                    }}
+                    disabled={!link || isAnalyzeLinkRunning}
+                  >
+                    {isAnalyzeLinkRunning ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      <WandSparkles />
+                    )}
+                    <span className="sr-only">Analyze link</span>
+                  </Button>
+                )}
               </div>
               {addResourceValidationErrors?.link && (
                 <InputError>{addResourceValidationErrors.link[0]}</InputError>
+              )}
+              {editResourceValidationErrors?.link && (
+                <InputError>{editResourceValidationErrors.link[0]}</InputError>
               )}
             </div>
 
@@ -272,6 +358,9 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               {addResourceValidationErrors?.name && (
                 <InputError>{addResourceValidationErrors.name[0]}</InputError>
               )}
+              {editResourceValidationErrors?.name && (
+                <InputError>{editResourceValidationErrors.name[0]}</InputError>
+              )}
             </div>
 
             {/* Slug */}
@@ -289,7 +378,16 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               {addResourceValidationErrors?.id && (
                 <InputError>{addResourceValidationErrors.id[0]}</InputError>
               )}
+              {editResourceValidationErrors?.id && (
+                <InputError>{editResourceValidationErrors.id[0]}</InputError>
+              )}
             </div>
+
+            {isEditMode && (
+              <InfoBox variant="info" icon={<Info />}>
+                Add redirect when changing the slug.
+              </InfoBox>
+            )}
 
             {/* Type */}
             <div className="flex flex-col gap-2">
@@ -307,7 +405,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                   <SelectContent>
                     {types?.map((type) => {
                       return (
-                        <SelectItem key={type.name} value={type.name}>
+                        <SelectItem key={type.name} value={String(type.id)}>
                           {type.name}
                         </SelectItem>
                       );
@@ -324,6 +422,11 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               </div>
               {addResourceValidationErrors?.typeId && (
                 <InputError>{addResourceValidationErrors.typeId[0]}</InputError>
+              )}
+              {editResourceValidationErrors?.typeId && (
+                <InputError>
+                  {editResourceValidationErrors.typeId[0]}
+                </InputError>
               )}
             </div>
 
@@ -343,7 +446,10 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                   <SelectContent>
                     {categories?.map((category) => {
                       return (
-                        <SelectItem key={category.name} value={category.name}>
+                        <SelectItem
+                          key={category.name}
+                          value={String(category.id)}
+                        >
                           {category.name}
                         </SelectItem>
                       );
@@ -363,6 +469,11 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                   {addResourceValidationErrors.categoryId[0]}
                 </InputError>
               )}
+              {editResourceValidationErrors?.categoryId && (
+                <InputError>
+                  {editResourceValidationErrors.categoryId[0]}
+                </InputError>
+              )}
             </div>
 
             {/* Topics */}
@@ -376,7 +487,7 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                   options={
                     topics?.map((topic) => ({
                       label: topic.name,
-                      value: topic.name,
+                      value: String(topic.id),
                     })) || []
                   }
                   placeholder="Select topics"
@@ -394,6 +505,11 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                   {addResourceValidationErrors.topicIds[0]}
                 </InputError>
               )}
+              {editResourceValidationErrors?.topicIds && (
+                <InputError>
+                  {editResourceValidationErrors.topicIds[0]}
+                </InputError>
+              )}
             </div>
 
             {/* Short Description */}
@@ -404,10 +520,17 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 name="shortDescription"
                 type="text"
                 placeholder="UX Designer"
+                value={shortDescription}
+                onChange={(e) => setShortDescription(e.target.value)}
               />
               {addResourceValidationErrors?.shortDescription && (
                 <InputError>
                   {addResourceValidationErrors.shortDescription[0]}
+                </InputError>
+              )}
+              {editResourceValidationErrors?.shortDescription && (
+                <InputError>
+                  {editResourceValidationErrors.shortDescription[0]}
                 </InputError>
               )}
             </div>
@@ -427,6 +550,11 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                   {addResourceValidationErrors.description[0]}
                 </InputError>
               )}
+              {editResourceValidationErrors?.description && (
+                <InputError>
+                  {editResourceValidationErrors.description[0]}
+                </InputError>
+              )}
             </div>
 
             {/* Details */}
@@ -436,10 +564,17 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 placeholder="ISBN: 978-3-16-148410-0 | Duration: 1h 30m"
                 id="details"
                 name="details"
+                value={details}
+                onChange={(e) => setDetails(e.target.value)}
               />
               {addResourceValidationErrors?.details && (
                 <InputError>
                   {addResourceValidationErrors.details[0]}
+                </InputError>
+              )}
+              {editResourceValidationErrors?.details && (
+                <InputError>
+                  {editResourceValidationErrors.details[0]}
                 </InputError>
               )}
             </div>
@@ -451,6 +586,9 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               {addResourceValidationErrors?.date && (
                 <InputError>{addResourceValidationErrors.date[0]}</InputError>
               )}
+              {editResourceValidationErrors?.date && (
+                <InputError>{editResourceValidationErrors.date[0]}</InputError>
+              )}
             </div>
 
             {/* Date plain */}
@@ -461,10 +599,17 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 name="datePlain"
                 type="text"
                 placeholder="2020 - 2021"
+                value={datePlain}
+                onChange={(e) => setDatePlain(e.target.value)}
               />
               {addResourceValidationErrors?.datePlain && (
                 <InputError>
                   {addResourceValidationErrors.datePlain[0]}
+                </InputError>
+              )}
+              {editResourceValidationErrors?.datePlain && (
+                <InputError>
+                  {editResourceValidationErrors.datePlain[0]}
                 </InputError>
               )}
             </div>
@@ -480,22 +625,27 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                   options={
                     resources?.map((resource) => ({
                       label: resource.name,
-                      value: resource.id,
+                      value: String(resource.id),
                     })) || []
                   }
                   placeholder="Select related resources"
                 />
 
-                <AddResourceSheet onAdd={fetchCategories}>
+                <AddOrEditResourceSheet onAdd={fetchCategories}>
                   <Button type="button" variant="secondary" size="icon">
                     <Plus />
                     <span className="sr-only">Add resource</span>
                   </Button>
-                </AddResourceSheet>
+                </AddOrEditResourceSheet>
               </div>
               {addResourceValidationErrors?.relatedResourceIds && (
                 <InputError>
                   {addResourceValidationErrors.relatedResourceIds[0]}
+                </InputError>
+              )}
+              {editResourceValidationErrors?.relatedResourceIds && (
+                <InputError>
+                  {editResourceValidationErrors.relatedResourceIds[0]}
                 </InputError>
               )}
             </div>
@@ -510,10 +660,17 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 name="relatedResourcesPlain"
                 type="text"
                 placeholder="Katharina & Timo Clasen"
+                value={relatedResourcesPlain}
+                onChange={(e) => setRelatedResourcesPlain(e.target.value)}
               />
               {addResourceValidationErrors?.relatedResourcesPlain && (
                 <InputError>
                   {addResourceValidationErrors.relatedResourcesPlain[0]}
+                </InputError>
+              )}
+              {editResourceValidationErrors?.relatedResourcesPlain && (
+                <InputError>
+                  {editResourceValidationErrors.relatedResourcesPlain[0]}
                 </InputError>
               )}
             </div>
@@ -521,12 +678,22 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
             {/* Suggestion */}
             <div className="flex flex-col gap-2">
               <div className="flex items-center space-x-2">
-                <Checkbox id="suggestion" name="suggestion" />
+                <Checkbox
+                  id="suggestion"
+                  name="suggestion"
+                  checked={suggestion}
+                  onCheckedChange={(checked) => setSuggestion(checked)}
+                />
                 <Label htmlFor="suggestion">Suggestion</Label>
               </div>
               {addResourceValidationErrors?.suggestion && (
                 <InputError>
                   {addResourceValidationErrors.suggestion[0]}
+                </InputError>
+              )}
+              {editResourceValidationErrors?.suggestion && (
+                <InputError>
+                  {editResourceValidationErrors.suggestion[0]}
                 </InputError>
               )}
             </div>
@@ -538,12 +705,18 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 placeholder="Thoughts from the editor."
                 id="note"
                 name="note"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
               />
               {addResourceValidationErrors?.note && (
                 <InputError>{addResourceValidationErrors.note[0]}</InputError>
               )}
+              {editResourceValidationErrors?.note && (
+                <InputError>{editResourceValidationErrors.note[0]}</InputError>
+              )}
             </div>
 
+            {/* Errors */}
             {addResourceError && (
               <InfoBox
                 variant="error"
@@ -553,9 +726,19 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
                 {addResourceError}
               </InfoBox>
             )}
+
+            {editResourceError && (
+              <InfoBox
+                variant="error"
+                icon={<AlertTriangle />}
+                className="duration-150 ease-in-out animate-in fade-in zoom-in-50"
+              >
+                {editResourceError}
+              </InfoBox>
+            )}
           </div>
 
-          <SheetFooter>
+          <div className=" flex justify-between gap-4">
             <Button
               type="button"
               onClick={() => {
@@ -569,13 +752,58 @@ export const AddResourceSheet = ({ children, onAdd }: Props) => {
               )}
               Revalidate Cache
             </Button>
-            <Button type="submit" disabled={isAddResourceRunning}>
-              {isAddResourceRunning && (
-                <Loader2 size={16} className="animate-spin" />
+            <div className="flex gap-4">
+              {isEditMode && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      disabled={isDeleteResourceRunning}
+                    >
+                      {isDeleteResourceRunning && (
+                        <Loader2 size={16} className="animate-spin" />
+                      )}
+                      Delete resource
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete the resource.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => {
+                          deleteResource({
+                            id: resource?.id,
+                          });
+                        }}
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               )}
-              Add resource
-            </Button>
-          </SheetFooter>
+
+              <Button
+                type="submit"
+                disabled={isAddResourceRunning || isEditResourceRunning}
+              >
+                {(isAddResourceRunning || isEditResourceRunning) && (
+                  <Loader2 size={16} className="animate-spin" />
+                )}
+                {isAddMode ? 'Add' : 'Edit'} resource
+              </Button>
+            </div>
+          </div>
         </form>
       </SheetContent>
     </Sheet>

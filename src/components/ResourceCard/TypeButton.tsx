@@ -6,16 +6,17 @@ import Link from 'next/link';
 import { ReactNode } from 'react';
 import { useResourcesTable } from '../../app/resources/Resources/ResourcesTable/ResourcesTableProvider';
 import { useFilter } from '../../hooks/useFilter';
+import { Resource } from '@/data/resources/query';
 
 interface Props {
   children: ReactNode;
-  typeId: string;
+  typeName: Resource['type']['name'];
 }
 
-export const TypeButton = ({ children, typeId }: Props) => {
+export const TypeButton = ({ children, typeName }: Props) => {
   const { handleValueChange, searchParams, isPending } = useFilter();
   const searchParamsType = searchParams.get('type');
-  const isFiltered = searchParamsType === typeId;
+  const isFiltered = searchParamsType === typeName;
   const { inContext } = useResourcesTable();
 
   const handleClick = () => {
@@ -23,7 +24,7 @@ export const TypeButton = ({ children, typeId }: Props) => {
       handleValueChange('type', '');
       return;
     }
-    handleValueChange('type', typeId);
+    handleValueChange('type', typeName);
   };
 
   const tag = (children: ReactNode) => <Tag variant="outline">{children}</Tag>;
@@ -31,7 +32,7 @@ export const TypeButton = ({ children, typeId }: Props) => {
   if (!inContext) {
     return (
       <Link
-        href={`/resources?type=${typeId}#resources`}
+        href={`/resources?type=${typeName.toLowerCase()}#resources`}
         prefetch={false}
         className="relative hover:opacity-80"
       >

@@ -1,11 +1,12 @@
 'use client';
 
+import { Resource } from '@/data/resources/query';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 interface Props {
-  slug: string;
-  link: string;
+  slug: Resource['slug'];
+  link: Resource['link'];
 }
 
 export const DetailsLink = ({ slug, link }: Props) => {

@@ -5,10 +5,11 @@ import { track } from '@/lib/tracking';
 import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
 import { wait } from '../../lib/utils/utils';
+import { Resource } from '@/data/resources/query';
 
 interface Props {
-  id: string;
-  link: string;
+  id: Resource['id'];
+  link: Resource['link'];
 }
 
 export const CopyButton = ({ id, link }: Props) => {

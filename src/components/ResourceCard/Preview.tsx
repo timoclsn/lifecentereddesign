@@ -1,20 +1,21 @@
 import { query } from '@/api/query';
 import { Await } from '@/components/Await/Await';
+import { Resource } from '@/data/resources/query';
 import Image from 'next/image';
 
 interface Props {
-  url: string;
-  id: string;
+  link: Resource['link'];
+  id: Resource['id'];
 }
 
-export const Preview = ({ url, id }: Props) => {
+export const Preview = ({ link, id }: Props) => {
   const promise = query.resources.getOgImageLink({
-    url,
+    url: link,
     id,
   });
 
   return (
-    <div className="bg-ghost-main-dark-bg @3xl:w-[300px] @5xl:w-[500px] relative -z-10 aspect-video w-full flex-none">
+    <div className="relative -z-10 aspect-video w-full flex-none bg-ghost-main-dark-bg @3xl:w-[300px] @5xl:w-[500px]">
       <Await promise={promise} loading={<Loading />} error={<Error />}>
         {(ogImageLink) => {
           if (!ogImageLink) {
@@ -37,12 +38,12 @@ export const Preview = ({ url, id }: Props) => {
 };
 
 const Loading = () => {
-  return <div className="bg-ghost-main-dark-bg h-full w-full animate-pulse" />;
+  return <div className="h-full w-full animate-pulse bg-ghost-main-dark-bg" />;
 };
 
 const Error = () => {
   return (
-    <div className="bg-ghost-main-dark-bg flex h-full w-full items-center justify-center">
+    <div className="flex h-full w-full items-center justify-center bg-ghost-main-dark-bg">
       <span>Preview unavailabe</span>
     </div>
   );

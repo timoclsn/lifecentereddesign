@@ -8,7 +8,7 @@ import { ResourcesFilter } from './ResourcesFilter/ResourcesFilter';
 import { ResourcesList } from './ResourcesList/ResourcesList';
 import { ResourcesTableProvider } from './ResourcesTableProvider';
 import { auth } from '@clerk/nextjs/server';
-import { AddResourceButton } from '../../../../components/AddResource/AddResourceButton';
+import { AddResourceButton } from '../../../../components/AddOrEditResource/AddResourceButton';
 
 interface Props {
   reseourcesFilter: ReseourcesFilter;
@@ -27,16 +27,16 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
     from,
     till,
   } = reseourcesFilter;
-  const user = auth();
+  const { userId } = auth();
 
   const promises = Promise.all([
     query.resources.getResources({
       limit: limit || 10,
       sort: sort ? [sort] : ['date'],
       filter: {
-        type: type ? [type] : undefined,
-        category: category ? [category] : undefined,
-        topic: topic ? [topic] : undefined,
+        typeNames: type ? [type] : undefined,
+        categoryNames: category ? [category] : undefined,
+        topicNames: topic ? [topic] : undefined,
         search,
         liked,
         commented,
@@ -75,7 +75,7 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
               hasMore={hasMore}
               isFiltered={!isEmpty(reseourcesFilter)}
             />
-            {user.userId && <AddResourceButton />}
+            {userId && <AddResourceButton />}
           </div>
         </ResourcesTableProvider>
       )}
