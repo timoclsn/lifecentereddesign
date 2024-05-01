@@ -34,18 +34,21 @@ export const selectResources = async (
     userId: string | null;
     filter: {
       mode?: 'and' | 'or';
-      id?: number[];
-      slug?: string[];
-      type?: string[];
-      category?: string[];
-      topic?: string[];
-      relatedResource?: number[];
+      ids?: number[];
+      slugs?: string[];
+      typeIds?: number[];
+      typeNames?: string[];
+      categoryIds?: number[];
+      categoryNames?: string[];
+      topicIds?: number[];
+      topicNames?: string[];
+      relatedResourceIds?: number[];
       search?: string;
       from?: Date;
       till?: Date;
       liked?: boolean;
       commented?: boolean;
-      exclude?: number[];
+      excludeIds?: number[];
     };
     limit?: number;
     sort?: Array<'date' | 'name' | 'likes' | 'comments' | 'random'>;
@@ -124,21 +127,21 @@ export const selectResources = async (
     })
     .from(resource);
 
-  if (filter.type) {
+  if (filter.typeIds || filter.typeNames) {
     resourceIdsQuery.leftJoin(type, eq(resource.typeId, type.id));
   }
 
-  if (filter.category) {
+  if (filter.categoryIds || filter.categoryNames) {
     resourceIdsQuery.leftJoin(category, eq(resource.categoryId, category.id));
   }
 
-  if (filter.topic) {
+  if (filter.topicIds || filter.topicNames) {
     resourceIdsQuery
       .leftJoin(resourceToTopic, eq(resource.id, resourceToTopic.resourceId))
       .leftJoin(topic, eq(resourceToTopic.topicId, topic.id));
   }
 
-  if (filter.relatedResource) {
+  if (filter.relatedResourceIds) {
     resourceIdsQuery
       .leftJoin(
         resourceToRelatedResource,
@@ -177,38 +180,56 @@ export const selectResources = async (
     }
 
     // Filters
-    if (filter.id) {
-      filter.id.forEach((id) => {
+    if (filter.ids) {
+      filter.ids.forEach((id) => {
         where.push(eq(resource.id, id));
       });
     }
 
-    if (filter.slug) {
-      filter.slug.forEach((slug) => {
+    if (filter.slugs) {
+      filter.slugs.forEach((slug) => {
         where.push(eq(resource.slug, slug));
       });
     }
 
-    if (filter.type) {
-      filter.type.forEach((typeId) => {
-        where.push(like(type.name, typeId));
+    if (filter.typeIds) {
+      filter.typeIds.forEach((typeId) => {
+        where.push(eq(type.id, typeId));
       });
     }
 
-    if (filter.category) {
-      filter.category.forEach((categoryId) => {
-        where.push(like(category.name, categoryId));
+    if (filter.typeNames) {
+      filter.typeNames.forEach((typeName) => {
+        where.push(like(type.name, typeName));
       });
     }
 
-    if (filter.topic) {
-      filter.topic.forEach((topicId) => {
-        where.push(like(topic.name, topicId));
+    if (filter.categoryIds) {
+      filter.categoryIds.forEach((categoryId) => {
+        where.push(eq(category.id, categoryId));
       });
     }
 
-    if (filter.relatedResource) {
-      filter.relatedResource.forEach((relatedResourceId) => {
+    if (filter.categoryNames) {
+      filter.categoryNames.forEach((categoryName) => {
+        where.push(like(category.name, categoryName));
+      });
+    }
+
+    if (filter.topicIds) {
+      filter.topicIds.forEach((topicId) => {
+        where.push(eq(topic.id, topicId));
+      });
+    }
+
+    if (filter.topicNames) {
+      filter.topicNames.forEach((topicName) => {
+        where.push(like(topic.name, topicName));
+      });
+    }
+
+    if (filter.relatedResourceIds) {
+      filter.relatedResourceIds.forEach((relatedResourceId) => {
         where.push(eq(relatedResource.id, relatedResourceId));
       });
     }
@@ -232,8 +253,8 @@ export const selectResources = async (
     // Collect exclude separately because it always should be and
     const exclude: Array<SQL<unknown> | undefined> = [];
 
-    if (filter.exclude) {
-      filter.exclude.forEach((id) => {
+    if (filter.excludeIds) {
+      filter.excludeIds.forEach((id) => {
         exclude.push(ne(resource.id, id));
       });
     }

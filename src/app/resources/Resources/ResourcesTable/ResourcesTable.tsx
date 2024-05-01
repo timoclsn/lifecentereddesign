@@ -34,9 +34,9 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
       limit: limit || 10,
       sort: sort ? [sort] : ['date'],
       filter: {
-        type: type ? [type] : undefined,
-        category: category ? [category] : undefined,
-        topic: topic ? [topic] : undefined,
+        typeNames: type ? [type] : undefined,
+        categoryNames: category ? [category] : undefined,
+        topicNames: topic ? [topic] : undefined,
         search,
         liked,
         commented,

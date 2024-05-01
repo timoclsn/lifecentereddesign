@@ -26,17 +26,17 @@ export const getResources = createQuery({
     filter: z
       .object({
         mode: z.enum(['and', 'or']).optional(),
-        id: z.array(z.number()).optional(),
-        type: z.array(z.string()).optional(),
-        category: z.array(z.string()).optional(),
-        topic: z.array(z.string()).optional(),
-        relatedResource: z.array(z.number()).optional(),
+        ids: z.array(z.number()).optional(),
+        typeNames: z.array(z.string()).optional(),
+        categoryNames: z.array(z.string()).optional(),
+        topicNames: z.array(z.string()).optional(),
+        relatedResourceIds: z.array(z.number()).optional(),
         search: z.string().optional().optional(),
         from: z.date().optional(),
         till: z.date().optional(),
         liked: z.boolean().optional(),
         commented: z.boolean().optional(),
-        exclude: z.array(z.number()).optional(),
+        excludeIds: z.array(z.number()).optional(),
       })
       .optional()
       .default({}),
@@ -89,7 +89,7 @@ export const getResourceBySlug = createQuery({
     const { resources } = await selectResources({
       userId,
       filter: {
-        slug: [slug],
+        slugs: [slug],
       },
     });
 
@@ -261,7 +261,7 @@ export const getRecommendedResourcesBySlug = createQuery({
     const { resources } = await selectResources({
       userId,
       filter: {
-        slug: [slug],
+        slugs: [slug],
       },
     });
 
@@ -277,7 +277,7 @@ export const getRecommendedResourcesBySlug = createQuery({
         limit: 10,
         sort: ['likes', 'comments', 'date'],
         filter: {
-          relatedResource: [resource.id],
+          relatedResourceIds: [resource.id],
         },
       });
 
@@ -287,7 +287,7 @@ export const getRecommendedResourcesBySlug = createQuery({
         (relatedResource) => relatedResource.id,
       );
 
-      const relatedTopicIds = resource.topics.map((topic) => topic.name);
+      const relatedTopicIds = resource.topics.map((topic) => topic.id);
 
       const { resources } = await selectResources({
         userId,
@@ -295,9 +295,9 @@ export const getRecommendedResourcesBySlug = createQuery({
         sort: ['likes', 'comments', 'date'],
         filter: {
           mode: 'or',
-          relatedResource: relatedResourceIds,
-          topic: relatedTopicIds,
-          exclude: [resource.id],
+          relatedResourceIds: relatedResourceIds,
+          topicIds: relatedTopicIds,
+          excludeIds: [resource.id],
         },
       });
 
@@ -311,7 +311,10 @@ export const getRecommendedResourcesBySlug = createQuery({
         limit: 10 - recommendedResources.length,
         sort: ['likes', 'comments', 'random'],
         filter: {
-          exclude: [resource.id, ...recommendedResources.map(({ id }) => id)],
+          excludeIds: [
+            resource.id,
+            ...recommendedResources.map(({ id }) => id),
+          ],
         },
       });
 
