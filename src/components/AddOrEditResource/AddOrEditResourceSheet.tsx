@@ -38,14 +38,12 @@ import {
   SheetTrigger,
 } from '@/ui/sheet';
 import { Textarea } from '@/ui/textarea';
-import { ToastAction } from '@/ui/toast';
 import { useToast } from '@/ui/use-toast';
-import { AlertTriangle, Loader2, Plus, WandSparkles } from 'lucide-react';
+import { AlertTriangle, Info, Loader2, Plus, WandSparkles } from 'lucide-react';
 import { ReactNode, useRef, useState } from 'react';
 import { AddCategorySheet } from './AddCategorySheet';
 import { AddTopicSheet } from './AddTopicSheet';
 import { AddTypeSheet } from './AddTypeSheet';
-import { Info } from 'lucide-react';
 
 interface Props {
   children: ReactNode;
@@ -65,118 +63,7 @@ export const AddOrEditResourceSheet = ({
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
-  const { data: types, runAction: fetchTypes } = useAction(
-    action.types.getTypes,
-  );
-  const { data: categories, runAction: fetchCategories } = useAction(
-    action.categories.getCategories,
-  );
-  const { data: topics, runAction: fetchTopics } = useAction(
-    action.topics.getTopics,
-  );
-  const { data: resources, runAction: fetchResources } = useAction(
-    action.resources.getResources,
-  );
-  const { runAction: analyzeLink, isRunning: isAnalyzeLinkRunning } = useAction(
-    action.resources.analizeLink,
-    {
-      onSuccess: (data) => {
-        if (!data) return;
-        const { name, type, category, topics, description } = data;
-
-        setName(name);
-        setSlug(sluggify(name));
-        setTypeId(String(type));
-        setCategoryId(String(category));
-        setTopicIds(topics.map(String));
-        setDescription(description);
-
-        toast({
-          title: '✅ Succesfully analized link',
-        });
-      },
-      onError: ({ error }) => {
-        toast({
-          title: '❌ Error analizing link',
-          description: error,
-          variant: 'destructive',
-          action: (
-            <ToastAction
-              altText="Try again"
-              onClick={() => {
-                analyzeLink({ link });
-              }}
-            >
-              Try again
-            </ToastAction>
-          ),
-        });
-      },
-    },
-  );
-  const {
-    runAction: addResource,
-    isRunning: isAddResourceRunning,
-    error: addResourceError,
-    validationErrors: addResourceValidationErrors,
-  } = useAction(action.resources.addResource, {
-    onSuccess: () => {
-      onAdd?.();
-      onOpenChange(false);
-      resetForm();
-    },
-  });
-  const {
-    runAction: editResource,
-    isRunning: isEditResourceRunning,
-    error: editResourceError,
-    validationErrors: editResourceValidationErrors,
-  } = useAction(action.resources.editResource, {
-    onSuccess: () => {
-      onOpenChange(false);
-      resetForm();
-    },
-  });
-  const { runAction: deleteResource, isRunning: isDeleteResourceRunning } =
-    useAction(action.resources.deleteResource, {
-      onSuccess: () => {
-        onOpenChange(false);
-        resetForm();
-      },
-      onError: ({ error }) => {
-        toast({
-          title: `❌ ${error}`,
-          variant: 'destructive',
-        });
-      },
-    });
-  const { runAction: revalidateCache, isRunning: isRevalidateCacheRunning } =
-    useAction(action.cache.revalidateCache, {
-      onSuccess: () => {
-        toast({
-          title: '✅ Succesfully revalidated cache',
-        });
-      },
-      onError: ({ error }) => {
-        toast({
-          title: '❌ Error revalidateCache',
-          description: error,
-          variant: 'destructive',
-          action: (
-            <ToastAction
-              altText="Try again"
-              onClick={() => {
-                analyzeLink({ link });
-              }}
-            >
-              Try again
-            </ToastAction>
-          ),
-        });
-      },
-    });
-
-  // Controlled inputs
+  // Inputs
   const [link, setLink] = useState('');
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
@@ -196,6 +83,118 @@ export const AddOrEditResourceSheet = ({
     false,
   );
   const [note, setNote] = useState('');
+
+  // Actions
+
+  // getTypes
+  const { data: types, runAction: fetchTypes } = useAction(
+    action.types.getTypes,
+  );
+
+  // getCategories
+  const { data: categories, runAction: fetchCategories } = useAction(
+    action.categories.getCategories,
+  );
+
+  // getTopics
+  const { data: topics, runAction: fetchTopics } = useAction(
+    action.topics.getTopics,
+  );
+
+  // getResources
+  const { data: resources, runAction: fetchResources } = useAction(
+    action.resources.getResources,
+  );
+
+  // analizeLink
+  const { runAction: analyzeLink, isRunning: isAnalyzeLinkRunning } = useAction(
+    action.resources.analizeLink,
+    {
+      onSuccess: (data) => {
+        if (!data) return;
+        const { name, type, category, topics, shortDescription, description } =
+          data;
+
+        setName(name);
+        setSlug(sluggify(name));
+        setTypeId(String(type));
+        setCategoryId(String(category));
+        setTopicIds(topics.map(String));
+        setShortDescription(shortDescription);
+        setDescription(description);
+
+        toast({
+          title: '✅ Succesfully analized link',
+        });
+      },
+      onError: ({ error }) => {
+        toast({
+          title: '❌ Error analizing link',
+          description: error,
+          variant: 'destructive',
+        });
+      },
+    },
+  );
+
+  // addResource
+  const {
+    runAction: addResource,
+    isRunning: isAddResourceRunning,
+    error: addResourceError,
+    validationErrors: addResourceValidationErrors,
+  } = useAction(action.resources.addResource, {
+    onSuccess: () => {
+      onAdd?.();
+      onOpenChange(false);
+      resetForm();
+    },
+  });
+
+  // editResource
+  const {
+    runAction: editResource,
+    isRunning: isEditResourceRunning,
+    error: editResourceError,
+    validationErrors: editResourceValidationErrors,
+  } = useAction(action.resources.editResource, {
+    onSuccess: () => {
+      onOpenChange(false);
+      resetForm();
+    },
+  });
+
+  // deleteResource
+  const { runAction: deleteResource, isRunning: isDeleteResourceRunning } =
+    useAction(action.resources.deleteResource, {
+      onSuccess: () => {
+        onOpenChange(false);
+        resetForm();
+      },
+      onError: ({ error }) => {
+        toast({
+          title: `❌ ${error}`,
+          variant: 'destructive',
+        });
+      },
+    });
+
+  // revalidateCache
+  const { runAction: revalidateCache, isRunning: isRevalidateCacheRunning } =
+    useAction(action.cache.revalidateCache, {
+      onSuccess: () => {
+        toast({
+          title: '✅ Succesfully revalidated cache',
+        });
+      },
+      onError: ({ error }) => {
+        toast({
+          title: '❌ Error revalidateCache',
+          description: error,
+          variant: 'destructive',
+        });
+      },
+    });
 
   const onOpenChange = (open: boolean) => {
     if (open) {

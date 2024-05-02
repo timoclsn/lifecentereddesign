@@ -23,7 +23,7 @@ import { revalidateTag } from '../tags';
 import { selectTopics } from '../topics/topics';
 import { selectTypes } from '../types/types';
 
-const { SUGGESTION_MAIL_PASSWORD } = process.env;
+const { SUGGESTION_MAIL_PASSWORD, OPENAI_API_KEY } = process.env;
 
 export const getResources = createAction({
   action: async ({ ctx }) => {
@@ -471,6 +471,7 @@ const analizeLinkSchema = z.object({
   type: z.number(),
   category: z.number(),
   topics: z.array(z.number()),
+  shortDescription: z.string(),
   description: z.string(),
 });
 
@@ -550,15 +551,22 @@ export const analizeLink = createAdminAction({
     });
 
     const prompt = `
-        I am going to give you the content of a website i am also goinf to give you input data that you are going to use to categorize the website. These are your instructions:
-
+        I am going to give you the content of a website i am also goinf to give you input data that you are going to use to categorize the website.
+        
+        These are your instructions:
         - Choose which type, categroy and topcis are the most relevant for the website.
-        - You are going to answer in JSON format. This is the format you are going to use:
+        - If the website is of a single person the type is most likely "Thoughtleader".
+        - If the type is "Thoughtleader" the name should be the name of the person.
+        - If the type is "Thoughtleader" the short description should be their job title or profession otherwise it should be a empty string.
+        - Don't set more than 3 topics.
+
+        You are going to answer in JSON format. This is the format you are going to use:
         {
           name: 'Name of the website',
           type: 1,
           category: 1,
           topics: [1, 2, 3],
+          shortDescription: 'UX Designer',
           description: 'Description of the website',
         }
 
@@ -576,7 +584,7 @@ export const analizeLink = createAdminAction({
       `;
 
     const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY!,
+      apiKey: OPENAI_API_KEY,
     });
 
     const aiResponse = await openai.chat.completions
@@ -588,7 +596,7 @@ export const analizeLink = createAdminAction({
           {
             role: 'system',
             content:
-              'You are my AI web scraper. Your job is to make sense of the text content of a website and put it into a category.',
+              'You are my AI web scraper. Your job is to make sense of the text content of a website and categorize it.',
           },
           {
             role: 'user',
