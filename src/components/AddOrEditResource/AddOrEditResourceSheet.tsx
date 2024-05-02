@@ -38,14 +38,12 @@ import {
   SheetTrigger,
 } from '@/ui/sheet';
 import { Textarea } from '@/ui/textarea';
-import { ToastAction } from '@/ui/toast';
 import { useToast } from '@/ui/use-toast';
-import { AlertTriangle, Loader2, Plus, WandSparkles } from 'lucide-react';
+import { AlertTriangle, Info, Loader2, Plus, WandSparkles } from 'lucide-react';
 import { ReactNode, useRef, useState } from 'react';
 import { AddCategorySheet } from './AddCategorySheet';
 import { AddTopicSheet } from './AddTopicSheet';
 import { AddTypeSheet } from './AddTypeSheet';
-import { Info } from 'lucide-react';
 
 interface Props {
   children: ReactNode;
@@ -65,118 +63,7 @@ export const AddOrEditResourceSheet = ({
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
-  const { data: types, runAction: fetchTypes } = useAction(
-    action.types.getTypes,
-  );
-  const { data: categories, runAction: fetchCategories } = useAction(
-    action.categories.getCategories,
-  );
-  const { data: topics, runAction: fetchTopics } = useAction(
-    action.topics.getTopics,
-  );
-  const { data: resources, runAction: fetchResources } = useAction(
-    action.resources.getResources,
-  );
-  const { runAction: analyzeLink, isRunning: isAnalyzeLinkRunning } = useAction(
-    action.resources.analizeLink,
-    {
-      onSuccess: (data) => {
-        if (!data) return;
-        const { name, type, category, topics, description } = data;
-
-        setName(name);
-        setSlug(sluggify(name));
-        setTypeId(String(type));
-        setCategoryId(String(category));
-        setTopicIds(topics.map(String));
-        setDescription(description);
-
-        toast({
-          title: '✅ Succesfully analized link',
-        });
-      },
-      onError: ({ error }) => {
-        toast({
-          title: '❌ Error analizing link',
-          description: error,
-          variant: 'destructive',
-          action: (
-            <ToastAction
-              altText="Try again"
-              onClick={() => {
-                analyzeLink({ link });
-              }}
-            >
-              Try again
-            </ToastAction>
-          ),
-        });
-      },
-    },
-  );
-  const {
-    runAction: addResource,
-    isRunning: isAddResourceRunning,
-    error: addResourceError,
-    validationErrors: addResourceValidationErrors,
-  } = useAction(action.resources.addResource, {
-    onSuccess: () => {
-      onAdd?.();
-      onOpenChange(false);
-      resetForm();
-    },
-  });
-  const {
-    runAction: editResource,
-    isRunning: isEditResourceRunning,
-    error: editResourceError,
-    validationErrors: editResourceValidationErrors,
-  } = useAction(action.resources.editResource, {
-    onSuccess: () => {
-      onOpenChange(false);
-      resetForm();
-    },
-  });
-  const { runAction: deleteResource, isRunning: isDeleteResourceRunning } =
-    useAction(action.resources.deleteResource, {
-      onSuccess: () => {
-        onOpenChange(false);
-        resetForm();
-      },
-      onError: ({ error }) => {
-        toast({
-          title: `❌ ${error}`,
-          variant: 'destructive',
-        });
-      },
-    });
-  const { runAction: revalidateCache, isRunning: isRevalidateCacheRunning } =
-    useAction(action.cache.revalidateCache, {
-      onSuccess: () => {
-        toast({
-          title: '✅ Succesfully revalidated cache',
-        });
-      },
-      onError: ({ error }) => {
-        toast({
-          title: '❌ Error revalidateCache',
-          description: error,
-          variant: 'destructive',
-          action: (
-            <ToastAction
-              altText="Try again"
-              onClick={() => {
-                analyzeLink({ link });
-              }}
-            >
-              Try again
-            </ToastAction>
-          ),
-        });
-      },
-    });
-
-  // Controlled inputs
+  // Inputs
   const [link, setLink] = useState('');
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
@@ -196,6 +83,192 @@ export const AddOrEditResourceSheet = ({
     false,
   );
   const [note, setNote] = useState('');
+
+  // Actions
+
+  // getTypes
+  const { data: types, runAction: fetchTypes } = useAction(
+    action.types.getTypes,
+    {
+      onError: ({ error }) => {
+        toast({
+          title: '❌ Error fetching types',
+          description: error,
+          variant: 'destructive',
+        });
+      },
+    },
+  );
+
+  // getCategories
+  const { data: categories, runAction: fetchCategories } = useAction(
+    action.categories.getCategories,
+    {
+      onError: ({ error }) => {
+        toast({
+          title: '❌ Error fetching categories',
+          description: error,
+          variant: 'destructive',
+        });
+      },
+    },
+  );
+
+  // getTopics
+  const { data: topics, runAction: fetchTopics } = useAction(
+    action.topics.getTopics,
+    {
+      onError: ({ error }) => {
+        toast({
+          title: '❌ Error fetching topics',
+          description: error,
+          variant: 'destructive',
+        });
+      },
+    },
+  );
+
+  // getResources
+  const { data: resources, runAction: fetchResources } = useAction(
+    action.resources.getResources,
+    {
+      onError: ({ error }) => {
+        toast({
+          title: '❌ Error fetching resources',
+          description: error,
+          variant: 'destructive',
+        });
+      },
+    },
+  );
+
+  // analizeLink
+  const { runAction: analyzeLink, isRunning: isAnalyzeLinkRunning } = useAction(
+    action.resources.analizeLink,
+    {
+      onSuccess: (data) => {
+        if (!data) return;
+        const {
+          name,
+          type,
+          category,
+          topics,
+          shortDescription,
+          description,
+          date,
+        } = data;
+
+        setName(name);
+        setSlug(sluggify(name));
+        setTypeId(String(type));
+        setCategoryId(String(category));
+        setTopicIds(topics.map(String));
+        setDescription(description);
+
+        if (shortDescription) {
+          setShortDescription(shortDescription);
+        }
+
+        if (date) {
+          setDate(date);
+        }
+
+        toast({
+          title: '✅ Succesfully analized link',
+        });
+      },
+      onError: ({ error }) => {
+        toast({
+          title: '❌ Error analizing link',
+          description: error,
+          variant: 'destructive',
+        });
+      },
+    },
+  );
+
+  // addResource
+  const {
+    runAction: addResource,
+    isRunning: isAddResourceRunning,
+    error: addResourceError,
+    validationErrors: addResourceValidationErrors,
+  } = useAction(action.resources.addResource, {
+    onSuccess: () => {
+      toast({
+        title: '✅ Succesfully added resource',
+      });
+      onAdd?.();
+      onOpenChange(false);
+      resetForm();
+    },
+    onError: ({ error }) => {
+      toast({
+        title: '❌ Error adding resource',
+        description: error,
+        variant: 'destructive',
+      });
+    },
+  });
+
+  // editResource
+  const {
+    runAction: editResource,
+    isRunning: isEditResourceRunning,
+    error: editResourceError,
+    validationErrors: editResourceValidationErrors,
+  } = useAction(action.resources.editResource, {
+    onSuccess: () => {
+      toast({
+        title: '✅ Succesfully edited resource',
+      });
+      onOpenChange(false);
+      resetForm();
+    },
+    onError: ({ error }) => {
+      toast({
+        title: '❌ Error editing resource',
+        description: error,
+        variant: 'destructive',
+      });
+    },
+  });
+
+  // deleteResource
+  const { runAction: deleteResource, isRunning: isDeleteResourceRunning } =
+    useAction(action.resources.deleteResource, {
+      onSuccess: () => {
+        toast({
+          title: '✅ Succesfully deleted resource',
+        });
+        onOpenChange(false);
+        resetForm();
+      },
+      onError: ({ error }) => {
+        toast({
+          title: '❌ Error deleting resource',
+          description: error,
+          variant: 'destructive',
+        });
+      },
+    });
+
+  // revalidateCache
+  const { runAction: revalidateCache, isRunning: isRevalidateCacheRunning } =
+    useAction(action.cache.revalidateCache, {
+      onSuccess: () => {
+        toast({
+          title: '✅ Succesfully revalidated cache',
+        });
+      },
+      onError: ({ error }) => {
+        toast({
+          title: '❌ Error revalidating cache',
+          description: error,
+          variant: 'destructive',
+        });
+      },
+    });
 
   const onOpenChange = (open: boolean) => {
     if (open) {
@@ -385,7 +458,7 @@ export const AddOrEditResourceSheet = ({
 
             {isEditMode && (
               <InfoBox variant="info" icon={<Info />}>
-                Add redirect when changing the slug.
+                Consider adding a redirect when changing the slug!
               </InfoBox>
             )}
 
