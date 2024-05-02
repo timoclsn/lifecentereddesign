@@ -59,6 +59,9 @@ export const selectResources = async (
 ) => {
   const { userId, filter, sort, limit } = options;
 
+  // Replace dashes with spaces because in FTS5 dashes ares special characters
+  const searchTerm = filter.search ? filter.search.replace(/-/g, ' ') : '';
+
   const relatedResource = alias(resource, 'relatedResource');
 
   const orderBy = () => {
@@ -176,7 +179,7 @@ export const selectResources = async (
 
     // Search
     if (filter.search) {
-      where.push(sql`${resourceFts} MATCH ${filter.search}`);
+      where.push(sql`${resourceFts} MATCH ${searchTerm}`);
     }
 
     // Filters
@@ -337,7 +340,7 @@ export const selectResources = async (
 
     // Search
     if (filter.search) {
-      where.push(sql`${resourceFts} MATCH ${filter.search}`);
+      where.push(sql`${resourceFts} MATCH ${searchTerm}`);
     }
 
     return and(...where);
