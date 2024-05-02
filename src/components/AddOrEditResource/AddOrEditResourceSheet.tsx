@@ -89,21 +89,57 @@ export const AddOrEditResourceSheet = ({
   // getTypes
   const { data: types, runAction: fetchTypes } = useAction(
     action.types.getTypes,
+    {
+      onError: ({ error }) => {
+        toast({
+          title: '❌ Error fetching types',
+          description: error,
+          variant: 'destructive',
+        });
+      },
+    },
   );
 
   // getCategories
   const { data: categories, runAction: fetchCategories } = useAction(
     action.categories.getCategories,
+    {
+      onError: ({ error }) => {
+        toast({
+          title: '❌ Error fetching categories',
+          description: error,
+          variant: 'destructive',
+        });
+      },
+    },
   );
 
   // getTopics
   const { data: topics, runAction: fetchTopics } = useAction(
     action.topics.getTopics,
+    {
+      onError: ({ error }) => {
+        toast({
+          title: '❌ Error fetching topics',
+          description: error,
+          variant: 'destructive',
+        });
+      },
+    },
   );
 
   // getResources
   const { data: resources, runAction: fetchResources } = useAction(
     action.resources.getResources,
+    {
+      onError: ({ error }) => {
+        toast({
+          title: '❌ Error fetching resources',
+          description: error,
+          variant: 'destructive',
+        });
+      },
+    },
   );
 
   // analizeLink
@@ -112,16 +148,30 @@ export const AddOrEditResourceSheet = ({
     {
       onSuccess: (data) => {
         if (!data) return;
-        const { name, type, category, topics, shortDescription, description } =
-          data;
+        const {
+          name,
+          type,
+          category,
+          topics,
+          shortDescription,
+          description,
+          date,
+        } = data;
 
         setName(name);
         setSlug(sluggify(name));
         setTypeId(String(type));
         setCategoryId(String(category));
         setTopicIds(topics.map(String));
-        setShortDescription(shortDescription);
         setDescription(description);
+
+        if (shortDescription) {
+          setShortDescription(shortDescription);
+        }
+
+        if (date) {
+          setDate(date);
+        }
 
         toast({
           title: '✅ Succesfully analized link',
@@ -145,9 +195,19 @@ export const AddOrEditResourceSheet = ({
     validationErrors: addResourceValidationErrors,
   } = useAction(action.resources.addResource, {
     onSuccess: () => {
+      toast({
+        title: '✅ Succesfully added resource',
+      });
       onAdd?.();
       onOpenChange(false);
       resetForm();
+    },
+    onError: ({ error }) => {
+      toast({
+        title: '❌ Error adding resource',
+        description: error,
+        variant: 'destructive',
+      });
     },
   });
 
@@ -159,8 +219,18 @@ export const AddOrEditResourceSheet = ({
     validationErrors: editResourceValidationErrors,
   } = useAction(action.resources.editResource, {
     onSuccess: () => {
+      toast({
+        title: '✅ Succesfully edited resource',
+      });
       onOpenChange(false);
       resetForm();
+    },
+    onError: ({ error }) => {
+      toast({
+        title: '❌ Error editing resource',
+        description: error,
+        variant: 'destructive',
+      });
     },
   });
 
@@ -168,12 +238,16 @@ export const AddOrEditResourceSheet = ({
   const { runAction: deleteResource, isRunning: isDeleteResourceRunning } =
     useAction(action.resources.deleteResource, {
       onSuccess: () => {
+        toast({
+          title: '✅ Succesfully deleted resource',
+        });
         onOpenChange(false);
         resetForm();
       },
       onError: ({ error }) => {
         toast({
-          title: `❌ ${error}`,
+          title: '❌ Error deleting resource',
+          description: error,
           variant: 'destructive',
         });
       },
@@ -189,7 +263,7 @@ export const AddOrEditResourceSheet = ({
       },
       onError: ({ error }) => {
         toast({
-          title: '❌ Error revalidateCache',
+          title: '❌ Error revalidating cache',
           description: error,
           variant: 'destructive',
         });
@@ -384,7 +458,7 @@ export const AddOrEditResourceSheet = ({
 
             {isEditMode && (
               <InfoBox variant="info" icon={<Info />}>
-                Add redirect when changing the slug.
+                Consider adding a redirect when changing the slug!
               </InfoBox>
             )}
 

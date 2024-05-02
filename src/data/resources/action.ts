@@ -471,8 +471,13 @@ const analizeLinkSchema = z.object({
   type: z.number(),
   category: z.number(),
   topics: z.array(z.number()),
-  shortDescription: z.string(),
+  shortDescription: z.string().nullable(),
   description: z.string(),
+  date: z
+    .string()
+    .date()
+    .transform((date) => new Date(date))
+    .nullable(),
 });
 
 export const analizeLink = createAdminAction({
@@ -557,8 +562,11 @@ export const analizeLink = createAdminAction({
         - Choose which type, categroy and topcis are the most relevant for the website.
         - If the website is of a single person the type is most likely "Thoughtleader".
         - If the type is "Thoughtleader" the name should be the name of the person.
-        - If the type is "Thoughtleader" the short description should be their job title or profession otherwise it should be a empty string.
-        - Don't set more than 3 topics.
+        - If the type is "Thoughtleader" the short description should be their job title or profession otherwise it should be null.
+        - Don't set more than 3 topics. Only set the most relevant ones that you are very confident with (7 or higher in a scale from 0 to 10).
+        - Answer in english only.
+        - If the website content is of a peace of media (book, article, podcast etc.) fill the date with the date of the publication (ISO date string) otherwise it should be null.
+        - Keep the description short and to the point (3 sentences max).
 
         You are going to answer in JSON format. This is the format you are going to use:
         {
@@ -568,6 +576,7 @@ export const analizeLink = createAdminAction({
           topics: [1, 2, 3],
           shortDescription: 'UX Designer',
           description: 'Description of the website',
+          date: '2022-01-01'
         }
 
         TYPES: ${JSON.stringify(types)}
