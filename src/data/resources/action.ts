@@ -556,7 +556,7 @@ export const analizeLink = createAdminAction({
     });
 
     const prompt = `
-        I am going to give you the content of a website i am also goinf to give you input data that you are going to use to categorize the website.
+        I am going to give you the content of a website that you are going to use to categorize the website.
         
         These are your instructions:
         - Choose which type, categroy and topcis are the most relevant for the website.
