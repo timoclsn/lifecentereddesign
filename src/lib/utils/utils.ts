@@ -1,6 +1,6 @@
+import { cx } from 'cva';
 import { format } from 'date-fns';
 import { z } from 'zod';
-import { cx } from 'cva';
 
 const NEXT_PUBLIC_VERCEL_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV;
 const NEXT_PUBLIC_VERCEL_URL = process.env.NEXT_PUBLIC_VERCEL_URL;
@@ -99,7 +99,10 @@ export const sluggify = (text: string) =>
     .replace(/ä/g, 'ae')
     .replace(/ö/g, 'oe')
     .replace(/ü/g, 'ue')
+    .replace(/ - /g, '-')
+    .replace(/: /g, '-')
     .replace(/ /g, '-')
+    .replace(/&/g, 'and')
     .replace(/[^\w-]+/g, '');
 
 /**

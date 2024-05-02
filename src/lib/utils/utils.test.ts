@@ -148,7 +148,7 @@ describe('sluggify', () => {
   });
 
   it('should remove special characters from the text', () => {
-    const text = 'Hello!@#$%^&*()+{}|:"<>? World';
+    const text = 'Hello!@#$%^*()+{}|:"<>? World';
     const result = sluggify(text);
     expect(result).toBe('hello-world');
   });
@@ -160,7 +160,7 @@ describe('sluggify', () => {
   });
 
   it('should handle text with only special characters', () => {
-    const text = '!@#$%^&*()+{}|:"<>?';
+    const text = '!@#$%^*()+{}|:"<>?';
     const result = sluggify(text);
     expect(result).toBe('');
   });
