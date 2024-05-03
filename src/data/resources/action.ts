@@ -62,67 +62,52 @@ export const addResource = createAdminAction({
   action: async ({ input, ctx }) => {
     const { db } = ctx;
 
-    const [newResource] = await db
-      .insert(resource)
-      .values({
-        name: input.name,
-        slug: input.slug,
-        suggestion: input.suggestion,
-        link: input.link,
-        typeId: input.typeId,
-        categoryId: input.categoryId,
-        shortDescription: input.shortDescription,
-        description: input.description,
-        details: input.details,
-        note: input.note,
-        date: input.date,
-        datePlain: input.datePlain,
-        relatedResourcesPlain: input.relatedResourcesPlain,
+    await db
+      .transaction(async (tx) => {
+        const [newResource] = await tx
+          .insert(resource)
+          .values({
+            name: input.name,
+            slug: input.slug,
+            suggestion: input.suggestion,
+            link: input.link,
+            typeId: input.typeId,
+            categoryId: input.categoryId,
+            shortDescription: input.shortDescription,
+            description: input.description,
+            details: input.details,
+            note: input.note,
+            date: input.date,
+            datePlain: input.datePlain,
+            relatedResourcesPlain: input.relatedResourcesPlain,
+          })
+          .returning();
+
+        if (input.topicIds && input.topicIds.length > 0) {
+          await tx.insert(resourceToTopic).values(
+            input.topicIds.map((topicId) => ({
+              resourceId: newResource.id,
+              topicId,
+            })),
+          );
+        }
+
+        if (input.relatedResourceIds && input.relatedResourceIds.length > 0) {
+          await tx.insert(resourceToRelatedResource).values(
+            input.relatedResourceIds.map((relatedResourceId) => ({
+              resourceId: newResource.id,
+              relatedResourceId,
+            })),
+          );
+        }
       })
-      .returning()
       .catch((error) => {
         throw new ActionError({
           message: 'Error adding resource',
-          log: 'Error adding resource to resources table',
+          log: 'Error adding resource to database',
           cause: error,
         });
       });
-
-    if (input.topicIds && input.topicIds.length > 0) {
-      await db
-        .insert(resourceToTopic)
-        .values(
-          input.topicIds.map((topicId) => ({
-            resourceId: newResource.id,
-            topicId,
-          })),
-        )
-        .catch((error) => {
-          throw new ActionError({
-            message: 'Error adding resource',
-            log: 'Error adding resource to resourceToTopic table',
-            cause: error,
-          });
-        });
-    }
-
-    if (input.relatedResourceIds && input.relatedResourceIds.length > 0) {
-      await db
-        .insert(resourceToRelatedResource)
-        .values(
-          input.relatedResourceIds.map((relatedResourceId) => ({
-            resourceId: newResource.id,
-            relatedResourceId,
-          })),
-        )
-        .catch((error) => {
-          throw new ActionError({
-            message: 'Error adding resource',
-            log: 'Error adding resource to resourceToRelatedResource table',
-            cause: error,
-          });
-        });
-    }
 
     revalidateTag('resources');
   },
@@ -133,93 +118,66 @@ export const editResource = createAdminAction({
   action: async ({ input, ctx }) => {
     const { db } = ctx;
 
-    const [editedResource] = await db
-      .update(resource)
-      .set({
-        name: input.name,
-        slug: input.slug,
-        suggestion: input.suggestion,
-        link: input.link,
-        typeId: input.typeId,
-        categoryId: input.categoryId,
-        shortDescription: input.shortDescription,
-        description: input.description,
-        details: input.details,
-        note: input.note,
-        date: input.date,
-        datePlain: input.datePlain,
-        relatedResourcesPlain: input.relatedResourcesPlain,
+    const slug = await db
+      .transaction(async (tx) => {
+        const [editedResource] = await tx
+          .update(resource)
+          .set({
+            name: input.name,
+            slug: input.slug,
+            suggestion: input.suggestion,
+            link: input.link,
+            typeId: input.typeId,
+            categoryId: input.categoryId,
+            shortDescription: input.shortDescription,
+            description: input.description,
+            details: input.details,
+            note: input.note,
+            date: input.date,
+            datePlain: input.datePlain,
+            relatedResourcesPlain: input.relatedResourcesPlain,
+          })
+          .where(eq(resource.id, input.id))
+          .returning();
+
+        if (input.topicIds && input.topicIds.length > 0) {
+          await tx
+            .delete(resourceToTopic)
+            .where(eq(resourceToTopic.resourceId, input.id));
+
+          await tx.insert(resourceToTopic).values(
+            input.topicIds.map((topicId) => ({
+              resourceId: input.id,
+              topicId,
+            })),
+          );
+        }
+
+        if (input.relatedResourceIds && input.relatedResourceIds.length > 0) {
+          await tx
+            .delete(resourceToRelatedResource)
+            .where(eq(resourceToRelatedResource.resourceId, input.id));
+
+          await tx.insert(resourceToRelatedResource).values(
+            input.relatedResourceIds.map((relatedResourceId) => ({
+              resourceId: input.id,
+              relatedResourceId,
+            })),
+          );
+        }
+
+        return editedResource.slug;
       })
-      .where(eq(resource.id, input.id))
-      .returning()
       .catch((error) => {
         throw new ActionError({
           message: 'Error editing resource',
-          log: 'Error updating resource in resources table',
+          log: 'Error editing resource in database',
           cause: error,
         });
       });
 
-    if (input.topicIds && input.topicIds.length > 0) {
-      await db
-        .delete(resourceToTopic)
-        .where(eq(resourceToTopic.resourceId, input.id))
-        .catch((error) => {
-          throw new ActionError({
-            message: 'Error editing resource',
-            log: 'Error deleting resource from resourceToTopic table',
-            cause: error,
-          });
-        });
-
-      await db
-        .insert(resourceToTopic)
-        .values(
-          input.topicIds.map((topicId) => ({
-            resourceId: input.id,
-            topicId,
-          })),
-        )
-        .catch((error) => {
-          throw new ActionError({
-            message: 'Error adding resource',
-            log: 'Error adding resource to resourceToTopic table',
-            cause: error,
-          });
-        });
-    }
-
-    if (input.relatedResourceIds && input.relatedResourceIds.length > 0) {
-      await db
-        .delete(resourceToRelatedResource)
-        .where(eq(resourceToRelatedResource.resourceId, input.id))
-        .catch((error) => {
-          throw new ActionError({
-            message: 'Error editing resource',
-            log: 'Error deleting resource from resourceToRelatedResource table',
-            cause: error,
-          });
-        });
-
-      await db
-        .insert(resourceToRelatedResource)
-        .values(
-          input.relatedResourceIds.map((relatedResourceId) => ({
-            resourceId: input.id,
-            relatedResourceId,
-          })),
-        )
-        .catch((error) => {
-          throw new ActionError({
-            message: 'Error adding resource',
-            log: 'Error adding resource to resourceToRelatedResource table',
-            cause: error,
-          });
-        });
-    }
-
     revalidateTag('resources');
-    redirect(`/resources/${editedResource.slug}`);
+    redirect(`/resources/${slug}`);
   },
 });
 
@@ -231,56 +189,25 @@ export const deleteResource = createAdminAction({
     const { db } = ctx;
 
     await db
-      .delete(resourceToTopic)
-      .where(eq(resourceToTopic.resourceId, input.id))
-      .catch((error) => {
-        throw new ActionError({
-          message: 'Error deleting resource',
-          log: 'Error deleting topics from resourceToTopic table',
-          cause: error,
-        });
-      });
+      .transaction(async (tx) => {
+        await tx
+          .delete(resourceToTopic)
+          .where(eq(resourceToTopic.resourceId, input.id));
 
-    await db
-      .delete(resourceToRelatedResource)
-      .where(eq(resourceToRelatedResource.resourceId, input.id))
-      .catch((error) => {
-        throw new ActionError({
-          message: 'Error deleting resource',
-          log: 'Error deleting related resources from resourceToRelatedResource table',
-          cause: error,
-        });
-      });
+        await tx
+          .delete(resourceToRelatedResource)
+          .where(eq(resourceToRelatedResource.resourceId, input.id));
 
-    await db
-      .delete(likeSchema)
-      .where(eq(likeSchema.resourceId, input.id))
-      .catch((error) => {
-        throw new ActionError({
-          message: 'Error deleting resource',
-          log: 'Error deleting resource likes from likes table',
-          cause: error,
-        });
-      });
+        await tx.delete(likeSchema).where(eq(likeSchema.resourceId, input.id));
 
-    await db
-      .delete(comment)
-      .where(eq(comment.resourceId, input.id))
-      .catch((error) => {
-        throw new ActionError({
-          message: 'Error deleting resource',
-          log: 'Error deleting resource comments from comments table',
-          cause: error,
-        });
-      });
+        await tx.delete(comment).where(eq(comment.resourceId, input.id));
 
-    await db
-      .delete(resource)
-      .where(eq(resource.id, input.id))
+        await tx.delete(resource).where(eq(resource.id, input.id));
+      })
       .catch((error) => {
         throw new ActionError({
           message: 'Error deleting resource',
-          log: 'Error deleting resource from resources table',
+          log: 'Error deleting resource from database',
           cause: error,
         });
       });
