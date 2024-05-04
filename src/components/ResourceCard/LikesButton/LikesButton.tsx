@@ -40,7 +40,8 @@ export const LikesButton = ({ id, count, liked }: Props) => {
       },
       onError: ({ error }) => {
         toast({
-          title: `❌ ${error}`,
+          title: 'Error liking resource',
+          description: error,
           variant: 'destructive',
         });
       },
@@ -54,7 +55,8 @@ export const LikesButton = ({ id, count, liked }: Props) => {
       },
       onError: ({ error }) => {
         toast({
-          title: `❌ ${error}`,
+          title: 'Error un-liking resource',
+          description: error,
           variant: 'destructive',
         });
       },

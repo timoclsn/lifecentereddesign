@@ -20,9 +20,10 @@ export const DeleteCommentButton = ({
   const { toast } = useToast();
 
   const { isRunning, runAction } = useAction(action.resources.deleteComment, {
-    onError: (error) => {
+    onError: ({ error }) => {
       toast({
-        title: `❌ ${error}`,
+        title: 'Error deleting comment',
+        description: error,
         variant: 'destructive',
       });
     },

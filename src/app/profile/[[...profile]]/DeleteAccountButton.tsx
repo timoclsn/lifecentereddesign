@@ -19,7 +19,8 @@ export const DeleteAccountButton = () => {
       },
       onError: ({ error }) => {
         toast({
-          title: `❌ ${error}`,
+          title: 'Error deleting account',
+          description: error,
           variant: 'destructive',
         });
       },
