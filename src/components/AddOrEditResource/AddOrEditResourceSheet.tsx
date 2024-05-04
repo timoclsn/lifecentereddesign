@@ -67,6 +67,7 @@ export const AddOrEditResourceSheet = ({
   const [link, setLink] = useState('');
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
+  const slugChanged = slug && slug !== resource?.slug;
   const [typeId, setTypeId] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [topicIds, setTopicIds] = useState<Array<string>>([]);
@@ -92,7 +93,7 @@ export const AddOrEditResourceSheet = ({
     {
       onError: ({ error }) => {
         toast({
-          title: '❌ Error fetching types',
+          title: 'Error fetching types',
           description: error,
           variant: 'destructive',
         });
@@ -106,7 +107,7 @@ export const AddOrEditResourceSheet = ({
     {
       onError: ({ error }) => {
         toast({
-          title: '❌ Error fetching categories',
+          title: 'Error fetching categories',
           description: error,
           variant: 'destructive',
         });
@@ -120,7 +121,7 @@ export const AddOrEditResourceSheet = ({
     {
       onError: ({ error }) => {
         toast({
-          title: '❌ Error fetching topics',
+          title: 'Error fetching topics',
           description: error,
           variant: 'destructive',
         });
@@ -134,7 +135,7 @@ export const AddOrEditResourceSheet = ({
     {
       onError: ({ error }) => {
         toast({
-          title: '❌ Error fetching resources',
+          title: 'Error fetching resources',
           description: error,
           variant: 'destructive',
         });
@@ -179,7 +180,7 @@ export const AddOrEditResourceSheet = ({
       },
       onError: ({ error }) => {
         toast({
-          title: '❌ Error analizing link',
+          title: 'Error analizing link',
           description: error,
           variant: 'destructive',
         });
@@ -204,7 +205,7 @@ export const AddOrEditResourceSheet = ({
     },
     onError: ({ error }) => {
       toast({
-        title: '❌ Error adding resource',
+        title: 'Error adding resource',
         description: error,
         variant: 'destructive',
       });
@@ -227,7 +228,7 @@ export const AddOrEditResourceSheet = ({
     },
     onError: ({ error }) => {
       toast({
-        title: '❌ Error editing resource',
+        title: 'Error editing resource',
         description: error,
         variant: 'destructive',
       });
@@ -246,7 +247,7 @@ export const AddOrEditResourceSheet = ({
       },
       onError: ({ error }) => {
         toast({
-          title: '❌ Error deleting resource',
+          title: 'Error deleting resource',
           description: error,
           variant: 'destructive',
         });
@@ -263,7 +264,7 @@ export const AddOrEditResourceSheet = ({
       },
       onError: ({ error }) => {
         toast({
-          title: '❌ Error revalidating cache',
+          title: 'Error revalidating cache',
           description: error,
           variant: 'destructive',
         });
@@ -456,7 +457,7 @@ export const AddOrEditResourceSheet = ({
               )}
             </div>
 
-            {isEditMode && (
+            {isEditMode && slugChanged && (
               <InfoBox variant="info" icon={<Info />}>
                 Consider adding a redirect when changing the slug!
               </InfoBox>

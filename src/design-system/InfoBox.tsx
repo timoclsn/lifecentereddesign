@@ -2,12 +2,12 @@ import { VariantProps, cva } from 'cva';
 import { ReactNode } from 'react';
 
 const styles = cva({
-  base: 'px-6 py-4 text-white flex gap-2 [&_svg]:size-[20px]',
+  base: 'px-6 py-4 flex gap-2 [&_svg]:size-[20px]',
   variants: {
     variant: {
-      success: 'bg-green-700',
-      error: 'bg-red-700',
-      info: 'bg-blue-700',
+      success: 'bg-green-600 text-white',
+      error: 'bg-destructive text-destructive-foreground',
+      info: 'bg-orange-600 text-white',
     },
   },
 });
