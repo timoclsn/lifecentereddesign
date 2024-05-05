@@ -5,6 +5,7 @@ const { TURSO_DATABASE_URL, TURSO_AUTH_TOKEN } = process.env;
 
 export default {
   schema: './src/db/schema.ts',
+  out: './src/db/migrations',
   driver: 'turso',
   dbCredentials: {
     url: TURSO_DATABASE_URL,

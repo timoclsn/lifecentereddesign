@@ -132,23 +132,8 @@ const redirects = [
     permanent: true,
   },
   {
-    source: '/resources/thoughtleader-20',
-    destination: '/resources/ron-wakkary',
-    permanent: true,
-  },
-  {
     source: '/resources/thoughtleader-21',
     destination: '/resources/hemant-taneja',
-    permanent: true,
-  },
-  {
-    source: '/resources/thoughtleader-22',
-    destination: '/resources/kevin-maney',
-    permanent: true,
-  },
-  {
-    source: '/resources/thoughtleader-23',
-    destination: '/resources/kenneth-chenault',
     permanent: true,
   },
   {
@@ -157,23 +142,8 @@ const redirects = [
     permanent: true,
   },
   {
-    source: '/resources/thoughtleader-25',
-    destination: '/resources/liza-kindred',
-    permanent: true,
-  },
-  {
     source: '/resources/thoughtleader-26',
     destination: '/resources/jane-fulton-suri',
-    permanent: true,
-  },
-  {
-    source: '/resources/thoughtleader-27',
-    destination: '/resources/carey-jenkins',
-    permanent: true,
-  },
-  {
-    source: '/resources/thoughtleader-28',
-    destination: '/resources/tim-jackson',
     permanent: true,
   },
   {
@@ -182,33 +152,8 @@ const redirects = [
     permanent: true,
   },
   {
-    source: '/resources/thoughtleader-30',
-    destination: '/resources/david-wortmann',
-    permanent: true,
-  },
-  {
-    source: '/resources/thoughtleader-31',
-    destination: '/resources/anthony-dunne',
-    permanent: true,
-  },
-  {
-    source: '/resources/thoughtleader-32',
-    destination: '/resources/fiona-raby',
-    permanent: true,
-  },
-  {
-    source: '/resources/thoughtleader-33',
-    destination: '/resources/simon-mundy',
-    permanent: true,
-  },
-  {
     source: '/resources/thoughtleader-34',
     destination: '/resources/bruce-mau',
-    permanent: true,
-  },
-  {
-    source: '/resources/thoughtleader-35',
-    destination: '/resources/alita-joyce',
     permanent: true,
   },
   {
@@ -264,11 +209,6 @@ const redirects = [
   {
     source: '/resources/thoughtleader-46',
     destination: '/resources/brent-toderian',
-    permanent: true,
-  },
-  {
-    source: '/resources/thoughtleader-47',
-    destination: '/resources/sierra-robinson',
     permanent: true,
   },
   {
@@ -368,7 +308,7 @@ const redirects = [
   {
     source: '/resources/article-8',
     destination:
-      '/resources/life-centered-design--wie-design-mit-der-trendwende-vom-profit-zum-purpose-die-welt-retten-will',
+      '/resources/life-centered-design-wie-design-mit-der-trendwende-vom-profit-zum-purpose-die-welt-retten-will',
     permanent: true,
   },
   {
@@ -406,7 +346,7 @@ const redirects = [
   {
     source: '/resources/article-15',
     destination:
-      '/resources/your-next-persona-will-be-non-human--tools-for-environment-centered-designers',
+      '/resources/your-next-persona-will-be-non-human-tools-for-environment-centered-designers',
     permanent: true,
   },
   {
@@ -441,7 +381,67 @@ const redirects = [
   },
   {
     source: '/resources/example-2',
-    destination: '/resources/rewe-green-farming--supermarkt-umgedacht',
+    destination: '/resources/rewe-green-farming-supermarkt-umgedacht',
+    permanent: true,
+  },
+  {
+    source: '/resources/thoughtleader-20',
+    destination: '/resources/ron-wakkary',
+    permanent: true,
+  },
+  {
+    source: '/resources/thoughtleader-22',
+    destination: '/resources/kevin-maney',
+    permanent: true,
+  },
+  {
+    source: '/resources/thoughtleader-23',
+    destination: '/resources/kenneth-chenault',
+    permanent: true,
+  },
+  {
+    source: '/resources/thoughtleader-25',
+    destination: '/resources/liza-kindred',
+    permanent: true,
+  },
+  {
+    source: '/resources/thoughtleader-27',
+    destination: '/resources/carey-jenkins',
+    permanent: true,
+  },
+  {
+    source: '/resources/thoughtleader-28',
+    destination: '/resources/tim-jackson',
+    permanent: true,
+  },
+  {
+    source: '/resources/thoughtleader-30',
+    destination: '/resources/david-wortmann',
+    permanent: true,
+  },
+  {
+    source: '/resources/thoughtleader-31',
+    destination: '/resources/anthony-dunne',
+    permanent: true,
+  },
+  {
+    source: '/resources/thoughtleader-32',
+    destination: '/resources/fiona-raby',
+    permanent: true,
+  },
+  {
+    source: '/resources/thoughtleader-33',
+    destination: '/resources/simon-mundy',
+    permanent: true,
+  },
+  {
+    source: '/resources/thoughtleader-35',
+    destination: '/resources/alita-joyce',
+    permanent: true,
+  },
+  {
+    source: '/resources/thoughtleader-47',
+    destination: '/resources/sierra-robinson',
     permanent: true,
   },
   {
@@ -470,7 +470,7 @@ const redirects = [
   {
     source: '/resources/book-5',
     destination:
-      '/resources/world-wide-waste-how-digital-is-killing-our-planet--and-what-we-can-do-about-it-',
+      '/resources/world-wide-waste-how-digital-is-killing-our-planet-and-what-we-can-do-about-it-',
     permanent: true,
   },
   {
@@ -736,7 +736,7 @@ const redirects = [
   },
   {
     source: '/resources/community-16',
-    destination: '/resources/ecological-design-collective--community',
+    destination: '/resources/ecological-design-collective-community',
     permanent: true,
   },
   {
@@ -852,8 +852,7 @@ const redirects = [
   },
   {
     source: '/resources/podcastEpisode-20',
-    destination:
-      '/resources/the-future-is-life-centered---jane-fulton-suri-ideo',
+    destination: '/resources/the-future-is-life-centered-jane-fulton-suri-ideo',
     permanent: true,
   },
   {
@@ -927,7 +926,7 @@ const redirects = [
   },
   {
     source: '/resources/video-5',
-    destination: '/resources/life-centered-design-by-bruce-mau--bodw-2021',
+    destination: '/resources/life-centered-design-by-bruce-mau-bodw-2021',
     permanent: true,
   },
   {
@@ -943,7 +942,7 @@ const redirects = [
   {
     source: '/resources/video-8',
     destination:
-      '/resources/beyond-sustainability-a-call-for-regeneration--sierra-robinson--tedxyouthseattle',
+      '/resources/beyond-sustainability-a-call-for-regeneration-sierra-robinson-tedxyouthseattle',
     permanent: true,
   },
   {
@@ -955,13 +954,13 @@ const redirects = [
   {
     source: '/resources/video-10',
     destination:
-      '/resources/biomimicry-definition--examples-explained-with-drawings',
+      '/resources/biomimicry-definition-examples-explained-with-drawings',
     permanent: true,
   },
   {
     source: '/resources/video-11',
     destination:
-      '/resources/circular-economy-definition--examples--sustainability-environment',
+      '/resources/circular-economy-definition-examples-sustainability-environment',
     permanent: true,
   },
   {
@@ -1013,7 +1012,7 @@ const redirects = [
   {
     source: '/resources/video-21',
     destination:
-      '/resources/creating-a-bio-industrial-revolution--janine-benyus',
+      '/resources/creating-a-bio-industrial-revolution-janine-benyus',
     permanent: true,
   },
   {
@@ -1510,7 +1509,7 @@ const redirects = [
   },
   {
     source: '/resources/tool-43',
-    destination: '/resources/sux---the-sustainable-ux-design-toolkit',
+    destination: '/resources/sux-the-sustainable-ux-design-toolkit',
     permanent: true,
   },
   {
@@ -1739,7 +1738,7 @@ const redirects = [
   },
   {
     source: '/resources/directory-12',
-    destination: '/resources/sustainable--ethical-methods-library',
+    destination: '/resources/sustainable-ethical-methods-library',
     permanent: true,
   },
   {
@@ -1845,7 +1844,7 @@ const redirects = [
   },
   {
     source: '/resources/directory-14',
-    destination: '/resources/sux-network---resource-collection--event-calendar',
+    destination: '/resources/sux-network-resource-collection-event-calendar',
     permanent: true,
   },
   {

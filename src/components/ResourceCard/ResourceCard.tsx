@@ -218,11 +218,9 @@ export const ResourceCard = async ({ resource, details }: Props) => {
         }`}
       >
         {/* Category */}
-        {resource.category && (
-          <CategoryButton categoryName={resource.category.name}>
-            {resource.category.name}
-          </CategoryButton>
-        )}
+        <CategoryButton categoryName={resource.category.name}>
+          {resource.category.name}
+        </CategoryButton>
 
         {/* Link */}
         <div className="flex max-w-full flex-wrap gap-2">

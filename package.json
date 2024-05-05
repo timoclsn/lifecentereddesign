@@ -15,6 +15,7 @@
     "db:migrate": "tsx ./src/db/migrate.ts",
     "db:execute": "tsx ./src/db/execute.ts",
     "db:reset": "rm ./local.db && pnpm db:push && pnpm db:seed",
+    "db:generate": "drizzle-kit generate:sqlite",
     "ui:add": "pnpm dlx shadcn-ui@latest add",
     "ui:diff": "pnpm dlx shadcn-ui diff",
     "prisma:generate": "prisma generate",

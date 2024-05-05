@@ -26,9 +26,9 @@ export const resource = sqliteTable(
     typeId: integer('type_id', { mode: 'number' })
       .notNull()
       .references(() => type.id),
-    categoryId: integer('category_id', { mode: 'number' }).references(
-      () => category.id,
-    ),
+    categoryId: integer('category_id', { mode: 'number' })
+      .notNull()
+      .references(() => category.id),
     shortDescription: text('short_description', { mode: 'text' }),
     description: text('description', { mode: 'text' }),
     details: text('details', { mode: 'text' }),

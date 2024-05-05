@@ -18,14 +18,14 @@ const main = async () => {
 
   const resources = await db.query.resource.findMany({
     columns: {
-      id: true,
+      slug: true,
       oldSlug: true,
     },
   });
 
-  const redirects = resources.map(({ id, oldSlug }) => ({
+  const redirects = resources.map(({ slug, oldSlug }) => ({
     source: `/resources/${oldSlug}`,
-    destination: `/resources/${id}`,
+    destination: `/resources/${slug}`,
     permanent: true,
   }));
 
