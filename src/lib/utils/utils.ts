@@ -100,9 +100,12 @@ export const sluggify = (text: string) =>
     .replace(/ö/g, 'oe')
     .replace(/ü/g, 'ue')
     .replace(/ - /g, '-')
+    .replace(/ \— /g, '-')
+    .replace(/ \– /g, '-')
+    .replace(/ \| /g, '-')
     .replace(/: /g, '-')
+    .replace(/ & /g, '-')
     .replace(/ /g, '-')
-    .replace(/&/g, 'and')
     .replace(/[^\w-]+/g, '');
 
 /**
