@@ -334,12 +334,9 @@ export const selectResources = async (
   }
 
   resourcesQuery.where(() => {
-    const where: Array<SQL<unknown> | undefined> = [];
-
-    // Limit
-    if (limit) {
-      where.push(inArray(resource.id, resourceIdsQuery));
-    }
+    const where: Array<SQL<unknown> | undefined> = [
+      inArray(resource.id, resourceIdsQuery),
+    ];
 
     // Search
     if (filter.search) {
