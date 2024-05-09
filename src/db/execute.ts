@@ -32,6 +32,12 @@ const main = async () => {
   writeFileSync('redirects.json', JSON.stringify(redirects, null, 2));
 
   console.info('Executing SQL complete.');
+
+  process.exit(0);
 };
 
-main();
+main().catch((e) => {
+  console.error('Execution failed');
+  console.error(e);
+  process.exit(1);
+});

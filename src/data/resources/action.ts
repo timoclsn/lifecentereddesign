@@ -6,6 +6,7 @@ import {
   createProtectedAction,
 } from '@/data/clients';
 import { ActionError } from '@/lib/data/errors';
+import { htmlToMarkdown } from '@/lib/utils/utils';
 import { and, eq, sql } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
 import nodemailer from 'nodemailer';
@@ -414,7 +415,7 @@ export const analizeLink = createAdminAction({
   action: async ({ input }) => {
     const { link } = input;
 
-    const urlResponse = await fetch(link).catch((error) => {
+    const response = await fetch(link).catch((error) => {
       throw new ActionError({
         message: 'Error analyzing link',
         log: 'Error fetching website content',
@@ -422,7 +423,14 @@ export const analizeLink = createAdminAction({
       });
     });
 
-    const websiteSource = await urlResponse.text().catch((error) => {
+    if (!response.ok) {
+      throw new ActionError({
+        message: 'Error analyzing link',
+        log: 'Error fetching website content. Response status: ${response.status}',
+      });
+    }
+
+    const websiteSource = await response.text().catch((error) => {
       throw new ActionError({
         message: 'Error analyzing link',
         log: 'Error reading website content',
@@ -438,32 +446,9 @@ export const analizeLink = createAdminAction({
     const descriptionMatch = websiteSource.match(descriptionRegex);
     const description = descriptionMatch ? descriptionMatch[1] : '';
 
-    const websiteTextClean =
-      websiteSource
-        // Remove script tag content
-        .replace(
-          /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-          '<script></script>',
-        )
-        // Remove style tag content
-        .replace(
-          /<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi,
-          '<style></style>',
-        )
-        // Remove all xml tags
-        .replace(/<[^>]*>/g, '|')
-        // Replace all line breaks
-        .replace(/\r?\n|\r/g, '')
-        // Replace multiple spaces
-        .replace(/ {2,}/g, '')
-        // Replace multiple dots with one
-        .replace(/\.{2,}/g, '. ')
-        // Replace multiple pipes with one
-        .replace(/\|{2,}/g, '|')
-        // Only use the first 10000 characters
-        .substring(0, 10000) + '...';
+    const markdownContent = htmlToMarkdown(websiteSource);
 
-    if (!websiteTextClean) {
+    if (!markdownContent) {
       throw new ActionError({
         message: 'Error analyzing link',
         log: 'Could not get website content',
@@ -482,18 +467,19 @@ export const analizeLink = createAdminAction({
       });
     });
 
-    const prompt = `
-        I am going to give you the content of a website that you are going to use to categorize the website.
+    const prompt =
+      `
+        I am going to give you the content of a website formatted as markdown that you are going to use to categorize the website.
         
         These are your instructions:
-        - Choose which type, categroy and topcis are the most relevant for the website.
+        - Choose which type, categroy and topcis are based on their meaning the most relevant for the website.
         - If the website is of a single person the type is most likely "Thoughtleader".
-        - If the type is "Thoughtleader" the name should be the name of the person.
+        - If the type is "Thoughtleader" the name should be only the name of the person.
         - If the type is "Thoughtleader" the short description should be their job title or profession otherwise it should be null.
-        - Don't set more than 3 topics. Only set the most relevant ones that you are very confident with (7 or higher in a scale from 0 to 10).
+        - Don't set more than 3 topics. Only set the most relevant ones that you are very confident to fit the website content (7 or higher in a scale from 0 to 10).
         - Answer in english only.
         - If the website content is of a peace of media (book, article, podcast etc.) fill the date with the date of the publication (ISO date string) otherwise it should be null.
-        - Keep the description short and to the point (3 sentences max).
+        - Keep the description short and to the point (3 short sentences max).
 
         You are going to answer in JSON format. This is the format you are going to use:
         {
@@ -514,10 +500,8 @@ export const analizeLink = createAdminAction({
     
         WEBSITE DESCRIPTION: ${description}
     
-        WEBSITE CONTENT: \`\`\`
-        ${websiteTextClean}
-        \`\`\`
-      `;
+        WEBSITE CONTENT: ${markdownContent}
+      `.substring(0, 30000) + '...';
 
     const openai = new OpenAI({
       apiKey: OPENAI_API_KEY,
@@ -528,11 +512,12 @@ export const analizeLink = createAdminAction({
         model: 'gpt-3.5-turbo',
         stream: false,
         response_format: { type: 'json_object' },
+        temperature: 0.2,
         messages: [
           {
             role: 'system',
             content:
-              'You are my AI web scraper. Your job is to make sense of the text content of a website and categorize it.',
+              'You are a master web scraper. Your job is to make sense of the content of a website and categorize it.',
           },
           {
             role: 'user',

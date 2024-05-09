@@ -1,5 +1,6 @@
 import { cx } from 'cva';
 import { format } from 'date-fns';
+import { NodeHtmlMarkdown } from 'node-html-markdown';
 import { z } from 'zod';
 
 const NEXT_PUBLIC_VERCEL_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV;
@@ -130,3 +131,12 @@ export const isEmpty = (obj: Record<string, unknown>) => {
  * @returns The assigned class names.
  */
 export const cn = cx;
+
+/**
+ * Converts HTML to Markdown.
+ *
+ * @param html - The HTML string to be converted.
+ * @returns The Markdown representation of the HTML.
+ */
+export const htmlToMarkdown = (html: string) =>
+  NodeHtmlMarkdown.translate(html);
