@@ -1,13 +1,5 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "5",
-      "when": 1714936549369,
-      "tag": "0000_massive_mac_gargan",
-      "breakpoints": true
-    }
-  ]
+  "entries": []
 }
