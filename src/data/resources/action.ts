@@ -408,6 +408,8 @@ const analizeLinkSchema = z.object({
     .nullable(),
 });
 
+const PROMPT_CHARACTER_LIMIT = 50000;
+
 export const analizeLink = createAdminAction({
   input: z.object({
     link: z.string().url(),
@@ -501,7 +503,7 @@ export const analizeLink = createAdminAction({
         WEBSITE DESCRIPTION: ${description}
     
         WEBSITE CONTENT: ${markdownContent}
-      `.substring(0, 30000) + '...';
+      `.substring(0, PROMPT_CHARACTER_LIMIT) + '...';
 
     const openai = new OpenAI({
       apiKey: OPENAI_API_KEY,
@@ -509,7 +511,7 @@ export const analizeLink = createAdminAction({
 
     const aiResponse = await openai.chat.completions
       .create({
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4o',
         stream: false,
         response_format: { type: 'json_object' },
         temperature: 0.2,
