@@ -39,6 +39,7 @@
     "@radix-ui/react-toggle": "^1.0.3",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@vercel/edge-config": "^1.1.1",
+    "babel-plugin-react-compiler": "0.0.0-experimental-938cd9a-20240601",
     "cheerio": "1.0.0-rc.12",
     "cmdk": "^1.0.0",
     "cva": "1.0.0-beta.1",
