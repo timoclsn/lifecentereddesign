@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { createActionClient, createQueryClient } from "./server";
+import { z } from 'zod';
+import { createActionClient, createQueryClient } from './server';
 
 const createAction = createActionClient();
 
@@ -10,7 +10,7 @@ const action = createAction({
 
 // @ts-expect-error
 action();
-action("string");
+action('string');
 
 const action2 = createAction({
   action: () => {},
@@ -18,7 +18,7 @@ const action2 = createAction({
 
 action2();
 // @ts-expect-error
-action2("string");
+action2('string');
 
 const createQuery = createQueryClient();
 
@@ -29,7 +29,7 @@ const query = createQuery({
 
 // @ts-expect-error
 query();
-query("string");
+query('string');
 
 const query2 = createQuery({
   query: () => {},
@@ -37,4 +37,4 @@ const query2 = createQuery({
 
 query2();
 // @ts-expect-error
-query2("string");
+query2('string');
