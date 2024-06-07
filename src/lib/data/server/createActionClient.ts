@@ -22,7 +22,7 @@ export const createActionClient = <Context>(
       ...inputArgs
     ) => {
       // Depending of how the action is called, the input can be the first or second argument
-      // If the action is put through useFormState the first argument will be previous state and the second the input
+      // If the action is put through useActionState the first argument will be previous state and the second the input
       const [firstArg, secondArg] = inputArgs;
       const input = secondArg instanceof FormData ? secondArg : firstArg;
 

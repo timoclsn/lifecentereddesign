@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    reactCompiler: true,
+    staleTimes: {
+      dynamic: 30,
+    },
+  },
   reactStrictMode: true,
   images: {
     formats: ['image/avif', 'image/webp'],
