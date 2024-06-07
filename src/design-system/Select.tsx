@@ -64,7 +64,7 @@ Select.FilterTrigger = function SelectFilterTrigger({
           )}
           {!isLoading && (
             <SelectPrimitive.Icon
-              className={`text-text-secondary flex-none${
+              className={`flex-none text-text-secondary ${
                 isResettable ? 'opacity-0' : ''
               }`}
             >
