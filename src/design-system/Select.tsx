@@ -12,13 +12,7 @@ import {
   Loader2,
   XCircle,
 } from 'lucide-react';
-import {
-  ComponentProps,
-  ComponentPropsWithoutRef,
-  ElementRef,
-  forwardRef,
-  useId,
-} from 'react';
+import { ComponentProps, useId } from 'react';
 
 export const Select = ({
   ...props
@@ -26,24 +20,27 @@ export const Select = ({
   <SelectPrimitive.Root {...props} />
 );
 
-Select.FilterTrigger = forwardRef<
-  ElementRef<typeof SelectPrimitive.Trigger>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
-    label: string;
-    isLoading?: boolean;
-    isResettable?: boolean;
-    onReset?: () => void;
-  }
->(function SelectFilterTrigger(
-  { className, disabled, label, isLoading, isResettable, onReset, ...props },
+Select.FilterTrigger = function SelectFilterTrigger({
+  className,
+  disabled,
+  label,
+  isLoading,
+  isResettable,
+  onReset,
   ref,
-) {
+  ...props
+}: ComponentProps<typeof SelectPrimitive.Trigger> & {
+  label: string;
+  isLoading?: boolean;
+  isResettable?: boolean;
+  onReset?: () => void;
+}) {
   const id = useId();
   return (
     <div className="relative min-w-[0px] flex-1 sm:max-w-[240px]">
       <Label
         htmlFor={id}
-        className="bg-bg-primary text-text-secondary absolute -top-1.5 left-5 px-1 text-xs leading-none"
+        className="absolute -top-1.5 left-5 bg-bg-primary px-1 text-xs leading-none text-text-secondary"
       >
         {!disabled && label}
       </Label>
@@ -51,7 +48,7 @@ Select.FilterTrigger = forwardRef<
         id={id}
         disabled={disabled}
         className={cx(
-          'border-ghost-main-dark-bg focus-visible:border-text-secondary flex w-full items-center justify-between rounded-full border-2 px-2 py-2 text-left text-lg font-bold leading-none outline-none disabled:opacity-50 sm:gap-1 sm:px-6 [&>span]:truncate [&>span]:whitespace-nowrap',
+          'flex w-full items-center justify-between rounded-full border-2 border-ghost-main-dark-bg px-2 py-2 text-left text-lg font-bold leading-none outline-none focus-visible:border-text-secondary disabled:opacity-50 sm:gap-1 sm:px-6 [&>span]:truncate [&>span]:whitespace-nowrap',
           className,
         )}
         {...props}
@@ -68,7 +65,7 @@ Select.FilterTrigger = forwardRef<
           {!isLoading && (
             <SelectPrimitive.Icon
               className={`text-text-secondary flex-none${
-                isResettable ? ' opacity-0' : ''
+                isResettable ? 'opacity-0' : ''
               }`}
             >
               <ArrowDown />
@@ -80,7 +77,7 @@ Select.FilterTrigger = forwardRef<
       {/* Reset Button */}
       {isResettable && !isLoading && (
         <button
-          className="text-text-secondary ease active:scale-9 absolute right-0 top-0 mr-2 flex h-full items-center justify-center transition-transform hover:scale-110 sm:mr-6"
+          className="ease active:scale-9 absolute right-0 top-0 mr-2 flex h-full items-center justify-center text-text-secondary transition-transform hover:scale-110 sm:mr-6"
           onClick={onReset}
         >
           <XCircle />
@@ -89,14 +86,16 @@ Select.FilterTrigger = forwardRef<
       )}
     </div>
   );
-});
+};
 
-Select.SortTrigger = forwardRef<
-  ElementRef<typeof SelectPrimitive.Trigger>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.SelectTrigger> & {
-    isLoading?: boolean;
-  }
->(function SelectSortTrigger({ className, isLoading, ...props }, ref) {
+Select.SortTrigger = function SelectSortTrigger({
+  className,
+  isLoading,
+  ref,
+  ...props
+}: ComponentProps<typeof SelectPrimitive.SelectTrigger> & {
+  isLoading?: boolean;
+}) {
   const id = useId();
   return (
     <div className="flex items-center">
@@ -117,24 +116,26 @@ Select.SortTrigger = forwardRef<
         {isLoading ? (
           <Loader2 size={20} className="flex-none animate-spin opacity-60" />
         ) : (
-          <SelectPrimitive.Icon className="text-text-secondary flex-none">
+          <SelectPrimitive.Icon className="flex-none text-text-secondary">
             <ChevronDown />
           </SelectPrimitive.Icon>
         )}
       </SelectPrimitive.Trigger>
     </div>
   );
-});
+};
 
-Select.Content = forwardRef<
-  ElementRef<typeof SelectPrimitive.Content>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(function SelectContent({ children, className, ...props }, ref) {
+Select.Content = function SelectContent({
+  children,
+  className,
+  ref,
+  ...props
+}: ComponentProps<typeof SelectPrimitive.Content>) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
         className={cx(
-          'bg-primary-main-bg text-primary-contrast-text animate-in fade-in-75 zoom-in-90 z-20 rounded-2xl px-4 py-6 duration-100 ease-out',
+          'z-20 rounded-2xl bg-primary-main-bg px-4 py-6 text-primary-contrast-text duration-100 ease-out animate-in fade-in-75 zoom-in-90',
           className,
         )}
         {...props}
@@ -152,16 +153,18 @@ Select.Content = forwardRef<
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
   );
-});
+};
 
-Select.Item = forwardRef<
-  ElementRef<typeof SelectPrimitive.Item>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
->(function SelectItem({ children, className, ...props }, ref) {
+Select.Item = function SelectItem({
+  children,
+  className,
+  ref,
+  ...props
+}: ComponentProps<typeof SelectPrimitive.Item>) {
   return (
     <SelectPrimitive.Item
       className={cx(
-        'hover:bg-primary-contrast-text hover:text-primary-main-bg focus-visible:bg-primary-contrast-text focus-visible:text-primary-main-bg cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none',
+        'cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg focus-visible:bg-primary-contrast-text focus-visible:text-primary-main-bg',
         className,
       )}
       {...props}
@@ -175,4 +178,4 @@ Select.Item = forwardRef<
       </SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
   );
-});
+};
