@@ -57,7 +57,7 @@ export const AddOrEditResourceSheet = ({
   resource,
 }: Props) => {
   const isAddMode = !resource;
-  const isEditMode = !!resource;
+  const isEditMode = !isAddMode;
 
   const formRef = useRef<HTMLFormElement>(null);
   const [open, setOpen] = useState(false);
@@ -339,9 +339,10 @@ export const AddOrEditResourceSheet = ({
         <form
           ref={formRef}
           action={() => {
+            if (isEditMode && !resource) return;
             const action = isAddMode ? addResource : editResource;
             action({
-              id: isEditMode ? resource.id : 0,
+              id: isAddMode ? 0 : resource.id,
               link,
               name,
               slug,
@@ -812,7 +813,7 @@ export const AddOrEditResourceSheet = ({
             )}
           </div>
 
-          <div className=" flex justify-between gap-4">
+          <div className="flex justify-between gap-4">
             <Button
               type="button"
               onClick={() => {
