@@ -11,6 +11,7 @@ import { and, eq, sql } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
 import nodemailer from 'nodemailer';
 import OpenAI from 'openai';
+import { zodResponseFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
 import {
   comment,
@@ -401,11 +402,7 @@ const analizeLinkSchema = z.object({
   topics: z.array(z.number()),
   shortDescription: z.string().nullable(),
   description: z.string(),
-  date: z
-    .string()
-    .date()
-    .transform((date) => new Date(date))
-    .nullable(),
+  date: z.string().nullable(),
 });
 
 const PROMPT_CHARACTER_LIMIT = 50000;
@@ -428,7 +425,7 @@ export const analizeLink = createAdminAction({
     if (!response.ok) {
       throw new ActionError({
         message: 'Error analyzing link',
-        log: 'Error fetching website content. Response status: ${response.status}',
+        log: `Error fetching website content. Response status: ${response.status}`,
       });
     }
 
@@ -482,17 +479,7 @@ export const analizeLink = createAdminAction({
         - Answer in english only.
         - If the website content is of a peace of media (book, article, podcast etc.) fill the date with the date of the publication (ISO date string) otherwise it should be null.
         - Keep the description short and to the point (3 short sentences max).
-
-        You are going to answer in JSON format. This is the format you are going to use:
-        {
-          name: 'Name of the website',
-          type: 1,
-          category: 1,
-          topics: [1, 2, 3],
-          shortDescription: 'UX Designer',
-          description: 'Description of the website',
-          date: '2022-01-01'
-        }
+        - Date has to be a string in ISO format like so: "2022-01-01" or null.
 
         TYPES: ${JSON.stringify(types)}
         CATEGORIES: ${JSON.stringify(categories)}
@@ -509,11 +496,11 @@ export const analizeLink = createAdminAction({
       apiKey: OPENAI_API_KEY,
     });
 
-    const aiResponse = await openai.chat.completions
-      .create({
-        model: 'gpt-4o',
+    const aiResponse = await openai.beta.chat.completions
+      .parse({
+        model: 'gpt-4o-2024-08-06',
         stream: false,
-        response_format: { type: 'json_object' },
+        response_format: zodResponseFormat(analizeLinkSchema, 'analize_link'),
         temperature: 0.2,
         messages: [
           {
@@ -535,7 +522,7 @@ export const analizeLink = createAdminAction({
         });
       });
 
-    const content = aiResponse.choices[0].message.content;
+    const content = aiResponse.choices[0].message.parsed;
 
     if (!content) {
       throw new ActionError({
@@ -544,8 +531,6 @@ export const analizeLink = createAdminAction({
       });
     }
 
-    const contentJson = JSON.parse(content);
-
-    return analizeLinkSchema.parse(contentJson);
+    return content;
   },
 });

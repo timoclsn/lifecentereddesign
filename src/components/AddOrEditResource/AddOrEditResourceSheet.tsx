@@ -171,7 +171,7 @@ export const AddOrEditResourceSheet = ({
         }
 
         if (date) {
-          setDate(date);
+          setDate(new Date(date));
         }
 
         toast({
