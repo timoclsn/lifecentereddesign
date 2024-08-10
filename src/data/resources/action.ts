@@ -7,11 +7,11 @@ import {
 } from '@/data/clients';
 import { ActionError } from '@/lib/data/errors';
 import { htmlToMarkdown } from '@/lib/utils/utils';
+import { openai } from '@ai-sdk/openai';
+import { JSONParseError, TypeValidationError, generateObject } from 'ai';
 import { and, eq, sql } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
 import nodemailer from 'nodemailer';
-import OpenAI from 'openai';
-import { zodResponseFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
 import {
   comment,
@@ -25,7 +25,7 @@ import { revalidateTag } from '../tags';
 import { selectTopics } from '../topics/topics';
 import { selectTypes } from '../types/types';
 
-const { SUGGESTION_MAIL_PASSWORD, OPENAI_API_KEY } = process.env;
+const { SUGGESTION_MAIL_PASSWORD } = process.env;
 
 export const getResources = createAction({
   action: async ({ ctx }) => {
@@ -395,16 +395,6 @@ export const suggest = createAction({
   },
 });
 
-const analizeLinkSchema = z.object({
-  name: z.string(),
-  type: z.number(),
-  category: z.number(),
-  topics: z.array(z.number()),
-  shortDescription: z.string().nullable(),
-  description: z.string(),
-  date: z.string().nullable(),
-});
-
 const PROMPT_CHARACTER_LIMIT = 50000;
 
 export const analizeLink = createAdminAction({
@@ -466,6 +456,23 @@ export const analizeLink = createAdminAction({
       });
     });
 
+    const schema = z.object({
+      name: z.string(),
+      type: z.number(),
+      category: z.number(),
+      topics: z.array(z.number()),
+      shortDescription: z.string().nullable(),
+      description: z.string(),
+      date: z
+        .string()
+        .date()
+        .transform((value) => new Date(value))
+        .nullable(),
+    });
+
+    const system =
+      'You are a master web scraper. Your job is to make sense of the content of a website and categorize it.';
+
     const prompt =
       `
         I am going to give you the content of a website formatted as markdown that you are going to use to categorize the website.
@@ -477,9 +484,8 @@ export const analizeLink = createAdminAction({
         - If the type is "Thoughtleader" the short description should be their job title or profession otherwise it should be null.
         - Don't set more than 3 topics. Only set the most relevant ones that you are very confident to fit the website content (7 or higher in a scale from 0 to 10).
         - Answer in english only.
-        - If the website content is of a peace of media (book, article, podcast etc.) fill the date with the date of the publication (ISO date string) otherwise it should be null.
+        - If the website content is of a piece of media (book, article, podcast etc.) fill the date with the date of the publication (ISO date string in this format "2022-01-01") otherwise it should be null.
         - Keep the description short and to the point (3 short sentences max).
-        - Date has to be a string in ISO format like so: "2022-01-01" or null.
 
         TYPES: ${JSON.stringify(types)}
         CATEGORIES: ${JSON.stringify(categories)}
@@ -492,45 +498,39 @@ export const analizeLink = createAdminAction({
         WEBSITE CONTENT: ${markdownContent}
       `.substring(0, PROMPT_CHARACTER_LIMIT) + '...';
 
-    const openai = new OpenAI({
-      apiKey: OPENAI_API_KEY,
-    });
-
-    const aiResponse = await openai.beta.chat.completions
-      .parse({
-        model: 'gpt-4o-2024-08-06',
-        stream: false,
-        response_format: zodResponseFormat(analizeLinkSchema, 'analize_link'),
-        temperature: 0.2,
-        messages: [
-          {
-            role: 'system',
-            content:
-              'You are a master web scraper. Your job is to make sense of the content of a website and categorize it.',
-          },
-          {
-            role: 'user',
-            content: prompt,
-          },
-        ],
-      })
-      .catch((error) => {
+    const result = await generateObject({
+      model: openai('gpt-4o-2024-08-06', {
+        structuredOutputs: true,
+      }),
+      schemaName: 'Resource',
+      schemaDescription:
+        'A resource entry in the life-centered design database',
+      schema,
+      temperature: 0.2,
+      system,
+      prompt,
+    }).catch((error) => {
+      if (error instanceof JSONParseError) {
         throw new ActionError({
           message: 'Error analyzing link',
-          log: 'Error getting response from AI',
+          log: 'Error parsing JSON response from AI model',
           cause: error,
         });
-      });
+      } else if (error instanceof TypeValidationError) {
+        throw new ActionError({
+          message: 'Error analyzing link',
+          log: 'Error validating response from AI model',
+          cause: error,
+        });
+      } else {
+        throw new ActionError({
+          message: 'Error analyzing link',
+          log: 'Error generating object from AI model',
+          cause: error,
+        });
+      }
+    });
 
-    const content = aiResponse.choices[0].message.parsed;
-
-    if (!content) {
-      throw new ActionError({
-        message: 'Error analyzing link',
-        log: 'No response from AI',
-      });
-    }
-
-    return content;
+    return result.object;
   },
 });
