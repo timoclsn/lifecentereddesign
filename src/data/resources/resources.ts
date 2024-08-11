@@ -271,7 +271,10 @@ export const selectResources = async (
 
   resourceIdsQuery.orderBy(orderBy);
   resourceIdsQuery.groupBy(resource.id);
-  resourceIdsQuery.limit(limit ? limit + 1 : 0);
+
+  if (limit) {
+    resourceIdsQuery.limit(limit + 1);
+  }
 
   // Build up resource query
   const resourcesQuery = db

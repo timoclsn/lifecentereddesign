@@ -14,7 +14,7 @@ export const filterUserForClient = (user: User) => {
 };
 
 export const withUser = async <TData extends Data>(data: TData) => {
-  const users = await clerkClient.users.getUserList({
+  const users = await clerkClient().users.getUserList({
     userId: [data.userId],
   });
 
@@ -34,7 +34,7 @@ export const withUserCollection = async <TData extends Data>(
   data: Array<TData>,
 ) => {
   const userIds = data.map((element) => element.userId);
-  const users = await clerkClient.users.getUserList({
+  const users = await clerkClient().users.getUserList({
     userId: userIds,
   });
 
@@ -53,7 +53,7 @@ export const withUserCollection = async <TData extends Data>(
 };
 
 export const isAdmin = async (userId: string) => {
-  const fullUserData = await clerkClient.users.getUser(userId);
+  const fullUserData = await clerkClient().users.getUser(userId);
   const admin = fullUserData?.privateMetadata['admin'] as boolean | undefined;
 
   if (!admin) {
