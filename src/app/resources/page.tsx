@@ -8,13 +8,14 @@ export const metadata: Metadata = {
 };
 
 interface Props {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }
 
-const ResourcesPage = ({ searchParams }: Props) => {
+const ResourcesPage = async ({ searchParams }: Props) => {
+  const awaitedSearchParams = await searchParams;
   return (
     <>
-      <Resources searchParams={searchParams} />
+      <Resources searchParams={awaitedSearchParams} />
       <Suggestion />
     </>
   );

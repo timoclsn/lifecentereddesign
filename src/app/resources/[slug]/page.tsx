@@ -9,7 +9,7 @@ import { createGenerateMetadata } from '../../../lib/metadata';
 import { getBaseUrl } from '../../../lib/utils/utils';
 
 export const generateMetadata = createGenerateMetadata(async ({ params }) => {
-  const { slug } = params;
+  const { slug } = await params;
 
   const resource = await query.resources.getResourceBySlug({
     slug,
@@ -62,13 +62,11 @@ export const generateMetadata = createGenerateMetadata(async ({ params }) => {
 });
 
 interface Props {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
 const ResourcePage = async ({ params }: Props) => {
-  const { slug } = params;
+  const { slug } = await params;
 
   return (
     <>

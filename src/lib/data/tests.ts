@@ -5,12 +5,13 @@ const createAction = createActionClient();
 
 const action = createAction({
   input: z.string(),
-  action: () => {},
+  action: () => {
+    return 'test string';
+  },
 });
 
 // @ts-expect-error
 action();
-action('string');
 
 const action2 = createAction({
   action: () => {},

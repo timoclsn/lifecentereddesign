@@ -14,7 +14,7 @@ interface Props {
   reseourcesFilter: ReseourcesFilter;
 }
 
-export const ResourcesTable = ({ reseourcesFilter }: Props) => {
+export const ResourcesTable = async ({ reseourcesFilter }: Props) => {
   const {
     limit,
     sort,
@@ -27,7 +27,7 @@ export const ResourcesTable = ({ reseourcesFilter }: Props) => {
     from,
     till,
   } = reseourcesFilter;
-  const { userId } = auth();
+  const { userId } = await auth();
 
   const promises = Promise.all([
     query.resources.getResources({

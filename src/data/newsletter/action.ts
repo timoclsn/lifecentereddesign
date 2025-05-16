@@ -28,7 +28,7 @@ export const subscribe = createAction({
     email: z.string().min(1, { message: 'Email address is required' }).email({
       message: 'Must be a valid email address',
     }),
-    consens: z.boolean().refine((value) => value === true, {
+    consens: z.boolean().refine(async (value) => value === true, {
       message: 'You must confirm that you want to subscribe',
     }),
   }),

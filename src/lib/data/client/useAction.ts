@@ -8,7 +8,7 @@ import {
 } from '../types';
 import { initalState } from './initialState';
 
-type Action<TResponse extends any, TInputSchema extends z.ZodTypeAny> =
+type Action<TInputSchema extends z.ZodTypeAny, TResponse extends any> =
   | { type: 'RUN_ACTION' }
   | { type: 'IS_SUCCESS'; data: TResponse | null }
   | {
@@ -22,10 +22,10 @@ type Action<TResponse extends any, TInputSchema extends z.ZodTypeAny> =
   | { type: 'RESET' };
 
 const createReducer =
-  <TResponse extends any, TInputSchema extends z.ZodTypeAny>() =>
+  <TInputSchema extends z.ZodTypeAny, TResponse extends any>() =>
   (
     state: Result<TInputSchema, TResponse>,
-    action: Action<TResponse, TInputSchema>,
+    action: Action<TInputSchema, TResponse>,
   ): Result<TInputSchema, TResponse> => {
     switch (action.type) {
       case 'RUN_ACTION':
@@ -88,7 +88,7 @@ export const useAction = <
     onReset?: () => void;
   } = {},
 ) => {
-  const reducer = createReducer<TResponse, TInputSchema>();
+  const reducer = createReducer<TInputSchema, TResponse>();
   const [state, dispatch] = useReducer(reducer, initalState);
   const { status, data, error, validationErrors } = state;
   const isSuccess = status === 'success';
@@ -188,7 +188,7 @@ export const useAction = <
     isRunning,
     isSuccess,
     isError,
-    data,
+    data: data as TResponse | null, // Needed because since TS 5.8 it wouldn't infer the type correctly
     error,
     validationErrors,
     reset,

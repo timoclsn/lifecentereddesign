@@ -14,7 +14,7 @@ interface Props {
   text: string;
 }
 
-export const Comment = ({
+export const Comment = async ({
   resourceId,
   commentId,
   userId,
@@ -23,7 +23,7 @@ export const Comment = ({
   avatarUrl,
   text,
 }: Props) => {
-  const { userId: authedUserId } = auth();
+  const { userId: authedUserId } = await auth();
   const isAuthedUser = authedUserId === userId;
   const timeStamp =
     typeof createdAt === 'string' ? parseISO(createdAt) : createdAt;
