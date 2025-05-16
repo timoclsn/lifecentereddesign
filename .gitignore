@@ -40,3 +40,5 @@ local.db
 
 # vscode
 .vscode
+
+.claude
