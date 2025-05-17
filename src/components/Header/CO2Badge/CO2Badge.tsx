@@ -23,7 +23,7 @@ export const CO2Badge = ({ co2, cleanerThan }: Props) => {
   };
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Trigger className="group flex items-center gap-1 rounded-b-lg bg-lime px-4 py-2 font-bold transition-transform duration-200 ease-in-out animate-in slide-in-from-top-full">
+      <Dialog.Trigger className="group bg-lime animate-in slide-in-from-top-full flex items-center gap-1 rounded-b-lg px-4 py-2 font-bold transition-transform duration-200 ease-in-out">
         <Leaf
           size={22}
           className="transition-transform group-hover:scale-110"
@@ -34,45 +34,46 @@ export const CO2Badge = ({ co2, cleanerThan }: Props) => {
         </Text>
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-20 bg-text-primary opacity-20 animate-in fade-in" />
+        <Dialog.Overlay className="bg-text-primary animate-in fade-in fixed inset-0 z-20 opacity-20" />
         <Dialog.Content
-          className={`fixed left-1/2 top-1/2 z-20 max-h-[85vh] w-[90vw] max-w-xl -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-3xl bg-lime p-10 ${styles.content}`}
+          aria-describedby={undefined}
+          className={`bg-lime fixed top-1/2 left-1/2 z-20 max-h-[85vh] w-[90vw] max-w-xl overflow-y-auto rounded-3xl p-10 ${styles.content}`}
         >
           <div className="mb-4">
             <Dialog.Close className="hover:opacity-80 focus:outline-hidden">
               <X size={24} />
             </Dialog.Close>
           </div>
-          <div>
-            <Heading level="3" className="mb-4">
-              Website carbon footprint
-            </Heading>
-            <div className="prose text-text-primary">
-              <p>
-                Everytime someone opens this website{' '}
-                <strong>{co2} g of CO2</strong> are produced. This site is{' '}
-                <strong>cleaner than {cleanerThan} %</strong> of web pages
-                tested on the{' '}
-                <Link url="https://www.websitecarbon.com" external>
-                  Website Carbon Calculator
-                </Link>
-                .
-              </p>
-              <p>What we considered to make this page as clean as possible:</p>
-              <ul>
-                <li>Focus on text (instead of video or audio)</li>
-                <li>Server rendered and streamed to the browser</li>
-                <li>Serve from edge CDN</li>
-                <li>Self-host optimized font file in modern file format</li>
-                <li>Focus on page speed and Core Web Vitals</li>
-              </ul>
-            </div>
-            <div className="mt-4 flex gap-4 font-bold">
-              <ArrowRight size={24} />
+          <Dialog.Title className="sr-only">
+            Website carbon footprint
+          </Dialog.Title>
+          <Heading level="3">Website carbon footprint</Heading>
+
+          <div className="prose text-text-primary">
+            <p>
+              Everytime someone opens this website{' '}
+              <strong>{co2} g of CO2</strong> are produced. This site is{' '}
+              <strong>cleaner than {cleanerThan} %</strong> of web pages tested
+              on the{' '}
               <Link url="https://www.websitecarbon.com" external>
                 Website Carbon Calculator
               </Link>
-            </div>
+              .
+            </p>
+            <p>What we considered to make this page as clean as possible:</p>
+            <ul>
+              <li>Focus on text (instead of video or audio)</li>
+              <li>Server rendered and streamed to the browser</li>
+              <li>Serve from edge CDN</li>
+              <li>Self-host optimized font file in modern file format</li>
+              <li>Focus on page speed and Core Web Vitals</li>
+            </ul>
+          </div>
+          <div className="mt-4 flex gap-4 font-bold">
+            <ArrowRight size={24} />
+            <Link url="https://www.websitecarbon.com" external>
+              Website Carbon Calculator
+            </Link>
           </div>
         </Dialog.Content>
       </Dialog.Portal>
