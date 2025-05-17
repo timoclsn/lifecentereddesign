@@ -180,7 +180,7 @@ const MultiSelect = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[calc(var(--radix-popper-available-width)-24px)] p-0 drop-shadow-sm"
+        className="w-[calc(var(--radix-popper-available-width)-24px)] p-0 drop-shadow-xs"
         align="start"
         onEscapeKeyDown={() => setIsPopoverOpen(false)}
         onInteractOutside={(event) => {

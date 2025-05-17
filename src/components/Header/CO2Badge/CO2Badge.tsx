@@ -39,7 +39,7 @@ export const CO2Badge = ({ co2, cleanerThan }: Props) => {
           className={`fixed left-1/2 top-1/2 z-20 max-h-[85vh] w-[90vw] max-w-xl -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-3xl bg-lime p-10 ${styles.content}`}
         >
           <div className="mb-4">
-            <Dialog.Close className="hover:opacity-80 focus:outline-none">
+            <Dialog.Close className="hover:opacity-80 focus:outline-hidden">
               <X size={24} />
             </Dialog.Close>
           </div>

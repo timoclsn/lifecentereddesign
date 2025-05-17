@@ -9,7 +9,7 @@ import { AlertTriangle, Loader2, MessageCircle } from 'lucide-react';
 import { useRef } from 'react';
 
 const inputStyles = cva({
-  base: 'px-8 py-4 text-base text-text-secondary bg-ghost-main-dark-bg outline-none w-full ring-inset',
+  base: 'px-8 py-4 text-base text-text-secondary bg-ghost-main-dark-bg outline-hidden w-full ring-inset',
   variants: {
     error: {
       true: 'ring-2 ring-red-700',
