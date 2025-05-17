@@ -37,7 +37,7 @@ export const deleteAccount = createProtectedAction({
       });
 
     const client = await clerkClient();
-    client.users.deleteUser(userId).catch((error) => {
+    await client.users.deleteUser(userId).catch((error) => {
       throw new ActionError({
         message: deleteAccountError,
         log: `Delete clerk user ${userId} failed`,
