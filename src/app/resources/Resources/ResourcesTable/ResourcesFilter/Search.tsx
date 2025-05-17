@@ -17,7 +17,7 @@ export const Search = () => {
   );
 
   return (
-    <div className="bg-primary-ghost-bg text-text-secondary focus-within:ring-text-secondary flex min-w-[100px] flex-1 items-center gap-2 px-4 py-1 outline-none ring-inset focus-within:ring-2 sm:max-w-[240px]">
+    <div className="bg-primary-ghost-bg text-text-secondary focus-within:ring-text-secondary flex min-w-[100px] flex-1 items-center gap-2 px-4 py-1 outline-hidden ring-inset focus-within:ring-2 sm:max-w-[240px]">
       <SearchIcon className="flex-none opacity-60" size="16" />
       <input
         key={searchQuery}
@@ -25,7 +25,7 @@ export const Search = () => {
         defaultValue={searchQuery ?? ''}
         onChange={handleChange}
         autoComplete="off"
-        className="text-text-primary w-full bg-transparent outline-none"
+        className="text-text-primary w-full bg-transparent outline-hidden"
       />
       <Loader2
         className={`flex-none animate-spin ${

@@ -6,8 +6,8 @@ import { auth } from '@clerk/nextjs/server';
 
 // Actions
 export const createAction = createActionClient({
-  middleware: () => {
-    const { userId } = auth();
+  middleware: async () => {
+    const { userId } = await auth();
     return { db, userId };
   },
   onError: (error) => {
@@ -16,8 +16,8 @@ export const createAction = createActionClient({
 });
 
 export const createProtectedAction = createActionClient({
-  middleware: () => {
-    const { userId } = auth();
+  middleware: async () => {
+    const { userId } = await auth();
 
     if (!userId) {
       throw new ActionError({
@@ -34,7 +34,7 @@ export const createProtectedAction = createActionClient({
 
 export const createAdminAction = createActionClient({
   middleware: async () => {
-    const { userId } = auth();
+    const { userId } = await auth();
 
     if (!userId) {
       throw new ActionError({
@@ -59,8 +59,8 @@ export const createAdminAction = createActionClient({
 
 // Queries
 export const createQuery = createQueryClient({
-  middleware: () => {
-    const { userId } = auth();
+  middleware: async () => {
+    const { userId } = await auth();
     return { db, userId };
   },
   onError: (error) => {
@@ -69,8 +69,8 @@ export const createQuery = createQueryClient({
 });
 
 export const createProtectedQuery = createQueryClient({
-  middleware: () => {
-    const { userId } = auth();
+  middleware: async () => {
+    const { userId } = await auth();
 
     if (!userId) {
       throw new Error('You must be logged in to perform this query.');
@@ -85,7 +85,7 @@ export const createProtectedQuery = createQueryClient({
 
 export const createAdminQuery = createQueryClient({
   middleware: async () => {
-    const { userId } = auth();
+    const { userId } = await auth();
 
     if (!userId) {
       throw new Error('You must be logged in to perform this query.');

@@ -10,8 +10,8 @@ interface Props {
   slug: string;
 }
 
-export const ResourceDetailsCard = ({ slug }: Props) => {
-  const { userId } = auth();
+export const ResourceDetailsCard = async ({ slug }: Props) => {
+  const { userId } = await auth();
   const promise = query.resources.getResourceBySlug({
     slug,
   });

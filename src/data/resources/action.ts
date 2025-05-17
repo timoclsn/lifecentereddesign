@@ -465,7 +465,6 @@ export const analizeLink = createAdminAction({
       description: z.string(),
       date: z
         .string()
-        .date()
         .transform((value) => new Date(value))
         .nullable(),
     });

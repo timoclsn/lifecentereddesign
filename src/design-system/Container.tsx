@@ -2,7 +2,7 @@ import { VariantProps, cva } from 'cva';
 import { ReactNode } from 'react';
 
 const containerVariants = cva({
-  base: 'mx-auto max-w-screen-2xl w-full',
+  base: 'mx-auto max-w-(--breakpoint-2xl) w-full',
   variants: {
     inset: {
       true: 'px-6 sm:px-8',

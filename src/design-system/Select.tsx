@@ -48,7 +48,7 @@ Select.FilterTrigger = function SelectFilterTrigger({
         id={id}
         disabled={disabled}
         className={cx(
-          'flex w-full items-center justify-between rounded-full border-2 border-ghost-main-dark-bg px-2 py-2 text-left text-lg font-bold leading-none outline-none focus-visible:border-text-secondary disabled:opacity-50 sm:gap-1 sm:px-6 [&>span]:truncate [&>span]:whitespace-nowrap',
+          'flex w-full items-center justify-between rounded-full border-2 border-ghost-main-dark-bg px-2 py-2 text-left text-lg font-bold leading-none outline-hidden focus-visible:border-text-secondary disabled:opacity-50 sm:gap-1 sm:px-6 [&>span]:truncate [&>span]:whitespace-nowrap',
           className,
         )}
         {...props}
@@ -105,7 +105,7 @@ Select.SortTrigger = function SelectSortTrigger({
       <SelectPrimitive.Trigger
         id={id}
         className={cx(
-          'flex h-full items-center gap-1 outline-none focus-visible:underline disabled:opacity-50 [&>span]:truncate [&>span]:whitespace-nowrap',
+          'flex h-full items-center gap-1 outline-hidden focus-visible:underline disabled:opacity-50 [&>span]:truncate [&>span]:whitespace-nowrap',
           className,
         )}
         {...props}
@@ -164,7 +164,7 @@ Select.Item = function SelectItem({
   return (
     <SelectPrimitive.Item
       className={cx(
-        'cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-none hover:bg-primary-contrast-text hover:text-primary-main-bg focus-visible:bg-primary-contrast-text focus-visible:text-primary-main-bg',
+        'cursor-pointer rounded-lg py-1 pl-[29px] pr-2 outline-hidden hover:bg-primary-contrast-text hover:text-primary-main-bg focus-visible:bg-primary-contrast-text focus-visible:text-primary-main-bg',
         className,
       )}
       {...props}

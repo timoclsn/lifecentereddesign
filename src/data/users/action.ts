@@ -36,15 +36,14 @@ export const deleteAccount = createProtectedAction({
         });
       });
 
-    await clerkClient()
-      .users.deleteUser(userId)
-      .catch((error) => {
-        throw new ActionError({
-          message: deleteAccountError,
-          log: `Delete clerk user ${userId} failed`,
-          cause: error,
-        });
+    const client = await clerkClient();
+    await client.users.deleteUser(userId).catch((error) => {
+      throw new ActionError({
+        message: deleteAccountError,
+        log: `Delete clerk user ${userId} failed`,
+        cause: error,
       });
+    });
 
     revalidatePath('/');
   },

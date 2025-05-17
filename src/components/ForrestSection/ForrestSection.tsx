@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import forestImg from './forest.jpg';
 
 export const inputStyles = cva({
-  base: 'px-10 py-6 text-2xl text-text-secondary bg-ghost-main-dark-bg outline-none w-full ring-inset',
+  base: 'px-10 py-6 text-2xl text-text-secondary bg-ghost-main-dark-bg outline-hidden w-full ring-inset',
   variants: {
     error: {
       true: 'ring-2 ring-red-700',
@@ -15,7 +15,7 @@ export const inputStyles = cva({
 });
 
 export const checkboxStyles = cva({
-  base: 'flex size-[25px] items-center justify-center bg-ghost-main-dark-bg outline-none ring-inset flex-none',
+  base: 'flex size-[25px] items-center justify-center bg-ghost-main-dark-bg outline-hidden ring-inset flex-none',
   variants: {
     error: {
       true: 'ring-2 ring-red-700',

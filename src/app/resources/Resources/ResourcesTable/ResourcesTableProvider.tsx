@@ -5,7 +5,7 @@ import { ReactNode, RefObject, createContext, useContext, useRef } from 'react';
 interface State {
   inContext: boolean;
   scrollToTop: () => void;
-  resourcesTopRef: RefObject<HTMLDivElement>;
+  resourcesTopRef: RefObject<HTMLDivElement | null>;
 }
 
 const initalState: State = {

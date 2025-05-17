@@ -40,8 +40,8 @@ export function Header() {
               sizes="100vw"
               className="absolute inset-0 h-full w-full object-cover object-top"
             />
-            <div className="absolute left-0 top-0 h-full w-1/4 bg-gradient-to-r from-[#070C10] to-[#070C10]/0" />
-            <div className="absolute right-0 top-0 h-full w-1/4 bg-gradient-to-l from-[#070C10] to-[#070C10]/0" />
+            <div className="absolute left-0 top-0 h-full w-1/4 bg-linear-to-r from-[#070C10] to-[#070C10]/0" />
+            <div className="absolute right-0 top-0 h-full w-1/4 bg-linear-to-l from-[#070C10] to-[#070C10]/0" />
           </div>
         </div>
       </Bleed>

@@ -23,7 +23,7 @@ interface Props {
   searchParams: SearchParams;
 }
 
-export const Resources = async ({ searchParams }: Props) => {
+export const Resources = ({ searchParams }: Props) => {
   const resourcesFilter = reseourcesFilterSchema.parse(searchParams);
   const { title, from, till } = resourcesFilter;
 

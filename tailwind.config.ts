@@ -1,11 +1,10 @@
 import type { Config } from 'tailwindcss';
-import { fontFamily } from 'tailwindcss/defaultTheme';
+import * as defaultTheme from 'tailwindcss/defaultTheme';
 
 const config: Config = {
   future: {
     hoverOnlyWhenSupported: true,
   },
-  darkMode: ['class'],
   content: [
     'src/app/**/*.{js,ts,jsx,tsx}',
     'src/components/**/*.{js,ts,jsx,tsx}',
@@ -105,8 +104,10 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['var(--font-sans)', ...fontFamily.sans],
-        serif: ['var(--font-serif)', ...fontFamily.serif],
+        // @ts-expect-error
+        sans: ['var(--font-sans)', ...defaultTheme.fontFamily.sans],
+        // @ts-expect-error
+        serif: ['var(--font-serif)', ...defaultTheme.fontFamily.serif],
       },
       borderRadius: {
         sm: 'calc(var(--radius) - 4px)',
