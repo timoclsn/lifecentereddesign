@@ -133,13 +133,13 @@ importers:
         specifier: ^0.5.14
         version: 0.5.16(tailwindcss@3.4.9)
       '@testing-library/jest-dom':
-        specifier: ^6.4.8
+        specifier: ^6.6.3
         version: 6.6.3
       '@testing-library/react':
-        specifier: ^16.0.0
+        specifier: ^16.3.0
         version: 16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@types/jest':
-        specifier: ^29.5.12
+        specifier: ^29.5.14
         version: 29.5.14
       '@types/node':
         specifier: 22.15.18
