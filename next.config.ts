@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
       dynamic: 30,
     },
   },
+  outputFileTracingExcludes: {
+    '*': ['.pnpm-store/**/*'],
+  },
+
   reactStrictMode: true,
   images: {
     minimumCacheTTL: 2678400,
@@ -26,18 +30,6 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return redirects;
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/bee.js',
-        destination: 'https://cdn.splitbee.io/sb.js',
-      },
-      {
-        source: '/_hive/:slug',
-        destination: 'https://hive.splitbee.io/:slug',
-      },
-    ];
   },
 };
 
