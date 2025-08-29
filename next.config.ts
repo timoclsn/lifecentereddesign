@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
       dynamic: 30,
     },
   },
+  outputFileTracingExcludes: {
+    '*': ['.pnpm-store/**/*'],
+  },
+
   reactStrictMode: true,
   images: {
     minimumCacheTTL: 2678400,
