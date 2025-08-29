@@ -4,7 +4,6 @@ import { Container } from '@/design-system';
 import '@/design-system/themes/resources.css';
 import { Metadata } from 'next';
 import { DM_Sans, Source_Serif_4 } from 'next/font/google';
-import Script from 'next/script';
 import { ReactNode } from 'react';
 import { Footer } from '../components/Footer/Footer';
 import { Header } from '../components/Header/Header';
@@ -85,7 +84,6 @@ const RootLayout = ({ children }: Props) => {
             <Footer />
             <Toaster />
           </body>
-          <Script data-no-cookie data-api="/_hive" src="/bee.js" />
         </html>
       </StorageProvider>
     </ClerkProvider>
