@@ -27,6 +27,18 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/ods/script',
+        destination: 'https://assets.onedollarstats.com/stonks.js',
+      },
+      {
+        source: '/ods/events',
+        destination: 'https://collector.onedollarstats.com/events',
+      },
+    ];
+  },
   async redirects() {
     return redirects;
   },

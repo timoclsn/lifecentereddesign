@@ -1,9 +1,11 @@
-import { ClerkProvider } from '@clerk/nextjs';
 import { StorageProvider } from '@/components/StorageProvider/StorageProvider';
 import { Container } from '@/design-system';
 import '@/design-system/themes/resources.css';
+import { Toaster } from '@/ui/toaster';
+import { ClerkProvider } from '@clerk/nextjs';
 import { Metadata } from 'next';
 import { DM_Sans, Source_Serif_4 } from 'next/font/google';
+import Script from 'next/script';
 import { ReactNode } from 'react';
 import { Footer } from '../components/Footer/Footer';
 import { Header } from '../components/Header/Header';
@@ -12,7 +14,6 @@ import { description, title } from '../lib/metadata';
 import '../lib/polyfills';
 import { getBaseUrl } from '../lib/utils/utils';
 import '../styles/globals.css';
-import { Toaster } from '@/ui/toaster';
 
 const sans = DM_Sans({
   weight: ['400', '700'],
@@ -74,7 +75,7 @@ const RootLayout = ({ children }: Props) => {
           lang="en"
           className={`${sans.variable} ${serif.variable} min-h-screen`}
         >
-          <body className="flex min-h-screen flex-col bg-bg-primary font-sans text-base font-normal text-text-primary">
+          <body className="bg-bg-primary text-text-primary flex min-h-screen flex-col font-sans text-base font-normal">
             <Header />
             <main className="flex-1">
               <Container inset className="space-y-10 sm:space-y-40">
@@ -84,6 +85,7 @@ const RootLayout = ({ children }: Props) => {
             <Footer />
             <Toaster />
           </body>
+          <Script src="/ods/script" data-url="/ods/events" />
         </html>
       </StorageProvider>
     </ClerkProvider>
